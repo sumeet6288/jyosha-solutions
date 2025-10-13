@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { LogOut, TrendingUp, MessageSquare, Users, Clock } from 'lucide-react';
+import { LogOut, TrendingUp, MessageSquare, Users, Clock, BarChart3 } from 'lucide-react';
 import { mockAnalytics } from '../mock/mockData';
 
 const Analytics = () => {
