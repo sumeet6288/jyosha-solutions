@@ -323,15 +323,73 @@ const ChatbotBuilder = () => {
           {/* Analytics Tab */}
           <TabsContent value="analytics">
             <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h2 className="text-2xl font-bold mb-6">Analytics</h2>
-              <div className="text-center py-12 text-gray-500">
-                <BarChart3 className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <p>Analytics data will appear here once your chatbot is deployed</p>
-              </div>
+              <h2 className="text-2xl font-bold mb-6">Chatbot Analytics</h2>
+              
+              {analytics && (
+                <>
+                  <div className="grid md:grid-cols-4 gap-4 mb-8">
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <p className="text-2xl font-bold">{analytics.totalConversations}</p>
+                      <p className="text-sm text-gray-600">Total Conversations</p>
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <p className="text-2xl font-bold">{analytics.activeChats}</p>
+                      <p className="text-sm text-gray-600">Active Chats</p>
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <p className="text-2xl font-bold">{analytics.satisfaction}%</p>
+                      <p className="text-sm text-gray-600">Satisfaction</p>
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <p className="text-2xl font-bold">{analytics.avgResponseTime}</p>
+                      <p className="text-sm text-gray-600">Avg Response</p>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-8">
+                    <h3 className="font-semibold mb-4">Top Topics Discussed</h3>
+                    <div className="space-y-3">
+                      {analytics.topicsDiscussed.slice(0, 5).map((topic, index) => (
+                        <div key={index} className="flex items-center gap-4">
+                          <span className="font-medium w-32">{topic.topic}</span>
+                          <div className="flex-1 bg-gray-200 rounded-full h-2">
+                            <div 
+                              className="bg-black h-2 rounded-full" 
+                              style={{ width: `${(topic.count / 500) * 100}%` }}
+                            ></div>
+                          </div>
+                          <span className="text-sm text-gray-600">{topic.count}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Modals */}
+      <AddSourceModal 
+        isOpen={isAddSourceModalOpen}
+        onClose={() => setIsAddSourceModalOpen(false)}
+        onAdd={handleAddSource}
+      />
+      
+      <ChatPreviewModal
+        isOpen={isPreviewModalOpen}
+        onClose={() => setIsPreviewModalOpen(false)}
+        chatbot={settings}
+      />
+      
+      <DeleteConfirmModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={() => handleDeleteSource(sourceToDelete?.id)}
+        title="Delete Source"
+        description="Are you sure you want to delete this training source? This action cannot be undone."
+      />
     </div>
   );
 };
