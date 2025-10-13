@@ -46,8 +46,8 @@ const Dashboard = () => {
             </div>
             <div className="flex items-center gap-6">
               <button className="text-black font-medium">Chatbots</button>
-              <button className="text-gray-600 hover:text-black transition-colors">Analytics</button>
-              <button className="text-gray-600 hover:text-black transition-colors">Integrations</button>
+              <button onClick={() => navigate('/analytics')} className="text-gray-600 hover:text-black transition-colors">Analytics</button>
+              <button onClick={() => navigate('/integrations')} className="text-gray-600 hover:text-black transition-colors">Integrations</button>
             </div>
           </div>
           <div className="flex items-center gap-4">
