@@ -111,7 +111,7 @@ const ChatbotBuilder = () => {
               <div className="grid md:grid-cols-3 gap-4 mb-8">
                 <button 
                   className="p-6 border-2 border-dashed border-gray-300 rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all"
-                  onClick={() => handleAddSource('file')}
+                  onClick={() => setIsAddSourceModalOpen(true)}
                 >
                   <Upload className="w-8 h-8 mx-auto mb-3 text-gray-600" />
                   <p className="font-medium">Upload Files</p>
@@ -120,7 +120,7 @@ const ChatbotBuilder = () => {
                 
                 <button 
                   className="p-6 border-2 border-dashed border-gray-300 rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all"
-                  onClick={() => handleAddSource('website')}
+                  onClick={() => setIsAddSourceModalOpen(true)}
                 >
                   <Link2 className="w-8 h-8 mx-auto mb-3 text-gray-600" />
                   <p className="font-medium">Website URL</p>
@@ -129,7 +129,7 @@ const ChatbotBuilder = () => {
                 
                 <button 
                   className="p-6 border-2 border-dashed border-gray-300 rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all"
-                  onClick={() => handleAddSource('text')}
+                  onClick={() => setIsAddSourceModalOpen(true)}
                 >
                   <FileText className="w-8 h-8 mx-auto mb-3 text-gray-600" />
                   <p className="font-medium">Text Content</p>
