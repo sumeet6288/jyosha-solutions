@@ -146,7 +146,11 @@ const Integrations = () => {
                 variant={integration.connected ? 'outline' : 'default'}
                 className={integration.connected ? '' : 'bg-black hover:bg-gray-800 text-white'}
                 onClick={() => {
-                  // Integration logic would go here
+                  if (integration.connected) {
+                    handleManage(integration);
+                  } else {
+                    handleConnect(integration);
+                  }
                 }}
               >
                 {integration.connected ? 'Manage' : 'Connect'}
@@ -155,6 +159,122 @@ const Integrations = () => {
           ))}
         </div>
       </div>
+
+      {/* Connect Modal */}
+      <Dialog open={isConnectModalOpen} onOpenChange={setIsConnectModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Connect {selectedIntegration?.name}</DialogTitle>
+            <DialogDescription>
+              Enter your {selectedIntegration?.name} credentials to connect
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div>
+              <Label htmlFor="apiKey">API Key *</Label>
+              <Input
+                id="apiKey"
+                placeholder="Enter your API key"
+                value={connectionData.apiKey}
+                onChange={(e) => setConnectionData({...connectionData, apiKey: e.target.value})}
+                className="mt-2"
+              />
+            </div>
+            
+            {selectedIntegration?.name === 'Slack' && (
+              <div>
+                <Label htmlFor="workspaceId">Workspace ID</Label>
+                <Input
+                  id="workspaceId"
+                  placeholder="Enter workspace ID"
+                  value={connectionData.workspaceId}
+                  onChange={(e) => setConnectionData({...connectionData, workspaceId: e.target.value})}
+                  className="mt-2"
+                />
+              </div>
+            )}
+            
+            <div>
+              <Label htmlFor="webhookUrl">Webhook URL (Optional)</Label>
+              <Input
+                id="webhookUrl"
+                placeholder="https://your-domain.com/webhook"
+                value={connectionData.webhookUrl}
+                onChange={(e) => setConnectionData({...connectionData, webhookUrl: e.target.value})}
+                className="mt-2"
+              />
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsConnectModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button 
+              className="bg-black hover:bg-gray-800 text-white"
+              onClick={handleConfirmConnect}
+            >
+              Connect
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Manage Modal */}
+      <Dialog open={isManageModalOpen} onOpenChange={setIsManageModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Manage {selectedIntegration?.name}</DialogTitle>
+            <DialogDescription>
+              Configure your {selectedIntegration?.name} integration
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-200">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                  <Check className="w-5 h-5 text-green-600" />
+                </div>
+                <div>
+                  <p className="font-medium text-green-900">Connected</p>
+                  <p className="text-sm text-green-700">Integration is active</p>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <Label>API Key</Label>
+              <Input
+                value="••••••••••••••••"
+                disabled
+                className="mt-2"
+              />
+            </div>
+            
+            <div>
+              <Label>Status</Label>
+              <div className="mt-2 flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span className="text-sm text-gray-600">Active and syncing</span>
+              </div>
+            </div>
+          </div>
+          
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={() => setIsManageModalOpen(false)}>
+              Close
+            </Button>
+            <Button 
+              variant="destructive"
+              onClick={handleDisconnect}
+            >
+              Disconnect
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
