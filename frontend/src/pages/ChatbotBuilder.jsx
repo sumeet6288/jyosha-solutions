@@ -6,9 +6,12 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { ArrowLeft, Upload, Link2, FileText, Trash2, Settings, Palette, Code, BarChart3 } from 'lucide-react';
-import { mockSources, mockChatbots } from '../mock/mockData';
+import { ArrowLeft, Upload, Link2, FileText, Trash2, Settings, Palette, Code, BarChart3, Plus } from 'lucide-react';
+import { mockSources, mockChatbots, mockAnalytics } from '../mock/mockData';
 import { useToast } from '../hooks/use-toast';
+import AddSourceModal from '../components/AddSourceModal';
+import ChatPreviewModal from '../components/ChatPreviewModal';
+import DeleteConfirmModal from '../components/DeleteConfirmModal';
 
 const ChatbotBuilder = () => {
   const { id } = useParams();
