@@ -85,7 +85,7 @@ const ChatbotBuilder = () => {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="outline">Preview</Button>
+            <Button variant="outline" onClick={() => setIsPreviewModalOpen(true)}>Preview</Button>
             <Button className="bg-black hover:bg-gray-800 text-white" onClick={handleSaveSettings}>
               Save Changes
             </Button>
