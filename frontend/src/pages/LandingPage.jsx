@@ -51,9 +51,9 @@ const LandingPage = () => {
             <span className="text-xl font-semibold">Chatbase</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
-            <button className="text-gray-700 hover:text-black transition-colors">Pricing</button>
-            <button className="text-gray-700 hover:text-black transition-colors">Enterprise</button>
-            <button className="text-gray-700 hover:text-black transition-colors">Resources</button>
+            <button onClick={() => navigate('/pricing')} className="text-gray-700 hover:text-black transition-colors">Pricing</button>
+            <button onClick={() => navigate('/enterprise')} className="text-gray-700 hover:text-black transition-colors">Enterprise</button>
+            <button onClick={() => navigate('/resources')} className="text-gray-700 hover:text-black transition-colors">Resources</button>
           </div>
           <div className="flex items-center gap-4">
             <Button variant="ghost" onClick={() => navigate('/signin')}>Sign in</Button>
