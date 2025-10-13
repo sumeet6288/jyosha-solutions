@@ -153,7 +153,10 @@ const ChatbotBuilder = () => {
                         </p>
                       </div>
                     </div>
-                    <Button variant="ghost" size="icon">
+                    <Button variant="ghost" size="icon" onClick={() => {
+                      setSourceToDelete(source);
+                      setIsDeleteModalOpen(true);
+                    }}>
                       <Trash2 className="w-4 h-4 text-red-500" />
                     </Button>
                   </div>
