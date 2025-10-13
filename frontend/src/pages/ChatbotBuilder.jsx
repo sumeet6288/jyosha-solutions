@@ -40,16 +40,21 @@ const ChatbotBuilder = () => {
   useEffect(() => {
     if (id === 'new') {
       setChatbot({ id: 'new', name: 'New Chatbot' });
+      setSources([]);
+      setAnalytics(null);
     } else {
       const bot = mockChatbots.find(b => b.id === id);
-      setChatbot(bot);
       if (bot) {
+        setChatbot(bot);
         setSettings(prev => ({ ...prev, name: bot.name, model: bot.model }));
         setSources(mockSources);
         setAnalytics(mockAnalytics);
+      } else {
+        // If chatbot not found, redirect to dashboard
+        navigate('/dashboard');
       }
     }
-  }, [id]);
+  }, [id, navigate]);
 
   const handleAddSource = (newSource) => {
     setSources([...sources, newSource]);
