@@ -1,11 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { LogOut, Check } from 'lucide-react';
+import { LogOut, Check, X } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '../components/ui/dialog';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
+import { useToast } from '../hooks/use-toast';
 
 const Integrations = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [user, setUser] = useState(null);
+  const [selectedIntegration, setSelectedIntegration] = useState(null);
+  const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
+  const [isManageModalOpen, setIsManageModalOpen] = useState(false);
+  const [connectionData, setConnectionData] = useState({
+    apiKey: '',
+    webhookUrl: '',
+    workspaceId: ''
+  });
+
+  const [integrations, setIntegrations] = useState([
+    { id: 1, name: 'Stripe', description: 'Accept payments directly in chat', connected: false },
+    { id: 2, name: 'Calendly', description: 'Schedule appointments seamlessly', connected: true },
+    { id: 3, name: 'Slack', description: 'Deploy chatbot to Slack workspace', connected: false },
+    { id: 4, name: 'Zendesk', description: 'Sync conversations to Zendesk', connected: false },
+    { id: 5, name: 'WhatsApp', description: 'Deploy on WhatsApp Business', connected: false },
+    { id: 6, name: 'Salesforce', description: 'Integrate with Salesforce CRM', connected: false },
+  ]);
 
   useEffect(() => {
     const userData = localStorage.getItem('chatbase_user');
@@ -21,14 +43,55 @@ const Integrations = () => {
     navigate('/');
   };
 
-  const integrations = [
-    { name: 'Stripe', description: 'Accept payments directly in chat', connected: false },
-    { name: 'Calendly', description: 'Schedule appointments seamlessly', connected: true },
-    { name: 'Slack', description: 'Deploy chatbot to Slack workspace', connected: false },
-    { name: 'Zendesk', description: 'Sync conversations to Zendesk', connected: false },
-    { name: 'WhatsApp', description: 'Deploy on WhatsApp Business', connected: false },
-    { name: 'Salesforce', description: 'Integrate with Salesforce CRM', connected: false },
-  ];
+  const handleConnect = (integration) => {
+    setSelectedIntegration(integration);
+    setIsConnectModalOpen(true);
+    setConnectionData({ apiKey: '', webhookUrl: '', workspaceId: '' });
+  };
+
+  const handleManage = (integration) => {
+    setSelectedIntegration(integration);
+    setIsManageModalOpen(true);
+  };
+
+  const handleConfirmConnect = () => {
+    if (!connectionData.apiKey) {
+      toast({
+        title: 'Error',
+        description: 'API Key is required',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    setIntegrations(integrations.map(int => 
+      int.id === selectedIntegration.id 
+        ? { ...int, connected: true }
+        : int
+    ));
+
+    toast({
+      title: 'Connected!',
+      description: `${selectedIntegration.name} has been connected successfully`
+    });
+
+    setIsConnectModalOpen(false);
+  };
+
+  const handleDisconnect = () => {
+    setIntegrations(integrations.map(int => 
+      int.id === selectedIntegration.id 
+        ? { ...int, connected: false }
+        : int
+    ));
+
+    toast({
+      title: 'Disconnected',
+      description: `${selectedIntegration.name} has been disconnected`
+    });
+
+    setIsManageModalOpen(false);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
