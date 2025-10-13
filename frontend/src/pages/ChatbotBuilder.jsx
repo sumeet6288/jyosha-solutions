@@ -336,7 +336,7 @@ const ChatbotBuilder = () => {
             <div className="bg-white rounded-xl border border-gray-200 p-6">
               <h2 className="text-2xl font-bold mb-6">Chatbot Analytics</h2>
               
-              {analytics && (
+              {analytics && analytics.totalConversations > 0 ? (
                 <>
                   <div className="grid md:grid-cols-4 gap-4 mb-8">
                     <div className="p-4 bg-gray-50 rounded-lg">
@@ -375,6 +375,12 @@ const ChatbotBuilder = () => {
                     </div>
                   </div>
                 </>
+              ) : (
+                <div className="text-center py-12">
+                  <BarChart3 className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+                  <h3 className="text-lg font-semibold mb-2">No analytics data yet</h3>
+                  <p className="text-gray-600">Analytics will appear here once your chatbot starts receiving conversations</p>
+                </div>
               )}
             </div>
           </TabsContent>
