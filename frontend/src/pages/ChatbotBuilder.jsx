@@ -46,14 +46,20 @@ const ChatbotBuilder = () => {
       if (bot) {
         setSettings(prev => ({ ...prev, name: bot.name, model: bot.model }));
         setSources(mockSources);
+        setAnalytics(mockAnalytics);
       }
     }
   }, [id]);
 
-  const handleAddSource = (type) => {
+  const handleAddSource = (newSource) => {
+    setSources([...sources, newSource]);
+  };
+
+  const handleDeleteSource = (sourceId) => {
+    setSources(sources.filter(s => s.id !== sourceId));
     toast({
-      title: 'Source added',
-      description: `${type} source has been added successfully`
+      title: 'Source deleted',
+      description: 'Training source has been removed'
     });
   };
 
