@@ -31,6 +31,11 @@ const ChatbotBuilder = () => {
     position: 'bottom-right',
     buttonText: 'Chat with us'
   });
+  const [isAddSourceModalOpen, setIsAddSourceModalOpen] = useState(false);
+  const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [sourceToDelete, setSourceToDelete] = useState(null);
+  const [analytics, setAnalytics] = useState(null);
 
   useEffect(() => {
     if (id === 'new') {
