@@ -114,37 +114,54 @@ const Dashboard = () => {
             </Button>
           </div>
           
-          <div className="grid gap-4">
-            {chatbots.map((bot) => (
-              <div 
-                key={bot.id} 
-                className="p-6 border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-md transition-all cursor-pointer"
-                onClick={() => navigate(`/chatbot/${bot.id}`)}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-lg font-semibold">{bot.name}</h3>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        bot.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
-                      }`}>
-                        {bot.status}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-6 text-sm text-gray-600">
-                      <span>{bot.conversations.toLocaleString()} conversations</span>
-                      <span>{bot.sources} sources</span>
-                      <span>Model: {bot.model}</span>
-                      <span>Last trained: {bot.lastTrained}</span>
-                    </div>
-                  </div>
-                  <Button variant="outline" onClick={(e) => { e.stopPropagation(); navigate(`/chatbot/${bot.id}`); }}>
-                    Manage
-                  </Button>
-                </div>
+          {chatbots.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <MessageSquare className="w-8 h-8 text-gray-400" />
               </div>
-            ))}
-          </div>
+              <h3 className="text-lg font-semibold mb-2">No chatbots yet</h3>
+              <p className="text-gray-600 mb-6">Create your first AI chatbot to get started</p>
+              <Button 
+                className="bg-black hover:bg-gray-800 text-white"
+                onClick={() => navigate('/chatbot/new')}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Create Chatbot
+              </Button>
+            </div>
+          ) : (
+            <div className="grid gap-4">
+              {chatbots.map((bot) => (
+                <div 
+                  key={bot.id} 
+                  className="p-6 border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-md transition-all cursor-pointer"
+                  onClick={() => navigate(`/chatbot/${bot.id}`)}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h3 className="text-lg font-semibold">{bot.name}</h3>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          bot.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                        }`}>
+                          {bot.status}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-6 text-sm text-gray-600">
+                        <span>{bot.conversations.toLocaleString()} conversations</span>
+                        <span>{bot.sources} sources</span>
+                        <span>Model: {bot.model}</span>
+                        <span>Last trained: {bot.lastTrained}</span>
+                      </div>
+                    </div>
+                    <Button variant="outline" onClick={(e) => { e.stopPropagation(); navigate(`/chatbot/${bot.id}`); }}>
+                      Manage
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
