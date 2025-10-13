@@ -6,6 +6,8 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Dashboard from './pages/Dashboard';
 import ChatbotBuilder from './pages/ChatbotBuilder';
+import Analytics from './pages/Analytics';
+import Integrations from './pages/Integrations';
 import { Toaster } from './components/ui/toaster';
 
 const ProtectedRoute = ({ children }) => {
@@ -24,6 +26,16 @@ function App() {
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/analytics" element={
+            <ProtectedRoute>
+              <Analytics />
+            </ProtectedRoute>
+          } />
+          <Route path="/integrations" element={
+            <ProtectedRoute>
+              <Integrations />
             </ProtectedRoute>
           } />
           <Route path="/chatbot/:id" element={
