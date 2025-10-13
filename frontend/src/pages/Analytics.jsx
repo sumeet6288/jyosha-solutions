@@ -60,64 +60,82 @@ const Analytics = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white p-6 rounded-xl border border-gray-200">
             <MessageSquare className="w-8 h-8 text-gray-600 mb-3" />
-            <p className="text-3xl font-bold">{analytics?.totalConversations.toLocaleString()}</p>
+            <p className="text-3xl font-bold">{analytics?.totalConversations.toLocaleString() || 0}</p>
             <p className="text-gray-600 text-sm mt-1">Total Conversations</p>
           </div>
           <div className="bg-white p-6 rounded-xl border border-gray-200">
             <Users className="w-8 h-8 text-gray-600 mb-3" />
-            <p className="text-3xl font-bold">{analytics?.activeChats}</p>
+            <p className="text-3xl font-bold">{analytics?.activeChats || 0}</p>
             <p className="text-gray-600 text-sm mt-1">Active Users</p>
           </div>
           <div className="bg-white p-6 rounded-xl border border-gray-200">
             <TrendingUp className="w-8 h-8 text-gray-600 mb-3" />
-            <p className="text-3xl font-bold">{analytics?.satisfaction}%</p>
+            <p className="text-3xl font-bold">{analytics?.satisfaction || 0}%</p>
             <p className="text-gray-600 text-sm mt-1">Satisfaction Rate</p>
           </div>
           <div className="bg-white p-6 rounded-xl border border-gray-200">
             <Clock className="w-8 h-8 text-gray-600 mb-3" />
-            <p className="text-3xl font-bold">{analytics?.avgResponseTime}</p>
+            <p className="text-3xl font-bold">{analytics?.avgResponseTime || '0s'}</p>
             <p className="text-gray-600 text-sm mt-1">Avg Response Time</p>
           </div>
         </div>
 
-        {/* Conversation Trend */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
-          <h2 className="text-xl font-bold mb-6">Conversation Trend</h2>
-          <div className="h-64 flex items-end gap-4">
-            {analytics?.conversationTrend.map((item, index) => (
-              <div key={index} className="flex-1 flex flex-col items-center">
-                <div
-                  className="w-full bg-black rounded-t-lg transition-all hover:bg-gray-700"
-                  style={{ height: `${(item.count / 250) * 100}%` }}
-                ></div>
-                <p className="text-xs text-gray-500 mt-2">{item.date.split('-')[2]}</p>
-              </div>
-            ))}
+        {analytics && analytics.totalConversations === 0 && (
+          <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
+            <BarChart3 className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+            <h3 className="text-xl font-semibold mb-2">No analytics data yet</h3>
+            <p className="text-gray-600 mb-6">Create a chatbot and start conversations to see analytics here</p>
+            <Button 
+              className="bg-black hover:bg-gray-800 text-white"
+              onClick={() => navigate('/dashboard')}
+            >
+              Go to Dashboard
+            </Button>
           </div>
-        </div>
+        )}
 
-        {/* Top Topics */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="text-xl font-bold mb-6">Top Discussion Topics</h2>
-          <div className="space-y-4">
-            {analytics?.topicsDiscussed.map((topic, index) => (
-              <div key={index} className="flex items-center gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium">{topic.topic}</span>
-                    <span className="text-sm text-gray-500">{topic.count} mentions</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+        {analytics && analytics.conversationTrend && analytics.conversationTrend.length > 0 && (
+          <>
+            {/* Conversation Trend */}
+            <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
+              <h2 className="text-xl font-bold mb-6">Conversation Trend</h2>
+              <div className="h-64 flex items-end gap-4">
+                {analytics?.conversationTrend.map((item, index) => (
+                  <div key={index} className="flex-1 flex flex-col items-center">
                     <div
-                      className="bg-black h-2 rounded-full transition-all"
-                      style={{ width: `${(topic.count / 500) * 100}%` }}
+                      className="w-full bg-black rounded-t-lg transition-all hover:bg-gray-700"
+                      style={{ height: `${(item.count / 250) * 100}%` }}
                     ></div>
+                    <p className="text-xs text-gray-500 mt-2">{item.date.split('-')[2]}</p>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+
+            {/* Top Topics */}
+            <div className="bg-white rounded-xl border border-gray-200 p-6">
+              <h2 className="text-xl font-bold mb-6">Top Discussion Topics</h2>
+              <div className="space-y-4">
+                {analytics?.topicsDiscussed.map((topic, index) => (
+                  <div key={index} className="flex items-center gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-medium">{topic.topic}</span>
+                        <span className="text-sm text-gray-500">{topic.count} mentions</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className="bg-black h-2 rounded-full transition-all"
+                          style={{ width: `${(topic.count / 500) * 100}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
