@@ -22,7 +22,7 @@ const Integrations = () => {
 
   const [integrations, setIntegrations] = useState([
     { id: 1, name: 'Stripe', description: 'Accept payments directly in chat', connected: false },
-    { id: 2, name: 'Calendly', description: 'Schedule appointments seamlessly', connected: true },
+    { id: 2, name: 'Calendly', description: 'Schedule appointments seamlessly', connected: false },
     { id: 3, name: 'Slack', description: 'Deploy chatbot to Slack workspace', connected: false },
     { id: 4, name: 'Zendesk', description: 'Sync conversations to Zendesk', connected: false },
     { id: 5, name: 'WhatsApp', description: 'Deploy on WhatsApp Business', connected: false },
