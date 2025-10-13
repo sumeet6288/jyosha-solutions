@@ -144,28 +144,34 @@ const ChatbotBuilder = () => {
 
               <div className="space-y-3">
                 <h3 className="font-semibold mb-3">Current Sources</h3>
-                {sources.map((source) => (
-                  <div key={source.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      {source.type === 'file' && <FileText className="w-5 h-5 text-gray-600" />}
-                      {source.type === 'website' && <Link2 className="w-5 h-5 text-gray-600" />}
-                      {source.type === 'text' && <FileText className="w-5 h-5 text-gray-600" />}
-                      <div>
-                        <p className="font-medium">{source.name}</p>
-                        <p className="text-sm text-gray-500">
-                          {source.size && `${source.size} • `}
-                          Status: {source.status}
-                        </p>
-                      </div>
-                    </div>
-                    <Button variant="ghost" size="icon" onClick={() => {
-                      setSourceToDelete(source);
-                      setIsDeleteModalOpen(true);
-                    }}>
-                      <Trash2 className="w-4 h-4 text-red-500" />
-                    </Button>
+                {sources.length === 0 ? (
+                  <div className="text-center py-8 border-2 border-dashed border-gray-200 rounded-lg">
+                    <p className="text-gray-500">No sources added yet. Add your first training source above.</p>
                   </div>
-                ))}
+                ) : (
+                  sources.map((source) => (
+                    <div key={source.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        {source.type === 'file' && <FileText className="w-5 h-5 text-gray-600" />}
+                        {source.type === 'website' && <Link2 className="w-5 h-5 text-gray-600" />}
+                        {source.type === 'text' && <FileText className="w-5 h-5 text-gray-600" />}
+                        <div>
+                          <p className="font-medium">{source.name}</p>
+                          <p className="text-sm text-gray-500">
+                            {source.size && `${source.size} • `}
+                            Status: {source.status}
+                          </p>
+                        </div>
+                      </div>
+                      <Button variant="ghost" size="icon" onClick={() => {
+                        setSourceToDelete(source);
+                        setIsDeleteModalOpen(true);
+                      }}>
+                        <Trash2 className="w-4 h-4 text-red-500" />
+                      </Button>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </TabsContent>
