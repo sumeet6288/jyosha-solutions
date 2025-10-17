@@ -34,3 +34,4 @@ lxml>=5.0.0
 soupsieve>=2.5
 httpx
 aiohttp
+openai
