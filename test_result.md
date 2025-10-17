@@ -247,16 +247,17 @@ frontend:
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 1
+  test_sequence: 2
   run_ui: false
 
 test_plan:
   current_focus:
-    - "Chatbot CRUD operations"
-    - "Source management (file upload, website, text)"
-    - "AI chat service with multiple providers"
+    - "Dashboard with real data"
+    - "Chatbot Builder"
+    - "Source management UI"
+    - "Chat preview"
   stuck_tasks: []
-  test_all: true
+  test_all: false
   test_priority: "high_first"
 
 agent_communication:
