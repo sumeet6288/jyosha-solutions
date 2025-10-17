@@ -19,11 +19,11 @@ const AddSourceModal = ({ isOpen, onClose, chatbotId, onSuccess }) => {
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Check file size (max 10MB)
-      if (file.size > 10 * 1024 * 1024) {
+      // Check file size (max 100MB)
+      if (file.size > 100 * 1024 * 1024) {
         toast({ 
           title: 'Error', 
-          description: 'File size must be less than 10MB', 
+          description: 'File size must be less than 100MB', 
           variant: 'destructive' 
         });
         return;
