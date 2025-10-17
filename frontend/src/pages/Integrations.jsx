@@ -7,11 +7,12 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { useToast } from '../hooks/use-toast';
 import UserProfileDropdown from '../components/UserProfileDropdown';
+import { useAuth } from '../contexts/AuthContext';
 
 const Integrations = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [user, setUser] = useState(null);
+  const { user, logout } = useAuth();
   const [selectedIntegration, setSelectedIntegration] = useState(null);
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
   const [isManageModalOpen, setIsManageModalOpen] = useState(false);
@@ -30,17 +31,8 @@ const Integrations = () => {
     { id: 6, name: 'Salesforce', description: 'Integrate with Salesforce CRM', connected: false },
   ]);
 
-  useEffect(() => {
-    const userData = localStorage.getItem('chatbase_user');
-    if (!userData) {
-      navigate('/signin');
-      return;
-    }
-    setUser(JSON.parse(userData));
-  }, [navigate]);
-
   const handleLogout = () => {
-    localStorage.removeItem('chatbase_user');
+    logout();
     navigate('/');
   };
 
