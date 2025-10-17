@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from models import (
     Chatbot, ChatbotCreate, ChatbotUpdate, ChatbotResponse
 )
-from auth import get_current_user, User
+from auth import get_current_user, get_mock_user, User
 import logging
 
 logger = logging.getLogger(__name__)
