@@ -528,7 +528,7 @@ class ChatbotAPITester:
 def main():
     """Main test execution"""
     # Get base URL from environment or use default
-    base_url = "https://repo-learn-auth.preview.emergentagent.com/api"
+    base_url = "https://repo-learn-auth.preview.emergentagent.com"
     
     print(f"Testing Chatbot Builder API at: {base_url}")
     
