@@ -49,7 +49,7 @@ async def create_chatbot(
 
 
 @router.get("", response_model=List[ChatbotResponse])
-async def get_chatbots(current_user: User = Depends(get_current_user)):
+async def get_chatbots(current_user: User = Depends(get_mock_user)):
     """Get all chatbots for the current user"""
     try:
         chatbots = await db_instance.chatbots.find(
