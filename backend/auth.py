@@ -111,12 +111,15 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     
     return User(**user_doc)
 
-    payload = decode_token(token)
-    email: str = payload.get("sub")
-    if email is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    return email
+
+# Temporary bypass for development - returns a mock user without authentication
+async def get_mock_user() -> User:
+    """Mock user for development - bypass authentication"""
+    return User(
+        id="demo-user-123",
+        name="Demo User",
+        email="demo@chatbase.com",
+        password_hash="mock-hash",
+        created_at=datetime.now(timezone.utc),
+        updated_at=datetime.now(timezone.utc)
+    )
