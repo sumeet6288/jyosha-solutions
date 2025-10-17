@@ -47,9 +47,17 @@ const AddSourceModal = ({ isOpen, onClose, chatbotId, onSuccess }) => {
       onClose();
     } catch (error) {
       console.error('Error uploading file:', error);
+      let errorMessage = 'Failed to upload file';
+      if (error.response?.data?.detail) {
+        if (Array.isArray(error.response.data.detail)) {
+          errorMessage = error.response.data.detail.map(err => err.msg).join(', ');
+        } else {
+          errorMessage = error.response.data.detail;
+        }
+      }
       toast({ 
         title: 'Error', 
-        description: error.response?.data?.detail || 'Failed to upload file', 
+        description: errorMessage, 
         variant: 'destructive' 
       });
     } finally {
@@ -80,9 +88,17 @@ const AddSourceModal = ({ isOpen, onClose, chatbotId, onSuccess }) => {
       onClose();
     } catch (error) {
       console.error('Error adding URL:', error);
+      let errorMessage = 'Failed to add website';
+      if (error.response?.data?.detail) {
+        if (Array.isArray(error.response.data.detail)) {
+          errorMessage = error.response.data.detail.map(err => err.msg).join(', ');
+        } else {
+          errorMessage = error.response.data.detail;
+        }
+      }
       toast({ 
         title: 'Error', 
-        description: error.response?.data?.detail || 'Failed to add website', 
+        description: errorMessage, 
         variant: 'destructive' 
       });
     } finally {
