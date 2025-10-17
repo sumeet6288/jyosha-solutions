@@ -64,6 +64,44 @@ def decode_token(token: str) -> dict:
 async def get_current_user_email(credentials: HTTPAuthorizationCredentials = Depends(security)) -> str:
     """Get current user email from JWT token."""
     token = credentials.credentials
+
+
+
+async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)) -> User:
+    """Get current user from JWT token and return User object."""
+    if db is None:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Database not initialized"
+        )
+    
+    token = credentials.credentials
+    payload = decode_token(token)
+    email: str = payload.get("sub")
+    if email is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    # Get user from database
+    users_collection = db.users
+    user_doc = await users_collection.find_one({"email": email})
+    if not user_doc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    
+    # Parse datetime fields if they are strings
+    if isinstance(user_doc.get('created_at'), str):
+        user_doc['created_at'] = datetime.fromisoformat(user_doc['created_at'])
+    if isinstance(user_doc.get('updated_at'), str):
+        user_doc['updated_at'] = datetime.fromisoformat(user_doc['updated_at'])
+    
+    return User(**user_doc)
+
     payload = decode_token(token)
     email: str = payload.get("sub")
     if email is None:
