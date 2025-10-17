@@ -61,7 +61,8 @@ const ChatPage = () => {
     setSending(true);
 
     try {
-      const response = await chatAPI.sendMessage(id, {
+      const response = await chatAPI.sendMessage({
+        chatbot_id: id,
         message: inputMessage,
         conversation_id: conversationId
       });
