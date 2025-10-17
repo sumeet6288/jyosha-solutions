@@ -12,7 +12,7 @@ const ChatPage = () => {
   const [inputMessage, setInputMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
-  const [conversationId, setConversationId] = useState(null);
+  const [sessionId] = useState(() => `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
