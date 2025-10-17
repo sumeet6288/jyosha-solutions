@@ -64,6 +64,15 @@ def decode_token(token: str) -> dict:
 async def get_current_user_email(credentials: HTTPAuthorizationCredentials = Depends(security)) -> str:
     """Get current user email from JWT token."""
     token = credentials.credentials
+    payload = decode_token(token)
+    email: str = payload.get("sub")
+    if email is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return email
 
 
 
