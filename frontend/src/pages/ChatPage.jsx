@@ -64,18 +64,14 @@ const ChatPage = () => {
       const response = await chatAPI.sendMessage({
         chatbot_id: id,
         message: inputMessage,
-        conversation_id: conversationId
+        session_id: sessionId
       });
 
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: response.data.response,
+        content: response.data.message,
         timestamp: new Date().toISOString()
       }]);
-
-      if (response.data.conversation_id) {
-        setConversationId(response.data.conversation_id);
-      }
     } catch (error) {
       console.error('Error sending message:', error);
       setMessages(prev => [...prev, {
