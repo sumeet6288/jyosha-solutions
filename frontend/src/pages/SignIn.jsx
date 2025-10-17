@@ -90,8 +90,8 @@ const SignIn = () => {
               </button>
             </div>
             
-            <Button type="submit" className="w-full bg-black hover:bg-gray-800 text-white py-6">
-              Sign in
+            <Button type="submit" className="w-full bg-black hover:bg-gray-800 text-white py-6" disabled={isLoading}>
+              {isLoading ? 'Signing in...' : 'Sign in'}
             </Button>
           </form>
           
