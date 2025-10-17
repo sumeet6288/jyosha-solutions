@@ -1,247 +1,360 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { ArrowLeft, Upload, Link2, FileText, Trash2, Settings, Palette, Code, BarChart3, Plus } from 'lucide-react';
-import { mockSources, mockChatbots, mockAnalytics } from '../mock/mockData';
-import { useToast } from '../hooks/use-toast';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
+import { Slider } from '../components/ui/slider';
+import { Plus, FileText, Globe, Trash2, Loader2, MessageSquare, ArrowLeft, Settings, Palette, BarChart3 } from 'lucide-react';
+import UserProfileDropdown from '../components/UserProfileDropdown';
 import AddSourceModal from '../components/AddSourceModal';
 import ChatPreviewModal from '../components/ChatPreviewModal';
 import DeleteConfirmModal from '../components/DeleteConfirmModal';
+import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '../hooks/use-toast';
+import { chatbotAPI, sourceAPI } from '../utils/api';
+import { AI_PROVIDERS, getAllModels } from '../utils/models';
 
 const ChatbotBuilder = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [sources, setSources] = useState([]);
+  const { user, logout } = useAuth();
+  
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [chatbot, setChatbot] = useState(null);
-  const [settings, setSettings] = useState({
-    name: '',
-    model: 'gpt-4',
-    temperature: 0.7,
-    instructions: '',
-    welcomeMessage: 'Hello! How can I help you today?'
-  });
-  const [widgetSettings, setWidgetSettings] = useState({
-    primaryColor: '#000000',
-    position: 'bottom-right',
-    buttonText: 'Chat with us'
-  });
+  const [sources, setSources] = useState([]);
   const [isAddSourceModalOpen, setIsAddSourceModalOpen] = useState(false);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [sourceToDelete, setSourceToDelete] = useState(null);
-  const [analytics, setAnalytics] = useState(null);
 
   useEffect(() => {
-    if (id === 'new') {
-      setChatbot({ id: 'new', name: 'New Chatbot' });
-      setSources([]);
-      setAnalytics(null);
-    } else {
-      const bot = mockChatbots.find(b => b.id === id);
-      if (bot) {
-        setChatbot(bot);
-        setSettings(prev => ({ ...prev, name: bot.name, model: bot.model }));
-        setSources(mockSources);
-        setAnalytics(mockAnalytics);
-      } else {
-        // If chatbot not found, redirect to dashboard
-        navigate('/dashboard');
-      }
+    loadChatbot();
+  }, [id]);
+
+  const loadChatbot = async () => {
+    try {
+      setLoading(true);
+      const [chatbotResponse, sourcesResponse] = await Promise.all([
+        chatbotAPI.get(id),
+        sourceAPI.list(id)
+      ]);
+      setChatbot(chatbotResponse.data);
+      setSources(sourcesResponse.data);
+    } catch (error) {
+      console.error('Error loading chatbot:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load chatbot',
+        variant: 'destructive'
+      });
+      navigate('/dashboard');
+    } finally {
+      setLoading(false);
     }
-  }, [id, navigate]);
-
-  const handleAddSource = (newSource) => {
-    setSources([...sources, newSource]);
   };
 
-  const handleDeleteSource = (sourceId) => {
-    setSources(sources.filter(s => s.id !== sourceId));
-    toast({
-      title: 'Source deleted',
-      description: 'Training source has been removed'
-    });
+  const handleSaveSettings = async () => {
+    try {
+      setSaving(true);
+      await chatbotAPI.update(id, {
+        name: chatbot.name,
+        model: chatbot.model,
+        provider: chatbot.provider,
+        temperature: chatbot.temperature,
+        instructions: chatbot.instructions,
+        welcome_message: chatbot.welcome_message,
+        status: chatbot.status
+      });
+      toast({
+        title: 'Success',
+        description: 'Settings saved successfully'
+      });
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to save settings',
+        variant: 'destructive'
+      });
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const handleSaveSettings = () => {
-    toast({
-      title: 'Settings saved',
-      description: 'Your chatbot settings have been updated'
-    });
+  const handleDeleteSource = async (sourceId) => {
+    try {
+      await sourceAPI.delete(sourceId);
+      setSources(sources.filter(s => s.id !== sourceId));
+      toast({
+        title: 'Success',
+        description: 'Source deleted successfully'
+      });
+    } catch (error) {
+      console.error('Error deleting source:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to delete source',
+        variant: 'destructive'
+      });
+    }
+    setIsDeleteModalOpen(false);
+    setSourceToDelete(null);
   };
+
+  const handleDeleteChatbot = async () => {
+    try {
+      await chatbotAPI.delete(id);
+      toast({
+        title: 'Success',
+        description: 'Chatbot deleted successfully'
+      });
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error deleting chatbot:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to delete chatbot',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const handleModelChange = (model) => {
+    const allModels = getAllModels();
+    const selectedModel = allModels.find(m => m.value === model);
+    if (selectedModel) {
+      setChatbot({
+        ...chatbot,
+        model: model,
+        provider: selectedModel.provider
+      });
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-12 h-12 animate-spin text-gray-600" />
+      </div>
+    );
+  }
+
+  if (!chatbot) {
+    return null;
+  }
+
+  const allModels = getAllModels();
+  const embedCode = `<iframe src="${window.location.origin}/embed/${chatbot.id}" width="100%" height="600px" frameborder="0"></iframe>`;
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+      {/* Top Navigation */}
       <nav className="bg-white border-b border-gray-200">
         <div className="px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" onClick={() => navigate('/dashboard')}>
+          <div className="flex items-center gap-8">
+            <Button variant="ghost" onClick={() => navigate('/dashboard')}>
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div>
-              <h1 className="text-xl font-semibold">{chatbot?.name || 'Loading...'}</h1>
-              <p className="text-sm text-gray-500">Configure your AI agent</p>
+              <h1 className="text-xl font-semibold">{chatbot.name}</h1>
+              <p className="text-sm text-gray-600">Chatbot ID: {chatbot.id}</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <Button variant="outline" onClick={() => setIsPreviewModalOpen(true)}>Preview</Button>
-            <Button className="bg-black hover:bg-gray-800 text-white" onClick={handleSaveSettings}>
-              Save Changes
+          <div className="flex items-center gap-4">
+            <Button variant="outline" onClick={() => setIsPreviewModalOpen(true)}>
+              <MessageSquare className="w-4 h-4 mr-2" />
+              Preview
             </Button>
+            <UserProfileDropdown user={user} onLogout={handleLogout} />
           </div>
         </div>
       </nav>
 
       <div className="p-6 max-w-7xl mx-auto">
         <Tabs defaultValue="sources" className="w-full">
-          <TabsList className="mb-6">
-            <TabsTrigger value="sources">Sources</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
-            <TabsTrigger value="widget">Widget</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4 mb-6">
+            <TabsTrigger value="sources">
+              <FileText className="w-4 h-4 mr-2" />
+              Sources
+            </TabsTrigger>
+            <TabsTrigger value="settings">
+              <Settings className="w-4 h-4 mr-2" />
+              Settings
+            </TabsTrigger>
+            <TabsTrigger value="widget">
+              <Palette className="w-4 h-4 mr-2" />
+              Widget
+            </TabsTrigger>
+            <TabsTrigger value="analytics">
+              <BarChart3 className="w-4 h-4 mr-2" />
+              Analytics
+            </TabsTrigger>
           </TabsList>
 
           {/* Sources Tab */}
           <TabsContent value="sources">
             <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h2 className="text-2xl font-bold mb-2">Training Data</h2>
-              <p className="text-gray-600 mb-6">Add data sources to train your AI agent</p>
-              
-              <div className="grid md:grid-cols-3 gap-4 mb-8">
-                <button 
-                  className="p-6 border-2 border-dashed border-gray-300 rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all"
-                  onClick={() => setIsAddSourceModalOpen(true)}
-                >
-                  <Upload className="w-8 h-8 mx-auto mb-3 text-gray-600" />
-                  <p className="font-medium">Upload Files</p>
-                  <p className="text-sm text-gray-500 mt-1">PDF, DOC, TXT</p>
-                </button>
-                
-                <button 
-                  className="p-6 border-2 border-dashed border-gray-300 rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all"
-                  onClick={() => setIsAddSourceModalOpen(true)}
-                >
-                  <Link2 className="w-8 h-8 mx-auto mb-3 text-gray-600" />
-                  <p className="font-medium">Website URL</p>
-                  <p className="text-sm text-gray-500 mt-1">Crawl & scrape</p>
-                </button>
-                
-                <button 
-                  className="p-6 border-2 border-dashed border-gray-300 rounded-xl hover:border-gray-400 hover:bg-gray-50 transition-all"
-                  onClick={() => setIsAddSourceModalOpen(true)}
-                >
-                  <FileText className="w-8 h-8 mx-auto mb-3 text-gray-600" />
-                  <p className="font-medium">Text Content</p>
-                  <p className="text-sm text-gray-500 mt-1">Paste directly</p>
-                </button>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-xl font-bold">Training Sources</h2>
+                  <p className="text-gray-600 text-sm">Add data to train your chatbot</p>
+                </div>
+                <Button onClick={() => setIsAddSourceModalOpen(true)}>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Source
+                </Button>
               </div>
 
-              <div className="space-y-3">
-                <h3 className="font-semibold mb-3">Current Sources</h3>
-                {sources.length === 0 ? (
-                  <div className="text-center py-8 border-2 border-dashed border-gray-200 rounded-lg">
-                    <p className="text-gray-500">No sources added yet. Add your first training source above.</p>
-                  </div>
-                ) : (
-                  sources.map((source) => (
-                    <div key={source.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+              {sources.length === 0 ? (
+                <div className="text-center py-12">
+                  <FileText className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+                  <h3 className="text-lg font-semibold mb-2">No sources yet</h3>
+                  <p className="text-gray-600 mb-6">Add files, websites, or text to train your chatbot</p>
+                  <Button onClick={() => setIsAddSourceModalOpen(true)}>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add First Source
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {sources.map((source) => (
+                    <div key={source.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
                       <div className="flex items-center gap-3">
                         {source.type === 'file' && <FileText className="w-5 h-5 text-gray-600" />}
-                        {source.type === 'website' && <Link2 className="w-5 h-5 text-gray-600" />}
+                        {source.type === 'website' && <Globe className="w-5 h-5 text-gray-600" />}
                         {source.type === 'text' && <FileText className="w-5 h-5 text-gray-600" />}
                         <div>
                           <p className="font-medium">{source.name}</p>
-                          <p className="text-sm text-gray-500">
-                            {source.size && `${source.size} • `}
-                            Status: {source.status}
-                          </p>
+                          <div className="flex items-center gap-3 text-sm text-gray-600">
+                            {source.size && <span>{source.size}</span>}
+                            <span className={`px-2 py-0.5 rounded-full text-xs ${
+                              source.status === 'processed' ? 'bg-green-100 text-green-700' :
+                              source.status === 'processing' ? 'bg-yellow-100 text-yellow-700' :
+                              'bg-red-100 text-red-700'
+                            }`}>
+                              {source.status}
+                            </span>
+                            {source.added_at && <span>Added {new Date(source.added_at).toLocaleDateString()}</span>}
+                          </div>
                         </div>
                       </div>
-                      <Button variant="ghost" size="icon" onClick={() => {
-                        setSourceToDelete(source);
-                        setIsDeleteModalOpen(true);
-                      }}>
-                        <Trash2 className="w-4 h-4 text-red-500" />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setSourceToDelete(source);
+                          setIsDeleteModalOpen(true);
+                        }}
+                      >
+                        <Trash2 className="w-4 h-4 text-red-600" />
                       </Button>
                     </div>
-                  ))
-                )}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </TabsContent>
 
           {/* Settings Tab */}
           <TabsContent value="settings">
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h2 className="text-2xl font-bold mb-6">Chatbot Settings</h2>
-              
-              <div className="space-y-6 max-w-2xl">
+            <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
+              <div>
+                <h2 className="text-xl font-bold mb-4">Chatbot Settings</h2>
+              </div>
+
+              <div className="space-y-4">
                 <div>
-                  <Label htmlFor="name">Chatbot Name</Label>
+                  <Label>Chatbot Name</Label>
                   <Input
-                    id="name"
-                    value={settings.name}
-                    onChange={(e) => setSettings({...settings, name: e.target.value})}
-                    placeholder="My Support Bot"
-                    className="mt-2"
+                    value={chatbot.name}
+                    onChange={(e) => setChatbot({ ...chatbot, name: e.target.value })}
                   />
                 </div>
-                
+
                 <div>
-                  <Label htmlFor="model">AI Model</Label>
-                  <Select value={settings.model} onValueChange={(value) => setSettings({...settings, model: value})}>
-                    <SelectTrigger className="mt-2">
+                  <Label>Status</Label>
+                  <Select value={chatbot.status} onValueChange={(value) => setChatbot({ ...chatbot, status: value })}>
+                    <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="gpt-4">GPT-4 (Most Capable)</SelectItem>
-                      <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo (Faster)</SelectItem>
-                      <SelectItem value="claude-3">Claude 3 Opus</SelectItem>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="inactive">Inactive</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div>
-                  <Label htmlFor="instructions">System Instructions</Label>
-                  <Textarea
-                    id="instructions"
-                    value={settings.instructions}
-                    onChange={(e) => setSettings({...settings, instructions: e.target.value})}
-                    placeholder="You are a helpful customer support assistant. Always be polite and professional..."
-                    className="mt-2 min-h-[120px]"
-                  />
+                  <Label>AI Model</Label>
+                  <Select value={chatbot.model} onValueChange={handleModelChange}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(AI_PROVIDERS).map(([provider, data]) => (
+                        <React.Fragment key={provider}>
+                          <div className="px-2 py-1.5 text-xs font-semibold text-gray-500">{data.name}</div>
+                          {data.models.map((model) => (
+                            <SelectItem key={model.value} value={model.value}>
+                              {model.label}
+                            </SelectItem>
+                          ))}
+                        </React.Fragment>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-gray-500 mt-1">Provider: {chatbot.provider}</p>
                 </div>
-                
+
                 <div>
-                  <Label htmlFor="welcome">Welcome Message</Label>
-                  <Input
-                    id="welcome"
-                    value={settings.welcomeMessage}
-                    onChange={(e) => setSettings({...settings, welcomeMessage: e.target.value})}
-                    placeholder="Hello! How can I help you today?"
+                  <Label>Temperature: {chatbot.temperature}</Label>
+                  <Slider
+                    value={[chatbot.temperature]}
+                    onValueChange={([value]) => setChatbot({ ...chatbot, temperature: value })}
+                    min={0}
+                    max={1}
+                    step={0.1}
                     className="mt-2"
                   />
+                  <p className="text-xs text-gray-500 mt-1">Higher values make output more random, lower values more focused</p>
                 </div>
-                
+
                 <div>
-                  <Label htmlFor="temperature">Temperature: {settings.temperature}</Label>
-                  <input
-                    id="temperature"
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.1"
-                    value={settings.temperature}
-                    onChange={(e) => setSettings({...settings, temperature: parseFloat(e.target.value)})}
-                    className="w-full mt-2"
+                  <Label>System Instructions</Label>
+                  <Textarea
+                    value={chatbot.instructions}
+                    onChange={(e) => setChatbot({ ...chatbot, instructions: e.target.value })}
+                    rows={6}
+                    placeholder="You are a helpful assistant..."
                   />
-                  <p className="text-sm text-gray-500 mt-1">Lower values make the output more focused and deterministic</p>
+                </div>
+
+                <div>
+                  <Label>Welcome Message</Label>
+                  <Input
+                    value={chatbot.welcome_message}
+                    onChange={(e) => setChatbot({ ...chatbot, welcome_message: e.target.value })}
+                    placeholder="Hello! How can I help you today?"
+                  />
+                </div>
+
+                <div className="flex gap-3 pt-4">
+                  <Button onClick={handleSaveSettings} disabled={saving}>
+                    {saving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Saving...</> : 'Save Settings'}
+                  </Button>
+                  <Button variant="destructive" onClick={handleDeleteChatbot}>
+                    Delete Chatbot
+                  </Button>
                 </div>
               </div>
             </div>
@@ -249,83 +362,41 @@ const ChatbotBuilder = () => {
 
           {/* Widget Tab */}
           <TabsContent value="widget">
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h2 className="text-2xl font-bold mb-6">Chat Widget Customization</h2>
-              
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="space-y-6">
-                  <div>
-                    <Label htmlFor="primaryColor">Primary Color</Label>
-                    <div className="flex gap-3 mt-2">
-                      <Input
-                        id="primaryColor"
-                        type="color"
-                        value={widgetSettings.primaryColor}
-                        onChange={(e) => setWidgetSettings({...widgetSettings, primaryColor: e.target.value})}
-                        className="w-20 h-12"
-                      />
-                      <Input
-                        value={widgetSettings.primaryColor}
-                        onChange={(e) => setWidgetSettings({...widgetSettings, primaryColor: e.target.value})}
-                        className="flex-1"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="position">Widget Position</Label>
-                    <Select value={widgetSettings.position} onValueChange={(value) => setWidgetSettings({...widgetSettings, position: value})}>
-                      <SelectTrigger className="mt-2">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="bottom-right">Bottom Right</SelectItem>
-                        <SelectItem value="bottom-left">Bottom Left</SelectItem>
-                        <SelectItem value="top-right">Top Right</SelectItem>
-                        <SelectItem value="top-left">Top Left</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="buttonText">Button Text</Label>
-                    <Input
-                      id="buttonText"
-                      value={widgetSettings.buttonText}
-                      onChange={(e) => setWidgetSettings({...widgetSettings, buttonText: e.target.value})}
-                      className="mt-2"
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label>Embed Code</Label>
-                    <div className="mt-2 p-4 bg-gray-900 text-gray-100 rounded-lg font-mono text-sm overflow-x-auto">
-                      <code>
-                        {`<script>
-  window.chatbaseConfig = {
-    chatbotId: "${id}"
-  };
-</script>
-<script src="https://chatbase.co/embed.js"></script>`}
-                      </code>
-                    </div>
-                  </div>
-                </div>
-                
-                <div>
-                  <Label>Preview</Label>
-                  <div className="mt-2 border-2 border-gray-200 rounded-xl p-8 bg-gray-50 min-h-[400px] relative">
-                    <div 
-                      className="absolute w-16 h-16 rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-transform"
-                      style={{ 
-                        backgroundColor: widgetSettings.primaryColor,
-                        [widgetSettings.position.split('-')[0]]: '20px',
-                        [widgetSettings.position.split('-')[1]]: '20px'
-                      }}
-                    >
-                      <span className="text-white text-2xl">💬</span>
-                    </div>
-                  </div>
+            <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
+              <div>
+                <h2 className="text-xl font-bold mb-2">Embed Your Chatbot</h2>
+                <p className="text-gray-600 text-sm">Add this code to your website to embed the chatbot</p>
+              </div>
+
+              <div>
+                <Label>Embed Code</Label>
+                <Textarea
+                  value={embedCode}
+                  readOnly
+                  rows={4}
+                  className="font-mono text-sm"
+                />
+                <Button className="mt-2" onClick={() => {
+                  navigator.clipboard.writeText(embedCode);
+                  toast({ title: 'Copied!', description: 'Embed code copied to clipboard' });
+                }}>
+                  Copy Code
+                </Button>
+              </div>
+
+              <div>
+                <Label>Chat Widget Link</Label>
+                <div className="flex gap-2">
+                  <Input
+                    value={`${window.location.origin}/chat/${chatbot.id}`}
+                    readOnly
+                  />
+                  <Button onClick={() => {
+                    navigator.clipboard.writeText(`${window.location.origin}/chat/${chatbot.id}`);
+                    toast({ title: 'Copied!', description: 'Link copied to clipboard' });
+                  }}>
+                    Copy
+                  </Button>
                 </div>
               </div>
             </div>
@@ -334,78 +405,47 @@ const ChatbotBuilder = () => {
           {/* Analytics Tab */}
           <TabsContent value="analytics">
             <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h2 className="text-2xl font-bold mb-6">Chatbot Analytics</h2>
-              
-              {analytics && analytics.totalConversations > 0 ? (
-                <>
-                  <div className="grid md:grid-cols-4 gap-4 mb-8">
-                    <div className="p-4 bg-gray-50 rounded-lg">
-                      <p className="text-2xl font-bold">{analytics.totalConversations}</p>
-                      <p className="text-sm text-gray-600">Total Conversations</p>
-                    </div>
-                    <div className="p-4 bg-gray-50 rounded-lg">
-                      <p className="text-2xl font-bold">{analytics.activeChats}</p>
-                      <p className="text-sm text-gray-600">Active Chats</p>
-                    </div>
-                    <div className="p-4 bg-gray-50 rounded-lg">
-                      <p className="text-2xl font-bold">{analytics.satisfaction}%</p>
-                      <p className="text-sm text-gray-600">Satisfaction</p>
-                    </div>
-                    <div className="p-4 bg-gray-50 rounded-lg">
-                      <p className="text-2xl font-bold">{analytics.avgResponseTime}</p>
-                      <p className="text-sm text-gray-600">Avg Response</p>
-                    </div>
-                  </div>
-                  
-                  <div className="mb-8">
-                    <h3 className="font-semibold mb-4">Top Topics Discussed</h3>
-                    <div className="space-y-3">
-                      {analytics.topicsDiscussed.slice(0, 5).map((topic, index) => (
-                        <div key={index} className="flex items-center gap-4">
-                          <span className="font-medium w-32">{topic.topic}</span>
-                          <div className="flex-1 bg-gray-200 rounded-full h-2">
-                            <div 
-                              className="bg-black h-2 rounded-full" 
-                              style={{ width: `${(topic.count / 500) * 100}%` }}
-                            ></div>
-                          </div>
-                          <span className="text-sm text-gray-600">{topic.count}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div className="text-center py-12">
-                  <BarChart3 className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-                  <h3 className="text-lg font-semibold mb-2">No analytics data yet</h3>
-                  <p className="text-gray-600">Analytics will appear here once your chatbot starts receiving conversations</p>
+              <h2 className="text-xl font-bold mb-4">Chatbot Analytics</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="p-4 border border-gray-200 rounded-lg">
+                  <p className="text-gray-600 text-sm">Total Conversations</p>
+                  <p className="text-3xl font-bold mt-2">{chatbot.conversations_count || 0}</p>
                 </div>
-              )}
+                <div className="p-4 border border-gray-200 rounded-lg">
+                  <p className="text-gray-600 text-sm">Total Messages</p>
+                  <p className="text-3xl font-bold mt-2">{chatbot.messages_count || 0}</p>
+                </div>
+                <div className="p-4 border border-gray-200 rounded-lg">
+                  <p className="text-gray-600 text-sm">Training Sources</p>
+                  <p className="text-3xl font-bold mt-2">{sources.length}</p>
+                </div>
+              </div>
             </div>
           </TabsContent>
         </Tabs>
       </div>
 
       {/* Modals */}
-      <AddSourceModal 
+      <AddSourceModal
         isOpen={isAddSourceModalOpen}
         onClose={() => setIsAddSourceModalOpen(false)}
-        onAdd={handleAddSource}
+        chatbotId={id}
+        onSuccess={loadChatbot}
       />
-      
       <ChatPreviewModal
         isOpen={isPreviewModalOpen}
         onClose={() => setIsPreviewModalOpen(false)}
-        chatbot={settings}
+        chatbot={chatbot}
       />
-      
       <DeleteConfirmModal
         isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setSourceToDelete(null);
+        }}
         onConfirm={() => handleDeleteSource(sourceToDelete?.id)}
         title="Delete Source"
-        description="Are you sure you want to delete this training source? This action cannot be undone."
+        description={`Are you sure you want to delete "${sourceToDelete?.name}"? This action cannot be undone.`}
       />
     </div>
   );
