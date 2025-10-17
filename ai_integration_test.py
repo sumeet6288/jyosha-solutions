@@ -96,7 +96,7 @@ class AIIntegrationTester:
         providers = [
             {"name": "OpenAI GPT-4o-mini", "provider": "openai", "model": "gpt-4o-mini"},
             {"name": "Claude 3.5 Sonnet", "provider": "anthropic", "model": "claude-3-5-sonnet-20241022"},
-            {"name": "Gemini Pro", "provider": "gemini", "model": "gemini-1.5-pro"}
+            {"name": "Gemini 2.0 Flash", "provider": "gemini", "model": "gemini-2.0-flash"}
         ]
         
         for provider_config in providers:
