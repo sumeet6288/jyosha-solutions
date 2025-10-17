@@ -209,9 +209,6 @@ async def add_text_source(
 ):
     """Add text content as a training source"""
     try:
-        # Debug logging
-        logger.info(f"Received text source request - chatbot_id: {chatbot_id}, name: {name}, content length: {len(content) if content else 0}")
-        
         # Verify ownership
         await verify_chatbot_ownership(chatbot_id, current_user.id)
         
