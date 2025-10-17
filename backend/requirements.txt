@@ -37,3 +37,6 @@ aiohttp
 openai
 fastuuid
 PyYAML
+-e jinja2
+anthropic
+google-generativeai
