@@ -6,6 +6,7 @@ import os
 import logging
 from pathlib import Path
 from routers import auth_router, user_router, chatbots, sources, chat, analytics
+import auth
 
 
 ROOT_DIR = Path(__file__).parent
@@ -15,6 +16,9 @@ load_dotenv(ROOT_DIR / '.env')
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
+
+# Initialize auth module with database
+auth.init_auth(db)
 
 # Initialize routers with database
 auth_router.init_router(db)
