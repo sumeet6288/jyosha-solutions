@@ -56,6 +56,9 @@ const ChatPreviewModal = ({ isOpen, onClose, chatbot }) => {
       <DialogContent className="max-w-2xl h-[600px] flex flex-col">
         <DialogHeader>
           <DialogTitle>Chat Preview - {chatbot?.name}</DialogTitle>
+          <DialogDescription>
+            Test your chatbot by sending messages and reviewing responses
+          </DialogDescription>
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto space-y-4 p-4 bg-gray-50 rounded-lg">
