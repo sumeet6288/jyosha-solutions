@@ -66,7 +66,7 @@ async def upload_file_source(
     file: UploadFile = File(...),
     current_user: User = Depends(get_mock_user)
 ):
-    """Upload a file as a training source"""
+    """Upload a file as a training source (max 100MB)"""
     try:
         # Verify ownership
         await verify_chatbot_ownership(chatbot_id, current_user.id)
@@ -74,6 +74,14 @@ async def upload_file_source(
         # Read file content
         file_content = await file.read()
         file_size = len(file_content)
+        
+        # Check file size limit (100MB)
+        MAX_FILE_SIZE = 100 * 1024 * 1024  # 100MB in bytes
+        if file_size > MAX_FILE_SIZE:
+            raise HTTPException(
+                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                detail=f"File size exceeds maximum allowed size of 100MB. Current size: {DocumentProcessor.format_size(file_size)}"
+            )
         
         # Create source entry
         source = Source(
