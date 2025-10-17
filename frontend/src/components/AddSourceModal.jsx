@@ -105,9 +105,18 @@ const AddSourceModal = ({ isOpen, onClose, chatbotId, onSuccess }) => {
       onClose();
     } catch (error) {
       console.error('Error adding text:', error);
+      let errorMessage = 'Failed to add text';
+      if (error.response?.data?.detail) {
+        // Handle both string and array formats from FastAPI
+        if (Array.isArray(error.response.data.detail)) {
+          errorMessage = error.response.data.detail.map(err => err.msg).join(', ');
+        } else {
+          errorMessage = error.response.data.detail;
+        }
+      }
       toast({ 
         title: 'Error', 
-        description: error.response?.data?.detail || 'Failed to add text', 
+        description: errorMessage, 
         variant: 'destructive' 
       });
     } finally {
