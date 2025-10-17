@@ -5,27 +5,22 @@ import { Plus, MessageSquare, Activity, TrendingUp, BarChart3 } from 'lucide-rea
 import { mockChatbots, mockAnalytics } from '../mock/mockData';
 import { useToast } from '../hooks/use-toast';
 import UserProfileDropdown from '../components/UserProfileDropdown';
+import { useAuth } from '../contexts/AuthContext';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, logout } = useAuth();
   const [chatbots, setChatbots] = useState([]);
   const [analytics, setAnalytics] = useState(null);
-  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const userData = localStorage.getItem('chatbase_user');
-    if (!userData) {
-      navigate('/signin');
-      return;
-    }
-    setUser(JSON.parse(userData));
     setChatbots(mockChatbots);
     setAnalytics(mockAnalytics);
-  }, [navigate]);
+  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('chatbase_user');
+    logout();
     toast({
       title: 'Signed out',
       description: 'You have been signed out successfully'
