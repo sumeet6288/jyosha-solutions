@@ -22,34 +22,14 @@ function AppContent() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/dashboard" element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } />
-          <Route path="/analytics" element={
-            <ProtectedRoute>
-              <Analytics />
-            </ProtectedRoute>
-          } />
-          <Route path="/integrations" element={
-            <ProtectedRoute>
-              <Integrations />
-            </ProtectedRoute>
-          } />
-          <Route path="/account-settings" element={
-            <ProtectedRoute>
-              <AccountSettings />
-            </ProtectedRoute>
-          } />
-          <Route path="/chatbot/:id" element={
-            <ProtectedRoute>
-              <ChatbotBuilder />
-            </ProtectedRoute>
-          } />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/signin" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/signup" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/integrations" element={<Integrations />} />
+          <Route path="/account-settings" element={<AccountSettings />} />
+          <Route path="/chatbot/:id" element={<ChatbotBuilder />} />
         </Routes>
       </BrowserRouter>
       <Toaster />
