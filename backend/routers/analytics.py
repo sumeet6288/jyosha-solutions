@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from models import DashboardAnalytics, ChatbotAnalytics
-from auth import get_current_user, User
+from auth import get_current_user, get_mock_user, User
 from datetime import datetime, timedelta, date
 from collections import defaultdict
 import logging

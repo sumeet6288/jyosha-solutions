@@ -3,7 +3,7 @@ from motor.motor_asyncio import AsyncIOMotorDatabase
 from typing import List, Optional
 from datetime import datetime, timezone
 from models import Source, SourceCreate, SourceResponse
-from auth import get_current_user, User
+from auth import get_current_user, get_mock_user, User
 from services.document_processor import DocumentProcessor
 from services.website_scraper import WebsiteScraper
 import logging
