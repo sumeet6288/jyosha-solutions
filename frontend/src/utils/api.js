@@ -75,13 +75,17 @@ export const sourceAPI = {
   addWebsite: (chatbotId, url) => {
     const formData = new FormData();
     formData.append('url', url);
-    return api.post(`/sources/chatbot/${chatbotId}/website`, formData);
+    return api.post(`/sources/chatbot/${chatbotId}/website`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
   },
   addText: (chatbotId, name, content) => {
     const formData = new FormData();
     formData.append('name', name);
     formData.append('content', content);
-    return api.post(`/sources/chatbot/${chatbotId}/text`, formData);
+    return api.post(`/sources/chatbot/${chatbotId}/text`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
   },
   delete: (sourceId) => api.delete(`/sources/${sourceId}`),
 };
