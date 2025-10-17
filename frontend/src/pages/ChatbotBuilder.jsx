@@ -362,41 +362,133 @@ const ChatbotBuilder = () => {
 
           {/* Widget Tab */}
           <TabsContent value="widget">
-            <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
-              <div>
-                <h2 className="text-xl font-bold mb-2">Embed Your Chatbot</h2>
-                <p className="text-gray-600 text-sm">Add this code to your website to embed the chatbot</p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Configuration Panel */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
+                <div>
+                  <h2 className="text-xl font-bold mb-2">Embed Your Chatbot</h2>
+                  <p className="text-gray-600 text-sm">Choose how you want to integrate the chatbot into your website</p>
+                </div>
+
+                {/* Embed Options */}
+                <div className="space-y-4">
+                  <div className="p-4 border-2 border-indigo-200 bg-indigo-50 rounded-lg">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0">
+                        1
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-gray-900 mb-2">Iframe Embed</h3>
+                        <p className="text-sm text-gray-600 mb-3">Add this code to your HTML to embed the chatbot as an iframe</p>
+                        <Textarea
+                          value={embedCode}
+                          readOnly
+                          rows={3}
+                          className="font-mono text-xs bg-white"
+                        />
+                        <Button className="mt-2 w-full" onClick={() => {
+                          navigator.clipboard.writeText(embedCode);
+                          toast({ title: 'Copied!', description: 'Iframe code copied to clipboard' });
+                        }}>
+                          Copy Iframe Code
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 border-2 border-purple-200 bg-purple-50 rounded-lg">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0">
+                        2
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-gray-900 mb-2">Direct Link</h3>
+                        <p className="text-sm text-gray-600 mb-3">Share this link to let users chat directly</p>
+                        <Input
+                          value={`${window.location.origin}/chat/${chatbot.id}`}
+                          readOnly
+                          className="font-mono text-xs mb-2"
+                        />
+                        <div className="grid grid-cols-2 gap-2">
+                          <Button 
+                            variant="outline"
+                            className="w-full" 
+                            onClick={() => {
+                              navigator.clipboard.writeText(`${window.location.origin}/chat/${chatbot.id}`);
+                              toast({ title: 'Copied!', description: 'Link copied to clipboard' });
+                            }}
+                          >
+                            Copy Link
+                          </Button>
+                          <Button 
+                            variant="outline"
+                            className="w-full" 
+                            onClick={() => window.open(`${window.location.origin}/chat/${chatbot.id}`, '_blank')}
+                          >
+                            Test Link
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 border-2 border-green-200 bg-green-50 rounded-lg">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0">
+                        3
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-gray-900 mb-2">Embed URL</h3>
+                        <p className="text-sm text-gray-600 mb-3">Use this URL in your iframe or embed tools</p>
+                        <Input
+                          value={`${window.location.origin}/embed/${chatbot.id}`}
+                          readOnly
+                          className="font-mono text-xs mb-2"
+                        />
+                        <div className="grid grid-cols-2 gap-2">
+                          <Button 
+                            variant="outline"
+                            className="w-full" 
+                            onClick={() => {
+                              navigator.clipboard.writeText(`${window.location.origin}/embed/${chatbot.id}`);
+                              toast({ title: 'Copied!', description: 'Embed URL copied to clipboard' });
+                            }}
+                          >
+                            Copy URL
+                          </Button>
+                          <Button 
+                            variant="outline"
+                            className="w-full" 
+                            onClick={() => window.open(`${window.location.origin}/embed/${chatbot.id}`, '_blank')}
+                          >
+                            Preview
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div>
-                <Label>Embed Code</Label>
-                <Textarea
-                  value={embedCode}
-                  readOnly
-                  rows={4}
-                  className="font-mono text-sm"
-                />
-                <Button className="mt-2" onClick={() => {
-                  navigator.clipboard.writeText(embedCode);
-                  toast({ title: 'Copied!', description: 'Embed code copied to clipboard' });
-                }}>
-                  Copy Code
-                </Button>
-              </div>
-
-              <div>
-                <Label>Chat Widget Link</Label>
-                <div className="flex gap-2">
-                  <Input
-                    value={`${window.location.origin}/chat/${chatbot.id}`}
-                    readOnly
+              {/* Live Preview */}
+              <div className="bg-white rounded-xl border border-gray-200 p-6">
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Live Preview</h3>
+                  <p className="text-sm text-gray-600">See how your chatbot will look when embedded</p>
+                </div>
+                <div className="border-2 border-gray-200 rounded-lg overflow-hidden" style={{ height: '600px' }}>
+                  <iframe
+                    src={`${window.location.origin}/embed/${chatbot.id}`}
+                    width="100%"
+                    height="100%"
+                    frameBorder="0"
+                    title="Chatbot Preview"
                   />
-                  <Button onClick={() => {
-                    navigator.clipboard.writeText(`${window.location.origin}/chat/${chatbot.id}`);
-                    toast({ title: 'Copied!', description: 'Link copied to clipboard' });
-                  }}>
-                    Copy
-                  </Button>
+                </div>
+                <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className="text-sm text-blue-800">
+                    <strong>💡 Tip:</strong> The chatbot automatically adapts to your website's style and works on all devices.
+                  </p>
                 </div>
               </div>
             </div>
