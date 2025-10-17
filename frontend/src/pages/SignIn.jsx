@@ -4,24 +4,38 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { useToast } from '../hooks/use-toast';
+import { useAuth } from '../contexts/AuthContext';
 
 const SignIn = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Mock authentication
-    localStorage.setItem('chatbase_user', JSON.stringify({ email: formData.email, name: 'User' }));
-    toast({
-      title: 'Welcome back!',
-      description: 'Successfully signed in'
-    });
-    navigate('/dashboard');
+    setIsLoading(true);
+    
+    try {
+      await login(formData.email, formData.password);
+      toast({
+        title: 'Welcome back!',
+        description: 'Successfully signed in'
+      });
+      navigate('/dashboard');
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.response?.data?.detail || 'Failed to sign in',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
