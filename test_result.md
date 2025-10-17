@@ -267,5 +267,7 @@ agent_communication:
     message: "CRITICAL FIX APPLIED: Added missing get_current_user function in auth.py that returns User object from database. This was causing backend service to fail on startup. Also added missing lxml dependency to requirements.txt. Backend and frontend are now running successfully. Ready for backend testing."
   - agent: "main"
     message: "User wants to prioritize UI/UX and features before authentication. Starting comprehensive testing of all existing features: chatbot CRUD, source management (file/website/text), AI chat with multi-provider support, and analytics. Will identify bugs and improvements needed."
+  - agent: "main"
+    message: "UPLOAD SIZE INCREASED TO 100MB - Applied the following changes: 1) Updated nginx configuration to accept 100MB uploads (client_max_body_size), 2) Added file size validation in backend sources router with proper error messaging, 3) Updated uvicorn timeout settings for handling large file uploads, 4) Updated frontend AddSourceModal to reflect 100MB limit. All services restarted successfully."
   - agent: "testing"
     message: "BACKEND TESTING COMPLETE: All backend APIs tested successfully. Fixed critical issue with missing litellm dependency and deprecated Gemini model names. All 20 core API endpoints working correctly including multi-provider AI chat (OpenAI, Claude, Gemini 2.0). Authentication is properly mocked for development. Ready for frontend testing or production deployment."
