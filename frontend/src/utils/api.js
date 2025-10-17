@@ -53,4 +53,50 @@ export const userAPI = {
   deleteAccount: () => api.delete('/user/account'),
 };
 
+// Chatbot APIs
+export const chatbotAPI = {
+  list: () => api.get('/chatbots'),
+  create: (data) => api.post('/chatbots', data),
+  get: (id) => api.get(`/chatbots/${id}`),
+  update: (id, data) => api.put(`/chatbots/${id}`, data),
+  delete: (id) => api.delete(`/chatbots/${id}`),
+};
+
+// Source APIs
+export const sourceAPI = {
+  list: (chatbotId) => api.get(`/sources/chatbot/${chatbotId}`),
+  uploadFile: (chatbotId, file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post(`/sources/chatbot/${chatbotId}/file`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+  addWebsite: (chatbotId, url) => {
+    const formData = new FormData();
+    formData.append('url', url);
+    return api.post(`/sources/chatbot/${chatbotId}/website`, formData);
+  },
+  addText: (chatbotId, name, content) => {
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('content', content);
+    return api.post(`/sources/chatbot/${chatbotId}/text`, formData);
+  },
+  delete: (sourceId) => api.delete(`/sources/${sourceId}`),
+};
+
+// Chat APIs
+export const chatAPI = {
+  sendMessage: (data) => api.post('/chat', data),
+  getConversations: (chatbotId) => api.get(`/chat/conversations/${chatbotId}`),
+  getMessages: (conversationId) => api.get(`/chat/messages/${conversationId}`),
+};
+
+// Analytics APIs
+export const analyticsAPI = {
+  getDashboard: () => api.get('/analytics/dashboard'),
+  getChatbot: (chatbotId, days = 30) => api.get(`/analytics/chatbot/${chatbotId}?days=${days}`),
+};
+
 export default api;
