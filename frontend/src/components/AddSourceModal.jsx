@@ -5,11 +5,13 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Upload, Link2, FileText } from 'lucide-react';
+import { Upload, Link2, FileText, Loader2 } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
+import { sourceAPI } from '../utils/api';
 
-const AddSourceModal = ({ isOpen, onClose, onAdd }) => {
+const AddSourceModal = ({ isOpen, onClose, chatbotId, onSuccess }) => {
   const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
   const [fileData, setFileData] = useState(null);
   const [urlData, setUrlData] = useState('');
   const [textData, setTextData] = useState({ name: '', content: '' });
@@ -17,63 +19,100 @@ const AddSourceModal = ({ isOpen, onClose, onAdd }) => {
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Check file size (max 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        toast({ 
+          title: 'Error', 
+          description: 'File size must be less than 10MB', 
+          variant: 'destructive' 
+        });
+        return;
+      }
       setFileData(file);
     }
   };
 
-  const handleAddFile = () => {
+  const handleAddFile = async () => {
     if (!fileData) {
       toast({ title: 'Error', description: 'Please select a file', variant: 'destructive' });
       return;
     }
-    const newSource = {
-      id: Date.now().toString(),
-      type: 'file',
-      name: fileData.name,
-      size: `${(fileData.size / 1024 / 1024).toFixed(2)} MB`,
-      status: 'processing',
-      addedAt: new Date().toISOString().split('T')[0]
-    };
-    onAdd(newSource);
-    toast({ title: 'Success', description: 'File uploaded successfully' });
-    setFileData(null);
-    onClose();
+    
+    setLoading(true);
+    try {
+      await sourceAPI.uploadFile(chatbotId, fileData);
+      toast({ title: 'Success', description: 'File uploaded successfully. Processing...' });
+      setFileData(null);
+      onSuccess();
+      onClose();
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      toast({ 
+        title: 'Error', 
+        description: error.response?.data?.detail || 'Failed to upload file', 
+        variant: 'destructive' 
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleAddUrl = () => {
+  const handleAddUrl = async () => {
     if (!urlData) {
       toast({ title: 'Error', description: 'Please enter a URL', variant: 'destructive' });
       return;
     }
-    const newSource = {
-      id: Date.now().toString(),
-      type: 'website',
-      name: urlData,
-      status: 'processing',
-      addedAt: new Date().toISOString().split('T')[0]
-    };
-    onAdd(newSource);
-    toast({ title: 'Success', description: 'Website URL added successfully' });
-    setUrlData('');
-    onClose();
+    
+    // Basic URL validation
+    try {
+      new URL(urlData);
+    } catch {
+      toast({ title: 'Error', description: 'Please enter a valid URL', variant: 'destructive' });
+      return;
+    }
+    
+    setLoading(true);
+    try {
+      await sourceAPI.addWebsite(chatbotId, urlData);
+      toast({ title: 'Success', description: 'Website URL added successfully. Scraping...' });
+      setUrlData('');
+      onSuccess();
+      onClose();
+    } catch (error) {
+      console.error('Error adding URL:', error);
+      toast({ 
+        title: 'Error', 
+        description: error.response?.data?.detail || 'Failed to add website', 
+        variant: 'destructive' 
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleAddText = () => {
+  const handleAddText = async () => {
     if (!textData.name || !textData.content) {
       toast({ title: 'Error', description: 'Please provide both name and content', variant: 'destructive' });
       return;
     }
-    const newSource = {
-      id: Date.now().toString(),
-      type: 'text',
-      name: textData.name,
-      status: 'processed',
-      addedAt: new Date().toISOString().split('T')[0]
-    };
-    onAdd(newSource);
-    toast({ title: 'Success', description: 'Text content added successfully' });
-    setTextData({ name: '', content: '' });
-    onClose();
+    
+    setLoading(true);
+    try {
+      await sourceAPI.addText(chatbotId, textData.name, textData.content);
+      toast({ title: 'Success', description: 'Text content added successfully' });
+      setTextData({ name: '', content: '' });
+      onSuccess();
+      onClose();
+    } catch (error) {
+      console.error('Error adding text:', error);
+      toast({ 
+        title: 'Error', 
+        description: error.response?.data?.detail || 'Failed to add text', 
+        variant: 'destructive' 
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -99,60 +138,61 @@ const AddSourceModal = ({ isOpen, onClose, onAdd }) => {
                 <Input
                   id="file-upload"
                   type="file"
-                  className="hidden"
                   onChange={handleFileUpload}
-                  accept=".pdf,.doc,.docx,.txt"
+                  className="hidden"
+                  accept=".pdf,.docx,.doc,.txt,.xlsx,.xls,.csv"
                 />
               </Label>
+              <p className="text-xs text-gray-500 mt-2">Supported: PDF, DOCX, TXT, XLSX, CSV (Max 10MB)</p>
               {fileData && (
-                <p className="mt-4 text-sm font-medium">{fileData.name}</p>
+                <p className="text-sm text-gray-700 mt-4 font-medium">Selected: {fileData.name}</p>
               )}
             </div>
-            <Button onClick={handleAddFile} className="w-full bg-black hover:bg-gray-800 text-white">
-              Upload File
+            <Button onClick={handleAddFile} className="w-full" disabled={!fileData || loading}>
+              {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Uploading...</> : 'Upload File'}
             </Button>
           </TabsContent>
 
           <TabsContent value="url" className="space-y-4">
-            <div>
-              <Label htmlFor="website-url">Website URL</Label>
-              <Input
-                id="website-url"
-                type="url"
-                placeholder="https://example.com"
-                value={urlData}
-                onChange={(e) => setUrlData(e.target.value)}
-                className="mt-2"
-              />
+            <div className="space-y-2">
+              <Label>Website URL</Label>
+              <div className="flex items-center gap-2">
+                <Link2 className="w-5 h-5 text-gray-400" />
+                <Input
+                  placeholder="https://example.com"
+                  value={urlData}
+                  onChange={(e) => setUrlData(e.target.value)}
+                />
+              </div>
+              <p className="text-xs text-gray-500">We'll scrape and extract text content from this page</p>
             </div>
-            <Button onClick={handleAddUrl} className="w-full bg-black hover:bg-gray-800 text-white">
-              Add Website
+            <Button onClick={handleAddUrl} className="w-full" disabled={!urlData || loading}>
+              {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Adding...</> : 'Add Website'}
             </Button>
           </TabsContent>
 
           <TabsContent value="text" className="space-y-4">
-            <div>
-              <Label htmlFor="text-name">Content Name</Label>
-              <Input
-                id="text-name"
-                placeholder="FAQ Content"
-                value={textData.name}
-                onChange={(e) => setTextData({ ...textData, name: e.target.value })}
-                className="mt-2"
-              />
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label>Content Name</Label>
+                <Input
+                  placeholder="e.g., Product Information"
+                  value={textData.name}
+                  onChange={(e) => setTextData({ ...textData, name: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Content</Label>
+                <Textarea
+                  placeholder="Paste your text content here..."
+                  value={textData.content}
+                  onChange={(e) => setTextData({ ...textData, content: e.target.value })}
+                  rows={8}
+                />
+              </div>
             </div>
-            <div>
-              <Label htmlFor="text-content">Content</Label>
-              <Textarea
-                id="text-content"
-                placeholder="Paste your content here..."
-                value={textData.content}
-                onChange={(e) => setTextData({ ...textData, content: e.target.value })}
-                className="mt-2 min-h-[200px]"
-              />
-            </div>
-            <Button onClick={handleAddText} className="w-full bg-black hover:bg-gray-800 text-white">
-              Add Text Content
+            <Button onClick={handleAddText} className="w-full" disabled={!textData.name || !textData.content || loading}>
+              {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Adding...</> : 'Add Text Content'}
             </Button>
           </TabsContent>
         </Tabs>

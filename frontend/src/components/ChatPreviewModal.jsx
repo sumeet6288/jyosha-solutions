@@ -2,46 +2,46 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { Send, X } from 'lucide-react';
-import { ScrollArea } from './ui/scroll-area';
+import { Send, Bot, User, Loader2 } from 'lucide-react';
+import { chatAPI } from '../utils/api';
+import { useToast } from '../hooks/use-toast';
 
 const ChatPreviewModal = ({ isOpen, onClose, chatbot }) => {
-  const [messages, setMessages] = useState([
-    {
-      id: '1',
-      role: 'assistant',
-      content: chatbot?.welcomeMessage || 'Hello! How can I help you today?',
-      timestamp: new Date()
-    }
-  ]);
+  const { toast } = useToast();
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [sessionId] = useState(() => `session-${Date.now()}`);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  const handleSend = async () => {
+    if (!input.trim() || loading) return;
 
-    const userMessage = {
-      id: Date.now().toString(),
-      role: 'user',
-      content: input,
-      timestamp: new Date()
-    };
-
-    setMessages([...messages, userMessage]);
+    const userMessage = { role: 'user', content: input };
+    setMessages(prev => [...prev, userMessage]);
     setInput('');
-    setIsTyping(true);
+    setLoading(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-      const aiResponse = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: 'This is a preview mode. In production, I would respond based on your training data using AI.',
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, aiResponse]);
-      setIsTyping(false);
-    }, 1500);
+    try {
+      const response = await chatAPI.sendMessage({
+        chatbot_id: chatbot.id,
+        message: input,
+        session_id: sessionId
+      });
+
+      const aiMessage = { role: 'assistant', content: response.data.message };
+      setMessages(prev => [...prev, aiMessage]);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to get response',
+        variant: 'destructive'
+      });
+      // Remove the failed message
+      setMessages(prev => prev.slice(0, -1));
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleKeyPress = (e) => {
@@ -53,65 +53,58 @@ const ChatPreviewModal = ({ isOpen, onClose, chatbot }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md h-[600px] p-0">
-        <DialogHeader className="p-4 border-b">
-          <div className="flex items-center justify-between">
-            <DialogTitle>Chat Preview</DialogTitle>
-            <Button variant="ghost" size="icon" onClick={onClose}>
-              <X className="w-4 h-4" />
-            </Button>
-          </div>
+      <DialogContent className="max-w-2xl h-[600px] flex flex-col">
+        <DialogHeader>
+          <DialogTitle>Chat Preview - {chatbot?.name}</DialogTitle>
         </DialogHeader>
-        
-        <ScrollArea className="flex-1 p-4 h-[450px]">
-          <div className="space-y-4">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-2 ${
-                    message.role === 'user'
-                      ? 'bg-black text-white'
-                      : 'bg-gray-100 text-gray-900'
-                  }`}
-                >
-                  <p className="text-sm">{message.content}</p>
-                </div>
-              </div>
-            ))}
-            {isTyping && (
-              <div className="flex justify-start">
-                <div className="bg-gray-100 rounded-2xl px-4 py-2">
-                  <div className="flex gap-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </ScrollArea>
 
-        <div className="p-4 border-t">
-          <div className="flex gap-2">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Type your message..."
-              className="flex-1"
-            />
-            <Button
-              onClick={handleSend}
-              className="bg-black hover:bg-gray-800 text-white"
-              size="icon"
-            >
-              <Send className="w-4 h-4" />
-            </Button>
-          </div>
+        <div className="flex-1 overflow-y-auto space-y-4 p-4 bg-gray-50 rounded-lg">
+          {messages.length === 0 && (
+            <div className="text-center py-12">
+              <Bot className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+              <p className="text-gray-600">{chatbot?.welcome_message || 'Hello! How can I help you today?'}</p>
+            </div>
+          )}
+          {messages.map((message, index) => (
+            <div key={index} className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              {message.role === 'assistant' && (
+                <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center flex-shrink-0">
+                  <Bot className="w-5 h-5 text-white" />
+                </div>
+              )}
+              <div className={`max-w-[70%] rounded-2xl px-4 py-2 ${message.role === 'user' ? 'bg-black text-white' : 'bg-white text-gray-900 border border-gray-200'}`}>
+                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+              </div>
+              {message.role === 'user' && (
+                <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
+                  <User className="w-5 h-5 text-gray-700" />
+                </div>
+              )}
+            </div>
+          ))}
+          {loading && (
+            <div className="flex gap-3 justify-start">
+              <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center flex-shrink-0">
+                <Bot className="w-5 h-5 text-white" />
+              </div>
+              <div className="bg-white rounded-2xl px-4 py-2 border border-gray-200">
+                <Loader2 className="w-5 h-5 animate-spin text-gray-600" />
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="flex gap-2 pt-4 border-t">
+          <Input
+            placeholder="Type your message..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={handleKeyPress}
+            disabled={loading}
+          />
+          <Button onClick={handleSend} disabled={!input.trim() || loading}>
+            <Send className="w-4 h-4" />
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
