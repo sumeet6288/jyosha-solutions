@@ -57,7 +57,7 @@ const LandingPage = () => {
           </div>
           <div className="flex items-center gap-4">
             <Button variant="ghost" onClick={() => navigate('/signin')}>Sign in</Button>
-            <Button className="bg-black hover:bg-gray-800 text-white rounded-lg" onClick={() => navigate('/signup')}>
+            <Button className="bg-black hover:bg-gray-800 text-white rounded-lg" onClick={() => navigate('/dashboard')}>
               Try for Free
             </Button>
           </div>
