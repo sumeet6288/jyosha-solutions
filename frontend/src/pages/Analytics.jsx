@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { LogOut, TrendingUp, MessageSquare, Users, Clock, BarChart3, Settings } from 'lucide-react';
+import { TrendingUp, MessageSquare, Users, Clock, BarChart3 } from 'lucide-react';
 import { mockAnalytics } from '../mock/mockData';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '../components/ui/dropdown-menu';
+import UserProfileDropdown from '../components/UserProfileDropdown';
 
 const Analytics = () => {
   const navigate = useNavigate();
