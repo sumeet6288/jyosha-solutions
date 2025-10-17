@@ -29,7 +29,12 @@ chat.init_router(db)
 analytics.init_router(db)
 
 # Create the main app without a prefix
-app = FastAPI()
+# Set max upload size to 100MB
+app = FastAPI(
+    title="Chatbase API",
+    description="AI-powered chatbot builder with multi-provider support",
+    version="1.0.0"
+)
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
