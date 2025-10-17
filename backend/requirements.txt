@@ -40,3 +40,5 @@ PyYAML
 -e jinja2
 anthropic
 google-generativeai
+-e tiktoken
+tokenizers
