@@ -38,7 +38,7 @@ async def verify_chatbot_ownership(chatbot_id: str, user_id: str):
 @router.get("/chatbot/{chatbot_id}", response_model=List[SourceResponse])
 async def get_sources(
     chatbot_id: str,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Get all sources for a chatbot"""
     try:
@@ -64,7 +64,7 @@ async def get_sources(
 async def upload_file_source(
     chatbot_id: str,
     file: UploadFile = File(...),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Upload a file as a training source"""
     try:
@@ -132,7 +132,7 @@ async def upload_file_source(
 async def add_website_source(
     chatbot_id: str,
     url: str = Form(...),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Add a website as a training source"""
     try:
@@ -197,7 +197,7 @@ async def add_text_source(
     chatbot_id: str,
     name: str = Form(...),
     content: str = Form(...),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Add text content as a training source"""
     try:
@@ -235,7 +235,7 @@ async def add_text_source(
 @router.delete("/{source_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_source(
     source_id: str,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Delete a source"""
     try:

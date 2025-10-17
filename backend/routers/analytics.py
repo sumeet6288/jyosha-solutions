@@ -19,7 +19,7 @@ def init_router(db: AsyncIOMotorDatabase):
 
 
 @router.get("/dashboard", response_model=DashboardAnalytics)
-async def get_dashboard_analytics(current_user: User = Depends(get_current_user)):
+async def get_dashboard_analytics(current_user: User = Depends(get_mock_user)):
     """Get dashboard analytics for the current user"""
     try:
         # Get all user's chatbots
@@ -60,7 +60,7 @@ async def get_dashboard_analytics(current_user: User = Depends(get_current_user)
 async def get_chatbot_analytics(
     chatbot_id: str,
     days: int = 30,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Get analytics for a specific chatbot"""
     try:

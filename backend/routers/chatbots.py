@@ -68,7 +68,7 @@ async def get_chatbots(current_user: User = Depends(get_mock_user)):
 @router.get("/{chatbot_id}", response_model=ChatbotResponse)
 async def get_chatbot(
     chatbot_id: str,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Get a specific chatbot"""
     try:
@@ -98,7 +98,7 @@ async def get_chatbot(
 async def update_chatbot(
     chatbot_id: str,
     chatbot_data: ChatbotUpdate,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Update a chatbot"""
     try:
@@ -144,7 +144,7 @@ async def update_chatbot(
 @router.delete("/{chatbot_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_chatbot(
     chatbot_id: str,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Delete a chatbot"""
     try:
