@@ -10,6 +10,8 @@ import ChatbotBuilder from './pages/ChatbotBuilder';
 import Analytics from './pages/Analytics';
 import Integrations from './pages/Integrations';
 import AccountSettings from './pages/AccountSettings';
+import EmbedChat from './pages/EmbedChat';
+import ChatPage from './pages/ChatPage';
 import { Toaster } from './components/ui/toaster';
 
 const ProtectedRoute = ({ children }) => {
