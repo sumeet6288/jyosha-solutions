@@ -4,24 +4,19 @@ import { Button } from '../components/ui/button';
 import { TrendingUp, MessageSquare, Users, Clock, BarChart3 } from 'lucide-react';
 import { mockAnalytics } from '../mock/mockData';
 import UserProfileDropdown from '../components/UserProfileDropdown';
+import { useAuth } from '../contexts/AuthContext';
 
 const Analytics = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const { user, logout } = useAuth();
   const [analytics, setAnalytics] = useState(null);
 
   useEffect(() => {
-    const userData = localStorage.getItem('chatbase_user');
-    if (!userData) {
-      navigate('/signin');
-      return;
-    }
-    setUser(JSON.parse(userData));
     setAnalytics(mockAnalytics);
-  }, [navigate]);
+  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('chatbase_user');
+    logout();
     navigate('/');
   };
 
