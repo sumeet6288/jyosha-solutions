@@ -13,17 +13,8 @@ import AccountSettings from './pages/AccountSettings';
 import { Toaster } from './components/ui/toaster';
 
 const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth();
-  
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-      </div>
-    );
-  }
-  
-  return user ? children : <Navigate to="/signin" />;
+  // Bypass authentication for now - direct access to all routes
+  return children;
 };
 
 function AppContent() {
