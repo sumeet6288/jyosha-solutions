@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { Plus, MessageSquare, Activity, TrendingUp, BarChart3, LogOut } from 'lucide-react';
+import { Plus, MessageSquare, Activity, TrendingUp, BarChart3, LogOut, Settings, Users } from 'lucide-react';
 import { mockChatbots, mockAnalytics } from '../mock/mockData';
 import { useToast } from '../hooks/use-toast';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '../components/ui/dropdown-menu';
 
 const Dashboard = () => {
   const navigate = useNavigate();
