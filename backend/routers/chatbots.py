@@ -23,7 +23,7 @@ def init_router(db: AsyncIOMotorDatabase):
 @router.post("", response_model=ChatbotResponse, status_code=status.HTTP_201_CREATED)
 async def create_chatbot(
     chatbot_data: ChatbotCreate,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Create a new chatbot"""
     try:
