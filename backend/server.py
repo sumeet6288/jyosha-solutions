@@ -5,7 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
-from routers import auth_router, user_router
+from routers import auth_router, user_router, chatbots, sources, chat, analytics
 
 
 ROOT_DIR = Path(__file__).parent
@@ -19,6 +19,10 @@ db = client[os.environ['DB_NAME']]
 # Initialize routers with database
 auth_router.init_router(db)
 user_router.init_router(db)
+chatbots.init_router(db)
+sources.init_router(db)
+chat.init_router(db)
+analytics.init_router(db)
 
 # Create the main app without a prefix
 app = FastAPI()
@@ -31,9 +35,13 @@ api_router = APIRouter(prefix="/api")
 async def root():
     return {"message": "Chatbase API", "status": "running"}
 
-# Include authentication and user management routers
+# Include all routers
 api_router.include_router(auth_router.router)
 api_router.include_router(user_router.router)
+api_router.include_router(chatbots.router)
+api_router.include_router(sources.router)
+api_router.include_router(chat.router)
+api_router.include_router(analytics.router)
 
 # Include the router in the main app
 app.include_router(api_router)
