@@ -107,8 +107,8 @@ const SignUp = () => {
               />
             </div>
             
-            <Button type="submit" className="w-full bg-black hover:bg-gray-800 text-white py-6">
-              Create account
+            <Button type="submit" className="w-full bg-black hover:bg-gray-800 text-white py-6" disabled={isLoading}>
+              {isLoading ? 'Creating account...' : 'Create account'}
             </Button>
           </form>
           
