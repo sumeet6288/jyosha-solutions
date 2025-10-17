@@ -35,3 +35,4 @@ soupsieve>=2.5
 httpx
 aiohttp
 openai
+fastuuid
