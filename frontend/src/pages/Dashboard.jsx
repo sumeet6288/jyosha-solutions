@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Plus, MessageSquare, Activity, TrendingUp, BarChart3 } from 'lucide-react';
-import { mockChatbots, mockAnalytics } from '../mock/mockData';
 import { useToast } from '../hooks/use-toast';
 import UserProfileDropdown from '../components/UserProfileDropdown';
 import { useAuth } from '../contexts/AuthContext';
+import { chatbotAPI, analyticsAPI } from '../utils/api';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -13,11 +13,33 @@ const Dashboard = () => {
   const { user, logout } = useAuth();
   const [chatbots, setChatbots] = useState([]);
   const [analytics, setAnalytics] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setChatbots(mockChatbots);
-    setAnalytics(mockAnalytics);
+    loadData();
   }, []);
+
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      const [chatbotsResponse, analyticsResponse] = await Promise.all([
+        chatbotAPI.list(),
+        analyticsAPI.getDashboard()
+      ]);
+      
+      setChatbots(chatbotsResponse.data);
+      setAnalytics(analyticsResponse.data);
+    } catch (error) {
+      console.error('Error loading dashboard data:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load dashboard data',
+        variant: 'destructive'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -27,6 +49,41 @@ const Dashboard = () => {
     });
     navigate('/');
   };
+
+  const handleCreateChatbot = async () => {
+    try {
+      const newChatbot = await chatbotAPI.create({
+        name: 'New Chatbot',
+        model: 'gpt-4o-mini',
+        provider: 'openai',
+        temperature: 0.7,
+        instructions: 'You are a helpful assistant.',
+        welcome_message: 'Hello! How can I help you today?'
+      });
+      
+      toast({
+        title: 'Success',
+        description: 'Chatbot created successfully'
+      });
+      
+      navigate(`/chatbot/${newChatbot.data.id}`);
+    } catch (error) {
+      console.error('Error creating chatbot:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to create chatbot',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -58,36 +115,33 @@ const Dashboard = () => {
           <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between mb-2">
               <MessageSquare className="w-8 h-8 text-gray-600" />
-              <span className="text-green-500 text-sm font-medium">+12%</span>
             </div>
-            <p className="text-3xl font-bold">{analytics?.totalConversations.toLocaleString()}</p>
+            <p className="text-3xl font-bold">{analytics?.total_conversations?.toLocaleString() || 0}</p>
             <p className="text-gray-600 text-sm mt-1">Total Conversations</p>
           </div>
           
           <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between mb-2">
               <Activity className="w-8 h-8 text-gray-600" />
-              <span className="text-green-500 text-sm font-medium">Live</span>
             </div>
-            <p className="text-3xl font-bold">{analytics?.activeChats}</p>
-            <p className="text-gray-600 text-sm mt-1">Active Chats</p>
+            <p className="text-3xl font-bold">{analytics?.total_messages?.toLocaleString() || 0}</p>
+            <p className="text-gray-600 text-sm mt-1">Total Messages</p>
           </div>
           
           <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between mb-2">
               <TrendingUp className="w-8 h-8 text-gray-600" />
-              <span className="text-green-500 text-sm font-medium">+8%</span>
             </div>
-            <p className="text-3xl font-bold">{analytics?.satisfaction}%</p>
-            <p className="text-gray-600 text-sm mt-1">Satisfaction Rate</p>
+            <p className="text-3xl font-bold">{analytics?.active_chatbots || 0}</p>
+            <p className="text-gray-600 text-sm mt-1">Active Chatbots</p>
           </div>
           
           <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between mb-2">
               <BarChart3 className="w-8 h-8 text-gray-600" />
             </div>
-            <p className="text-3xl font-bold">{analytics?.avgResponseTime}</p>
-            <p className="text-gray-600 text-sm mt-1">Avg Response Time</p>
+            <p className="text-3xl font-bold">{analytics?.total_chatbots || 0}</p>
+            <p className="text-gray-600 text-sm mt-1">Total Chatbots</p>
           </div>
         </div>
 
@@ -97,7 +151,7 @@ const Dashboard = () => {
             <h2 className="text-2xl font-bold">Your Chatbots</h2>
             <Button 
               className="bg-black hover:bg-gray-800 text-white"
-              onClick={() => navigate('/chatbot/new')}
+              onClick={handleCreateChatbot}
             >
               <Plus className="w-4 h-4 mr-2" />
               New Chatbot
@@ -113,7 +167,7 @@ const Dashboard = () => {
               <p className="text-gray-600 mb-6">Create your first AI chatbot to get started</p>
               <Button 
                 className="bg-black hover:bg-gray-800 text-white"
-                onClick={() => navigate('/chatbot/new')}
+                onClick={handleCreateChatbot}
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Create Chatbot
@@ -138,10 +192,12 @@ const Dashboard = () => {
                         </span>
                       </div>
                       <div className="flex items-center gap-6 text-sm text-gray-600">
-                        <span>{bot.conversations.toLocaleString()} conversations</span>
-                        <span>{bot.sources} sources</span>
+                        <span>{bot.conversations_count?.toLocaleString() || 0} conversations</span>
+                        <span>{bot.messages_count?.toLocaleString() || 0} messages</span>
                         <span>Model: {bot.model}</span>
-                        <span>Last trained: {bot.lastTrained}</span>
+                        {bot.last_trained && (
+                          <span>Last trained: {new Date(bot.last_trained).toLocaleDateString()}</span>
+                        )}
                       </div>
                     </div>
                     <Button variant="outline" onClick={(e) => { e.stopPropagation(); navigate(`/chatbot/${bot.id}`); }}>
