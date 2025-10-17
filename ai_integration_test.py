@@ -278,7 +278,7 @@ class AIIntegrationTester:
 
 def main():
     """Main test execution"""
-    base_url = "https://repo-learn-auth.preview.emergentagent.com"
+    base_url = "https://app-rescue-18.preview.emergentagent.com"
     
     print(f"Testing AI Integration at: {base_url}")
     
