@@ -6,6 +6,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from models import User
 import os
+from motor.motor_asyncio import AsyncIOMotorClient
 
 # Security configuration
 SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key-change-this-in-production')
@@ -14,6 +15,15 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 security = HTTPBearer()
+
+# Database connection - will be initialized from server
+mongo_client = None
+db = None
+
+def init_auth(database):
+    """Initialize auth module with database connection."""
+    global db
+    db = database
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
