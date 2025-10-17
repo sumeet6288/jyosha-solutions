@@ -42,7 +42,7 @@ def test_gemini_response():
         # Create Gemini chatbot
         chatbot_payload = {
             "name": "Debug Gemini Bot",
-            "model": "gemini-1.5-pro",
+            "model": "gemini-2.0-flash",
             "provider": "gemini",
             "temperature": 0.7,
             "instructions": "You are a helpful assistant. Always use the provided knowledge base to answer questions.",
