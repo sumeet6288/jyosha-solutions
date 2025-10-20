@@ -4,7 +4,7 @@ from models import User, Plan, PlanUpgradeRequest
 from services.plan_service import plan_service
 from auth import get_mock_user
 
-router = APIRouter(prefix="/api/plans", tags=["plans"])
+router = APIRouter(prefix="/plans", tags=["plans"])
 
 @router.get("/", response_model=List[dict])
 async def get_plans():
