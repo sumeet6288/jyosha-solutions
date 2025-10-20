@@ -255,17 +255,23 @@ const ChatbotBuilder = () => {
                       style={{ animationDelay: `${index * 50}ms` }}
                     >
                       <div className="flex items-center gap-3">
-                        {source.type === 'file' && <FileText className="w-5 h-5 text-gray-600" />}
-                        {source.type === 'website' && <Globe className="w-5 h-5 text-gray-600" />}
-                        {source.type === 'text' && <FileText className="w-5 h-5 text-gray-600" />}
+                        <div className={`p-3 rounded-xl shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 ${
+                          source.type === 'file' ? 'bg-gradient-to-br from-blue-500 to-cyan-600 shadow-blue-500/30' :
+                          source.type === 'website' ? 'bg-gradient-to-br from-green-500 to-emerald-600 shadow-green-500/30' :
+                          'bg-gradient-to-br from-purple-500 to-pink-600 shadow-purple-500/30'
+                        }`}>
+                          {source.type === 'file' && <FileText className="w-5 h-5 text-white" />}
+                          {source.type === 'website' && <Globe className="w-5 h-5 text-white" />}
+                          {source.type === 'text' && <FileText className="w-5 h-5 text-white" />}
+                        </div>
                         <div>
-                          <p className="font-medium">{source.name}</p>
+                          <p className="font-semibold text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300">{source.name}</p>
                           <div className="flex items-center gap-3 text-sm text-gray-600">
                             {source.size && <span>{source.size}</span>}
-                            <span className={`px-2 py-0.5 rounded-full text-xs ${
-                              source.status === 'processed' ? 'bg-green-100 text-green-700' :
-                              source.status === 'processing' ? 'bg-yellow-100 text-yellow-700' :
-                              'bg-red-100 text-red-700'
+                            <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                              source.status === 'processed' ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-sm shadow-green-500/30' :
+                              source.status === 'processing' ? 'bg-gradient-to-r from-yellow-500 to-orange-600 text-white shadow-sm shadow-yellow-500/30' :
+                              'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-sm shadow-red-500/30'
                             }`}>
                               {source.status}
                             </span>
@@ -280,8 +286,9 @@ const ChatbotBuilder = () => {
                           setSourceToDelete(source);
                           setIsDeleteModalOpen(true);
                         }}
+                        className="hover:bg-red-50 hover:text-red-600 transition-colors group"
                       >
-                        <Trash2 className="w-4 h-4 text-red-600" />
+                        <Trash2 className="w-4 h-4 group-hover:scale-110 transition-transform" />
                       </Button>
                     </div>
                   ))}
