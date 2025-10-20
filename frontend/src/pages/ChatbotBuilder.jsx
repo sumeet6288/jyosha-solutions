@@ -429,10 +429,13 @@ const ChatbotBuilder = () => {
                           rows={3}
                           className="font-mono text-xs bg-white"
                         />
-                        <Button className="mt-2 w-full" onClick={() => {
-                          navigator.clipboard.writeText(embedCode);
-                          toast({ title: 'Copied!', description: 'Iframe code copied to clipboard' });
-                        }}>
+                        <Button 
+                          className="mt-2 w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/30 transform hover:scale-105 transition-all duration-300" 
+                          onClick={() => {
+                            navigator.clipboard.writeText(embedCode);
+                            toast({ title: 'Copied!', description: 'Iframe code copied to clipboard' });
+                          }}
+                        >
                           Copy Iframe Code
                         </Button>
                       </div>
