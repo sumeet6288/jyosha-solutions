@@ -58,6 +58,18 @@ const Dashboard = () => {
 
   const handleCreateChatbot = async () => {
     try {
+      // Check chatbot limit first
+      const limitCheck = await plansAPI.checkLimit('chatbots');
+      if (limitCheck.data.reached) {
+        setUpgradeContext({
+          limitType: 'chatbots',
+          currentUsage: limitCheck.data.current,
+          maxUsage: limitCheck.data.max
+        });
+        setShowUpgradeModal(true);
+        return;
+      }
+
       const newChatbot = await chatbotAPI.create({
         name: 'New Chatbot',
         model: 'gpt-4o-mini',
