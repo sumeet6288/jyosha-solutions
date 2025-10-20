@@ -7,6 +7,7 @@ from models import (
     ConversationResponse, MessageResponse
 )
 from services.chat_service import ChatService
+from services.plan_service import plan_service
 import logging
 
 logger = logging.getLogger(__name__)
