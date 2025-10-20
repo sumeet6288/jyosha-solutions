@@ -602,7 +602,7 @@ const ChatbotBuilder = () => {
 
           {/* Analytics Tab */}
           <TabsContent value="analytics" className="animate-fade-in-up">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-8 shadow-xl">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-8 shadow-xl mb-6">
               <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">Chatbot Analytics</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="group p-6 border-2 border-purple-200/50 rounded-xl hover:border-purple-400 hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-500 transform hover:-translate-y-2 bg-gradient-to-r from-white to-purple-50/30">
@@ -618,6 +618,143 @@ const ChatbotBuilder = () => {
                   <p className="text-4xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">{sources.length}</p>
                 </div>
               </div>
+            </div>
+
+            {/* Chat Logs Section */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-8 shadow-xl">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">Chat Logs</h2>
+                <Button
+                  onClick={loadConversations}
+                  disabled={loadingConversations}
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+                >
+                  {loadingConversations ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Loading...
+                    </>
+                  ) : (
+                    <>
+                      <MessageSquare className="w-4 h-4 mr-2" />
+                      Load Chat Logs
+                    </>
+                  )}
+                </Button>
+              </div>
+
+              {conversations.length === 0 && !loadingConversations && (
+                <div className="text-center py-16">
+                  <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <MessageSquare className="w-10 h-10 text-purple-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">No conversations yet</h3>
+                  <p className="text-gray-600">Chat logs will appear here once users start conversations</p>
+                </div>
+              )}
+
+              {conversations.length > 0 && (
+                <div className="space-y-4">
+                  {conversations.map((conversation) => (
+                    <div
+                      key={conversation.id}
+                      className="border-2 border-gray-200 rounded-xl overflow-hidden hover:border-purple-300 transition-all duration-300"
+                    >
+                      {/* Conversation Header */}
+                      <div
+                        onClick={() => toggleConversation(conversation.id)}
+                        className="flex items-center justify-between p-4 bg-gradient-to-r from-white to-purple-50/30 cursor-pointer hover:from-purple-50/50 hover:to-pink-50/50 transition-all"
+                      >
+                        <div className="flex items-center gap-4 flex-1">
+                          <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
+                            <User className="w-6 h-6 text-white" />
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3">
+                              <h3 className="font-semibold text-gray-900">
+                                {conversation.user_name || 'Anonymous User'}
+                              </h3>
+                              <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                                conversation.status === 'active' 
+                                  ? 'bg-green-100 text-green-700' 
+                                  : conversation.status === 'resolved'
+                                  ? 'bg-blue-100 text-blue-700'
+                                  : 'bg-orange-100 text-orange-700'
+                              }`}>
+                                {conversation.status}
+                              </span>
+                            </div>
+                            {conversation.user_email && (
+                              <p className="text-sm text-gray-500 mt-1">{conversation.user_email}</p>
+                            )}
+                            <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+                              <span className="flex items-center gap-1">
+                                <MessageSquare className="w-4 h-4" />
+                                {conversation.messages_count} messages
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="w-4 h-4" />
+                                {formatDate(conversation.updated_at)}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="ml-4">
+                          {selectedConversation === conversation.id ? (
+                            <ChevronUp className="w-5 h-5 text-purple-600" />
+                          ) : (
+                            <ChevronDown className="w-5 h-5 text-gray-400" />
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Messages - Expanded View */}
+                      {selectedConversation === conversation.id && (
+                        <div className="border-t-2 border-gray-200 p-6 bg-gray-50/50">
+                          {loadingMessages ? (
+                            <div className="flex items-center justify-center py-8">
+                              <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
+                            </div>
+                          ) : messages.length === 0 ? (
+                            <p className="text-center text-gray-500 py-4">No messages in this conversation</p>
+                          ) : (
+                            <div className="space-y-4">
+                              {messages.map((message) => (
+                                <div
+                                  key={message.id}
+                                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                                >
+                                  <div
+                                    className={`max-w-[70%] rounded-2xl p-4 ${
+                                      message.role === 'user'
+                                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30'
+                                        : 'bg-white border-2 border-gray-200 text-gray-900'
+                                    }`}
+                                  >
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <span className={`text-xs font-semibold ${
+                                        message.role === 'user' ? 'text-purple-100' : 'text-gray-500'
+                                      }`}>
+                                        {message.role === 'user' ? 'User' : 'Assistant'}
+                                      </span>
+                                      <span className={`text-xs ${
+                                        message.role === 'user' ? 'text-purple-100' : 'text-gray-400'
+                                      }`}>
+                                        {formatDate(message.timestamp)}
+                                      </span>
+                                    </div>
+                                    <p className="whitespace-pre-wrap break-words">{message.content}</p>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </TabsContent>
         </Tabs>
