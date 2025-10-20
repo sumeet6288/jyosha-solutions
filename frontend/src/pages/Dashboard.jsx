@@ -26,13 +26,15 @@ const Dashboard = () => {
   const loadData = async () => {
     try {
       setLoading(true);
-      const [chatbotsResponse, analyticsResponse] = await Promise.all([
+      const [chatbotsResponse, analyticsResponse, usageResponse] = await Promise.all([
         chatbotAPI.list(),
-        analyticsAPI.getDashboard()
+        analyticsAPI.getDashboard(),
+        plansAPI.getUsageStats()
       ]);
       
       setChatbots(chatbotsResponse.data);
       setAnalytics(analyticsResponse.data);
+      setUsageStats(usageResponse.data);
     } catch (error) {
       console.error('Error loading dashboard data:', error);
       toast({
