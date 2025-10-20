@@ -404,10 +404,10 @@ const ChatbotBuilder = () => {
           </TabsContent>
 
           {/* Widget Tab */}
-          <TabsContent value="widget">
+          <TabsContent value="widget" className="animate-fade-in-up">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Configuration Panel */}
-              <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-6 shadow-xl space-y-6">
                 <div>
                   <h2 className="text-xl font-bold mb-2">Embed Your Chatbot</h2>
                   <p className="text-gray-600 text-sm">Choose how you want to integrate the chatbot into your website</p>
