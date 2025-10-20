@@ -312,6 +312,15 @@ const Dashboard = () => {
           )}
         </div>
       </div>
+
+      {/* Upgrade Modal */}
+      <UpgradeModal 
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        limitType={upgradeContext.limitType}
+        currentUsage={upgradeContext.currentUsage}
+        maxUsage={upgradeContext.maxUsage}
+      />
     </div>
   );
 };
