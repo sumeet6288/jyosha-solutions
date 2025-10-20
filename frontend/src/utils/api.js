@@ -103,4 +103,14 @@ export const analyticsAPI = {
   getChatbot: (chatbotId, days = 30) => api.get(`/analytics/chatbot/${chatbotId}?days=${days}`),
 };
 
+// Plans APIs
+export const plansAPI = {
+  getAllPlans: () => api.get('/plans/'),
+  getCurrentSubscription: () => api.get('/plans/current'),
+  upgradePlan: (planId) => api.post('/plans/upgrade', { new_plan_id: planId }),
+  getUsageStats: () => api.get('/plans/usage'),
+  checkLimit: (limitType) => api.get(`/plans/check-limit/${limitType}`),
+};
+
+
 export default api;
