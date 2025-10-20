@@ -111,6 +111,61 @@ const ChatbotBuilder = () => {
     setSourceToDelete(null);
   };
 
+  const loadConversations = async () => {
+    try {
+      setLoadingConversations(true);
+      const response = await chatAPI.getConversations(id);
+      setConversations(response.data);
+    } catch (error) {
+      console.error('Error loading conversations:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load chat logs',
+        variant: 'destructive'
+      });
+    } finally {
+      setLoadingConversations(false);
+    }
+  };
+
+  const loadMessages = async (conversationId) => {
+    try {
+      setLoadingMessages(true);
+      const response = await chatAPI.getMessages(conversationId);
+      setMessages(response.data);
+      setSelectedConversation(conversationId);
+    } catch (error) {
+      console.error('Error loading messages:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load messages',
+        variant: 'destructive'
+      });
+    } finally {
+      setLoadingMessages(false);
+    }
+  };
+
+  const toggleConversation = (conversationId) => {
+    if (selectedConversation === conversationId) {
+      setSelectedConversation(null);
+      setMessages([]);
+    } else {
+      loadMessages(conversationId);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
   const handleDeleteChatbot = async () => {
     try {
       await chatbotAPI.delete(id);
