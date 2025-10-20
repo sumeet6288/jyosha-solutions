@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List
-from models.user import User
-from models.plan import Plan, UserSubscription, PlanUpgradeRequest
+from models import User, Plan, PlanUpgradeRequest
 from services.plan_service import plan_service
 from routers.auth import get_current_user
 
