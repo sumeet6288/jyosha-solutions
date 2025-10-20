@@ -143,8 +143,11 @@ const ChatbotBuilder = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-12 h-12 animate-spin text-gray-600" />
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50 flex items-center justify-center">
+        <div className="relative">
+          <div className="w-20 h-20 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+          <div className="absolute inset-0 w-20 h-20 border-4 border-transparent border-t-pink-600 rounded-full animate-spin animation-delay-300"></div>
+        </div>
       </div>
     );
   }
@@ -157,22 +160,32 @@ const ChatbotBuilder = () => {
   const embedCode = `<iframe src="${window.location.origin}/embed/${chatbot.id}" width="100%" height="600px" frameborder="0"></iframe>`;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-2000"></div>
+      </div>
+
       {/* Top Navigation */}
-      <nav className="bg-white border-b border-gray-200">
-        <div className="px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <Button variant="ghost" onClick={() => navigate('/dashboard')}>
-              <ArrowLeft className="w-5 h-5" />
+      <nav className="bg-white/80 backdrop-blur-lg border-b border-purple-200/50 sticky top-0 z-50 shadow-sm">
+        <div className="px-6 py-4 flex items-center justify-between max-w-7xl mx-auto">
+          <div className="flex items-center gap-6 animate-fade-in-right">
+            <Button variant="ghost" onClick={() => navigate('/dashboard')} className="group hover:bg-purple-50 transition-all duration-300">
+              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
             </Button>
             <div>
-              <h1 className="text-xl font-semibold">{chatbot.name}</h1>
-              <p className="text-sm text-gray-600">Chatbot ID: {chatbot.id}</p>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">{chatbot.name}</h1>
+              <p className="text-xs text-gray-500">ID: {chatbot.id}</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <Button variant="outline" onClick={() => setIsPreviewModalOpen(true)}>
-              <MessageSquare className="w-4 h-4 mr-2" />
+          <div className="flex items-center gap-4 animate-fade-in">
+            <Button 
+              variant="outline" 
+              onClick={() => setIsPreviewModalOpen(true)}
+              className="border-2 border-purple-300 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 hover:text-white hover:border-transparent transition-all duration-300 transform hover:scale-105 group"
+            >
+              <MessageSquare className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
               Preview
             </Button>
             <UserProfileDropdown user={user} onLogout={handleLogout} />
