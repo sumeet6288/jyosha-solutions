@@ -161,6 +161,19 @@ async def add_website_source(
 ):
     """Add a website as a training source"""
     try:
+        # Check plan limits for website sources
+        limit_check = await plan_service.check_limit(current_user.id, "website_sources")
+        if limit_check["reached"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail={
+                    "message": "Website source limit reached for your plan",
+                    "current": limit_check["current"],
+                    "max": limit_check["max"],
+                    "upgrade_required": True
+                }
+            )
+        
         # Verify ownership
         await verify_chatbot_ownership(chatbot_id, current_user.id)
         
@@ -173,6 +186,10 @@ async def add_website_source(
             status="processing"
         )
         
+        await db_instance.sources.insert_one(source.model_dump())
+        
+        # Increment usage count
+        await plan_service.increment_usage(current_user.id, "website_sources")
         await db_instance.sources.insert_one(source.model_dump())
         
         # Scrape website in background
