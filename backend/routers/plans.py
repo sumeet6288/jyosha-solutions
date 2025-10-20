@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 from models import User, Plan, PlanUpgradeRequest
 from services.plan_service import plan_service
-from routers.auth import get_current_user
+from auth import get_mock_user
 
 router = APIRouter(prefix="/api/plans", tags=["plans"])
 
