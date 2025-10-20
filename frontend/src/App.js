@@ -37,6 +37,7 @@ function AppContent() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/integrations" element={<Integrations />} />
+          <Route path="/subscription" element={<Subscription />} />
           <Route path="/account-settings" element={<AccountSettings />} />
           <Route path="/chatbot/:id" element={<ChatbotBuilder />} />
           <Route path="/embed/:id" element={<EmbedChat />} />
