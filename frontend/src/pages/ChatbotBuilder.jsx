@@ -298,8 +298,8 @@ const ChatbotBuilder = () => {
           </TabsContent>
 
           {/* Settings Tab */}
-          <TabsContent value="settings">
-            <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
+          <TabsContent value="settings" className="animate-fade-in-up">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-8 shadow-xl space-y-6">
               <div>
                 <h2 className="text-xl font-bold mb-4">Chatbot Settings</h2>
               </div>
