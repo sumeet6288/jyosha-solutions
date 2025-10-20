@@ -243,6 +243,19 @@ async def add_text_source(
 ):
     """Add text content as a training source"""
     try:
+        # Check plan limits for text sources
+        limit_check = await plan_service.check_limit(current_user.id, "text_sources")
+        if limit_check["reached"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail={
+                    "message": "Text source limit reached for your plan",
+                    "current": limit_check["current"],
+                    "max": limit_check["max"],
+                    "upgrade_required": True
+                }
+            )
+        
         # Verify ownership
         await verify_chatbot_ownership(chatbot_id, current_user.id)
         
@@ -256,6 +269,9 @@ async def add_text_source(
         )
         
         await db_instance.sources.insert_one(source.model_dump())
+        
+        # Increment usage count
+        await plan_service.increment_usage(current_user.id, "text_sources")
         
         # Update chatbot last_trained timestamp
         await db_instance.chatbots.update_one(
