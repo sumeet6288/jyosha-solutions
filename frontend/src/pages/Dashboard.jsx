@@ -4,6 +4,7 @@ import { Button } from '../components/ui/button';
 import { Plus, MessageSquare, Activity, TrendingUp, BarChart3, CreditCard, Sparkles, Menu, X } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import UserProfileDropdown from '../components/UserProfileDropdown';
+import ResponsiveNav from '../components/ResponsiveNav';
 import { useAuth } from '../contexts/AuthContext';
 import { chatbotAPI, analyticsAPI, plansAPI } from '../utils/api';
 import UpgradeModal from '../components/UpgradeModal';
