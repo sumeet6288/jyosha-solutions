@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { Plus, MessageSquare, Activity, TrendingUp, BarChart3, CreditCard } from 'lucide-react';
+import { Plus, MessageSquare, Activity, TrendingUp, BarChart3, CreditCard, Sparkles } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import UserProfileDropdown from '../components/UserProfileDropdown';
 import { useAuth } from '../contexts/AuthContext';
@@ -97,32 +97,52 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50 flex items-center justify-center">
+        <div className="relative">
+          <div className="w-20 h-20 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+          <div className="absolute inset-0 w-20 h-20 border-4 border-transparent border-t-pink-600 rounded-full animate-spin animation-delay-300"></div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-4000"></div>
+      </div>
+
       {/* Top Navigation */}
-      <nav className="bg-white border-b border-gray-200">
-        <div className="px-6 py-4 flex items-center justify-between">
+      <nav className="bg-white/80 backdrop-blur-lg border-b border-gray-200/50 sticky top-0 z-50 shadow-sm">
+        <div className="px-6 py-4 flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center gap-8">
-            <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/dashboard')}>
-              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+            <div className="flex items-center gap-2 cursor-pointer group" onClick={() => navigate('/dashboard')}>
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-purple-500/30">
                 <span className="text-white font-bold text-lg">C</span>
               </div>
-              <span className="text-xl font-semibold">Chatbase</span>
+              <span className="text-xl font-semibold bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">Chatbase</span>
             </div>
             <div className="flex items-center gap-6">
-              <button className="text-black font-medium">Chatbots</button>
-              <button onClick={() => navigate('/analytics')} className="text-gray-600 hover:text-black transition-colors">Analytics</button>
-              <button onClick={() => navigate('/subscription')} className="text-gray-600 hover:text-black transition-colors flex items-center gap-2">
+              <button className="text-purple-600 font-semibold relative group">
+                Chatbots
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 transform scale-x-100 transition-transform"></span>
+              </button>
+              <button onClick={() => navigate('/analytics')} className="text-gray-600 hover:text-purple-600 transition-colors font-medium relative group">
+                Analytics
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
+              </button>
+              <button onClick={() => navigate('/subscription')} className="text-gray-600 hover:text-purple-600 transition-colors flex items-center gap-2 font-medium relative group">
                 <CreditCard className="w-4 h-4" />
                 Subscription
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
               </button>
-              <button onClick={() => navigate('/integrations')} className="text-gray-600 hover:text-black transition-colors">Integrations</button>
+              <button onClick={() => navigate('/integrations')} className="text-gray-600 hover:text-purple-600 transition-colors font-medium relative group">
+                Integrations
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
+              </button>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -131,144 +151,125 @@ const Dashboard = () => {
         </div>
       </nav>
 
-      <div className="p-6 max-w-7xl mx-auto">
+      <div className="p-6 max-w-7xl mx-auto relative z-10">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
-            <div className="flex items-center justify-between mb-2">
-              <MessageSquare className="w-8 h-8 text-gray-600" />
+          <div className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-purple-200/50 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 transform hover:-translate-y-2 animate-fade-in-up overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-pink-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+            <div className="flex items-center justify-between mb-2 relative z-10">
+              <div className="p-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg shadow-purple-500/30 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                <MessageSquare className="w-6 h-6 text-white" />
+              </div>
             </div>
-            <p className="text-3xl font-bold">{analytics?.total_conversations?.toLocaleString() || 0}</p>
-            <p className="text-gray-600 text-sm mt-1">Total Conversations</p>
+            <p className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{analytics?.total_conversations?.toLocaleString() || 0}</p>
+            <p className="text-gray-600 text-sm mt-2 font-medium">Total Conversations</p>
           </div>
           
-          <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
-            <div className="flex items-center justify-between mb-2">
-              <Activity className="w-8 h-8 text-gray-600" />
+          <div className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-blue-200/50 hover:border-blue-400 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 transform hover:-translate-y-2 animate-fade-in-up animation-delay-300 overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-cyan-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+            <div className="flex items-center justify-between mb-2 relative z-10">
+              <div className="p-3 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl shadow-lg shadow-blue-500/30 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                <Activity className="w-6 h-6 text-white" />
+              </div>
             </div>
-            <p className="text-3xl font-bold">{analytics?.total_messages?.toLocaleString() || 0}</p>
-            <p className="text-gray-600 text-sm mt-1">Total Messages</p>
+            <p className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">{analytics?.total_messages?.toLocaleString() || 0}</p>
+            <p className="text-gray-600 text-sm mt-2 font-medium">Total Messages</p>
           </div>
           
-          <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
-            <div className="flex items-center justify-between mb-2">
-              <TrendingUp className="w-8 h-8 text-gray-600" />
+          <div className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-green-200/50 hover:border-green-400 hover:shadow-2xl hover:shadow-green-500/20 transition-all duration-500 transform hover:-translate-y-2 animate-fade-in-up animation-delay-500 overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-green-600 to-emerald-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+            <div className="flex items-center justify-between mb-2 relative z-10">
+              <div className="p-3 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl shadow-lg shadow-green-500/30 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                <TrendingUp className="w-6 h-6 text-white" />
+              </div>
             </div>
-            <p className="text-3xl font-bold">{analytics?.active_chatbots || 0}</p>
-            <p className="text-gray-600 text-sm mt-1">Active Chatbots</p>
+            <p className="text-4xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">{analytics?.active_chatbots || 0}</p>
+            <p className="text-gray-600 text-sm mt-2 font-medium">Active Chatbots</p>
           </div>
           
-          <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
-            <div className="flex items-center justify-between mb-2">
-              <BarChart3 className="w-8 h-8 text-gray-600" />
+          <div className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-orange-200/50 hover:border-orange-400 hover:shadow-2xl hover:shadow-orange-500/20 transition-all duration-500 transform hover:-translate-y-2 animate-fade-in-up animation-delay-700 overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-600 to-pink-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+            <div className="flex items-center justify-between mb-2 relative z-10">
+              <div className="p-3 bg-gradient-to-br from-orange-500 to-pink-600 rounded-xl shadow-lg shadow-orange-500/30 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                <BarChart3 className="w-6 h-6 text-white" />
+              </div>
             </div>
-            <p className="text-3xl font-bold">{analytics?.total_chatbots || 0}</p>
-            <p className="text-gray-600 text-sm mt-1">Total Chatbots</p>
+            <p className="text-4xl font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">{analytics?.total_chatbots || 0}</p>
+            <p className="text-gray-600 text-sm mt-2 font-medium">Total Chatbots</p>
           </div>
         </div>
 
         {/* Plan Usage Widget */}
         {usageStats && (
-          <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl border-2 border-purple-200 p-6 mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900">{usageStats.plan?.name} Plan</h3>
-                <p className="text-sm text-gray-600">Current usage overview</p>
-              </div>
-              <Button
-                onClick={() => navigate('/subscription')}
-                className="bg-gradient-to-r from-purple-600 to-blue-600 text-white"
-              >
-                View Details
-              </Button>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              <div className="bg-white rounded-lg p-4">
-                <p className="text-xs text-gray-600 mb-1">Chatbots</p>
-                <p className="text-xl font-bold text-gray-900">
-                  {usageStats.usage?.chatbots?.current}/{usageStats.usage?.chatbots?.limit === 999999 ? '∞' : usageStats.usage?.chatbots?.limit}
-                </p>
-                <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
-                  <div 
-                    className={`h-1.5 rounded-full ${usageStats.usage?.chatbots?.percentage >= 90 ? 'bg-red-500' : usageStats.usage?.chatbots?.percentage >= 75 ? 'bg-orange-500' : 'bg-green-500'}`}
-                    style={{ width: `${Math.min(usageStats.usage?.chatbots?.percentage || 0, 100)}%` }}
-                  />
+          <div className="bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 rounded-2xl border-2 border-white/50 p-1 mb-8 animate-fade-in-up shadow-2xl">
+            <div className="bg-white/95 backdrop-blur-sm rounded-xl p-6">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Sparkles className="w-5 h-5 text-purple-600" />
+                    <h3 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{usageStats.plan?.name} Plan</h3>
+                  </div>
+                  <p className="text-sm text-gray-600">Current usage overview</p>
                 </div>
+                <Button
+                  onClick={() => navigate('/subscription')}
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/30 transform hover:scale-105 transition-all duration-300"
+                >
+                  View Details
+                </Button>
               </div>
-              <div className="bg-white rounded-lg p-4">
-                <p className="text-xs text-gray-600 mb-1">Messages</p>
-                <p className="text-xl font-bold text-gray-900">
-                  {usageStats.usage?.messages?.current}/{usageStats.usage?.messages?.limit === 999999999 ? '∞' : usageStats.usage?.messages?.limit?.toLocaleString()}
-                </p>
-                <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
-                  <div 
-                    className={`h-1.5 rounded-full ${usageStats.usage?.messages?.percentage >= 90 ? 'bg-red-500' : usageStats.usage?.messages?.percentage >= 75 ? 'bg-orange-500' : 'bg-green-500'}`}
-                    style={{ width: `${Math.min(usageStats.usage?.messages?.percentage || 0, 100)}%` }}
-                  />
-                </div>
-              </div>
-              <div className="bg-white rounded-lg p-4">
-                <p className="text-xs text-gray-600 mb-1">Files</p>
-                <p className="text-xl font-bold text-gray-900">
-                  {usageStats.usage?.file_uploads?.current}/{usageStats.usage?.file_uploads?.limit === 999999 ? '∞' : usageStats.usage?.file_uploads?.limit}
-                </p>
-                <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
-                  <div 
-                    className={`h-1.5 rounded-full ${usageStats.usage?.file_uploads?.percentage >= 90 ? 'bg-red-500' : usageStats.usage?.file_uploads?.percentage >= 75 ? 'bg-orange-500' : 'bg-green-500'}`}
-                    style={{ width: `${Math.min(usageStats.usage?.file_uploads?.percentage || 0, 100)}%` }}
-                  />
-                </div>
-              </div>
-              <div className="bg-white rounded-lg p-4">
-                <p className="text-xs text-gray-600 mb-1">Websites</p>
-                <p className="text-xl font-bold text-gray-900">
-                  {usageStats.usage?.website_sources?.current}/{usageStats.usage?.website_sources?.limit === 999999 ? '∞' : usageStats.usage?.website_sources?.limit}
-                </p>
-                <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
-                  <div 
-                    className={`h-1.5 rounded-full ${usageStats.usage?.website_sources?.percentage >= 90 ? 'bg-red-500' : usageStats.usage?.website_sources?.percentage >= 75 ? 'bg-orange-500' : 'bg-green-500'}`}
-                    style={{ width: `${Math.min(usageStats.usage?.website_sources?.percentage || 0, 100)}%` }}
-                  />
-                </div>
-              </div>
-              <div className="bg-white rounded-lg p-4">
-                <p className="text-xs text-gray-600 mb-1">Text Sources</p>
-                <p className="text-xl font-bold text-gray-900">
-                  {usageStats.usage?.text_sources?.current}/{usageStats.usage?.text_sources?.limit === 999999 ? '∞' : usageStats.usage?.text_sources?.limit}
-                </p>
-                <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
-                  <div 
-                    className={`h-1.5 rounded-full ${usageStats.usage?.text_sources?.percentage >= 90 ? 'bg-red-500' : usageStats.usage?.text_sources?.percentage >= 75 ? 'bg-orange-500' : 'bg-green-500'}`}
-                    style={{ width: `${Math.min(usageStats.usage?.text_sources?.percentage || 0, 100)}%` }}
-                  />
-                </div>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                {[
+                  { label: 'Chatbots', current: usageStats.usage?.chatbots?.current, limit: usageStats.usage?.chatbots?.limit, percentage: usageStats.usage?.chatbots?.percentage },
+                  { label: 'Messages', current: usageStats.usage?.messages?.current, limit: usageStats.usage?.messages?.limit, percentage: usageStats.usage?.messages?.percentage },
+                  { label: 'Files', current: usageStats.usage?.file_uploads?.current, limit: usageStats.usage?.file_uploads?.limit, percentage: usageStats.usage?.file_uploads?.percentage },
+                  { label: 'Websites', current: usageStats.usage?.website_sources?.current, limit: usageStats.usage?.website_sources?.limit, percentage: usageStats.usage?.website_sources?.percentage },
+                  { label: 'Text Sources', current: usageStats.usage?.text_sources?.current, limit: usageStats.usage?.text_sources?.limit, percentage: usageStats.usage?.text_sources?.percentage }
+                ].map((item, index) => (
+                  <div key={index} className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200/50 hover:border-purple-400 hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    <p className="text-xs text-gray-600 mb-1 font-medium">{item.label}</p>
+                    <p className="text-xl font-bold text-gray-900">
+                      {item.current}/{item.limit === 999999 || item.limit === 999999999 ? '∞' : item.limit?.toLocaleString()}
+                    </p>
+                    <div className="mt-2 w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                      <div 
+                        className={`h-2 rounded-full transition-all duration-500 ${
+                          item.percentage >= 90 ? 'bg-gradient-to-r from-red-500 to-red-600' : 
+                          item.percentage >= 75 ? 'bg-gradient-to-r from-orange-500 to-orange-600' : 
+                          'bg-gradient-to-r from-green-500 to-emerald-600'
+                        }`}
+                        style={{ width: `${Math.min(item.percentage || 0, 100)}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         )}
 
         {/* Chatbots Section */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-purple-200/50 p-8 shadow-xl animate-fade-in-up">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Your Chatbots</h2>
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">Your Chatbots</h2>
             <Button 
-              className="bg-black hover:bg-gray-800 text-white"
+              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/30 transform hover:scale-105 transition-all duration-300 group"
               onClick={handleCreateChatbot}
             >
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 mr-2 group-hover:rotate-90 transition-transform duration-300" />
               New Chatbot
             </Button>
           </div>
           
           {chatbots.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <MessageSquare className="w-8 h-8 text-gray-400" />
+            <div className="text-center py-16 animate-fade-in">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-4 transform hover:scale-110 transition-transform duration-300">
+                <MessageSquare className="w-10 h-10 text-purple-600" />
               </div>
-              <h3 className="text-lg font-semibold mb-2">No chatbots yet</h3>
+              <h3 className="text-xl font-semibold mb-2 text-gray-900">No chatbots yet</h3>
               <p className="text-gray-600 mb-6">Create your first AI chatbot to get started</p>
               <Button 
-                className="bg-black hover:bg-gray-800 text-white"
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/30 transform hover:scale-105 transition-all duration-300"
                 onClick={handleCreateChatbot}
               >
                 <Plus className="w-4 h-4 mr-2" />
@@ -277,32 +278,43 @@ const Dashboard = () => {
             </div>
           ) : (
             <div className="grid gap-4">
-              {chatbots.map((bot) => (
+              {chatbots.map((bot, index) => (
                 <div 
                   key={bot.id} 
-                  className="p-6 border border-gray-200 rounded-xl hover:border-gray-300 hover:shadow-md transition-all cursor-pointer"
+                  className="group p-6 border-2 border-purple-200/50 rounded-2xl hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 cursor-pointer bg-gradient-to-r from-white to-purple-50/30 transform hover:-translate-y-1 animate-fade-in-up"
+                  style={{ animationDelay: `${index * 100}ms` }}
                   onClick={() => navigate(`/chatbot/${bot.id}`)}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-lg font-semibold">{bot.name}</h3>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          bot.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                      <div className="flex items-center gap-3 mb-3">
+                        <h3 className="text-xl font-bold text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300">{bot.name}</h3>
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                          bot.status === 'active' ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/30' : 'bg-gray-200 text-gray-700'
                         }`}>
                           {bot.status}
                         </span>
                       </div>
                       <div className="flex items-center gap-6 text-sm text-gray-600">
-                        <span>{bot.conversations_count?.toLocaleString() || 0} conversations</span>
-                        <span>{bot.messages_count?.toLocaleString() || 0} messages</span>
-                        <span>Model: {bot.model}</span>
+                        <span className="flex items-center gap-1">
+                          <MessageSquare className="w-4 h-4" />
+                          <strong>{bot.conversations_count?.toLocaleString() || 0}</strong> conversations
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Activity className="w-4 h-4" />
+                          <strong>{bot.messages_count?.toLocaleString() || 0}</strong> messages
+                        </span>
+                        <span className="font-medium">Model: <strong className="text-purple-600">{bot.model}</strong></span>
                         {bot.last_trained && (
                           <span>Last trained: {new Date(bot.last_trained).toLocaleDateString()}</span>
                         )}
                       </div>
                     </div>
-                    <Button variant="outline" onClick={(e) => { e.stopPropagation(); navigate(`/chatbot/${bot.id}`); }}>
+                    <Button 
+                      variant="outline" 
+                      onClick={(e) => { e.stopPropagation(); navigate(`/chatbot/${bot.id}`); }}
+                      className="border-2 border-purple-300 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 hover:text-white hover:border-transparent transition-all duration-300 transform group-hover:scale-105"
+                    >
                       Manage
                     </Button>
                   </div>
