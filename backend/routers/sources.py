@@ -6,6 +6,7 @@ from models import Source, SourceCreate, SourceResponse
 from auth import get_current_user, get_mock_user, User
 from services.document_processor import DocumentProcessor
 from services.website_scraper import WebsiteScraper
+from services.plan_service import plan_service
 import logging
 import asyncio
 
