@@ -37,8 +37,8 @@ aiohttp
 openai
 fastuuid
 PyYAML
--e jinja2
+jinja2
 anthropic
 google-generativeai
--e tiktoken
+tiktoken
 tokenizers
