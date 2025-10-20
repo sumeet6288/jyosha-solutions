@@ -193,30 +193,30 @@ const ChatbotBuilder = () => {
         </div>
       </nav>
 
-      <div className="p-6 max-w-7xl mx-auto">
+      <div className="p-6 max-w-7xl mx-auto relative z-10">
         <Tabs defaultValue="sources" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-6">
-            <TabsTrigger value="sources">
+          <TabsList className="grid w-full grid-cols-4 mb-6 bg-white/80 backdrop-blur-sm border-2 border-purple-200/50 p-1 rounded-xl shadow-lg animate-fade-in-up">
+            <TabsTrigger value="sources" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
               <FileText className="w-4 h-4 mr-2" />
               Sources
             </TabsTrigger>
-            <TabsTrigger value="settings">
+            <TabsTrigger value="settings" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
               <Settings className="w-4 h-4 mr-2" />
               Settings
             </TabsTrigger>
-            <TabsTrigger value="widget">
+            <TabsTrigger value="widget" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
               <Palette className="w-4 h-4 mr-2" />
               Widget
             </TabsTrigger>
-            <TabsTrigger value="analytics">
+            <TabsTrigger value="analytics" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
               <BarChart3 className="w-4 h-4 mr-2" />
               Analytics
             </TabsTrigger>
           </TabsList>
 
           {/* Sources Tab */}
-          <TabsContent value="sources">
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <TabsContent value="sources" className="animate-fade-in-up">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-8 shadow-xl">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="text-xl font-bold">Training Sources</h2>
