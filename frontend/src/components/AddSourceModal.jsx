@@ -7,9 +7,9 @@ import { Textarea } from './ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Upload, Link2, FileText, Loader2 } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
-import { sourceAPI } from '../utils/api';
+import { sourceAPI, plansAPI } from '../utils/api';
 
-const AddSourceModal = ({ isOpen, onClose, chatbotId, onSuccess }) => {
+const AddSourceModal = ({ isOpen, onClose, chatbotId, onSuccess, onUpgradeRequired }) => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [fileData, setFileData] = useState(null);
