@@ -219,29 +219,41 @@ const ChatbotBuilder = () => {
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-8 shadow-xl">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h2 className="text-xl font-bold">Training Sources</h2>
-                  <p className="text-gray-600 text-sm">Add data to train your chatbot</p>
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">Training Sources</h2>
+                  <p className="text-gray-600 text-sm mt-1">Add data to train your chatbot</p>
                 </div>
-                <Button onClick={() => setIsAddSourceModalOpen(true)}>
-                  <Plus className="w-4 h-4 mr-2" />
+                <Button 
+                  onClick={() => setIsAddSourceModalOpen(true)}
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/30 transform hover:scale-105 transition-all duration-300 group"
+                >
+                  <Plus className="w-4 h-4 mr-2 group-hover:rotate-90 transition-transform duration-300" />
                   Add Source
                 </Button>
               </div>
 
               {sources.length === 0 ? (
-                <div className="text-center py-12">
-                  <FileText className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-                  <h3 className="text-lg font-semibold mb-2">No sources yet</h3>
+                <div className="text-center py-16 animate-fade-in">
+                  <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-4 transform hover:scale-110 transition-transform duration-300">
+                    <FileText className="w-10 h-10 text-purple-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-gray-900">No sources yet</h3>
                   <p className="text-gray-600 mb-6">Add files, websites, or text to train your chatbot</p>
-                  <Button onClick={() => setIsAddSourceModalOpen(true)}>
+                  <Button 
+                    onClick={() => setIsAddSourceModalOpen(true)}
+                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/30 transform hover:scale-105 transition-all duration-300"
+                  >
                     <Plus className="w-4 h-4 mr-2" />
                     Add First Source
                   </Button>
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {sources.map((source) => (
-                    <div key={source.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
+                  {sources.map((source, index) => (
+                    <div 
+                      key={source.id} 
+                      className="group flex items-center justify-between p-5 border-2 border-purple-200/50 rounded-xl hover:border-purple-400 hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300 bg-gradient-to-r from-white to-purple-50/30 transform hover:-translate-y-1 animate-fade-in-up"
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
                       <div className="flex items-center gap-3">
                         {source.type === 'file' && <FileText className="w-5 h-5 text-gray-600" />}
                         {source.type === 'website' && <Globe className="w-5 h-5 text-gray-600" />}
