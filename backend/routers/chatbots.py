@@ -6,6 +6,7 @@ from models import (
     Chatbot, ChatbotCreate, ChatbotUpdate, ChatbotResponse
 )
 from auth import get_current_user, get_mock_user, User
+from services.plan_service import plan_service
 import logging
 
 logger = logging.getLogger(__name__)
