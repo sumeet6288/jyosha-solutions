@@ -195,6 +195,21 @@ backend:
         agent: "testing"
         comment: "✅ TESTED: Website scraping working correctly. Successfully scraped example.com and processed content for chatbot knowledge base. Async processing and error handling functional."
 
+  - task: "Chat logs endpoints for analytics"
+    implemented: true
+    working: true
+    file: "/app/backend/routers/chat.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Chat logs endpoints for chatbot builder analytics feature: GET /api/chat/conversations/{chatbot_id} and GET /api/chat/messages/{conversation_id}"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Chat logs endpoints working perfectly. GET /api/chat/conversations/{chatbot_id} returns proper ConversationResponse format with user info, status, message counts. GET /api/chat/messages/{conversation_id} returns MessageResponse format with role (user/assistant), content, timestamps. Both endpoints publicly accessible, handle invalid IDs gracefully, and timestamps properly formatted. Created test conversation with 8 messages (4 user, 4 assistant) for verification."
+
 frontend:
   - task: "Dashboard with real data"
     implemented: true
