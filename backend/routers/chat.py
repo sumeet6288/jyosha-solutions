@@ -42,6 +42,15 @@ async def send_message(chat_request: ChatRequest):
                 detail="Chatbot is not active"
             )
         
+        # Check message limit for chatbot owner
+        user_id = chatbot.get("user_id")
+        limit_check = await plan_service.check_limit(user_id, "messages")
+        if limit_check["reached"]:
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail="Monthly message limit reached. Please upgrade your plan to continue."
+            )
+        
         # Get or create conversation
         conversation = await db_instance.conversations.find_one({
             "chatbot_id": chat_request.chatbot_id,
