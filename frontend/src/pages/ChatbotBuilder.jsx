@@ -541,21 +541,21 @@ const ChatbotBuilder = () => {
           </TabsContent>
 
           {/* Analytics Tab */}
-          <TabsContent value="analytics">
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h2 className="text-xl font-bold mb-4">Chatbot Analytics</h2>
+          <TabsContent value="analytics" className="animate-fade-in-up">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-8 shadow-xl">
+              <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">Chatbot Analytics</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="p-4 border border-gray-200 rounded-lg">
-                  <p className="text-gray-600 text-sm">Total Conversations</p>
-                  <p className="text-3xl font-bold mt-2">{chatbot.conversations_count || 0}</p>
+                <div className="group p-6 border-2 border-purple-200/50 rounded-xl hover:border-purple-400 hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-500 transform hover:-translate-y-2 bg-gradient-to-r from-white to-purple-50/30">
+                  <p className="text-gray-600 text-sm font-medium mb-2">Total Conversations</p>
+                  <p className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{chatbot.conversations_count || 0}</p>
                 </div>
-                <div className="p-4 border border-gray-200 rounded-lg">
-                  <p className="text-gray-600 text-sm">Total Messages</p>
-                  <p className="text-3xl font-bold mt-2">{chatbot.messages_count || 0}</p>
+                <div className="group p-6 border-2 border-blue-200/50 rounded-xl hover:border-blue-400 hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-500 transform hover:-translate-y-2 bg-gradient-to-r from-white to-blue-50/30">
+                  <p className="text-gray-600 text-sm font-medium mb-2">Total Messages</p>
+                  <p className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">{chatbot.messages_count || 0}</p>
                 </div>
-                <div className="p-4 border border-gray-200 rounded-lg">
-                  <p className="text-gray-600 text-sm">Training Sources</p>
-                  <p className="text-3xl font-bold mt-2">{sources.length}</p>
+                <div className="group p-6 border-2 border-green-200/50 rounded-xl hover:border-green-400 hover:shadow-xl hover:shadow-green-500/20 transition-all duration-500 transform hover:-translate-y-2 bg-gradient-to-r from-white to-green-50/30">
+                  <p className="text-gray-600 text-sm font-medium mb-2">Training Sources</p>
+                  <p className="text-4xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">{sources.length}</p>
                 </div>
               </div>
             </div>
