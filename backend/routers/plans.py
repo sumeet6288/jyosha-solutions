@@ -17,7 +17,7 @@ async def get_plans():
     return plans
 
 @router.get("/current")
-async def get_current_subscription(current_user: User = Depends(get_current_user)):
+async def get_current_subscription(current_user: User = Depends(get_mock_user)):
     """Get current user's subscription details"""
     subscription = await plan_service.get_user_subscription(current_user.id)
     plan = await plan_service.get_plan_by_id(subscription["plan_id"])
@@ -36,7 +36,7 @@ async def get_current_subscription(current_user: User = Depends(get_current_user
 @router.post("/upgrade")
 async def upgrade_plan(
     upgrade_request: PlanUpgradeRequest,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Upgrade user to a new plan"""
     # Verify plan exists
@@ -57,7 +57,7 @@ async def upgrade_plan(
     }
 
 @router.get("/usage")
-async def get_usage_stats(current_user: User = Depends(get_current_user)):
+async def get_usage_stats(current_user: User = Depends(get_mock_user)):
     """Get detailed usage statistics"""
     stats = await plan_service.get_usage_stats(current_user.id)
     return stats
@@ -65,7 +65,7 @@ async def get_usage_stats(current_user: User = Depends(get_current_user)):
 @router.get("/check-limit/{limit_type}")
 async def check_limit(
     limit_type: str,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Check if user has reached a specific limit"""
     result = await plan_service.check_limit(current_user.id, limit_type)
