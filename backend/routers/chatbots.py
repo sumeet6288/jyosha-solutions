@@ -28,6 +28,19 @@ async def create_chatbot(
 ):
     """Create a new chatbot"""
     try:
+        # Check plan limits
+        limit_check = await plan_service.check_limit(current_user.id, "chatbots")
+        if limit_check["reached"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail={
+                    "message": "Chatbot limit reached for your plan",
+                    "current": limit_check["current"],
+                    "max": limit_check["max"],
+                    "upgrade_required": True
+                }
+            )
+        
         chatbot = Chatbot(
             user_id=current_user.id,
             name=chatbot_data.name,
@@ -40,7 +53,12 @@ async def create_chatbot(
         
         result = await db_instance.chatbots.insert_one(chatbot.model_dump())
         
+        # Increment usage count
+        await plan_service.increment_usage(current_user.id, "chatbots")
+        
         return ChatbotResponse(**chatbot.model_dump())
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Error creating chatbot: {str(e)}")
         raise HTTPException(
