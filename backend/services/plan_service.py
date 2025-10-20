@@ -1,7 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from typing import Optional, List
 from datetime import datetime, timedelta
-from models.plan import Plan, PlanLimits, UserSubscription, UsageStats
+from models import Plan, PlanLimits
 import os
 
 class PlanService:
