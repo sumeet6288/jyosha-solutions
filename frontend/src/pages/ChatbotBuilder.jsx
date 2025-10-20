@@ -531,8 +531,8 @@ const ChatbotBuilder = () => {
                     title="Chatbot Preview"
                   />
                 </div>
-                <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="text-sm text-blue-800">
+                <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-purple-300 rounded-xl shadow-sm">
+                  <p className="text-sm text-purple-800 font-medium">
                     <strong>💡 Tip:</strong> The chatbot automatically adapts to your website's style and works on all devices.
                   </p>
                 </div>
