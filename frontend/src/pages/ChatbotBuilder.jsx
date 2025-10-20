@@ -14,7 +14,7 @@ import ChatPreviewModal from '../components/ChatPreviewModal';
 import DeleteConfirmModal from '../components/DeleteConfirmModal';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../hooks/use-toast';
-import { chatbotAPI, sourceAPI } from '../utils/api';
+import { chatbotAPI, sourceAPI, chatAPI } from '../utils/api';
 import { AI_PROVIDERS, getAllModels } from '../utils/models';
 
 const ChatbotBuilder = () => {
