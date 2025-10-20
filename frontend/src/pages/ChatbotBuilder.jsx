@@ -301,22 +301,23 @@ const ChatbotBuilder = () => {
           <TabsContent value="settings" className="animate-fade-in-up">
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-8 shadow-xl space-y-6">
               <div>
-                <h2 className="text-xl font-bold mb-4">Chatbot Settings</h2>
+                <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">Chatbot Settings</h2>
               </div>
 
-              <div className="space-y-4">
-                <div>
-                  <Label>Chatbot Name</Label>
+              <div className="space-y-6">
+                <div className="group">
+                  <Label className="text-gray-700 font-medium">Chatbot Name</Label>
                   <Input
                     value={chatbot.name}
                     onChange={(e) => setChatbot({ ...chatbot, name: e.target.value })}
+                    className="mt-2 border-2 border-purple-200 focus:border-purple-600 transition-colors"
                   />
                 </div>
 
-                <div>
-                  <Label>Status</Label>
+                <div className="group">
+                  <Label className="text-gray-700 font-medium">Status</Label>
                   <Select value={chatbot.status} onValueChange={(value) => setChatbot({ ...chatbot, status: value })}>
-                    <SelectTrigger>
+                    <SelectTrigger className="mt-2 border-2 border-purple-200 focus:border-purple-600 transition-colors">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -326,16 +327,16 @@ const ChatbotBuilder = () => {
                   </Select>
                 </div>
 
-                <div>
-                  <Label>AI Model</Label>
+                <div className="group">
+                  <Label className="text-gray-700 font-medium">AI Model</Label>
                   <Select value={chatbot.model} onValueChange={handleModelChange}>
-                    <SelectTrigger>
+                    <SelectTrigger className="mt-2 border-2 border-purple-200 focus:border-purple-600 transition-colors">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {Object.entries(AI_PROVIDERS).map(([provider, data]) => (
                         <React.Fragment key={provider}>
-                          <div className="px-2 py-1.5 text-xs font-semibold text-gray-500">{data.name}</div>
+                          <div className="px-2 py-1.5 text-xs font-semibold text-purple-600">{data.name}</div>
                           {data.models.map((model) => (
                             <SelectItem key={model.value} value={model.value}>
                               {model.label}
@@ -345,46 +346,56 @@ const ChatbotBuilder = () => {
                       ))}
                     </SelectContent>
                   </Select>
-                  <p className="text-xs text-gray-500 mt-1">Provider: {chatbot.provider}</p>
+                  <p className="text-xs text-purple-600 mt-2 font-medium">Provider: {chatbot.provider}</p>
                 </div>
 
-                <div>
-                  <Label>Temperature: {chatbot.temperature}</Label>
+                <div className="group">
+                  <Label className="text-gray-700 font-medium">Temperature: {chatbot.temperature}</Label>
                   <Slider
                     value={[chatbot.temperature]}
                     onValueChange={([value]) => setChatbot({ ...chatbot, temperature: value })}
                     min={0}
                     max={1}
                     step={0.1}
-                    className="mt-2"
+                    className="mt-3"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Higher values make output more random, lower values more focused</p>
+                  <p className="text-xs text-gray-500 mt-2">Higher values make output more random, lower values more focused</p>
                 </div>
 
-                <div>
-                  <Label>System Instructions</Label>
+                <div className="group">
+                  <Label className="text-gray-700 font-medium">System Instructions</Label>
                   <Textarea
                     value={chatbot.instructions}
                     onChange={(e) => setChatbot({ ...chatbot, instructions: e.target.value })}
                     rows={6}
                     placeholder="You are a helpful assistant..."
+                    className="mt-2 border-2 border-purple-200 focus:border-purple-600 transition-colors"
                   />
                 </div>
 
-                <div>
-                  <Label>Welcome Message</Label>
+                <div className="group">
+                  <Label className="text-gray-700 font-medium">Welcome Message</Label>
                   <Input
                     value={chatbot.welcome_message}
                     onChange={(e) => setChatbot({ ...chatbot, welcome_message: e.target.value })}
                     placeholder="Hello! How can I help you today?"
+                    className="mt-2 border-2 border-purple-200 focus:border-purple-600 transition-colors"
                   />
                 </div>
 
                 <div className="flex gap-3 pt-4">
-                  <Button onClick={handleSaveSettings} disabled={saving}>
+                  <Button 
+                    onClick={handleSaveSettings} 
+                    disabled={saving}
+                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/30 transform hover:scale-105 transition-all duration-300"
+                  >
                     {saving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Saving...</> : 'Save Settings'}
                   </Button>
-                  <Button variant="destructive" onClick={handleDeleteChatbot}>
+                  <Button 
+                    variant="destructive" 
+                    onClick={handleDeleteChatbot}
+                    className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 shadow-lg shadow-red-500/30 transform hover:scale-105 transition-all duration-300"
+                  >
                     Delete Chatbot
                   </Button>
                 </div>
