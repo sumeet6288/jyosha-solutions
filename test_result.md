@@ -244,6 +244,21 @@ frontend:
         agent: "main"
         comment: "Real-time chat testing with AI responses"
 
+  - task: "Subscription page"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/Subscription.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "User reported subscription page showing nothing"
+      - working: true
+        agent: "main"
+        comment: "Fixed by adding missing route in App.js. Page now displays current plan, usage stats, and available plans with upgrade functionality"
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
