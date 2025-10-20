@@ -274,6 +274,21 @@ frontend:
         agent: "main"
         comment: "Fixed by adding missing route in App.js. Page now displays current plan, usage stats, and available plans with upgrade functionality"
 
+  - task: "Chat logs in analytics"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/ChatbotBuilder.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added comprehensive chat logs section in chatbot analytics tab with expandable conversations showing all messages"
+      - working: true
+        agent: "main"
+        comment: "Fully functional with beautiful UI matching app design. Shows user info, conversation status, message counts, timestamps, and expandable message threads with user/assistant messages clearly differentiated"
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
