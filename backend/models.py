@@ -235,3 +235,39 @@ class ChatbotAnalytics(BaseModel):
     date_range: List[date]
     conversations_by_date: dict
     messages_by_date: dict
+
+
+
+# Plan and Subscription Models
+class PlanLimits(BaseModel):
+    """Plan usage limits"""
+    max_chatbots: int = Field(description="Maximum number of chatbots")
+    max_messages_per_month: int = Field(description="Maximum messages per month")
+    max_file_uploads: int = Field(description="Maximum file uploads")
+    max_file_size_mb: int = Field(description="Maximum file size in MB")
+    max_website_sources: int = Field(description="Maximum website sources")
+    max_text_sources: int = Field(description="Maximum text sources")
+    conversation_history_days: int = Field(description="Days to keep conversation history")
+    allowed_ai_providers: List[str] = Field(default=["openai"], description="Allowed AI providers")
+    api_access: bool = Field(default=False, description="API access enabled")
+    custom_branding: bool = Field(default=False, description="Custom branding enabled")
+    analytics_level: str = Field(default="basic", description="Analytics level: basic or advanced")
+    support_level: str = Field(default="community", description="Support level")
+
+
+class Plan(BaseModel):
+    """Subscription plan model"""
+    id: str = Field(description="Plan ID (free, starter, professional, enterprise)")
+    name: str = Field(description="Plan name")
+    price: float = Field(description="Monthly price in USD (0 for free, -1 for custom)")
+    description: str = Field(description="Plan description")
+    limits: PlanLimits = Field(description="Plan limits")
+    features: List[str] = Field(default=[], description="Plan features list")
+    is_active: bool = Field(default=True, description="Is plan active")
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class PlanUpgradeRequest(BaseModel):
+    """Plan upgrade request"""
+    new_plan_id: str = Field(description="ID of the plan to upgrade to")
+
