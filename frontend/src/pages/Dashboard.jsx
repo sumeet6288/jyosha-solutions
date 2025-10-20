@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { Plus, MessageSquare, Activity, TrendingUp, BarChart3 } from 'lucide-react';
+import { Plus, MessageSquare, Activity, TrendingUp, BarChart3, CreditCard } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import UserProfileDropdown from '../components/UserProfileDropdown';
 import { useAuth } from '../contexts/AuthContext';
-import { chatbotAPI, analyticsAPI } from '../utils/api';
+import { chatbotAPI, analyticsAPI, plansAPI } from '../utils/api';
+import UpgradeModal from '../components/UpgradeModal';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -14,6 +15,9 @@ const Dashboard = () => {
   const [chatbots, setChatbots] = useState([]);
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [usageStats, setUsageStats] = useState(null);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [upgradeContext, setUpgradeContext] = useState({});
 
   useEffect(() => {
     loadData();
