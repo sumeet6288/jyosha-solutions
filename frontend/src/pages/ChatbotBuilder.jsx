@@ -442,9 +442,9 @@ const ChatbotBuilder = () => {
                     </div>
                   </div>
 
-                  <div className="p-4 border-2 border-purple-200 bg-purple-50 rounded-lg">
+                  <div className="group p-5 border-2 border-purple-300 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl hover:border-purple-500 hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300 transform hover:-translate-y-1">
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0">
+                      <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0 shadow-lg shadow-purple-500/30 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                         2
                       </div>
                       <div className="flex-1">
