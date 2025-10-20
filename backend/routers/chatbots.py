@@ -185,6 +185,9 @@ async def delete_chatbot(
         await db_instance.conversations.delete_many({"chatbot_id": chatbot_id})
         await db_instance.messages.delete_many({"chatbot_id": chatbot_id})
         
+        # Decrement usage count
+        await plan_service.decrement_usage(current_user.id, "chatbots")
+        
         return None
     except HTTPException:
         raise
