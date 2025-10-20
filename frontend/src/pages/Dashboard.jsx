@@ -155,6 +155,86 @@ const Dashboard = () => {
           </div>
         </div>
 
+        {/* Plan Usage Widget */}
+        {usageStats && (
+          <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl border-2 border-purple-200 p-6 mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">{usageStats.plan?.name} Plan</h3>
+                <p className="text-sm text-gray-600">Current usage overview</p>
+              </div>
+              <Button
+                onClick={() => navigate('/subscription')}
+                className="bg-gradient-to-r from-purple-600 to-blue-600 text-white"
+              >
+                View Details
+              </Button>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+              <div className="bg-white rounded-lg p-4">
+                <p className="text-xs text-gray-600 mb-1">Chatbots</p>
+                <p className="text-xl font-bold text-gray-900">
+                  {usageStats.usage?.chatbots?.current}/{usageStats.usage?.chatbots?.limit === 999999 ? '∞' : usageStats.usage?.chatbots?.limit}
+                </p>
+                <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
+                  <div 
+                    className={`h-1.5 rounded-full ${usageStats.usage?.chatbots?.percentage >= 90 ? 'bg-red-500' : usageStats.usage?.chatbots?.percentage >= 75 ? 'bg-orange-500' : 'bg-green-500'}`}
+                    style={{ width: `${Math.min(usageStats.usage?.chatbots?.percentage || 0, 100)}%` }}
+                  />
+                </div>
+              </div>
+              <div className="bg-white rounded-lg p-4">
+                <p className="text-xs text-gray-600 mb-1">Messages</p>
+                <p className="text-xl font-bold text-gray-900">
+                  {usageStats.usage?.messages?.current}/{usageStats.usage?.messages?.limit === 999999999 ? '∞' : usageStats.usage?.messages?.limit?.toLocaleString()}
+                </p>
+                <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
+                  <div 
+                    className={`h-1.5 rounded-full ${usageStats.usage?.messages?.percentage >= 90 ? 'bg-red-500' : usageStats.usage?.messages?.percentage >= 75 ? 'bg-orange-500' : 'bg-green-500'}`}
+                    style={{ width: `${Math.min(usageStats.usage?.messages?.percentage || 0, 100)}%` }}
+                  />
+                </div>
+              </div>
+              <div className="bg-white rounded-lg p-4">
+                <p className="text-xs text-gray-600 mb-1">Files</p>
+                <p className="text-xl font-bold text-gray-900">
+                  {usageStats.usage?.file_uploads?.current}/{usageStats.usage?.file_uploads?.limit === 999999 ? '∞' : usageStats.usage?.file_uploads?.limit}
+                </p>
+                <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
+                  <div 
+                    className={`h-1.5 rounded-full ${usageStats.usage?.file_uploads?.percentage >= 90 ? 'bg-red-500' : usageStats.usage?.file_uploads?.percentage >= 75 ? 'bg-orange-500' : 'bg-green-500'}`}
+                    style={{ width: `${Math.min(usageStats.usage?.file_uploads?.percentage || 0, 100)}%` }}
+                  />
+                </div>
+              </div>
+              <div className="bg-white rounded-lg p-4">
+                <p className="text-xs text-gray-600 mb-1">Websites</p>
+                <p className="text-xl font-bold text-gray-900">
+                  {usageStats.usage?.website_sources?.current}/{usageStats.usage?.website_sources?.limit === 999999 ? '∞' : usageStats.usage?.website_sources?.limit}
+                </p>
+                <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
+                  <div 
+                    className={`h-1.5 rounded-full ${usageStats.usage?.website_sources?.percentage >= 90 ? 'bg-red-500' : usageStats.usage?.website_sources?.percentage >= 75 ? 'bg-orange-500' : 'bg-green-500'}`}
+                    style={{ width: `${Math.min(usageStats.usage?.website_sources?.percentage || 0, 100)}%` }}
+                  />
+                </div>
+              </div>
+              <div className="bg-white rounded-lg p-4">
+                <p className="text-xs text-gray-600 mb-1">Text Sources</p>
+                <p className="text-xl font-bold text-gray-900">
+                  {usageStats.usage?.text_sources?.current}/{usageStats.usage?.text_sources?.limit === 999999 ? '∞' : usageStats.usage?.text_sources?.limit}
+                </p>
+                <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
+                  <div 
+                    className={`h-1.5 rounded-full ${usageStats.usage?.text_sources?.percentage >= 90 ? 'bg-red-500' : usageStats.usage?.text_sources?.percentage >= 75 ? 'bg-orange-500' : 'bg-green-500'}`}
+                    style={{ width: `${Math.min(usageStats.usage?.text_sources?.percentage || 0, 100)}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Chatbots Section */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-6">
