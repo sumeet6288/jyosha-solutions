@@ -47,12 +47,25 @@ const AddSourceModal = ({ isOpen, onClose, chatbotId, onSuccess, onUpgradeRequir
       onClose();
     } catch (error) {
       console.error('Error uploading file:', error);
+      
+      // Check if it's a limit error
+      if (error.response?.status === 403 && error.response?.data?.detail?.upgrade_required) {
+        const detail = error.response.data.detail;
+        if (onUpgradeRequired) {
+          onUpgradeRequired('file_uploads', detail.current, detail.max);
+        }
+        onClose();
+        return;
+      }
+      
       let errorMessage = 'Failed to upload file';
       if (error.response?.data?.detail) {
         if (Array.isArray(error.response.data.detail)) {
           errorMessage = error.response.data.detail.map(err => err.msg).join(', ');
-        } else {
+        } else if (typeof error.response.data.detail === 'string') {
           errorMessage = error.response.data.detail;
+        } else if (error.response.data.detail.message) {
+          errorMessage = error.response.data.detail.message;
         }
       }
       toast({ 
