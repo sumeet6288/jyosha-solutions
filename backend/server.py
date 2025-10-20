@@ -5,8 +5,9 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
-from routers import auth_router, user_router, chatbots, sources, chat, analytics
+from routers import auth_router, user_router, chatbots, sources, chat, analytics, plans
 import auth
+from services.plan_service import plan_service
 
 
 ROOT_DIR = Path(__file__).parent
