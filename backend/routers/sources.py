@@ -69,6 +69,19 @@ async def upload_file_source(
 ):
     """Upload a file as a training source (max 100MB)"""
     try:
+        # Check plan limits for file uploads
+        limit_check = await plan_service.check_limit(current_user.id, "file_uploads")
+        if limit_check["reached"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail={
+                    "message": "File upload limit reached for your plan",
+                    "current": limit_check["current"],
+                    "max": limit_check["max"],
+                    "upgrade_required": True
+                }
+            )
+        
         # Verify ownership
         await verify_chatbot_ownership(chatbot_id, current_user.id)
         
@@ -94,6 +107,9 @@ async def upload_file_source(
         )
         
         await db_instance.sources.insert_one(source.model_dump())
+        
+        # Increment usage count
+        await plan_service.increment_usage(current_user.id, "file_uploads")
         
         # Process file in background
         async def process_file():
