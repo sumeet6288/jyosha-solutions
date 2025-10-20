@@ -409,15 +409,15 @@ const ChatbotBuilder = () => {
               {/* Configuration Panel */}
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-6 shadow-xl space-y-6">
                 <div>
-                  <h2 className="text-xl font-bold mb-2">Embed Your Chatbot</h2>
+                  <h2 className="text-2xl font-bold mb-2 bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">Embed Your Chatbot</h2>
                   <p className="text-gray-600 text-sm">Choose how you want to integrate the chatbot into your website</p>
                 </div>
 
                 {/* Embed Options */}
                 <div className="space-y-4">
-                  <div className="p-4 border-2 border-indigo-200 bg-indigo-50 rounded-lg">
+                  <div className="group p-5 border-2 border-indigo-300 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl hover:border-indigo-500 hover:shadow-lg hover:shadow-indigo-500/20 transition-all duration-300 transform hover:-translate-y-1">
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0">
+                      <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0 shadow-lg shadow-indigo-500/30 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
                         1
                       </div>
                       <div className="flex-1">
