@@ -130,6 +130,9 @@ async def send_message(chat_request: ChatRequest):
             }
         )
         
+        # Increment message usage for chatbot owner
+        await plan_service.increment_usage(user_id, "messages", amount=1)
+        
         return ChatResponse(
             message=ai_response,
             conversation_id=conversation.id,
