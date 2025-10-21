@@ -93,10 +93,8 @@ async def get_top_questions(
     limit: int = Query(10, ge=1, le=50)
 ):
     """Get most frequently asked questions"""
-    db = get_database()
-    
     # Get all user messages
-    messages = list(db.messages.find({
+    messages = await db_instance.messages.find({
         "chatbot_id": chatbot_id,
         "role": "user"
     }))
