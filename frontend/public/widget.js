@@ -3,8 +3,8 @@
   
   // Get configuration from script tag or window object
   const script = document.currentScript;
-  const chatbotId = script?.getAttribute('chatbot-id') || window.chatbaseConfig?.chatbotId;
-  const domain = script?.getAttribute('domain') || window.chatbaseConfig?.domain || window.location.origin;
+  const chatbotId = script?.getAttribute('chatbot-id') || window.botsmithConfig?.chatbotId;
+  const domain = script?.getAttribute('domain') || window.botsmithConfig?.domain || window.location.origin;
   
   if (!chatbotId) {
     console.error('BotSmith Widget: chatbot-id is required');
@@ -13,7 +13,7 @@
 
   // Create chat widget container
   const widgetContainer = document.createElement('div');
-  widgetContainer.id = 'chatbase-widget-container';
+  widgetContainer.id = 'botsmith-widget-container';
   widgetContainer.style.cssText = `
     position: fixed;
     bottom: 20px;
@@ -24,7 +24,7 @@
 
   // Create chat bubble button
   const chatBubble = document.createElement('button');
-  chatBubble.id = 'chatbase-bubble';
+  chatBubble.id = 'botsmith-bubble';
   chatBubble.setAttribute('aria-label', 'Open chat');
   chatBubble.innerHTML = `
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -59,7 +59,7 @@
 
   // Create chat window
   const chatWindow = document.createElement('div');
-  chatWindow.id = 'chatbase-window';
+  chatWindow.id = 'botsmith-window';
   chatWindow.style.cssText = `
     position: fixed;
     bottom: 90px;
@@ -92,13 +92,13 @@
       }
     }
     @media (max-width: 768px) {
-      #chatbase-window {
+      #botsmith-window {
         width: calc(100vw - 20px) !important;
         height: calc(100vh - 100px) !important;
         bottom: 10px !important;
         right: 10px !important;
       }
-      #chatbase-widget-container {
+      #botsmith-widget-container {
         bottom: 10px !important;
         right: 10px !important;
       }
@@ -128,7 +128,7 @@
         <div style="font-size: 12px; opacity: 0.9;">Online now</div>
       </div>
     </div>
-    <button id="chatbase-close" style="background: transparent; border: none; color: white; cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='transparent'">
+    <button id="botsmith-close" style="background: transparent; border: none; color: white; cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='transparent'">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -176,7 +176,7 @@
   }
 
   chatBubble.addEventListener('click', toggleChat);
-  header.querySelector('#chatbase-close').addEventListener('click', (e) => {
+  header.querySelector('#botsmith-close').addEventListener('click', (e) => {
     e.stopPropagation();
     toggleChat();
   });
