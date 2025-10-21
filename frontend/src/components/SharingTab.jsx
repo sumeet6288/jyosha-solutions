@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { Code, Link2, Download, Webhook, Copy, Check, ExternalLink, Globe } from 'lucide-react';
-import api from '../services/api';
+import { chatbotAPI } from '../utils/api';
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: process.env.REACT_APP_BACKEND_URL || ''
+});
 import { toast } from 'sonner';
 
 const SharingTab = ({ chatbot, onUpdate }) => {
