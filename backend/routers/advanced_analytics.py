@@ -182,7 +182,7 @@ async def get_performance_metrics(chatbot_id: str):
     messages = await db_instance.messages.find({
         "chatbot_id": chatbot_id,
         "role": "assistant"
-    }).sort("timestamp", 1))
+    }).sort("timestamp", 1).to_list(length=None)
     
     if not messages:
         return PerformanceMetrics(
