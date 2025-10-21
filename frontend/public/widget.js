@@ -7,7 +7,7 @@
   const domain = script?.getAttribute('domain') || window.chatbaseConfig?.domain || window.location.origin;
   
   if (!chatbotId) {
-    console.error('Chatbase Widget: chatbot-id is required');
+    console.error('BotSmith Widget: chatbot-id is required');
     return;
   }
 
@@ -191,7 +191,7 @@
   }
 
   // Expose API for programmatic control
-  window.Chatbase = {
+  window.BotSmith = {
     open: () => {
       if (!isOpen) toggleChat();
     },
