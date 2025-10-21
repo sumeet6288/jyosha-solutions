@@ -135,6 +135,15 @@ class ChatbotResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
     last_trained: Optional[datetime] = None
+    primary_color: str = "#7c3aed"
+    secondary_color: str = "#a78bfa"
+    logo_url: Optional[str] = None
+    avatar_url: Optional[str] = None
+    widget_position: str = "bottom-right"
+    widget_theme: str = "light"
+    public_access: bool = False
+    webhook_url: Optional[str] = None
+    webhook_enabled: bool = False
 
 
 # Source Models
