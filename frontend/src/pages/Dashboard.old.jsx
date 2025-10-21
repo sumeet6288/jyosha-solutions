@@ -111,7 +111,7 @@ const Dashboard = () => {
           <div className="flex items-center gap-8">
             <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/dashboard')}>
               <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">C</span>
+                <span className="text-white font-bold text-lg">B</span>
               </div>
               <span className="text-xl font-semibold">Chatbase</span>
             </div>

@@ -45,7 +45,7 @@ const SignIn = () => {
         <div className="w-full max-w-md">
           <div className="flex items-center gap-2 mb-8">
             <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">C</span>
+              <span className="text-white font-bold text-lg">B</span>
             </div>
             <span className="text-xl font-semibold">BotSmith</span>
           </div>
