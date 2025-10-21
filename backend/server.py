@@ -45,7 +45,7 @@ api_router = APIRouter(prefix="/api")
 # Add health check route
 @api_router.get("/")
 async def root():
-    return {"message": "Chatbase API", "status": "running"}
+    return {"message": "BotSmith API", "status": "running"}
 
 # Include all routers
 api_router.include_router(auth_router.router)
