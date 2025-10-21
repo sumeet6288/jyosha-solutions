@@ -118,7 +118,7 @@ async def get_mock_user() -> User:
     return User(
         id="demo-user-123",
         name="Demo User",
-        email="demo@chatbase.com",
+        email="demo@botsmith.com",
         password_hash="mock-hash",
         created_at=datetime.now(timezone.utc),
         updated_at=datetime.now(timezone.utc)
