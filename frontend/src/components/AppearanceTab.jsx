@@ -23,7 +23,7 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await api.updateChatbot(chatbot.id, customization);
+      await chatbotAPI.update(chatbot.id, customization);
       toast.success('Appearance updated successfully!');
       onUpdate && onUpdate();
     } catch (error) {
