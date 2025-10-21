@@ -227,10 +227,10 @@ async def rate_conversation(conversation_id: str, rating_data: RatingCreate):
         raise HTTPException(status_code=404, detail="Conversation not found")
     
     # Check if already rated
-    existing_rating = db.conversation_ratings.find_one({"conversation_id": conversation_id})
+    existing_rating = await db_instance.conversation_ratings.find_one({"conversation_id": conversation_id})
     if existing_rating:
         # Update existing rating
-        db.conversation_ratings.update_one(
+        await db_instance.conversation_ratings.update_one(
             {"conversation_id": conversation_id},
             {"$set": {
                 "rating": rating_data.rating,
