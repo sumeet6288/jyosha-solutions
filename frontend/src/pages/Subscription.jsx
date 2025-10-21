@@ -6,6 +6,8 @@ import {
   TrendingUp, AlertCircle, Loader2 
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
+import { SubscriptionSkeleton } from '../components/LoadingSkeleton';
+import Footer from '../components/Footer';
 
 const Subscription = () => {
   const navigate = useNavigate();
