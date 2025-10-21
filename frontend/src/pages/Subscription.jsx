@@ -97,7 +97,7 @@ const Subscription = () => {
   const gradient = getPlanGradient(currentPlan?.id);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-blue-50 to-purple-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-blue-50 to-purple-50 p-6 animate-fade-in">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
