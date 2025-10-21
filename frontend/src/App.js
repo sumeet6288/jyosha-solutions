@@ -13,6 +13,7 @@ import AccountSettings from './pages/AccountSettings';
 import Subscription from './pages/Subscription';
 import EmbedChat from './pages/EmbedChat';
 import ChatPage from './pages/ChatPage';
+import PublicChat from './pages/PublicChat';
 import Pricing from './pages/Pricing';
 import Enterprise from './pages/Enterprise';
 import Resources from './pages/Resources';
