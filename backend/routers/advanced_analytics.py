@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Query
+from motor.motor_asyncio import AsyncIOMotorDatabase
 from typing import Optional
 from datetime import datetime, timedelta, timezone
 from collections import Counter
@@ -7,9 +8,14 @@ from models import (
     TrendAnalytics, TrendDataPoint, TopQuestionsAnalytics, TopQuestion,
     SatisfactionAnalytics, PerformanceMetrics, RatingCreate, RatingResponse
 )
-from auth import get_database
 
-router = APIRouter(prefix="/api/analytics", tags=["advanced-analytics"])
+router = APIRouter(prefix="/analytics", tags=["advanced-analytics"])
+db_instance = None
+
+def init_router(db: AsyncIOMotorDatabase):
+    """Initialize router with database instance"""
+    global db_instance
+    db_instance = db
 
 @router.get("/trends/{chatbot_id}", response_model=TrendAnalytics)
 async def get_trend_analytics(
