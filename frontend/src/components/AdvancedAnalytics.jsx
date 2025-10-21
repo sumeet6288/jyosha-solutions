@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { TrendingUp, MessageSquare, Star, Clock, RefreshCw } from 'lucide-react';
-import api from '../services/api';
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: process.env.REACT_APP_BACKEND_URL || ''
+});
 
 const AdvancedAnalytics = ({ chatbotId }) => {
   const [loading, setLoading] = useState(false);
