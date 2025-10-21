@@ -320,6 +320,9 @@ const Integrations = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Footer */}
+      <Footer variant="dashboard" />
     </div>
   );
 };
