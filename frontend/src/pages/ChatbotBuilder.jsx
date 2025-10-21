@@ -520,7 +520,7 @@ const ChatbotBuilder = () => {
                           onClick={() => {
                             const widgetScript = `<!-- BotSmith Widget Script -->
 <script>
-  window.chatbaseConfig = {
+  window.botsmithConfig = {
     chatbotId: "${chatbot.id}",
     domain: "${window.location.origin}"
   };
