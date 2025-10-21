@@ -8,6 +8,7 @@ import ResponsiveNav from '../components/ResponsiveNav';
 import { useAuth } from '../contexts/AuthContext';
 import { chatbotAPI, analyticsAPI, plansAPI } from '../utils/api';
 import UpgradeModal from '../components/UpgradeModal';
+import Footer from '../components/Footer';
 
 const Dashboard = () => {
   const navigate = useNavigate();
