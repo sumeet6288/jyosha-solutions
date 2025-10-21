@@ -25,10 +25,22 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
+// Scroll to top on route change
+function ScrollToTop() {
+  const location = useLocation();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+  
+  return null;
+}
+
 function AppContent() {
   return (
     <div className="App">
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/pricing" element={<Pricing />} />
@@ -45,6 +57,7 @@ function AppContent() {
           <Route path="/embed/:id" element={<EmbedChat />} />
           <Route path="/chat/:id" element={<ChatPage />} />
           <Route path="/public-chat/:chatbotId" element={<PublicChat />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
       <Toaster />
