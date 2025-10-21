@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Send, Bot, User, Star } from 'lucide-react';
-import api from '../services/api';
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: process.env.REACT_APP_BACKEND_URL || ''
+});
 import { toast } from 'sonner';
 
 const PublicChat = () => {
