@@ -1,7 +1,7 @@
-# Chatbase Replica - API Contracts & Integration Plan
+# BotSmith Replica - API Contracts & Integration Plan
 
 ## Overview
-This document outlines the API contracts, data models, and integration plan for the Chatbase replica application.
+This document outlines the API contracts, data models, and integration plan for the BotSmith replica application.
 
 ## Current Frontend Implementation
 
