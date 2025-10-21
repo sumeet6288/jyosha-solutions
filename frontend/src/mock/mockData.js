@@ -1,4 +1,4 @@
-// Mock data for Chatbase replica
+// Mock data for BotSmith replica
 
 export const mockChatbots = [];
 
