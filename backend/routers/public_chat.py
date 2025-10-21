@@ -101,10 +101,10 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
         "content": ai_response,
         "timestamp": datetime.now(timezone.utc)
     }
-    db.messages.insert_one(ai_message)
+    await db_instance.messages.insert_one(ai_message)
     
     # Update conversation counts
-    db.conversations.update_one(
+    await db_instance.conversations.update_one(
         {"id": conversation_id},
         {
             "$inc": {"messages_count": 2},
@@ -113,7 +113,7 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
     )
     
     # Update chatbot counts
-    db.chatbots.update_one(
+    await db_instance.chatbots.update_one(
         {"id": chatbot_id},
         {
             "$inc": {"messages_count": 2},
