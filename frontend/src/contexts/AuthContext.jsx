@@ -8,15 +8,15 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({
     id: 'mock-user-123',
     name: 'Demo User',
-    email: 'demo@chatbase.com',
+    email: 'demo@botsmith.com',
     created_at: new Date().toISOString()
   });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Set mock token for API calls
-    localStorage.setItem('chatbase_token', 'mock-token-for-development');
-    localStorage.setItem('chatbase_user', JSON.stringify(user));
+    localStorage.setItem('botsmith_token', 'mock-token-for-development');
+    localStorage.setItem('botsmith_user', JSON.stringify(user));
   }, []);
 
   const fetchCurrentUser = async () => {
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateUser = (updatedUser) => {
     setUser(updatedUser);
-    localStorage.setItem('chatbase_user', JSON.stringify(updatedUser));
+    localStorage.setItem('botsmith_user', JSON.stringify(updatedUser));
   };
 
   const value = {

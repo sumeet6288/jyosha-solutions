@@ -13,7 +13,7 @@ const api = axios.create({
 // Add token to requests
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('chatbase_token');
+    const token = localStorage.getItem('botsmith_token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -30,8 +30,8 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Token expired or invalid
-      localStorage.removeItem('chatbase_token');
-      localStorage.removeItem('chatbase_user');
+      localStorage.removeItem('botsmith_token');
+      localStorage.removeItem('botsmith_user');
       window.location.href = '/signin';
     }
     return Promise.reject(error);
