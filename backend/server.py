@@ -28,6 +28,8 @@ chatbots.init_router(db)
 sources.init_router(db)
 chat.init_router(db)
 analytics.init_router(db)
+advanced_analytics.init_router(db)
+public_chat.init_router(db)
 
 # Create the main app without a prefix
 # Set max upload size to 100MB
