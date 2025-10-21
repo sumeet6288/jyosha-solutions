@@ -53,6 +53,8 @@ api_router.include_router(sources.router)
 api_router.include_router(chat.router)
 api_router.include_router(analytics.router)
 api_router.include_router(plans.router)
+api_router.include_router(advanced_analytics.router)
+api_router.include_router(public_chat.router)
 
 # Include the router in the main app
 app.include_router(api_router)
