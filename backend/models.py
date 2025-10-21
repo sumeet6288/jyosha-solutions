@@ -93,6 +93,12 @@ class ChatbotCreate(BaseModel):
     temperature: float = 0.7
     instructions: str = "You are a helpful assistant."
     welcome_message: str = "Hello! How can I help you today?"
+    primary_color: str = "#7c3aed"
+    secondary_color: str = "#a78bfa"
+    logo_url: Optional[str] = None
+    avatar_url: Optional[str] = None
+    widget_position: Literal["bottom-right", "bottom-left", "top-right", "top-left"] = "bottom-right"
+    widget_theme: Literal["light", "dark", "auto"] = "light"
 
 
 class ChatbotUpdate(BaseModel):
