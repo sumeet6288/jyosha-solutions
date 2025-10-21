@@ -275,6 +275,108 @@ class ChatbotAnalytics(BaseModel):
 
 
 
+# Conversation Rating Models
+class ConversationRating(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    conversation_id: str
+    chatbot_id: str
+    rating: int = Field(ge=1, le=5)  # 1-5 stars
+    feedback: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class RatingCreate(BaseModel):
+    rating: int = Field(ge=1, le=5)
+    feedback: Optional[str] = None
+
+
+class RatingResponse(BaseModel):
+    id: str
+    conversation_id: str
+    rating: int
+    feedback: Optional[str]
+    created_at: datetime
+
+
+# Advanced Analytics Models
+class TrendDataPoint(BaseModel):
+    date: str
+    conversations: int
+    messages: int
+
+
+class TrendAnalytics(BaseModel):
+    chatbot_id: str
+    period: str  # 7days, 30days, 90days
+    data: List[TrendDataPoint]
+    total_conversations: int
+    total_messages: int
+    avg_daily_conversations: float
+    avg_daily_messages: float
+
+
+class TopQuestion(BaseModel):
+    question: str
+    count: int
+    percentage: float
+
+
+class TopQuestionsAnalytics(BaseModel):
+    chatbot_id: str
+    top_questions: List[TopQuestion]
+    total_unique_questions: int
+
+
+class SatisfactionAnalytics(BaseModel):
+    chatbot_id: str
+    average_rating: float
+    total_ratings: int
+    rating_distribution: dict  # {1: count, 2: count, ...}
+    satisfaction_percentage: float  # % of 4-5 star ratings
+
+
+class PerformanceMetrics(BaseModel):
+    chatbot_id: str
+    avg_response_time_ms: float
+    total_responses: int
+    fastest_response_ms: float
+    slowest_response_ms: float
+
+
+# Public Chat Models
+class PublicChatbotInfo(BaseModel):
+    id: str
+    name: str
+    welcome_message: str
+    primary_color: str
+    secondary_color: str
+    logo_url: Optional[str]
+    avatar_url: Optional[str]
+    widget_theme: str
+
+
+class PublicChatRequest(BaseModel):
+    message: str
+    session_id: str
+    user_name: Optional[str] = None
+    user_email: Optional[str] = None
+
+
+# Embed Code Models
+class EmbedConfig(BaseModel):
+    chatbot_id: str
+    theme: str = "light"
+    position: str = "bottom-right"
+
+
+class EmbedCodeResponse(BaseModel):
+    html_code: str
+    script_url: str
+
+
+
 # Plan and Subscription Models
 class PlanLimits(BaseModel):
     """Plan usage limits"""
