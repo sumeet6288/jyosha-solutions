@@ -23,7 +23,7 @@ const ResponsiveNav = ({ user, onLogout }) => {
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-2 cursor-pointer group" onClick={() => navigate('/dashboard')}>
             <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-purple-500/30">
-              <span className="text-white font-bold text-lg">C</span>
+              <span className="text-white font-bold text-lg">B</span>
             </div>
             <span className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">
               BotSmith
