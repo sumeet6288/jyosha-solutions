@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import './App.css';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LandingPage from './pages/LandingPage';
 import SignIn from './pages/SignIn';
@@ -17,6 +17,7 @@ import PublicChat from './pages/PublicChat';
 import Pricing from './pages/Pricing';
 import Enterprise from './pages/Enterprise';
 import Resources from './pages/Resources';
+import NotFound from './pages/NotFound';
 import { Toaster } from './components/ui/toaster';
 
 const ProtectedRoute = ({ children }) => {
