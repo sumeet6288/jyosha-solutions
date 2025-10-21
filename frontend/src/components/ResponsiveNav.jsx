@@ -26,7 +26,7 @@ const ResponsiveNav = ({ user, onLogout }) => {
               <span className="text-white font-bold text-lg">C</span>
             </div>
             <span className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">
-              Chatbase
+              BotSmith
             </span>
           </div>
         </div>
