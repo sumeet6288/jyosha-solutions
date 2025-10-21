@@ -258,7 +258,7 @@ const ChatbotBuilder = () => {
 
       <div className="p-6 max-w-7xl mx-auto relative z-10">
         <Tabs defaultValue="sources" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-6 bg-white/80 backdrop-blur-sm border-2 border-purple-200/50 p-1 rounded-xl shadow-lg animate-fade-in-up">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 mb-6 bg-white/80 backdrop-blur-sm border-2 border-purple-200/50 p-1 rounded-xl shadow-lg animate-fade-in-up">
             <TabsTrigger value="sources" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
               <FileText className="w-4 h-4 mr-2" />
               Sources
@@ -267,13 +267,25 @@ const ChatbotBuilder = () => {
               <Settings className="w-4 h-4 mr-2" />
               Settings
             </TabsTrigger>
-            <TabsTrigger value="widget" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
+            <TabsTrigger value="appearance" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
               <Palette className="w-4 h-4 mr-2" />
+              Appearance
+            </TabsTrigger>
+            <TabsTrigger value="widget" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
+              <MessageSquare className="w-4 h-4 mr-2" />
               Widget
             </TabsTrigger>
             <TabsTrigger value="analytics" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
               <BarChart3 className="w-4 h-4 mr-2" />
               Analytics
+            </TabsTrigger>
+            <TabsTrigger value="advanced-analytics" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
+              <TrendingUp className="w-4 h-4 mr-2" />
+              Insights
+            </TabsTrigger>
+            <TabsTrigger value="sharing" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
+              <Share2 className="w-4 h-4 mr-2" />
+              Share
             </TabsTrigger>
           </TabsList>
 
