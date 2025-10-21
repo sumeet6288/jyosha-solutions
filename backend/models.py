@@ -71,6 +71,19 @@ class Chatbot(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     last_trained: Optional[datetime] = None
+    
+    # Customization fields
+    primary_color: str = "#7c3aed"  # Default purple
+    secondary_color: str = "#a78bfa"  # Light purple
+    logo_url: Optional[str] = None
+    avatar_url: Optional[str] = None
+    widget_position: Literal["bottom-right", "bottom-left", "top-right", "top-left"] = "bottom-right"
+    widget_theme: Literal["light", "dark", "auto"] = "light"
+    
+    # Sharing & Integration
+    public_access: bool = False
+    webhook_url: Optional[str] = None
+    webhook_enabled: bool = False
 
 
 class ChatbotCreate(BaseModel):
