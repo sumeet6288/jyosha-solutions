@@ -142,9 +142,7 @@ async def get_top_questions(
 @router.get("/satisfaction/{chatbot_id}", response_model=SatisfactionAnalytics)
 async def get_satisfaction_analytics(chatbot_id: str):
     """Get satisfaction ratings analytics"""
-    db = get_database()
-    
-    ratings = list(db.conversation_ratings.find({"chatbot_id": chatbot_id}))
+    ratings = await db_instance.conversation_ratings.find({"chatbot_id": chatbot_id}).to_list(length=None)
     
     if not ratings:
         return SatisfactionAnalytics(
