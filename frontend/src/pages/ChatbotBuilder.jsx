@@ -782,14 +782,6 @@ const ChatbotBuilder = () => {
               <AdvancedAnalytics chatbotId={id} />
             </div>
           </TabsContent>
-
-          {/* Sharing Tab */}
-          <TabsContent value="sharing" className="animate-fade-in-up">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-8 shadow-xl">
-              <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">Share & Integrate</h2>
-              <SharingTab chatbot={chatbot} onUpdate={loadChatbot} />
-            </div>
-          </TabsContent>
         </Tabs>
       </div>
 
