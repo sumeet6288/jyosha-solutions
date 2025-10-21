@@ -42,40 +42,7 @@ const Analytics = () => {
       </div>
 
       {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-lg border-b border-purple-200/50 sticky top-0 z-50 shadow-sm">
-        <div className="px-6 py-4 flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex items-center gap-8">
-            <div className="flex items-center gap-2 cursor-pointer group" onClick={() => navigate('/dashboard')}>
-              <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-purple-500/30">
-                <span className="text-white font-bold text-lg">B</span>
-              </div>
-              <span className="text-xl font-semibold bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">BotSmith</span>
-            </div>
-            <div className="flex items-center gap-6">
-              <button onClick={() => navigate('/dashboard')} className="text-gray-600 hover:text-purple-600 transition-colors font-medium relative group">
-                Chatbots
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
-              </button>
-              <button className="text-purple-600 font-semibold relative group">
-                Analytics
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 transform scale-x-100 transition-transform"></span>
-              </button>
-              <button onClick={() => navigate('/subscription')} className="text-gray-600 hover:text-purple-600 transition-colors font-medium relative group flex items-center gap-2">
-                <CreditCard className="w-4 h-4" />
-                Subscription
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
-              </button>
-              <button onClick={() => navigate('/integrations')} className="text-gray-600 hover:text-purple-600 transition-colors font-medium relative group">
-                Integrations
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-600 to-pink-600 transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
-              </button>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <UserProfileDropdown user={user} onLogout={handleLogout} />
-          </div>
-        </div>
-      </nav>
+      <ResponsiveNav currentPage="analytics" user={user} onLogout={handleLogout} />
 
       <div className="p-6 max-w-7xl mx-auto relative z-10">
         <div className="mb-8 animate-fade-in-up">
