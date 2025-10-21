@@ -189,6 +189,9 @@ const Analytics = () => {
           </>
         )}
       </div>
+
+      {/* Footer */}
+      <Footer variant="dashboard" />
     </div>
   );
 };
