@@ -11,7 +11,7 @@ const Pricing = () => {
       name: 'Free',
       price: '$0',
       period: '/month',
-      description: 'Perfect for trying out Chatbase',
+      description: 'Perfect for trying out BotSmith',
       icon: Sparkles,
       gradient: 'from-blue-400 to-cyan-400',
       features: [
@@ -98,7 +98,7 @@ const Pricing = () => {
             <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">C</span>
             </div>
-            <span className="text-xl font-semibold">Chatbase</span>
+            <span className="text-xl font-semibold">BotSmith</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
             <button onClick={() => navigate('/pricing')} className="text-black font-medium">Pricing</button>

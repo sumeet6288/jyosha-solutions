@@ -498,7 +498,7 @@ const ChatbotBuilder = () => {
                         </div>
                         <p className="text-sm text-gray-600 mb-3">Add a floating chat bubble to your website. Works on all pages and devices.</p>
                         <Textarea
-                          value={`<!-- Chatbase Widget Script -->
+                          value={`<!-- BotSmith Widget Script -->
 <script>
   window.chatbaseConfig = {
     chatbotId: "${chatbot.id}",
@@ -518,7 +518,7 @@ const ChatbotBuilder = () => {
                         <Button 
                           className="mt-2 w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg shadow-blue-500/30 transform hover:scale-105 transition-all duration-300" 
                           onClick={() => {
-                            const widgetScript = `<!-- Chatbase Widget Script -->
+                            const widgetScript = `<!-- BotSmith Widget Script -->
 <script>
   window.chatbaseConfig = {
     chatbotId: "${chatbot.id}",

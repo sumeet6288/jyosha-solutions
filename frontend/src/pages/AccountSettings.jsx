@@ -199,7 +199,7 @@ const AccountSettings = () => {
               <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg">C</span>
               </div>
-              <span className="text-xl font-semibold">Chatbase</span>
+              <span className="text-xl font-semibold">BotSmith</span>
             </div>
             <div className="flex items-center gap-6">
               <button

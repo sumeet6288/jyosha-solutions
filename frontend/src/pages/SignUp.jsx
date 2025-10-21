@@ -35,7 +35,7 @@ const SignUp = () => {
       await register(formData.name, formData.email, formData.password);
       toast({
         title: 'Account created!',
-        description: 'Welcome to Chatbase'
+        description: 'Welcome to BotSmith'
       });
       navigate('/dashboard');
     } catch (error) {
@@ -61,7 +61,7 @@ const SignUp = () => {
             <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">C</span>
             </div>
-            <span className="text-xl font-semibold">Chatbase</span>
+            <span className="text-xl font-semibold">BotSmith</span>
           </div>
           
           <h1 className="text-3xl font-bold mb-2">Create your account</h1>
