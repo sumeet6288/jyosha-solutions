@@ -195,7 +195,7 @@ async def get_performance_metrics(chatbot_id: str):
     
     # Calculate response times by comparing with previous user message
     response_times = []
-    all_msgs = list(db.messages.find({"chatbot_id": chatbot_id}).sort("timestamp", 1))
+    all_msgs = await db_instance.messages.find({"chatbot_id": chatbot_id}).sort("timestamp", 1).to_list(length=None)
     
     for i, msg in enumerate(all_msgs):
         if msg.get("role") == "assistant" and i > 0:
