@@ -20,9 +20,7 @@ def init_router(db: AsyncIOMotorDatabase):
 @router.get("/chatbot/{chatbot_id}", response_model=PublicChatbotInfo)
 async def get_public_chatbot(chatbot_id: str):
     """Get public chatbot information (no authentication required)"""
-    db = get_database()
-    
-    chatbot = db.chatbots.find_one({"id": chatbot_id})
+    chatbot = await db_instance.chatbots.find_one({"id": chatbot_id})
     if not chatbot:
         raise HTTPException(status_code=404, detail="Chatbot not found")
     
