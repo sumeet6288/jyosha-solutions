@@ -43,10 +43,8 @@ async def get_public_chatbot(chatbot_id: str):
 @router.post("/chat/{chatbot_id}", response_model=ChatResponse)
 async def public_chat(chatbot_id: str, request: PublicChatRequest):
     """Send a message to a public chatbot (no authentication required)"""
-    db = get_database()
-    
     # Get chatbot
-    chatbot = db.chatbots.find_one({"id": chatbot_id})
+    chatbot = await db_instance.chatbots.find_one({"id": chatbot_id})
     if not chatbot:
         raise HTTPException(status_code=404, detail="Chatbot not found")
     
