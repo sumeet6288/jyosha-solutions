@@ -485,10 +485,72 @@ const ChatbotBuilder = () => {
 
                 {/* Embed Options */}
                 <div className="space-y-4">
+                  {/* Chat Bubble Widget - NEW */}
+                  <div className="group p-5 border-2 border-blue-300 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 transform hover:-translate-y-1">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0 shadow-lg shadow-blue-500/30 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                        1
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h3 className="font-semibold text-gray-900">Chat Bubble Widget</h3>
+                          <span className="px-2 py-0.5 text-xs font-semibold bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-full shadow-sm">Recommended</span>
+                        </div>
+                        <p className="text-sm text-gray-600 mb-3">Add a floating chat bubble to your website. Works on all pages and devices.</p>
+                        <Textarea
+                          value={`<!-- Chatbase Widget Script -->
+<script>
+  window.chatbaseConfig = {
+    chatbotId: "${chatbot.id}",
+    domain: "${window.location.origin}"
+  };
+</script>
+<script
+  src="${window.location.origin}/widget.js"
+  chatbot-id="${chatbot.id}"
+  domain="${window.location.origin}"
+  defer>
+</script>`}
+                          readOnly
+                          rows={8}
+                          className="font-mono text-xs bg-white"
+                        />
+                        <Button 
+                          className="mt-2 w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg shadow-blue-500/30 transform hover:scale-105 transition-all duration-300" 
+                          onClick={() => {
+                            const widgetScript = `<!-- Chatbase Widget Script -->
+<script>
+  window.chatbaseConfig = {
+    chatbotId: "${chatbot.id}",
+    domain: "${window.location.origin}"
+  };
+</script>
+<script
+  src="${window.location.origin}/widget.js"
+  chatbot-id="${chatbot.id}"
+  domain="${window.location.origin}"
+  defer>
+</script>`;
+                            navigator.clipboard.writeText(widgetScript);
+                            toast({ title: 'Copied!', description: 'Widget script copied to clipboard' });
+                          }}
+                        >
+                          <MessageSquare className="w-4 h-4 mr-2" />
+                          Copy Widget Script
+                        </Button>
+                        <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                          <p className="text-xs text-blue-800">
+                            <strong>💡 Tip:</strong> Paste this code before the closing &lt;/body&gt; tag in your HTML. The chat bubble will appear in the bottom-right corner.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="group p-5 border-2 border-indigo-300 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl hover:border-indigo-500 hover:shadow-lg hover:shadow-indigo-500/20 transition-all duration-300 transform hover:-translate-y-1">
                     <div className="flex items-start gap-3">
                       <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0 shadow-lg shadow-indigo-500/30 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                        1
+                        2
                       </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-gray-900 mb-2">Iframe Embed</h3>
@@ -515,7 +577,7 @@ const ChatbotBuilder = () => {
                   <div className="group p-5 border-2 border-purple-300 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl hover:border-purple-500 hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300 transform hover:-translate-y-1">
                     <div className="flex items-start gap-3">
                       <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0 shadow-lg shadow-purple-500/30 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                        2
+                        3
                       </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-gray-900 mb-2">Direct Link</h3>
@@ -551,7 +613,7 @@ const ChatbotBuilder = () => {
                   <div className="group p-5 border-2 border-green-300 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl hover:border-green-500 hover:shadow-lg hover:shadow-green-500/20 transition-all duration-300 transform hover:-translate-y-1">
                     <div className="flex items-start gap-3">
                       <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0 shadow-lg shadow-green-500/30 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                        3
+                        4
                       </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-gray-900 mb-2">Embed URL</h3>
