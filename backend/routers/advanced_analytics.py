@@ -178,10 +178,8 @@ async def get_satisfaction_analytics(chatbot_id: str):
 @router.get("/performance/{chatbot_id}", response_model=PerformanceMetrics)
 async def get_performance_metrics(chatbot_id: str):
     """Get chatbot performance metrics"""
-    db = get_database()
-    
     # Get all assistant messages with timestamps
-    messages = list(db.messages.find({
+    messages = await db_instance.messages.find({
         "chatbot_id": chatbot_id,
         "role": "assistant"
     }).sort("timestamp", 1))
