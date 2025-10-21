@@ -90,11 +90,7 @@ const Subscription = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
-      </div>
-    );
+    return <SubscriptionSkeleton />;
   }
 
   const Icon = getPlanIcon(currentPlan?.id);
