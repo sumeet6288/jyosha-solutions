@@ -97,7 +97,7 @@ async def get_top_questions(
     messages = await db_instance.messages.find({
         "chatbot_id": chatbot_id,
         "role": "user"
-    }))
+    }).to_list(length=None)
     
     if not messages:
         return TopQuestionsAnalytics(
