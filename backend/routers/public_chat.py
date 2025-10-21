@@ -52,7 +52,7 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
         raise HTTPException(status_code=403, detail="This chatbot is not publicly accessible")
     
     # Find or create conversation
-    conversation = db.conversations.find_one({
+    conversation = await db_instance.conversations.find_one({
         "chatbot_id": chatbot_id,
         "session_id": request.session_id
     })
@@ -69,7 +69,7 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
             "created_at": datetime.now(timezone.utc),
             "updated_at": datetime.now(timezone.utc)
         }
-        db.conversations.insert_one(conversation)
+        await db_instance.conversations.insert_one(conversation)
     
     conversation_id = conversation["id"]
     
