@@ -15,7 +15,7 @@ const AdminDashboard = () => {
   });
 
   useEffect(() => {
-    const userData = localStorage.getItem('chatbase_user');
+    const userData = localStorage.getItem('botsmith_user');
     if (!userData) {
       navigate('/signin');
       return;
@@ -23,7 +23,7 @@ const AdminDashboard = () => {
     
     const parsedUser = JSON.parse(userData);
     // Check if admin
-    if (parsedUser.email !== 'admin@chatbase.co') {
+    if (parsedUser.email !== 'admin@botsmith.co') {
       navigate('/dashboard');
       return;
     }
@@ -31,7 +31,7 @@ const AdminDashboard = () => {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem('chatbase_user');
+    localStorage.removeItem('botsmith_user');
     navigate('/');
   };
 
