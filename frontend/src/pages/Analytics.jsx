@@ -4,15 +4,23 @@ import { Button } from '../components/ui/button';
 import { TrendingUp, MessageSquare, Users, Clock, BarChart3, CreditCard } from 'lucide-react';
 import { mockAnalytics } from '../mock/mockData';
 import UserProfileDropdown from '../components/UserProfileDropdown';
+import ResponsiveNav from '../components/ResponsiveNav';
 import { useAuth } from '../contexts/AuthContext';
+import { AnalyticsSkeleton } from '../components/LoadingSkeleton';
+import Footer from '../components/Footer';
 
 const Analytics = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [analytics, setAnalytics] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setAnalytics(mockAnalytics);
+    // Simulate loading
+    setTimeout(() => {
+      setAnalytics(mockAnalytics);
+      setLoading(false);
+    }, 800);
   }, []);
 
   const handleLogout = () => {
