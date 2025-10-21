@@ -82,7 +82,7 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
         "content": request.message,
         "timestamp": datetime.now(timezone.utc)
     }
-    db.messages.insert_one(user_message)
+    await db_instance.messages.insert_one(user_message)
     
     # Get AI response
     chat_service = ChatService()
