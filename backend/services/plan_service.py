@@ -22,7 +22,7 @@ class PlanService:
                 "id": "free",
                 "name": "Free",
                 "price": 0.0,
-                "description": "Perfect for trying out Chatbase",
+                "description": "Perfect for trying out BotSmith",
                 "limits": {
                     "max_chatbots": 1,
                     "max_messages_per_month": 100,
