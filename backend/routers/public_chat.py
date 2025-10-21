@@ -180,9 +180,7 @@ async def get_embed_code(chatbot_id: str, theme: str = "light", position: str = 
 @router.get("/conversations/{chatbot_id}/export")
 async def export_conversations(chatbot_id: str, format: str = "json"):
     """Export all conversations for a chatbot"""
-    db = get_database()
-    
-    chatbot = db.chatbots.find_one({"id": chatbot_id})
+    chatbot = await db_instance.chatbots.find_one({"id": chatbot_id})
     if not chatbot:
         raise HTTPException(status_code=404, detail="Chatbot not found")
     
