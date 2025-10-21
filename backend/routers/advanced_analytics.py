@@ -23,8 +23,6 @@ async def get_trend_analytics(
     period: str = Query("7days", regex="^(7days|30days|90days)$")
 ):
     """Get trend analytics for message volume over time"""
-    db = get_database()
-    
     # Calculate date range
     days = int(period.replace("days", ""))
     end_date = datetime.now(timezone.utc)
