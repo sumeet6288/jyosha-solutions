@@ -188,7 +188,7 @@ const LandingPage = () => {
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-gray-200 bg-white/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto text-center text-gray-600">
-          <p>&copy; 2025 Chatbase. All rights reserved.</p>
+          <p>&copy; 2025 BotSmith. All rights reserved.</p>
         </div>
       </footer>
     </div>
