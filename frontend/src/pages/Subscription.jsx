@@ -340,6 +340,9 @@ const Subscription = () => {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer variant="dashboard" />
     </div>
   );
 };
