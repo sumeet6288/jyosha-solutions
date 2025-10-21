@@ -48,11 +48,11 @@ async def get_trend_analytics(
     ]
     
     # Get conversation counts by date
-    conversation_results = list(db.conversations.aggregate(pipeline))
+    conversation_results = await db_instance.conversations.aggregate(pipeline).to_list(length=None)
     conversation_by_date = {item["_id"]: item["count"] for item in conversation_results}
     
     # Get message counts by date
-    message_results = list(db.messages.aggregate(pipeline))
+    message_results = await db_instance.messages.aggregate(pipeline).to_list(length=None)
     message_by_date = {item["_id"]: item["count"] for item in message_results}
     
     # Create data points for each day
