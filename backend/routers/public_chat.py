@@ -141,9 +141,7 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
 @router.get("/embed/{chatbot_id}")
 async def get_embed_code(chatbot_id: str, theme: str = "light", position: str = "bottom-right"):
     """Get embed code for integrating chatbot into websites"""
-    db = get_database()
-    
-    chatbot = db.chatbots.find_one({"id": chatbot_id})
+    chatbot = await db_instance.chatbots.find_one({"id": chatbot_id})
     if not chatbot:
         raise HTTPException(status_code=404, detail="Chatbot not found")
     
