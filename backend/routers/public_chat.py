@@ -185,12 +185,12 @@ async def export_conversations(chatbot_id: str, format: str = "json"):
         raise HTTPException(status_code=404, detail="Chatbot not found")
     
     # Get all conversations
-    conversations = list(db.conversations.find({"chatbot_id": chatbot_id}))
+    conversations = await db_instance.conversations.find({"chatbot_id": chatbot_id}).to_list(length=None)
     
     # Get messages for each conversation
     export_data = []
     for conv in conversations:
-        messages = list(db.messages.find({"conversation_id": conv["id"]}).sort("timestamp", 1))
+        messages = await db_instance.messages.find({"conversation_id": conv["id"]}).sort("timestamp", 1).to_list(length=None)
         
         conv_data = {
             "conversation_id": conv["id"],
