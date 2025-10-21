@@ -7,7 +7,10 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { useToast } from '../hooks/use-toast';
 import UserProfileDropdown from '../components/UserProfileDropdown';
+import ResponsiveNav from '../components/ResponsiveNav';
 import { useAuth } from '../contexts/AuthContext';
+import Footer from '../components/Footer';
+import { DashboardSkeleton } from '../components/LoadingSkeleton';
 
 const Integrations = () => {
   const navigate = useNavigate();
