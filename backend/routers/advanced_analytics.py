@@ -221,10 +221,8 @@ async def get_performance_metrics(chatbot_id: str):
 @router.post("/rate/{conversation_id}", response_model=RatingResponse)
 async def rate_conversation(conversation_id: str, rating_data: RatingCreate):
     """Rate a conversation"""
-    db = get_database()
-    
     # Get conversation to find chatbot_id
-    conversation = db.conversations.find_one({"id": conversation_id})
+    conversation = await db_instance.conversations.find_one({"id": conversation_id})
     if not conversation:
         raise HTTPException(status_code=404, detail="Conversation not found")
     
