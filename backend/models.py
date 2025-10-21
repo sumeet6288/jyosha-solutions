@@ -109,6 +109,15 @@ class ChatbotUpdate(BaseModel):
     temperature: Optional[float] = None
     instructions: Optional[str] = None
     welcome_message: Optional[str] = None
+    primary_color: Optional[str] = None
+    secondary_color: Optional[str] = None
+    logo_url: Optional[str] = None
+    avatar_url: Optional[str] = None
+    widget_position: Optional[Literal["bottom-right", "bottom-left", "top-right", "top-left"]] = None
+    widget_theme: Optional[Literal["light", "dark", "auto"]] = None
+    public_access: Optional[bool] = None
+    webhook_url: Optional[str] = None
+    webhook_enabled: Optional[bool] = None
 
 
 class ChatbotResponse(BaseModel):
