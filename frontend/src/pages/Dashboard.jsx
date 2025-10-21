@@ -302,6 +302,9 @@ const Dashboard = () => {
         currentUsage={upgradeContext.currentUsage}
         maxUsage={upgradeContext.maxUsage}
       />
+
+      {/* Footer */}
+      <Footer variant="dashboard" />
     </div>
   );
 };
