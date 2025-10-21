@@ -252,5 +252,5 @@ async def rate_conversation(conversation_id: str, rating_data: RatingCreate):
         "created_at": datetime.now(timezone.utc)
     }
     
-    db.conversation_ratings.insert_one(rating_dict)
+    await db_instance.conversation_ratings.insert_one(rating_dict)
     return RatingResponse(**rating_dict)
