@@ -49,7 +49,7 @@ const SharingTab = ({ chatbot, onUpdate }) => {
   const handleSaveSettings = async () => {
     setSaving(true);
     try {
-      await api.updateChatbot(chatbot.id, {
+      await chatbotAPI.update(chatbot.id, {
         public_access: publicAccess,
         webhook_url: webhookUrl,
         webhook_enabled: webhookEnabled
