@@ -1,15 +1,21 @@
 from fastapi import APIRouter, HTTPException, Response
+from motor.motor_asyncio import AsyncIOMotorDatabase
 from typing import List
 from datetime import datetime, timezone
 from models import (
     PublicChatbotInfo, PublicChatRequest, ChatResponse,
     EmbedConfig, EmbedCodeResponse, ConversationResponse, MessageResponse
 )
-from auth import get_database
 from services.chat_service import ChatService
 import json
 
-router = APIRouter(prefix="/api/public", tags=["public-chat"])
+router = APIRouter(prefix="/public", tags=["public-chat"])
+db_instance = None
+
+def init_router(db: AsyncIOMotorDatabase):
+    """Initialize router with database instance"""
+    global db_instance
+    db_instance = db
 
 @router.get("/chatbot/{chatbot_id}", response_model=PublicChatbotInfo)
 async def get_public_chatbot(chatbot_id: str):
