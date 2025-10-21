@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Palette, Image, Type, Layout } from 'lucide-react';
-import api from '../services/api';
+import { chatbotAPI } from '../utils/api';
 import { toast } from 'sonner';
 
 const AppearanceTab = ({ chatbot, onUpdate }) => {
