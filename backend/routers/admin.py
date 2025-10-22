@@ -1,15 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException
+from motor.motor_asyncio import AsyncIOMotorDatabase
 from typing import Dict, Any
 from datetime import datetime, timedelta
-import os
-from pymongo import MongoClient
 
-router = APIRouter(prefix="/api/admin", tags=["admin"])
+router = APIRouter(prefix="/admin", tags=["admin"])
+db_instance = None
 
-# MongoDB connection
-MONGO_URL = os.environ.get('MONGO_URL', 'mongodb://localhost:27017/')
-client = MongoClient(MONGO_URL)
-db = client['botsmith']
+def init_router(db: AsyncIOMotorDatabase):
+    """Initialize router with database instance"""
+    global db_instance
+    db_instance = db
 
 
 @router.get("/stats")
