@@ -1,0 +1,371 @@
+from fastapi import APIRouter, HTTPException, Request, BackgroundTasks, Depends
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+from typing import Optional, Dict, Any
+import httpx
+import os
+import hmac
+import hashlib
+import json
+import logging
+from datetime import datetime
+
+from database import get_db
+from auth import get_current_user
+
+router = APIRouter()
+logger = logging.getLogger(__name__)
+
+# Lemon Squeezy Configuration
+LEMONSQUEEZY_API_KEY = os.getenv("LEMONSQUEEZY_API_KEY")
+LEMONSQUEEZY_STORE_ID = os.getenv("LEMONSQUEEZY_STORE_ID")
+LEMONSQUEEZY_SIGNING_SECRET = os.getenv("LEMONSQUEEZY_SIGNING_SECRET")
+LEMONSQUEEZY_API_BASE = "https://api.lemonsqueezy.com/v1"
+
+# Variant IDs for subscription plans
+VARIANT_IDS = {
+    "starter": "1052931",  # ₹150/month
+    "professional": "1052933"  # ₹499 one-time
+}
+
+class CheckoutRequest(BaseModel):
+    plan: str  # "starter" or "professional"
+    user_id: str
+    user_email: str
+
+class CheckoutResponse(BaseModel):
+    checkout_url: str
+    message: str
+
+
+def verify_webhook_signature(payload: bytes, signature: str) -> bool:
+    """Verify Lemon Squeezy webhook signature using HMAC-SHA256"""
+    if not LEMONSQUEEZY_SIGNING_SECRET:
+        logger.error("LEMONSQUEEZY_SIGNING_SECRET not configured")
+        return False
+    
+    try:
+        # Compute expected signature
+        expected_signature = hmac.new(
+            LEMONSQUEEZY_SIGNING_SECRET.encode(),
+            payload,
+            hashlib.sha256
+        ).hexdigest()
+        
+        # Timing-safe comparison
+        return hmac.compare_digest(expected_signature, signature)
+    except Exception as e:
+        logger.error(f"Error verifying webhook signature: {str(e)}")
+        return False
+
+
+async def process_webhook_event(event_data: Dict[str, Any], db):
+    """Process Lemon Squeezy webhook events"""
+    try:
+        event_name = event_data.get("meta", {}).get("event_name")
+        custom_data = event_data.get("meta", {}).get("custom_data", {})
+        user_id = custom_data.get("user_id")
+        
+        logger.info(f"Processing webhook event: {event_name} for user: {user_id}")
+        
+        if not user_id:
+            logger.warning("No user_id in webhook custom_data")
+            return
+        
+        # Extract subscription/order data
+        attributes = event_data.get("data", {}).get("attributes", {})
+        subscription_id = event_data.get("data", {}).get("id")
+        
+        # Handle different event types
+        if event_name == "subscription_created":
+            # New subscription created
+            subscription_data = {
+                "user_id": user_id,
+                "lemonsqueezy_subscription_id": subscription_id,
+                "status": attributes.get("status", "active"),
+                "variant_id": attributes.get("variant_id"),
+                "product_id": attributes.get("product_id"),
+                "plan_name": attributes.get("product_name", "Unknown"),
+                "price": attributes.get("price", 0),
+                "renews_at": attributes.get("renews_at"),
+                "ends_at": attributes.get("ends_at"),
+                "created_at": datetime.utcnow(),
+                "updated_at": datetime.utcnow()
+            }
+            
+            # Insert or update subscription
+            await db.subscriptions.update_one(
+                {"user_id": user_id},
+                {"$set": subscription_data},
+                upsert=True
+            )
+            logger.info(f"Subscription created for user {user_id}")
+            
+        elif event_name == "subscription_updated":
+            # Subscription updated
+            update_data = {
+                "status": attributes.get("status"),
+                "renews_at": attributes.get("renews_at"),
+                "ends_at": attributes.get("ends_at"),
+                "updated_at": datetime.utcnow()
+            }
+            
+            await db.subscriptions.update_one(
+                {"lemonsqueezy_subscription_id": subscription_id},
+                {"$set": update_data}
+            )
+            logger.info(f"Subscription updated: {subscription_id}")
+            
+        elif event_name == "subscription_payment_success":
+            # Successful payment
+            await db.subscriptions.update_one(
+                {"lemonsqueezy_subscription_id": subscription_id},
+                {"$set": {
+                    "status": "active",
+                    "last_payment_at": datetime.utcnow(),
+                    "updated_at": datetime.utcnow()
+                }}
+            )
+            logger.info(f"Payment successful for subscription: {subscription_id}")
+            
+        elif event_name in ["subscription_cancelled", "subscription_expired"]:
+            # Subscription cancelled or expired
+            await db.subscriptions.update_one(
+                {"lemonsqueezy_subscription_id": subscription_id},
+                {"$set": {
+                    "status": "cancelled" if event_name == "subscription_cancelled" else "expired",
+                    "updated_at": datetime.utcnow()
+                }}
+            )
+            logger.info(f"Subscription {event_name}: {subscription_id}")
+            
+        elif event_name == "order_created":
+            # One-time purchase
+            order_data = {
+                "user_id": user_id,
+                "lemonsqueezy_order_id": subscription_id,
+                "status": attributes.get("status", "paid"),
+                "total": attributes.get("total", 0),
+                "product_name": attributes.get("first_order_item", {}).get("product_name", "Unknown"),
+                "created_at": datetime.utcnow()
+            }
+            
+            await db.orders.insert_one(order_data)
+            logger.info(f"Order created for user {user_id}")
+            
+    except Exception as e:
+        logger.error(f"Error processing webhook event: {str(e)}")
+        raise
+
+
+@router.post("/checkout/create", response_model=CheckoutResponse)
+async def create_checkout(
+    request: CheckoutRequest,
+    current_user: dict = Depends(get_current_user)
+):
+    """Create a Lemon Squeezy checkout session"""
+    try:
+        # Get variant ID for the requested plan
+        variant_id = VARIANT_IDS.get(request.plan.lower())
+        if not variant_id:
+            raise HTTPException(status_code=400, detail=f"Invalid plan: {request.plan}")
+        
+        # Prepare checkout data
+        checkout_data = {
+            "data": {
+                "type": "checkouts",
+                "attributes": {
+                    "custom_price": None,
+                    "product_options": {
+                        "enabled_variants": [int(variant_id)],
+                        "redirect_url": f"{os.getenv('REACT_APP_BACKEND_URL', 'http://localhost:3000')}/subscription?success=true",
+                        "receipt_button_text": "Go to Dashboard",
+                        "receipt_link_url": f"{os.getenv('REACT_APP_BACKEND_URL', 'http://localhost:3000')}/dashboard"
+                    },
+                    "checkout_data": {
+                        "email": request.user_email,
+                        "custom": {
+                            "user_id": request.user_id
+                        }
+                    }
+                },
+                "relationships": {
+                    "store": {
+                        "data": {
+                            "type": "stores",
+                            "id": LEMONSQUEEZY_STORE_ID
+                        }
+                    },
+                    "variant": {
+                        "data": {
+                            "type": "variants",
+                            "id": variant_id
+                        }
+                    }
+                }
+            }
+        }
+        
+        # Make API request to Lemon Squeezy
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                f"{LEMONSQUEEZY_API_BASE}/checkouts",
+                json=checkout_data,
+                headers={
+                    "Accept": "application/vnd.api+json",
+                    "Content-Type": "application/vnd.api+json",
+                    "Authorization": f"Bearer {LEMONSQUEEZY_API_KEY}"
+                },
+                timeout=30.0
+            )
+            
+            if response.status_code != 201:
+                logger.error(f"Lemon Squeezy API error: {response.text}")
+                raise HTTPException(
+                    status_code=response.status_code,
+                    detail=f"Failed to create checkout: {response.text}"
+                )
+            
+            result = response.json()
+            checkout_url = result.get("data", {}).get("attributes", {}).get("url")
+            
+            if not checkout_url:
+                raise HTTPException(
+                    status_code=500,
+                    detail="Checkout URL not returned from Lemon Squeezy"
+                )
+            
+            return CheckoutResponse(
+                checkout_url=checkout_url,
+                message="Checkout created successfully"
+            )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating checkout: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/webhook")
+async def handle_webhook(
+    request: Request,
+    background_tasks: BackgroundTasks,
+    db = Depends(get_db)
+):
+    """Handle Lemon Squeezy webhook events"""
+    try:
+        # Get raw body for signature verification
+        body = await request.body()
+        
+        # Get signature from header
+        signature = request.headers.get("X-Signature")
+        if not signature:
+            logger.warning("Webhook received without signature")
+            raise HTTPException(status_code=401, detail="Missing signature")
+        
+        # Verify webhook signature
+        if not verify_webhook_signature(body, signature):
+            logger.warning("Invalid webhook signature")
+            raise HTTPException(status_code=401, detail="Invalid signature")
+        
+        # Parse event data
+        event_data = json.loads(body)
+        
+        # Store webhook event for audit
+        webhook_log = {
+            "event_name": event_data.get("meta", {}).get("event_name"),
+            "event_id": event_data.get("meta", {}).get("event_id"),
+            "data": event_data,
+            "received_at": datetime.utcnow(),
+            "processed": False
+        }
+        await db.webhook_logs.insert_one(webhook_log)
+        
+        # Process webhook in background
+        background_tasks.add_task(process_webhook_event, event_data, db)
+        
+        # Return 200 immediately to acknowledge receipt
+        return JSONResponse(
+            status_code=200,
+            content={"message": "Webhook received"}
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error handling webhook: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/subscription/status")
+async def get_subscription_status(
+    current_user: dict = Depends(get_current_user),
+    db = Depends(get_db)
+):
+    """Get current user's subscription status"""
+    try:
+        user_id = current_user["id"]
+        
+        # Get subscription from database
+        subscription = await db.subscriptions.find_one({"user_id": user_id})
+        
+        if not subscription:
+            return {
+                "has_subscription": False,
+                "plan": "free",
+                "status": "inactive"
+            }
+        
+        return {
+            "has_subscription": True,
+            "plan": subscription.get("plan_name", "Unknown"),
+            "status": subscription.get("status", "unknown"),
+            "renews_at": subscription.get("renews_at"),
+            "ends_at": subscription.get("ends_at"),
+            "subscription_id": subscription.get("lemonsqueezy_subscription_id")
+        }
+        
+    except Exception as e:
+        logger.error(f"Error getting subscription status: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/plans")
+async def get_plans():
+    """Get available subscription plans"""
+    return {
+        "plans": [
+            {
+                "id": "starter",
+                "name": "Starter",
+                "price": 150,
+                "currency": "INR",
+                "interval": "month",
+                "variant_id": VARIANT_IDS["starter"],
+                "features": [
+                    "3 Chatbots",
+                    "1,000 messages/month",
+                    "File uploads",
+                    "Website scraping",
+                    "Basic analytics"
+                ]
+            },
+            {
+                "id": "professional",
+                "name": "Professional",
+                "price": 499,
+                "currency": "INR",
+                "interval": "one-time",
+                "variant_id": VARIANT_IDS["professional"],
+                "features": [
+                    "Unlimited chatbots",
+                    "10,000 messages/month",
+                    "Priority support",
+                    "Advanced analytics",
+                    "Custom branding",
+                    "API access"
+                ]
+            }
+        ]
+    }
