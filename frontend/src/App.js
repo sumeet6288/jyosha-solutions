@@ -18,6 +18,7 @@ import Pricing from './pages/Pricing';
 import Enterprise from './pages/Enterprise';
 import Resources from './pages/Resources';
 import NotFound from './pages/NotFound';
+import AdminDashboard from './pages/admin/AdminDashboard';
 import { Toaster } from './components/ui/toaster';
 
 const ProtectedRoute = ({ children }) => {
