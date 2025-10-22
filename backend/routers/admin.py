@@ -60,7 +60,10 @@ async def get_all_users():
     Get all users in the system
     """
     try:
-        chatbots_collection = db['chatbots']
+        if not db_instance:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+            
+        chatbots_collection = db_instance['chatbots']
         
         # Get all unique users from chatbots
         pipeline = [
@@ -82,13 +85,16 @@ async def get_all_users():
             {"$sort": {"created_at": -1}}
         ]
         
-        users = list(chatbots_collection.aggregate(pipeline))
+        users = []
+        async for user in chatbots_collection.aggregate(pipeline):
+            users.append(user)
         
         return {
             "users": users,
             "total": len(users)
         }
     except Exception as e:
+        print(f"Error in get_all_users: {str(e)}")
         return {
             "users": [],
             "total": 0
