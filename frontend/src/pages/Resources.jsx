@@ -82,7 +82,7 @@ const Resources = () => {
       </div>
 
       <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-b border-purple-200/50 z-50 shadow-sm">
-        <div className="max-w-[95%] mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-[95%] mx-auto px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer group" onClick={() => navigate('/')}>
             <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-purple-500/30">
               <span className="text-white font-bold text-lg">B</span>
@@ -103,7 +103,7 @@ const Resources = () => {
         </div>
       </nav>
 
-      <div className="pt-32 pb-20 px-6 relative z-10">
+      <div className="pt-32 pb-20 px-8 relative z-10">
         <div className="max-w-[95%] mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-20 animate-fade-in-up">
