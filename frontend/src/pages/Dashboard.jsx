@@ -120,7 +120,7 @@ const Dashboard = () => {
       {/* Top Navigation */}
       <ResponsiveNav user={user} onLogout={handleLogout} />
 
-      <div className="p-4 sm:p-6 max-w-7xl mx-auto relative z-10">
+      <div className="p-6 sm:p-8 max-w-[95%] mx-auto relative z-10">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-purple-200/50 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 transform hover:-translate-y-2 animate-fade-in-up overflow-hidden relative">
