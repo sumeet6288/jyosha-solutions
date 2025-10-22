@@ -65,9 +65,11 @@ def verify_webhook_signature(payload: bytes, signature: str) -> bool:
         return False
 
 
-async def process_webhook_event(event_data: Dict[str, Any], db):
+async def process_webhook_event(event_data: Dict[str, Any]):
     """Process Lemon Squeezy webhook events"""
     try:
+        global db_instance
+        db = db_instance
         event_name = event_data.get("meta", {}).get("event_name")
         custom_data = event_data.get("meta", {}).get("custom_data", {})
         user_id = custom_data.get("user_id")
