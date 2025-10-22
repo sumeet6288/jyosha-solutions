@@ -111,17 +111,17 @@ const Footer = ({ variant = 'landing' }) => {
               &copy; {currentYear} BotSmith. All rights reserved.
             </p>
             <div className="flex items-center space-x-4">
-              <a href="#" className="text-gray-600 hover:text-purple-600 transition-colors text-sm">
+              <Link to="/resources" className="text-gray-600 hover:text-purple-600 transition-colors text-sm">
                 Privacy Policy
-              </a>
+              </Link>
               <span className="text-gray-300">|</span>
-              <a href="#" className="text-gray-600 hover:text-purple-600 transition-colors text-sm">
+              <Link to="/resources" className="text-gray-600 hover:text-purple-600 transition-colors text-sm">
                 Terms of Service
-              </a>
+              </Link>
               <span className="text-gray-300">|</span>
-              <a href="#" className="text-gray-600 hover:text-purple-600 transition-colors text-sm">
+              <Link to="/resources" className="text-gray-600 hover:text-purple-600 transition-colors text-sm">
                 Cookie Policy
-              </a>
+              </Link>
             </div>
           </div>
         </div>
