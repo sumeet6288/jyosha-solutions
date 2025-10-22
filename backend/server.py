@@ -5,7 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
-from routers import auth_router, user_router, chatbots, sources, chat, analytics, plans, advanced_analytics, public_chat, lemonsqueezy
+from routers import auth_router, user_router, chatbots, sources, chat, analytics, plans, advanced_analytics, public_chat, lemonsqueezy, admin
 import auth
 from services.plan_service import plan_service
 
