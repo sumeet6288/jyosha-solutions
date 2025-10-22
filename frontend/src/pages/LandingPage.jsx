@@ -174,8 +174,8 @@ const LandingPage = () => {
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
         </div>
         <div className="max-w-4xl mx-auto text-center relative z-10 animate-fade-in-up">
-          <h2 className="text-5xl font-bold mb-6">Ready to transform your customer experience?</h2>
-          <p className="text-xl text-purple-200 mb-8">Join thousands of businesses using AI agents to deliver magical customer experiences</p>
+          <h2 className="text-5xl font-bold mb-6">Take your customer service to the next level.</h2>
+          <p className="text-xl text-purple-200 mb-8">Let AI agents create seamless experiences that keep clients coming back</p>
           <Button 
             className="bg-white hover:bg-gray-100 text-purple-900 px-8 py-6 text-lg rounded-xl shadow-2xl transform hover:scale-105 transition-all duration-300 group"
             onClick={() => navigate('/signup')}
