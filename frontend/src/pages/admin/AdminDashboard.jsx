@@ -8,11 +8,12 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [stats, setStats] = useState({
-    totalUsers: 1247,
-    activeChatbots: 3568,
-    totalMessages: 45239,
-    activeIntegrations: 892
+    totalUsers: 0,
+    activeChatbots: 0,
+    totalMessages: 0,
+    activeIntegrations: 0
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // For demo purposes, set a default admin user
@@ -20,7 +21,24 @@ const AdminDashboard = () => {
       name: 'Admin User',
       email: 'admin@botsmith.co'
     });
+
+    // Fetch real stats from backend
+    fetchAdminStats();
   }, [navigate]);
+
+  const fetchAdminStats = async () => {
+    try {
+      setLoading(true);
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
+      const response = await fetch(`${backendUrl}/api/admin/stats`);
+      const data = await response.json();
+      setStats(data);
+    } catch (error) {
+      console.error('Error fetching admin stats:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('botsmith_user');
