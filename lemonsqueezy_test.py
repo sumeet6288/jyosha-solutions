@@ -305,7 +305,7 @@ class LemonSqueezyTester:
 def main():
     """Main test execution"""
     # Get base URL from environment
-    base_url = "https://dependency-preview.preview.emergentagent.com"
+    base_url = "https://install-creds-demo.preview.emergentagent.com"
     
     print(f"Testing Lemon Squeezy API at: {base_url}")
     
