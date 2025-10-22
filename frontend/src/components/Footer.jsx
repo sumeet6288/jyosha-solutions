@@ -69,22 +69,22 @@ const Footer = ({ variant = 'landing' }) => {
                   </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-600 hover:text-purple-600 transition-colors text-sm flex items-center group">
+                  <Link to="/resources" className="text-gray-600 hover:text-purple-600 transition-colors text-sm flex items-center group">
                     <ChevronRight className="w-3 h-3 mr-1 opacity-0 group-hover:opacity-100 transition-opacity" />
                     API Reference
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-600 hover:text-purple-600 transition-colors text-sm flex items-center group">
+                  <Link to="/resources" className="text-gray-600 hover:text-purple-600 transition-colors text-sm flex items-center group">
                     <ChevronRight className="w-3 h-3 mr-1 opacity-0 group-hover:opacity-100 transition-opacity" />
                     Help Center
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-600 hover:text-purple-600 transition-colors text-sm flex items-center group">
+                  <Link to="/resources" className="text-gray-600 hover:text-purple-600 transition-colors text-sm flex items-center group">
                     <ChevronRight className="w-3 h-3 mr-1 opacity-0 group-hover:opacity-100 transition-opacity" />
                     Community
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
