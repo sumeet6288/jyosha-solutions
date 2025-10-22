@@ -90,7 +90,7 @@ const LandingPage = () => {
             </div>
             <h1 className="text-6xl md:text-7xl font-bold leading-tight">
               <span className="bg-gradient-to-r from-gray-900 via-purple-900 to-pink-900 bg-clip-text text-transparent animate-gradient">
-                AI agents for<br />magical customer<br />experiences
+                AI that listens,<br />learns, and delights<br />every customer
               </span>
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed">
