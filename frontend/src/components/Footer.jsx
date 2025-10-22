@@ -138,7 +138,7 @@ const Footer = ({ variant = 'landing' }) => {
         <div className="absolute -bottom-1/2 -right-1/2 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-700"></div>
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 pt-16 pb-8">
+      <div className="relative max-w-[95%] mx-auto px-8 pt-16 pb-8">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           {/* Brand & Description */}
