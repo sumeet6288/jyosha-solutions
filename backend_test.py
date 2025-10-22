@@ -470,6 +470,152 @@ class ChatbotAPITester:
         except Exception as e:
             self.log_result("Verify Deletion", False, f"Exception: {str(e)}")
     
+    def test_lemonsqueezy_plans(self):
+        """Test GET /api/lemonsqueezy/plans - Should return available subscription plans"""
+        try:
+            response = self.make_request('GET', '/api/lemonsqueezy/plans')
+            success = response.status_code == 200
+            
+            if success:
+                data = response.json()
+                plans = data.get('plans', [])
+                
+                # Check if we have both starter and professional plans
+                plan_ids = [plan.get('id') for plan in plans]
+                has_starter = 'starter' in plan_ids
+                has_professional = 'professional' in plan_ids
+                
+                # Verify plan structure
+                valid_plans = True
+                for plan in plans:
+                    required_fields = ['id', 'name', 'price', 'currency', 'interval', 'variant_id', 'features']
+                    if not all(field in plan for field in required_fields):
+                        valid_plans = False
+                        break
+                
+                success = has_starter and has_professional and valid_plans
+                message = f"Found {len(plans)} plans: {', '.join(plan_ids)}"
+                if not valid_plans:
+                    message += " (Invalid plan structure)"
+                
+                self.log_result("Lemon Squeezy Plans", success, message)
+            else:
+                error_msg = response.text
+                self.log_result("Lemon Squeezy Plans", False, f"Status: {response.status_code}, Error: {error_msg}")
+        except Exception as e:
+            self.log_result("Lemon Squeezy Plans", False, f"Exception: {str(e)}")
+    
+    def test_lemonsqueezy_subscription_status(self):
+        """Test GET /api/lemonsqueezy/subscription/status - Should return subscription status for demo user"""
+        try:
+            response = self.make_request('GET', '/api/lemonsqueezy/subscription/status')
+            success = response.status_code == 200
+            
+            if success:
+                data = response.json()
+                required_fields = ['has_subscription', 'plan', 'status']
+                success = all(field in data for field in required_fields)
+                
+                message = f"Plan: {data.get('plan', 'unknown')}, Status: {data.get('status', 'unknown')}"
+                if data.get('has_subscription'):
+                    message += f", Subscription ID: {data.get('subscription_id', 'N/A')}"
+                
+                self.log_result("Lemon Squeezy Subscription Status", success, message)
+            else:
+                error_msg = response.text
+                self.log_result("Lemon Squeezy Subscription Status", False, f"Status: {response.status_code}, Error: {error_msg}")
+        except Exception as e:
+            self.log_result("Lemon Squeezy Subscription Status", False, f"Exception: {str(e)}")
+    
+    def test_lemonsqueezy_checkout_starter(self):
+        """Test POST /api/lemonsqueezy/checkout/create with starter plan"""
+        try:
+            checkout_data = {
+                "plan": "starter",
+                "user_id": "demo-user-123",
+                "user_email": "demo@botsmith.com"
+            }
+            
+            response = self.make_request('POST', '/api/lemonsqueezy/checkout/create', json=checkout_data)
+            success = response.status_code == 200
+            
+            if success:
+                data = response.json()
+                checkout_url = data.get('checkout_url', '')
+                message = data.get('message', '')
+                
+                # Verify checkout URL is valid Lemon Squeezy URL
+                is_valid_url = checkout_url.startswith('https://') and 'lemonsqueezy.com' in checkout_url
+                success = is_valid_url and checkout_url != ''
+                
+                result_message = f"Message: {message}"
+                if is_valid_url:
+                    result_message += f", URL: {checkout_url[:50]}..."
+                else:
+                    result_message += f", Invalid URL: {checkout_url}"
+                
+                self.log_result("Lemon Squeezy Checkout (Starter)", success, result_message)
+            else:
+                error_msg = response.text
+                self.log_result("Lemon Squeezy Checkout (Starter)", False, f"Status: {response.status_code}, Error: {error_msg}")
+        except Exception as e:
+            self.log_result("Lemon Squeezy Checkout (Starter)", False, f"Exception: {str(e)}")
+    
+    def test_lemonsqueezy_checkout_professional(self):
+        """Test POST /api/lemonsqueezy/checkout/create with professional plan"""
+        try:
+            checkout_data = {
+                "plan": "professional",
+                "user_id": "demo-user-123",
+                "user_email": "demo@botsmith.com"
+            }
+            
+            response = self.make_request('POST', '/api/lemonsqueezy/checkout/create', json=checkout_data)
+            success = response.status_code == 200
+            
+            if success:
+                data = response.json()
+                checkout_url = data.get('checkout_url', '')
+                message = data.get('message', '')
+                
+                # Verify checkout URL is valid Lemon Squeezy URL
+                is_valid_url = checkout_url.startswith('https://') and 'lemonsqueezy.com' in checkout_url
+                success = is_valid_url and checkout_url != ''
+                
+                result_message = f"Message: {message}"
+                if is_valid_url:
+                    result_message += f", URL: {checkout_url[:50]}..."
+                else:
+                    result_message += f", Invalid URL: {checkout_url}"
+                
+                self.log_result("Lemon Squeezy Checkout (Professional)", success, result_message)
+            else:
+                error_msg = response.text
+                self.log_result("Lemon Squeezy Checkout (Professional)", False, f"Status: {response.status_code}, Error: {error_msg}")
+        except Exception as e:
+            self.log_result("Lemon Squeezy Checkout (Professional)", False, f"Exception: {str(e)}")
+    
+    def test_lemonsqueezy_checkout_invalid_plan(self):
+        """Test POST /api/lemonsqueezy/checkout/create with invalid plan (should fail)"""
+        try:
+            checkout_data = {
+                "plan": "invalid_plan",
+                "user_id": "demo-user-123",
+                "user_email": "demo@botsmith.com"
+            }
+            
+            response = self.make_request('POST', '/api/lemonsqueezy/checkout/create', json=checkout_data)
+            # Should return 400 for invalid plan
+            success = response.status_code == 400
+            
+            if success:
+                self.log_result("Lemon Squeezy Invalid Plan", success, "Correctly rejected invalid plan")
+            else:
+                error_msg = response.text
+                self.log_result("Lemon Squeezy Invalid Plan", False, f"Status: {response.status_code}, Expected 400, Error: {error_msg}")
+        except Exception as e:
+            self.log_result("Lemon Squeezy Invalid Plan", False, f"Exception: {str(e)}")
+    
     def run_all_tests(self):
         """Run all tests in sequence"""
         print("🚀 Starting Chatbot Builder Backend API Tests")
