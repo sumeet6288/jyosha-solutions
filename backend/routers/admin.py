@@ -189,8 +189,11 @@ async def get_admin_analytics():
     Get admin analytics data
     """
     try:
-        conversations_collection = db['conversations']
-        chatbots_collection = db['chatbots']
+        if not db_instance:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+            
+        conversations_collection = db_instance['conversations']
+        chatbots_collection = db_instance['chatbots']
         
         # Get conversations over time (last 30 days)
         thirty_days_ago = datetime.now() - timedelta(days=30)
@@ -216,10 +219,13 @@ async def get_admin_analytics():
             {"$sort": {"_id": 1}}
         ]
         
-        conversations_by_day = list(conversations_collection.aggregate(pipeline))
+        conversations_by_day = []
+        async for doc in conversations_collection.aggregate(pipeline):
+            conversations_by_day.append(doc)
         
         # Most popular AI providers
-        provider_stats = list(chatbots_collection.aggregate([
+        provider_stats = []
+        async for doc in chatbots_collection.aggregate([
             {
                 "$group": {
                     "_id": "$ai_provider",
@@ -227,13 +233,15 @@ async def get_admin_analytics():
                 }
             },
             {"$sort": {"count": -1}}
-        ]))
+        ]):
+            provider_stats.append(doc)
         
         return {
             "conversationsByDay": conversations_by_day,
             "providerStats": provider_stats
         }
     except Exception as e:
+        print(f"Error in get_admin_analytics: {str(e)}")
         return {
             "conversationsByDay": [],
             "providerStats": []
