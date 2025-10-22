@@ -145,8 +145,8 @@ const LandingPage = () => {
       <section className="py-24 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-purple-900 to-pink-900 bg-clip-text text-transparent">Everything you need to delight customers</h2>
-            <p className="text-xl text-gray-600">Powerful features to build, deploy, and optimize your AI agents</p>
+            <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-purple-900 to-pink-900 bg-clip-text text-transparent">Build Smarter, Support Better, Grow Faster</h2>
+            <p className="text-xl text-gray-600">A complete platform to craft, deploy and refine your AI-Powered agent ecosystem.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
