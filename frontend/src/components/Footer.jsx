@@ -255,28 +255,28 @@ const Footer = ({ variant = 'landing' }) => {
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center group">
+                <Link to="/resources" className="text-gray-300 hover:text-white transition-colors flex items-center group">
                   <ChevronRight className="w-4 h-4 mr-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   API Reference
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center group">
+                <Link to="/resources" className="text-gray-300 hover:text-white transition-colors flex items-center group">
                   <ChevronRight className="w-4 h-4 mr-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   Help Center
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center group">
+                <Link to="/resources" className="text-gray-300 hover:text-white transition-colors flex items-center group">
                   <ChevronRight className="w-4 h-4 mr-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   Community
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center group">
+                <Link to="/resources" className="text-gray-300 hover:text-white transition-colors flex items-center group">
                   <ChevronRight className="w-4 h-4 mr-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   Status
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
