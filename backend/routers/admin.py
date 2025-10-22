@@ -148,10 +148,14 @@ async def get_activity_logs(limit: int = 100):
     Get recent activity logs
     """
     try:
-        conversations_collection = db['conversations']
+        if not db_instance:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+            
+        conversations_collection = db_instance['conversations']
         
         # Get recent conversations as activity logs
-        logs = list(conversations_collection.find(
+        logs = []
+        cursor = conversations_collection.find(
             {},
             {
                 "_id": 0,
@@ -162,13 +166,17 @@ async def get_activity_logs(limit: int = 100):
                 "created_at": 1,
                 "message_count": 1
             }
-        ).sort("created_at", -1).limit(limit))
+        ).sort("created_at", -1).limit(limit)
+        
+        async for log in cursor:
+            logs.append(log)
         
         return {
             "logs": logs,
             "total": len(logs)
         }
     except Exception as e:
+        print(f"Error in get_activity_logs: {str(e)}")
         return {
             "logs": [],
             "total": 0
