@@ -170,7 +170,7 @@ async def process_webhook_event(event_data: Dict[str, Any]):
 @router.post("/checkout/create", response_model=CheckoutResponse)
 async def create_checkout(
     request: CheckoutRequest,
-    current_user = Depends(get_mock_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Create a Lemon Squeezy checkout session"""
     try:
