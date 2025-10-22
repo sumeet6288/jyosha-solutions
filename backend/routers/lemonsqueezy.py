@@ -258,11 +258,12 @@ async def create_checkout(
 @router.post("/webhook")
 async def handle_webhook(
     request: Request,
-    background_tasks: BackgroundTasks,
-    db = Depends(get_db)
+    background_tasks: BackgroundTasks
 ):
     """Handle Lemon Squeezy webhook events"""
     try:
+        global db_instance
+        db = db_instance
         # Get raw body for signature verification
         body = await request.body()
         
