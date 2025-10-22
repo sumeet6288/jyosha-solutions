@@ -17,22 +17,12 @@ const SharingTab = ({ chatbot, onUpdate }) => {
 
   const publicChatUrl = `${window.location.origin}/public-chat/${chatbot?.id}`;
   
-  const embedCode = `<!-- Chatbot Widget -->
-<div id="chatbot-${chatbot?.id}"></div>
-<script>
-  (function() {
-    var config = {
-      chatbotId: '${chatbot?.id}',
-      apiUrl: '${process.env.REACT_APP_BACKEND_URL}',
-      theme: '${chatbot?.widget_theme || 'light'}',
-      position: '${chatbot?.widget_position || 'bottom-right'}'
-    };
-    
-    var iframe = document.createElement('iframe');
-    iframe.src = '${publicChatUrl}?embed=true';
-    iframe.style.cssText = 'position: fixed; ${chatbot?.widget_position === 'bottom-right' ? 'bottom: 20px; right: 20px;' : chatbot?.widget_position === 'bottom-left' ? 'bottom: 20px; left: 20px;' : chatbot?.widget_position === 'top-right' ? 'top: 20px; right: 20px;' : 'top: 20px; left: 20px;'} width: 400px; height: 600px; border: none; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.15); z-index: 999999;';
-    document.body.appendChild(iframe);
-  })();
+  const embedCode = `<!-- BotSmith Chat Widget -->
+<script 
+  src="${window.location.origin}/widget.js" 
+  chatbot-id="${chatbot?.id}"
+  domain="${window.location.origin}"
+  defer>
 </script>`;
 
   const copyToClipboard = async (text, type) => {
