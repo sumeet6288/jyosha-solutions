@@ -64,6 +64,7 @@ const SubscriptionNew = () => {
     try {
       const token = localStorage.getItem('token');
       const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
       
       const response = await axios.post(
         `${BACKEND_URL}/api/lemonsqueezy/checkout/create`,
@@ -73,7 +74,7 @@ const SubscriptionNew = () => {
           user_email: user.email || 'demo@botsmith.com'
         },
         {
-          headers: { Authorization: `Bearer ${token}` }
+          headers
         }
       );
 
