@@ -309,11 +309,12 @@ async def handle_webhook(
 
 @router.get("/subscription/status")
 async def get_subscription_status(
-    current_user: dict = Depends(get_current_user),
-    db = Depends(get_db)
+    current_user: dict = Depends(get_current_user)
 ):
     """Get current user's subscription status"""
     try:
+        global db_instance
+        db = db_instance
         user_id = current_user["id"]
         
         # Get subscription from database
