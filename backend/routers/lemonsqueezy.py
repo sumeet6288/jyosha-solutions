@@ -292,7 +292,7 @@ async def handle_webhook(
         await db.webhook_logs.insert_one(webhook_log)
         
         # Process webhook in background
-        background_tasks.add_task(process_webhook_event, event_data, db)
+        background_tasks.add_task(process_webhook_event, event_data)
         
         # Return 200 immediately to acknowledge receipt
         return JSONResponse(
