@@ -118,7 +118,7 @@ const Integrations = () => {
 
       {/* Navigation */}
       <nav className="bg-white/80 backdrop-blur-lg border-b border-purple-200/50 sticky top-0 z-50 shadow-sm">
-        <div className="px-6 py-4 flex items-center justify-between max-w-7xl mx-auto">
+        <div className="px-8 py-4 flex items-center justify-between max-w-[95%] mx-auto">
           <div className="flex items-center gap-8">
             <div className="flex items-center gap-2 cursor-pointer group" onClick={() => navigate('/dashboard')}>
               <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-purple-500/30">
