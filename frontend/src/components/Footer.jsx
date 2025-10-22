@@ -10,7 +10,7 @@ const Footer = ({ variant = 'landing' }) => {
   if (variant === 'dashboard') {
     return (
       <footer className="mt-auto border-t border-gray-200 bg-gradient-to-br from-gray-50 via-purple-50/30 to-pink-50/30">
-        <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="max-w-[95%] mx-auto px-8 py-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* Brand Section */}
             <div className="md:col-span-1">
