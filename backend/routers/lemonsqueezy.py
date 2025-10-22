@@ -315,7 +315,7 @@ async def get_subscription_status(
     try:
         global db_instance
         db = db_instance
-        user_id = current_user["id"]
+        user_id = current_user.id
         
         # Get subscription from database
         subscription = await db.subscriptions.find_one({"user_id": user_id})
