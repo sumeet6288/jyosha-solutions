@@ -186,9 +186,9 @@ async def create_checkout(
                     "custom_price": None,
                     "product_options": {
                         "enabled_variants": [int(variant_id)],
-                        "redirect_url": f"{os.getenv('REACT_APP_BACKEND_URL', 'http://localhost:3000')}/subscription?success=true",
+                        "redirect_url": "https://install-and-show.preview.emergentagent.com/subscription?success=true",
                         "receipt_button_text": "Go to Dashboard",
-                        "receipt_link_url": f"{os.getenv('REACT_APP_BACKEND_URL', 'http://localhost:3000')}/dashboard"
+                        "receipt_link_url": "https://install-and-show.preview.emergentagent.com/dashboard"
                     },
                     "checkout_data": {
                         "email": request.user_email,
