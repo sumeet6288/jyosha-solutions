@@ -94,7 +94,7 @@ const LandingPage = () => {
               </span>
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed">
-              BotSmith is the complete platform for building &<br />deploying AI support agents for your business.
+              BotSmith helps you design and deploy smart AI agents<br />that enhance customer support.
             </p>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <Button 
