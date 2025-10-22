@@ -60,7 +60,7 @@ async def get_all_users():
     Get all users in the system
     """
     try:
-        if not db_instance:
+        if db_instance is None:
             raise HTTPException(status_code=500, detail="Database not initialized")
             
         chatbots_collection = db_instance['chatbots']
@@ -107,7 +107,7 @@ async def get_all_chatbots():
     Get all chatbots in the system
     """
     try:
-        if not db_instance:
+        if db_instance is None:
             raise HTTPException(status_code=500, detail="Database not initialized")
             
         chatbots_collection = db_instance['chatbots']
