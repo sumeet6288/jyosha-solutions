@@ -59,6 +59,7 @@ api_router.include_router(plans.router)
 api_router.include_router(advanced_analytics.router)
 api_router.include_router(public_chat.router)
 api_router.include_router(lemonsqueezy.router, prefix="/lemonsqueezy", tags=["Lemon Squeezy"])
+api_router.include_router(admin.router)
 
 # Include the router in the main app
 app.include_router(api_router)
