@@ -641,6 +641,13 @@ class ChatbotAPITester:
             self.test_get_conversations,
             self.test_dashboard_analytics,
             self.test_chatbot_analytics,
+            # Lemon Squeezy subscription tests
+            self.test_lemonsqueezy_plans,
+            self.test_lemonsqueezy_subscription_status,
+            self.test_lemonsqueezy_checkout_starter,
+            self.test_lemonsqueezy_checkout_professional,
+            self.test_lemonsqueezy_checkout_invalid_plan,
+            # Cleanup tests
             self.test_delete_source,
             self.test_delete_chatbot,
             self.test_verify_deletion
