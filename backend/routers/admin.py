@@ -148,7 +148,7 @@ async def get_activity_logs(limit: int = 100):
     Get recent activity logs
     """
     try:
-        if not db_instance:
+        if db_instance is None:
             raise HTTPException(status_code=500, detail="Database not initialized")
             
         conversations_collection = db_instance['conversations']
@@ -189,7 +189,7 @@ async def get_admin_analytics():
     Get admin analytics data
     """
     try:
-        if not db_instance:
+        if db_instance is None:
             raise HTTPException(status_code=500, detail="Database not initialized")
             
         conversations_collection = db_instance['conversations']
