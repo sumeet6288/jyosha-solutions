@@ -127,7 +127,7 @@ const LandingPage = () => {
 
       {/* Social Proof */}
       <section className="py-12 border-y border-gray-200 bg-white/50 backdrop-blur-sm relative z-10">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-[95%] mx-auto px-8">
           <p className="text-center text-gray-600 mb-8 animate-fade-in">
             Trusted by <span className="font-semibold text-transparent bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text">9000+</span> business worldwide
           </p>
