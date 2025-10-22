@@ -15,19 +15,11 @@ const AdminDashboard = () => {
   });
 
   useEffect(() => {
-    const userData = localStorage.getItem('botsmith_user');
-    if (!userData) {
-      navigate('/signin');
-      return;
-    }
-    
-    const parsedUser = JSON.parse(userData);
-    // Check if admin
-    if (parsedUser.email !== 'admin@botsmith.co') {
-      navigate('/dashboard');
-      return;
-    }
-    setUser(parsedUser);
+    // For demo purposes, set a default admin user
+    setUser({
+      name: 'Admin User',
+      email: 'admin@botsmith.co'
+    });
   }, [navigate]);
 
   const handleLogout = () => {
