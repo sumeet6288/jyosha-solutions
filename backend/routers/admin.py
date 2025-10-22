@@ -18,7 +18,7 @@ async def get_admin_stats() -> Dict[str, Any]:
     Get admin dashboard statistics
     """
     try:
-        if not db_instance:
+        if db_instance is None:
             raise HTTPException(status_code=500, detail="Database not initialized")
             
         # Get total users count (unique user_ids from chatbots collection)
