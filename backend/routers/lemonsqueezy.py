@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, Request, BackgroundTasks, Depends
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import Optional, Dict, Any
+from motor.motor_asyncio import AsyncIOMotorDatabase
 import httpx
 import os
 import hmac
@@ -10,11 +11,16 @@ import json
 import logging
 from datetime import datetime
 
-from database import get_db
 from auth import get_current_user
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
+db_instance = None
+
+def init_router(db: AsyncIOMotorDatabase):
+    """Initialize router with database instance"""
+    global db_instance
+    db_instance = db
 
 # Lemon Squeezy Configuration
 LEMONSQUEEZY_API_KEY = os.getenv("LEMONSQUEEZY_API_KEY")
