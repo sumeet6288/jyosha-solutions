@@ -198,15 +198,15 @@ const SubscriptionNew = () => {
 
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full text-sm font-medium mb-4 shadow-lg">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full text-white font-medium mb-4 shadow-lg">
             <Sparkles className="w-4 h-4" />
-            <span>Powered by Lemon Squeezy</span>
+            <span>Simple, Transparent Pricing</span>
           </div>
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-            Choose Your Plan
+          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
+            Choose Your Perfect Plan
           </h1>
-          <p className="text-gray-600 text-lg">
-            Unlock powerful features for your chatbot business
+          <p className="text-gray-600 text-xl max-w-2xl mx-auto">
+            Start free and scale as you grow. No hidden fees, cancel anytime.
           </p>
         </div>
 
@@ -243,121 +243,118 @@ const SubscriptionNew = () => {
           </div>
         )}
 
-        {/* Free Plan Card */}
-        <div className="mb-8">
-          <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-200 p-8 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-3 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-xl shadow-lg">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900">Free Plan</h3>
-                <p className="text-gray-600">Perfect for getting started</p>
-              </div>
-            </div>
-
-            <div className="mb-6">
-              <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-bold text-gray-900">₹0</span>
-                <span className="text-gray-600">/forever</span>
-              </div>
-            </div>
-
-            <div className="space-y-3 mb-6">
-              {['1 Chatbot', '100 messages/month', 'Basic features', 'Community support'].map((feature, idx) => (
-                <div key={idx} className="flex items-center gap-2">
-                  <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">{feature}</span>
-                </div>
-              ))}
-            </div>
-
-            <Button
-              disabled
-              className="w-full bg-gray-200 text-gray-500 cursor-not-allowed"
-            >
-              Current Plan
-            </Button>
-          </div>
-        </div>
-
-        {/* Paid Plans Grid */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {plans.map((plan) => {
-            const Icon = getPlanIcon(plan.id);
-            const gradient = getPlanGradient(plan.id);
-            const isPopular = plan.id === 'starter';
+        {/* All Plans Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          {plans.map((plan, index) => {
+            const Icon = plan.icon;
+            const isPopular = plan.popular;
+            const isFree = plan.isFree;
+            const currentPlan = subscriptionStatus?.plan?.toLowerCase() === plan.id.toLowerCase();
 
             return (
               <div
                 key={plan.id}
-                className={`relative bg-white rounded-2xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 ${
-                  isPopular ? 'border-4 border-purple-500 scale-105' : 'border-2 border-gray-200'
+                className={`relative group ${
+                  isPopular ? 'lg:-mt-4 lg:mb-4' : ''
                 }`}
               >
+                {/* Popular Badge */}
                 {isPopular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="inline-flex items-center gap-1 px-4 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full text-sm font-semibold shadow-lg">
-                      <TrendingUp className="w-4 h-4" />
-                      Most Popular
+                  <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 z-10">
+                    <span className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                      ⭐ Most Popular
                     </span>
                   </div>
                 )}
 
-                <div className="flex items-center gap-3 mb-4">
-                  <div className={`p-3 bg-gradient-to-br ${gradient} rounded-xl shadow-lg`}>
-                    <Icon className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900">{plan.name}</h3>
-                    <p className="text-gray-600">
-                      {plan.interval === 'month' ? 'Monthly subscription' : 'One-time payment'}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mb-6">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold text-gray-900">₹{plan.price}</span>
-                    <span className="text-gray-600">
-                      {plan.interval === 'month' ? '/month' : 'one-time'}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="space-y-3 mb-6">
-                  {plan.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-2">
-                      <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                      <span className="text-gray-700">{feature}</span>
+                {/* Card */}
+                <div className={`h-full bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden ${
+                  isPopular ? 'ring-4 ring-purple-500 ring-opacity-50' : ''
+                }`}>
+                  {/* Gradient Header */}
+                  <div className={`bg-gradient-to-br ${plan.gradient} p-8 text-white`}>
+                    <div className="flex items-center justify-between mb-4">
+                      <Icon className="w-10 h-10" />
+                      {isPopular && (
+                        <Sparkles className="w-6 h-6 animate-pulse" />
+                      )}
                     </div>
-                  ))}
-                </div>
+                    <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+                    <p className="text-white/90 text-sm mb-6">{plan.description}</p>
+                    
+                    <div className="mb-2">
+                      <span className="text-5xl font-bold">{plan.price}</span>
+                      {plan.period && (
+                        <span className="text-white/80 text-lg">{plan.period}</span>
+                      )}
+                    </div>
+                  </div>
 
-                <Button
-                  onClick={() => handleCheckout(plan.id)}
-                  disabled={checkingOut !== null}
-                  className={`w-full bg-gradient-to-r ${gradient} text-white hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-xl group`}
-                >
-                  {checkingOut === plan.id ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      <CreditCard className="w-4 h-4 mr-2" />
-                      Subscribe Now
-                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </>
-                  )}
-                </Button>
+                  {/* Features */}
+                  <div className="p-8">
+                    <ul className="space-y-4 mb-8">
+                      {plan.features.map((feature, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <div className={`mt-0.5 bg-gradient-to-r ${plan.gradient} rounded-full p-1`}>
+                            <Check className="w-4 h-4 text-white" />
+                          </div>
+                          <span className="text-gray-700 text-sm">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* CTA Button */}
+                    <Button 
+                      className={`w-full py-6 rounded-xl font-semibold text-base transition-all duration-300 ${
+                        isFree || currentPlan
+                          ? 'border-2 border-gray-300 bg-gray-100 text-gray-500 cursor-not-allowed'
+                          : `bg-gradient-to-r ${plan.gradient} hover:shadow-lg hover:scale-105 text-white border-0`
+                      }`}
+                      onClick={() => handleCheckout(plan.id)}
+                      disabled={isFree || currentPlan || checkingOut !== null}
+                    >
+                      {checkingOut === plan.id ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin mr-2 inline" />
+                          Processing...
+                        </>
+                      ) : (
+                        currentPlan ? 'Current Plan' : plan.cta
+                      )}
+                    </Button>
+                  </div>
+                </div>
               </div>
             );
           })}
         </div>
 
-        {/* Info Section */}
+        {/* Additional Info Section */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-12 shadow-xl max-w-4xl mx-auto mb-8">
+          <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-pink-600 to-blue-600 bg-clip-text text-transparent text-center">
+            Need help choosing?
+          </h2>
+          <p className="text-gray-600 text-lg mb-8 text-center">
+            Not sure which plan is right for you? Our team is here to help you find the perfect fit for your needs.
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Button 
+              className="bg-gradient-to-r from-pink-500 to-purple-500 hover:shadow-lg text-white rounded-xl px-8 py-6"
+              onClick={() => navigate('/enterprise')}
+            >
+              Talk to Sales
+            </Button>
+            <Button 
+              variant="outline"
+              className="border-2 rounded-xl px-8 py-6"
+              onClick={() => navigate('/resources')}
+            >
+              View Documentation
+            </Button>
+          </div>
+        </div>
+
+        {/* Secure Payment Info */}
         <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-200">
           <div className="flex items-start gap-3">
             <AlertCircle className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
