@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { 
   Sparkles, Zap, Crown, Check, ArrowRight, 
-  TrendingUp, AlertCircle, Loader2, CreditCard, CheckCircle, Building2
+  TrendingUp, AlertCircle, Loader2, CreditCard, CheckCircle, Building2, ArrowLeft
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import Footer from '../components/Footer';
