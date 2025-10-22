@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { 
   Sparkles, Zap, Crown, Check, ArrowRight, 
-  TrendingUp, AlertCircle, Loader2, CreditCard, CheckCircle
+  TrendingUp, AlertCircle, Loader2, CreditCard, CheckCircle, Building2
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import Footer from '../components/Footer';
@@ -14,10 +14,94 @@ const SubscriptionNew = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
-  const [plans, setPlans] = useState([]);
   const [subscriptionStatus, setSubscriptionStatus] = useState(null);
   const [checkingOut, setCheckingOut] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
+
+  // Define plans matching the Pricing page
+  const plans = [
+    {
+      id: 'free',
+      name: 'Free',
+      price: '$0',
+      period: '/month',
+      description: 'Perfect for trying out BotSmith',
+      icon: Sparkles,
+      gradient: 'from-blue-400 to-cyan-400',
+      features: [
+        '1 chatbot',
+        '100 messages/month',
+        'Basic analytics',
+        'Community support',
+        'Standard AI models'
+      ],
+      cta: 'Current Plan',
+      isFree: true
+    },
+    {
+      id: 'starter',
+      name: 'Starter',
+      price: '$150',
+      period: '/month',
+      description: 'For growing businesses',
+      icon: Zap,
+      gradient: 'from-pink-500 to-purple-500',
+      popular: true,
+      features: [
+        '5 chatbots',
+        '10,000 messages/month',
+        'Advanced analytics',
+        'Priority support',
+        'Custom branding',
+        'API access',
+        'All AI models'
+      ],
+      cta: 'Subscribe Now'
+    },
+    {
+      id: 'professional',
+      name: 'Professional',
+      price: '$499',
+      period: '/month',
+      description: 'For large teams & high volume',
+      icon: Crown,
+      gradient: 'from-blue-600 to-indigo-600',
+      features: [
+        '25 chatbots',
+        '100,000 messages/month',
+        'Advanced analytics',
+        '24/7 priority support',
+        'Custom branding',
+        'Full API access',
+        'All AI models',
+        'Custom integrations',
+        'Dedicated account manager'
+      ],
+      cta: 'Subscribe Now'
+    },
+    {
+      id: 'enterprise',
+      name: 'Enterprise',
+      price: 'Custom',
+      period: '',
+      description: 'Tailored solutions for your needs',
+      icon: Building2,
+      gradient: 'from-purple-600 to-pink-600',
+      features: [
+        'Unlimited chatbots',
+        'Unlimited messages',
+        'Custom analytics',
+        'Dedicated 24/7 support',
+        'White-label solution',
+        'Custom AI model training',
+        'On-premise deployment',
+        'SLA guarantee',
+        'Custom contracts',
+        'Enterprise security'
+      ],
+      cta: 'Contact Sales'
+    }
+  ];
 
   useEffect(() => {
     fetchData();
@@ -33,12 +117,6 @@ const SubscriptionNew = () => {
     try {
       const token = localStorage.getItem('token');
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
-      
-      // Fetch available plans
-      const plansResponse = await axios.get(`${BACKEND_URL}/api/lemonsqueezy/plans`, {
-        headers
-      });
-      setPlans(plansResponse.data.plans);
 
       // Fetch subscription status
       try {
@@ -59,6 +137,12 @@ const SubscriptionNew = () => {
 
   const handleCheckout = async (planId) => {
     if (checkingOut) return;
+
+    // Handle Enterprise plan differently
+    if (planId === 'enterprise') {
+      navigate('/enterprise');
+      return;
+    }
     
     setCheckingOut(planId);
     try {
@@ -88,22 +172,6 @@ const SubscriptionNew = () => {
     } finally {
       setCheckingOut(null);
     }
-  };
-
-  const getPlanIcon = (planId) => {
-    const icons = {
-      starter: Zap,
-      professional: Crown
-    };
-    return icons[planId] || Sparkles;
-  };
-
-  const getPlanGradient = (planId) => {
-    const gradients = {
-      starter: 'from-pink-500 to-purple-500',
-      professional: 'from-blue-600 to-indigo-600'
-    };
-    return gradients[planId] || 'from-gray-400 to-gray-600';
   };
 
   if (loading) {
