@@ -107,9 +107,13 @@ async def get_all_chatbots():
     Get all chatbots in the system
     """
     try:
-        chatbots_collection = db['chatbots']
+        if not db_instance:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+            
+        chatbots_collection = db_instance['chatbots']
         
-        chatbots = list(chatbots_collection.find(
+        chatbots = []
+        cursor = chatbots_collection.find(
             {},
             {
                 "_id": 0,
@@ -121,13 +125,17 @@ async def get_all_chatbots():
                 "created_at": 1,
                 "updated_at": 1
             }
-        ).sort("created_at", -1))
+        ).sort("created_at", -1)
+        
+        async for chatbot in cursor:
+            chatbots.append(chatbot)
         
         return {
             "chatbots": chatbots,
             "total": len(chatbots)
         }
     except Exception as e:
+        print(f"Error in get_all_chatbots: {str(e)}")
         return {
             "chatbots": [],
             "total": 0
