@@ -60,25 +60,25 @@ const AdminDashboard = () => {
         </div>
       </nav>
 
-      <div className="p-6 max-w-7xl mx-auto">
+      <div className="p-8 max-w-[95%] mx-auto">
         {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
             <Users className="w-8 h-8 text-blue-600 mb-3" />
             <p className="text-3xl font-bold">{stats.totalUsers.toLocaleString()}</p>
             <p className="text-gray-600 text-sm mt-1">Total Users</p>
           </div>
-          <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
+          <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
             <Bot className="w-8 h-8 text-green-600 mb-3" />
             <p className="text-3xl font-bold">{stats.activeChatbots.toLocaleString()}</p>
             <p className="text-gray-600 text-sm mt-1">Active Chatbots</p>
           </div>
-          <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
+          <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
             <BarChart3 className="w-8 h-8 text-purple-600 mb-3" />
             <p className="text-3xl font-bold">{stats.totalMessages.toLocaleString()}</p>
             <p className="text-gray-600 text-sm mt-1">Total Messages</p>
           </div>
-          <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
+          <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
             <Database className="w-8 h-8 text-orange-600 mb-3" />
             <p className="text-3xl font-bold">{stats.activeIntegrations.toLocaleString()}</p>
             <p className="text-gray-600 text-sm mt-1">Integrations</p>
@@ -97,7 +97,7 @@ const AdminDashboard = () => {
           </TabsList>
 
           <TabsContent value="users">
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <div className="bg-white rounded-xl border border-gray-200 p-8">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold">User Management</h2>
                 <Button className="bg-black hover:bg-gray-800 text-white">
@@ -112,7 +112,7 @@ const AdminDashboard = () => {
           </TabsContent>
 
           <TabsContent value="chatbots">
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <div className="bg-white rounded-xl border border-gray-200 p-8">
               <h2 className="text-2xl font-bold mb-6">Chatbot Overview</h2>
               <div className="text-center py-12 text-gray-500">
                 <Bot className="w-16 h-16 mx-auto mb-4 opacity-50" />
@@ -122,7 +122,7 @@ const AdminDashboard = () => {
           </TabsContent>
 
           <TabsContent value="analytics">
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <div className="bg-white rounded-xl border border-gray-200 p-8">
               <h2 className="text-2xl font-bold mb-6">System Analytics</h2>
               <div className="text-center py-12 text-gray-500">
                 <BarChart3 className="w-16 h-16 mx-auto mb-4 opacity-50" />
@@ -132,7 +132,7 @@ const AdminDashboard = () => {
           </TabsContent>
 
           <TabsContent value="integrations">
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <div className="bg-white rounded-xl border border-gray-200 p-8">
               <h2 className="text-2xl font-bold mb-6">Integration Management</h2>
               <div className="text-center py-12 text-gray-500">
                 <Database className="w-16 h-16 mx-auto mb-4 opacity-50" />
@@ -142,7 +142,7 @@ const AdminDashboard = () => {
           </TabsContent>
 
           <TabsContent value="activity">
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <div className="bg-white rounded-xl border border-gray-200 p-8">
               <h2 className="text-2xl font-bold mb-6">Activity Logs</h2>
               <div className="text-center py-12 text-gray-500">
                 <Activity className="w-16 h-16 mx-auto mb-4 opacity-50" />
@@ -152,7 +152,7 @@ const AdminDashboard = () => {
           </TabsContent>
 
           <TabsContent value="settings">
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <div className="bg-white rounded-xl border border-gray-200 p-8">
               <h2 className="text-2xl font-bold mb-6">System Settings</h2>
               <div className="text-center py-12 text-gray-500">
                 <Settings className="w-16 h-16 mx-auto mb-4 opacity-50" />
