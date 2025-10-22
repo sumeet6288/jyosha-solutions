@@ -18,21 +18,24 @@ async def get_admin_stats() -> Dict[str, Any]:
     Get admin dashboard statistics
     """
     try:
+        if not db_instance:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+            
         # Get total users count (unique user_ids from chatbots collection)
-        chatbots_collection = db['chatbots']
-        users = chatbots_collection.distinct('user_id')
+        chatbots_collection = db_instance['chatbots']
+        users = await chatbots_collection.distinct('user_id')
         total_users = len(users)
         
         # Get total chatbots count
-        total_chatbots = chatbots_collection.count_documents({})
+        total_chatbots = await chatbots_collection.count_documents({})
         
         # Get total messages count
-        conversations_collection = db['conversations']
-        total_messages = conversations_collection.count_documents({})
+        messages_collection = db_instance['messages']
+        total_messages = await messages_collection.count_documents({})
         
         # Get active integrations count (chatbots with external integrations)
         # For now, count unique AI providers being used
-        providers = chatbots_collection.distinct('ai_provider')
+        providers = await chatbots_collection.distinct('ai_provider')
         active_integrations = len(providers)
         
         return {
@@ -42,6 +45,7 @@ async def get_admin_stats() -> Dict[str, Any]:
             "activeIntegrations": active_integrations
         }
     except Exception as e:
+        print(f"Error in get_admin_stats: {str(e)}")
         return {
             "totalUsers": 0,
             "activeChatbots": 0,
