@@ -79,8 +79,8 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6 relative z-10">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+      <section className="pt-32 pb-20 px-8 relative z-10">
+        <div className="max-w-[95%] mx-auto grid md:grid-cols-2 gap-16 items-center">
           <div className="space-y-8 animate-fade-in-up">
             <div className="inline-block">
               <span className="px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-sm font-medium inline-flex items-center gap-2 animate-bounce-subtle">
