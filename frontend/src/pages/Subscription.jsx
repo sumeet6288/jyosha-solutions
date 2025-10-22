@@ -32,17 +32,18 @@ const SubscriptionNew = () => {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem('token');
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
       
       // Fetch available plans
       const plansResponse = await axios.get(`${BACKEND_URL}/api/lemonsqueezy/plans`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers
       });
       setPlans(plansResponse.data.plans);
 
       // Fetch subscription status
       try {
         const statusResponse = await axios.get(`${BACKEND_URL}/api/lemonsqueezy/subscription/status`, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers
         });
         setSubscriptionStatus(statusResponse.data);
       } catch (error) {
