@@ -309,7 +309,7 @@ async def handle_webhook(
 
 @router.get("/subscription/status")
 async def get_subscription_status(
-    current_user: dict = Depends(get_current_user)
+    current_user = Depends(get_mock_user)
 ):
     """Get current user's subscription status"""
     try:
