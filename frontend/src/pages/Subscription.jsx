@@ -184,7 +184,7 @@ const SubscriptionNew = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-blue-50 to-purple-50 p-6 animate-fade-in">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[95%] mx-auto">
         {/* Back to Dashboard Button */}
         <div className="mb-6">
           <button

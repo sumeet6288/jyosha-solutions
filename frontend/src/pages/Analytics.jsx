@@ -44,7 +44,7 @@ const Analytics = () => {
       {/* Navigation */}
       <ResponsiveNav currentPage="analytics" user={user} onLogout={handleLogout} />
 
-      <div className="p-6 max-w-7xl mx-auto relative z-10">
+      <div className="p-6 max-w-[95%] mx-auto relative z-10">
         <div className="mb-8 animate-fade-in-up">
           <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-gray-900 via-purple-900 to-pink-900 bg-clip-text text-transparent">Analytics Overview</h1>
           <p className="text-gray-600">Track your chatbot performance and user engagement</p>

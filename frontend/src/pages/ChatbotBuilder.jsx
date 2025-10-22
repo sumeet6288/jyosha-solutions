@@ -231,7 +231,7 @@ const ChatbotBuilder = () => {
 
       {/* Top Navigation */}
       <nav className="bg-white/80 backdrop-blur-lg border-b border-purple-200/50 sticky top-0 z-50 shadow-sm">
-        <div className="px-6 py-4 flex items-center justify-between max-w-7xl mx-auto">
+        <div className="px-6 py-4 flex items-center justify-between max-w-[95%] mx-auto">
           <div className="flex items-center gap-6 animate-fade-in-right">
             <Button variant="ghost" onClick={() => navigate('/dashboard')} className="group hover:bg-purple-50 transition-all duration-300">
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
@@ -255,7 +255,7 @@ const ChatbotBuilder = () => {
         </div>
       </nav>
 
-      <div className="p-6 max-w-7xl mx-auto relative z-10">
+      <div className="p-6 max-w-[95%] mx-auto relative z-10">
         <Tabs defaultValue="sources" className="w-full">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 mb-6 bg-white/80 backdrop-blur-sm border-2 border-purple-200/50 p-1 rounded-xl shadow-lg animate-fade-in-up">
             <TabsTrigger value="sources" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
