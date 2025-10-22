@@ -212,10 +212,10 @@ const Footer = ({ variant = 'landing' }) => {
             <h4 className="font-semibold text-lg mb-4">Company</h4>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center group">
+                <Link to="/resources" className="text-gray-300 hover:text-white transition-colors flex items-center group">
                   <ChevronRight className="w-4 h-4 mr-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
                 <Link to="/enterprise" className="text-gray-300 hover:text-white transition-colors flex items-center group">
@@ -224,22 +224,22 @@ const Footer = ({ variant = 'landing' }) => {
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center group">
+                <Link to="/resources" className="text-gray-300 hover:text-white transition-colors flex items-center group">
                   <ChevronRight className="w-4 h-4 mr-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   Careers
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center group">
+                <Link to="/resources" className="text-gray-300 hover:text-white transition-colors flex items-center group">
                   <ChevronRight className="w-4 h-4 mr-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   Blog
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors flex items-center group">
+                <Link to="/resources" className="text-gray-300 hover:text-white transition-colors flex items-center group">
                   <ChevronRight className="w-4 h-4 mr-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   Press Kit
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
