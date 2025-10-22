@@ -12,6 +12,7 @@ import logging
 from datetime import datetime
 
 from auth import get_current_user, get_mock_user
+from models import User
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
