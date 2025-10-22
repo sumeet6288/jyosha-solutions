@@ -1,39 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { plansAPI } from '../utils/api';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 import { 
-  Sparkles, Zap, Crown, Building2, Check, ArrowRight, 
-  TrendingUp, AlertCircle, Loader2 
+  Sparkles, Zap, Crown, Check, ArrowRight, 
+  TrendingUp, AlertCircle, Loader2, CreditCard, CheckCircle
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
-import { SubscriptionSkeleton } from '../components/LoadingSkeleton';
 import Footer from '../components/Footer';
 
-const Subscription = () => {
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+
+const SubscriptionNew = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
-  const [currentSubscription, setCurrentSubscription] = useState(null);
-  const [currentPlan, setCurrentPlan] = useState(null);
-  const [usageStats, setUsageStats] = useState(null);
-  const [allPlans, setAllPlans] = useState([]);
-  const [upgrading, setUpgrading] = useState(false);
+  const [plans, setPlans] = useState([]);
+  const [subscriptionStatus, setSubscriptionStatus] = useState(null);
+  const [checkingOut, setCheckingOut] = useState(null);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     fetchData();
-  }, []);
+    
+    // Check for success parameter
+    if (searchParams.get('success') === 'true') {
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 5000);
+    }
+  }, [searchParams]);
 
   const fetchData = async () => {
     try {
-      const [subResponse, usageResponse, plansResponse] = await Promise.all([
-        plansAPI.getCurrentSubscription(),
-        plansAPI.getUsageStats(),
-        plansAPI.getAllPlans()
-      ]);
+      const token = localStorage.getItem('token');
+      
+      // Fetch available plans
+      const plansResponse = await axios.get(`${BACKEND_URL}/api/lemonsqueezy/plans`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setPlans(plansResponse.data.plans);
 
-      setCurrentSubscription(subResponse.data.subscription);
-      setCurrentPlan(subResponse.data.plan);
-      setUsageStats(usageResponse.data);
-      setAllPlans(plansResponse.data);
+      // Fetch subscription status
+      try {
+        const statusResponse = await axios.get(`${BACKEND_URL}/api/lemonsqueezy/subscription/status`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setSubscriptionStatus(statusResponse.data);
+      } catch (error) {
+        console.log('No active subscription');
+        setSubscriptionStatus({ has_subscription: false, plan: 'free' });
+      }
     } catch (error) {
       console.error('Error fetching subscription data:', error);
     } finally {
@@ -41,310 +56,259 @@ const Subscription = () => {
     }
   };
 
-  const handleUpgrade = async (planId) => {
-    if (upgrading) return;
+  const handleCheckout = async (planId) => {
+    if (checkingOut) return;
     
-    setUpgrading(true);
+    setCheckingOut(planId);
     try {
-      await plansAPI.upgradePlan(planId);
-      await fetchData(); // Refresh data
-      alert('Plan upgraded successfully!');
+      const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      
+      const response = await axios.post(
+        `${BACKEND_URL}/api/lemonsqueezy/checkout/create`,
+        {
+          plan: planId,
+          user_id: user.id || 'demo-user-123',
+          user_email: user.email || 'demo@botsmith.com'
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      // Redirect to checkout URL
+      if (response.data.checkout_url) {
+        window.location.href = response.data.checkout_url;
+      }
     } catch (error) {
-      console.error('Error upgrading plan:', error);
-      alert('Failed to upgrade plan. Please try again.');
+      console.error('Error creating checkout:', error);
+      alert('Failed to create checkout. Please try again.');
     } finally {
-      setUpgrading(false);
+      setCheckingOut(null);
     }
   };
 
   const getPlanIcon = (planId) => {
     const icons = {
-      free: Sparkles,
       starter: Zap,
-      professional: Crown,
-      enterprise: Building2
+      professional: Crown
     };
     return icons[planId] || Sparkles;
   };
 
   const getPlanGradient = (planId) => {
     const gradients = {
-      free: 'from-blue-400 to-cyan-400',
       starter: 'from-pink-500 to-purple-500',
-      professional: 'from-blue-600 to-indigo-600',
-      enterprise: 'from-purple-600 to-pink-600'
+      professional: 'from-blue-600 to-indigo-600'
     };
     return gradients[planId] || 'from-gray-400 to-gray-600';
   };
 
-  const getUsageColor = (percentage) => {
-    if (percentage >= 90) return 'text-red-600 bg-red-100';
-    if (percentage >= 75) return 'text-orange-600 bg-orange-100';
-    return 'text-green-600 bg-green-100';
-  };
-
-  const getProgressColor = (percentage) => {
-    if (percentage >= 90) return 'bg-red-500';
-    if (percentage >= 75) return 'bg-orange-500';
-    return 'bg-green-500';
-  };
-
   if (loading) {
-    return <SubscriptionSkeleton />;
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-blue-50 to-purple-50 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+      </div>
+    );
   }
-
-  const Icon = getPlanIcon(currentPlan?.id);
-  const gradient = getPlanGradient(currentPlan?.id);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-blue-50 to-purple-50 p-6 animate-fade-in">
       <div className="max-w-7xl mx-auto">
+        {/* Success Message */}
+        {showSuccess && (
+          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3 animate-bounce-in">
+            <CheckCircle className="w-6 h-6 text-green-600" />
+            <div>
+              <h3 className="font-semibold text-green-900">Payment Successful!</h3>
+              <p className="text-sm text-green-700">Your subscription has been activated. Welcome aboard! 🎉</p>
+            </div>
+          </div>
+        )}
+
         {/* Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full text-sm font-medium mb-4 shadow-lg">
+            <Sparkles className="w-4 h-4" />
+            <span>Powered by Lemon Squeezy</span>
+          </div>
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            Choose Your Plan
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Unlock powerful features for your chatbot business
+          </p>
+        </div>
+
+        {/* Current Subscription Status */}
+        {subscriptionStatus?.has_subscription && (
+          <div className="mb-8 p-6 bg-white rounded-xl shadow-lg border-2 border-purple-200">
+            <div className="flex items-center gap-3 mb-2">
+              <Crown className="w-6 h-6 text-purple-600" />
+              <h2 className="text-xl font-bold text-gray-900">Current Subscription</h2>
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-700">
+                  <span className="font-semibold">Plan:</span> {subscriptionStatus.plan}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-semibold">Status:</span>{' '}
+                  <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                    subscriptionStatus.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                  }`}>
+                    {subscriptionStatus.status}
+                  </span>
+                </p>
+              </div>
+              {subscriptionStatus.renews_at && (
+                <div className="text-right">
+                  <p className="text-sm text-gray-500">Renews on</p>
+                  <p className="font-semibold text-gray-700">
+                    {new Date(subscriptionStatus.renews_at).toLocaleDateString()}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Free Plan Card */}
         <div className="mb-8">
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="text-gray-600 hover:text-gray-800 mb-4 flex items-center gap-2"
-          >
-            ← Back to Dashboard
-          </button>
-          <h1 className="text-4xl font-bold mb-2">Subscription & Usage</h1>
-          <p className="text-gray-600">Manage your plan and monitor your usage</p>
-        </div>
-
-        {/* Current Plan Card */}
-        <div className={`bg-gradient-to-br ${gradient} rounded-3xl shadow-xl p-8 mb-8 text-white`}>
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
-                <Icon className="w-10 h-10" />
+          <div className="bg-white rounded-2xl shadow-lg border-2 border-gray-200 p-8 hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-3 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-xl shadow-lg">
+                <Sparkles className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-3xl font-bold mb-1">{currentPlan?.name} Plan</h2>
-                <p className="text-white/90">
-                  {currentPlan?.price === 0 
-                    ? 'Free Forever' 
-                    : currentPlan?.price === -1 
-                    ? 'Custom Pricing' 
-                    : `$${currentPlan?.price}/month`}
-                </p>
+                <h3 className="text-2xl font-bold text-gray-900">Free Plan</h3>
+                <p className="text-gray-600">Perfect for getting started</p>
               </div>
             </div>
-            <div className="text-right">
-              <div className="text-sm text-white/80">Status</div>
-              <div className="text-xl font-semibold capitalize">{currentSubscription?.status}</div>
+
+            <div className="mb-6">
+              <div className="flex items-baseline gap-2">
+                <span className="text-4xl font-bold text-gray-900">₹0</span>
+                <span className="text-gray-600">/forever</span>
+              </div>
             </div>
+
+            <div className="space-y-3 mb-6">
+              {['1 Chatbot', '100 messages/month', 'Basic features', 'Community support'].map((feature, idx) => (
+                <div key={idx} className="flex items-center gap-2">
+                  <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-700">{feature}</span>
+                </div>
+              ))}
+            </div>
+
+            <Button
+              disabled
+              className="w-full bg-gray-200 text-gray-500 cursor-not-allowed"
+            >
+              Current Plan
+            </Button>
           </div>
         </div>
 
-        {/* Usage Stats */}
-        <div className="bg-white rounded-3xl shadow-xl p-8 mb-8">
-          <div className="flex items-center gap-3 mb-6">
-            <TrendingUp className="w-6 h-6 text-purple-600" />
-            <h2 className="text-2xl font-bold">Current Usage</h2>
-          </div>
+        {/* Paid Plans Grid */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          {plans.map((plan) => {
+            const Icon = getPlanIcon(plan.id);
+            const gradient = getPlanGradient(plan.id);
+            const isPopular = plan.id === 'starter';
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Chatbots Usage */}
-            <div className="p-6 border-2 border-gray-200 rounded-2xl hover:border-purple-300 transition-all">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold text-gray-700">Chatbots</h3>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getUsageColor(usageStats?.usage?.chatbots?.percentage || 0)}`}>
-                  {usageStats?.usage?.chatbots?.percentage || 0}%
-                </span>
-              </div>
-              <div className="mb-2">
-                <div className="flex justify-between text-sm text-gray-600 mb-2">
-                  <span>{usageStats?.usage?.chatbots?.current || 0} used</span>
-                  <span>{usageStats?.usage?.chatbots?.limit === 999999 ? 'Unlimited' : `${usageStats?.usage?.chatbots?.limit || 0} limit`}</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className={`h-2 rounded-full transition-all ${getProgressColor(usageStats?.usage?.chatbots?.percentage || 0)}`}
-                    style={{ width: `${Math.min(usageStats?.usage?.chatbots?.percentage || 0, 100)}%` }}
-                  />
-                </div>
-              </div>
-            </div>
+            return (
+              <div
+                key={plan.id}
+                className={`relative bg-white rounded-2xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 ${
+                  isPopular ? 'border-4 border-purple-500 scale-105' : 'border-2 border-gray-200'
+                }`}
+              >
+                {isPopular && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span className="inline-flex items-center gap-1 px-4 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full text-sm font-semibold shadow-lg">
+                      <TrendingUp className="w-4 h-4" />
+                      Most Popular
+                    </span>
+                  </div>
+                )}
 
-            {/* Messages Usage */}
-            <div className="p-6 border-2 border-gray-200 rounded-2xl hover:border-purple-300 transition-all">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold text-gray-700">Messages (Monthly)</h3>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getUsageColor(usageStats?.usage?.messages?.percentage || 0)}`}>
-                  {usageStats?.usage?.messages?.percentage || 0}%
-                </span>
-              </div>
-              <div className="mb-2">
-                <div className="flex justify-between text-sm text-gray-600 mb-2">
-                  <span>{usageStats?.usage?.messages?.current || 0} used</span>
-                  <span>{usageStats?.usage?.messages?.limit === 999999999 ? 'Unlimited' : `${usageStats?.usage?.messages?.limit?.toLocaleString() || 0} limit`}</span>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className={`p-3 bg-gradient-to-br ${gradient} rounded-xl shadow-lg`}>
+                    <Icon className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900">{plan.name}</h3>
+                    <p className="text-gray-600">
+                      {plan.interval === 'month' ? 'Monthly subscription' : 'One-time payment'}
+                    </p>
+                  </div>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className={`h-2 rounded-full transition-all ${getProgressColor(usageStats?.usage?.messages?.percentage || 0)}`}
-                    style={{ width: `${Math.min(usageStats?.usage?.messages?.percentage || 0, 100)}%` }}
-                  />
-                </div>
-              </div>
-            </div>
 
-            {/* File Uploads Usage */}
-            <div className="p-6 border-2 border-gray-200 rounded-2xl hover:border-purple-300 transition-all">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold text-gray-700">File Uploads</h3>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getUsageColor(usageStats?.usage?.file_uploads?.percentage || 0)}`}>
-                  {usageStats?.usage?.file_uploads?.percentage || 0}%
-                </span>
-              </div>
-              <div className="mb-2">
-                <div className="flex justify-between text-sm text-gray-600 mb-2">
-                  <span>{usageStats?.usage?.file_uploads?.current || 0} used</span>
-                  <span>{usageStats?.usage?.file_uploads?.limit === 999999 ? 'Unlimited' : `${usageStats?.usage?.file_uploads?.limit || 0} limit`}</span>
+                <div className="mb-6">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-4xl font-bold text-gray-900">₹{plan.price}</span>
+                    <span className="text-gray-600">
+                      {plan.interval === 'month' ? '/month' : 'one-time'}
+                    </span>
+                  </div>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className={`h-2 rounded-full transition-all ${getProgressColor(usageStats?.usage?.file_uploads?.percentage || 0)}`}
-                    style={{ width: `${Math.min(usageStats?.usage?.file_uploads?.percentage || 0, 100)}%` }}
-                  />
-                </div>
-              </div>
-            </div>
 
-            {/* Website Sources Usage */}
-            <div className="p-6 border-2 border-gray-200 rounded-2xl hover:border-purple-300 transition-all">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold text-gray-700">Website Sources</h3>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getUsageColor(usageStats?.usage?.website_sources?.percentage || 0)}`}>
-                  {usageStats?.usage?.website_sources?.percentage || 0}%
-                </span>
-              </div>
-              <div className="mb-2">
-                <div className="flex justify-between text-sm text-gray-600 mb-2">
-                  <span>{usageStats?.usage?.website_sources?.current || 0} used</span>
-                  <span>{usageStats?.usage?.website_sources?.limit === 999999 ? 'Unlimited' : `${usageStats?.usage?.website_sources?.limit || 0} limit`}</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className={`h-2 rounded-full transition-all ${getProgressColor(usageStats?.usage?.website_sources?.percentage || 0)}`}
-                    style={{ width: `${Math.min(usageStats?.usage?.website_sources?.percentage || 0, 100)}%` }}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Text Sources Usage */}
-            <div className="p-6 border-2 border-gray-200 rounded-2xl hover:border-purple-300 transition-all">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold text-gray-700">Text Sources</h3>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getUsageColor(usageStats?.usage?.text_sources?.percentage || 0)}`}>
-                  {usageStats?.usage?.text_sources?.percentage || 0}%
-                </span>
-              </div>
-              <div className="mb-2">
-                <div className="flex justify-between text-sm text-gray-600 mb-2">
-                  <span>{usageStats?.usage?.text_sources?.current || 0} used</span>
-                  <span>{usageStats?.usage?.text_sources?.limit === 999999 ? 'Unlimited' : `${usageStats?.usage?.text_sources?.limit || 0} limit`}</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className={`h-2 rounded-full transition-all ${getProgressColor(usageStats?.usage?.text_sources?.percentage || 0)}`}
-                    style={{ width: `${Math.min(usageStats?.usage?.text_sources?.percentage || 0, 100)}%` }}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Warning if approaching limits */}
-          {Object.values(usageStats?.usage || {}).some(u => u.percentage >= 75) && (
-            <div className="mt-6 p-4 bg-orange-50 border-2 border-orange-200 rounded-xl flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-orange-600 mt-0.5" />
-              <div>
-                <h4 className="font-semibold text-orange-900">Approaching Limits</h4>
-                <p className="text-sm text-orange-700">
-                  You're approaching your plan limits. Consider upgrading to avoid service interruption.
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Available Plans */}
-        <div className="bg-white rounded-3xl shadow-xl p-8">
-          <h2 className="text-2xl font-bold mb-6">Available Plans</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {allPlans.map((plan) => {
-              const PlanIcon = getPlanIcon(plan.id);
-              const planGradient = getPlanGradient(plan.id);
-              const isCurrentPlan = plan.id === currentPlan?.id;
-
-              return (
-                <div
-                  key={plan.id}
-                  className={`border-2 rounded-2xl overflow-hidden hover:shadow-lg transition-all ${
-                    isCurrentPlan ? 'border-purple-500 ring-4 ring-purple-200' : 'border-gray-200'
-                  }`}
-                >
-                  {/* Plan Header */}
-                  <div className={`bg-gradient-to-br ${planGradient} p-6 text-white`}>
-                    <PlanIcon className="w-8 h-8 mb-3" />
-                    <h3 className="text-xl font-bold mb-1">{plan.name}</h3>
-                    <div className="text-2xl font-bold">
-                      {plan.price === 0 
-                        ? 'Free' 
-                        : plan.price === -1 
-                        ? 'Custom' 
-                        : `$${plan.price}`}
+                <div className="space-y-3 mb-6">
+                  {plan.features.map((feature, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
+                      <span className="text-gray-700">{feature}</span>
                     </div>
-                    {plan.price > 0 && plan.price !== -1 && (
-                      <div className="text-sm text-white/80">/month</div>
-                    )}
-                  </div>
-
-                  {/* Plan Features */}
-                  <div className="p-6">
-                    <ul className="space-y-2 mb-6">
-                      {plan.features.slice(0, 5).map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-sm">
-                          <Check className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                          <span className="text-gray-700">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    {/* Action Button */}
-                    {isCurrentPlan ? (
-                      <div className="w-full py-3 text-center bg-gray-100 text-gray-700 rounded-xl font-semibold">
-                        Current Plan
-                      </div>
-                    ) : (
-                      <Button
-                        onClick={() => handleUpgrade(plan.id)}
-                        disabled={upgrading}
-                        className={`w-full py-3 rounded-xl font-semibold transition-all bg-gradient-to-r ${planGradient} hover:shadow-lg text-white border-0`}
-                      >
-                        {upgrading ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : (
-                          <>
-                            Switch to {plan.name}
-                            <ArrowRight className="w-4 h-4 ml-2" />
-                          </>
-                        )}
-                      </Button>
-                    )}
-                  </div>
+                  ))}
                 </div>
-              );
-            })}
+
+                <Button
+                  onClick={() => handleCheckout(plan.id)}
+                  disabled={checkingOut !== null}
+                  className={`w-full bg-gradient-to-r ${gradient} text-white hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-xl group`}
+                >
+                  {checkingOut === plan.id ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <CreditCard className="w-4 h-4 mr-2" />
+                      Subscribe Now
+                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
+                </Button>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Info Section */}
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-200">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-2">Secure Payment Processing</h3>
+              <p className="text-gray-700 text-sm mb-3">
+                All payments are processed securely through Lemon Squeezy. We never store your payment information.
+              </p>
+              <ul className="space-y-1 text-sm text-gray-600">
+                <li>✓ Test mode enabled - No real charges</li>
+                <li>✓ Cancel anytime</li>
+                <li>✓ Instant activation</li>
+                <li>✓ 24/7 support</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <Footer variant="dashboard" />
+      <Footer />
     </div>
   );
 };
 
-export default Subscription;
+export default SubscriptionNew;
