@@ -11,7 +11,7 @@ import json
 import logging
 from datetime import datetime
 
-from auth import get_current_user
+from auth import get_current_user, get_mock_user
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
