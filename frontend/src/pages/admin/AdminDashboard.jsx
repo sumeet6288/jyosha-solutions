@@ -75,22 +75,30 @@ const AdminDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
             <Users className="w-8 h-8 text-blue-600 mb-3" />
-            <p className="text-3xl font-bold">{stats.totalUsers.toLocaleString()}</p>
+            <p className="text-3xl font-bold">
+              {loading ? '...' : stats.totalUsers.toLocaleString()}
+            </p>
             <p className="text-gray-600 text-sm mt-1">Total Users</p>
           </div>
           <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
             <Bot className="w-8 h-8 text-green-600 mb-3" />
-            <p className="text-3xl font-bold">{stats.activeChatbots.toLocaleString()}</p>
+            <p className="text-3xl font-bold">
+              {loading ? '...' : stats.activeChatbots.toLocaleString()}
+            </p>
             <p className="text-gray-600 text-sm mt-1">Active Chatbots</p>
           </div>
           <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
             <BarChart3 className="w-8 h-8 text-purple-600 mb-3" />
-            <p className="text-3xl font-bold">{stats.totalMessages.toLocaleString()}</p>
+            <p className="text-3xl font-bold">
+              {loading ? '...' : stats.totalMessages.toLocaleString()}
+            </p>
             <p className="text-gray-600 text-sm mt-1">Total Messages</p>
           </div>
           <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
             <Database className="w-8 h-8 text-orange-600 mb-3" />
-            <p className="text-3xl font-bold">{stats.activeIntegrations.toLocaleString()}</p>
+            <p className="text-3xl font-bold">
+              {loading ? '...' : stats.activeIntegrations.toLocaleString()}
+            </p>
             <p className="text-gray-600 text-sm mt-1">Integrations</p>
           </div>
         </div>
