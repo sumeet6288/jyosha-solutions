@@ -142,8 +142,8 @@ const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 px-6 relative z-10">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-24 px-8 relative z-10">
+        <div className="max-w-[95%] mx-auto">
           <div className="text-center mb-16 animate-fade-in-up">
             <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-purple-900 to-pink-900 bg-clip-text text-transparent">Build Smarter, Support Better, Grow Faster</h2>
             <p className="text-xl text-gray-600">A complete platform to craft, deploy and refine your AI-Powered agent ecosystem.</p>
