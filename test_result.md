@@ -210,6 +210,18 @@ backend:
         agent: "testing"
         comment: "✅ TESTED: Chat logs endpoints working perfectly. GET /api/chat/conversations/{chatbot_id} returns proper ConversationResponse format with user info, status, message counts. GET /api/chat/messages/{conversation_id} returns MessageResponse format with role (user/assistant), content, timestamps. Both endpoints publicly accessible, handle invalid IDs gracefully, and timestamps properly formatted. Created test conversation with 8 messages (4 user, 4 assistant) for verification."
 
+  - task: "Enhanced Insights Analytics - 2 New Graphs"
+    implemented: true
+    working: true
+    file: "/app/backend/routers/advanced_analytics.py, /app/frontend/src/components/AdvancedAnalytics.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Added 2 new powerful graphs to Insights tab: 1) Response Time Trend (LineChart) - tracks chatbot performance over selected period (7/30/90 days), shows avg response time in seconds with date axis. 2) Hourly Activity Distribution (BarChart) - shows message distribution across 24 hours, identifies peak hours, uses green bars for active hours. Backend APIs: GET /api/analytics/response-time-trend/{chatbot_id} and GET /api/analytics/hourly-activity/{chatbot_id}. Insights tab now has 5 total graphs providing comprehensive analytics."
+
 frontend:
   - task: "Dashboard with real data"
     implemented: true
