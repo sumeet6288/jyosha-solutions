@@ -254,3 +254,94 @@ async def rate_conversation(conversation_id: str, rating_data: RatingCreate):
     
     await db_instance.conversation_ratings.insert_one(rating_dict)
     return RatingResponse(**rating_dict)
+
+
+@router.get("/response-time-trend/{chatbot_id}")
+async def get_response_time_trend(
+    chatbot_id: str,
+    period: str = Query("7days", regex="^(7days|30days|90days)$")
+):
+    """Get response time trends over time"""
+    # Calculate date range
+    days = int(period.replace("days", ""))
+    end_date = datetime.now(timezone.utc)
+    start_date = end_date - timedelta(days=days)
+    
+    # Get all messages in the date range
+    messages = await db_instance.messages.find({
+        "chatbot_id": chatbot_id,
+        "timestamp": {"$gte": start_date, "$lte": end_date}
+    }).sort("timestamp", 1).to_list(length=None)
+    
+    # Group response times by date
+    response_times_by_date = {}
+    
+    for i, msg in enumerate(messages):
+        if msg.get("role") == "assistant" and i > 0:
+            prev_msg = messages[i-1]
+            if prev_msg.get("role") == "user":
+                time_diff = (msg["timestamp"] - prev_msg["timestamp"]).total_seconds() * 1000
+                if time_diff > 0:
+                    date_str = msg["timestamp"].strftime("%Y-%m-%d")
+                    if date_str not in response_times_by_date:
+                        response_times_by_date[date_str] = []
+                    response_times_by_date[date_str].append(time_diff)
+    
+    # Calculate average for each date
+    data = []
+    current_date = start_date
+    
+    while current_date <= end_date:
+        date_str = current_date.strftime("%Y-%m-%d")
+        times = response_times_by_date.get(date_str, [])
+        avg_time = sum(times) / len(times) if times else 0
+        
+        data.append({
+            "date": date_str,
+            "avg_response_time": round(avg_time / 1000, 2)  # Convert to seconds
+        })
+        
+        current_date += timedelta(days=1)
+    
+    return {
+        "chatbot_id": chatbot_id,
+        "period": period,
+        "data": data
+    }
+
+
+@router.get("/hourly-activity/{chatbot_id}")
+async def get_hourly_activity(chatbot_id: str):
+    """Get message distribution by hour of day"""
+    # Get all messages
+    messages = await db_instance.messages.find({
+        "chatbot_id": chatbot_id
+    }).to_list(length=None)
+    
+    if not messages:
+        return {
+            "chatbot_id": chatbot_id,
+            "hourly_data": [{"hour": i, "messages": 0} for i in range(24)]
+        }
+    
+    # Count messages by hour
+    hourly_counts = Counter()
+    for msg in messages:
+        hour = msg["timestamp"].hour
+        hourly_counts[hour] += 1
+    
+    # Create data for all 24 hours
+    hourly_data = [
+        {
+            "hour": f"{i:02d}:00",
+            "messages": hourly_counts.get(i, 0)
+        }
+        for i in range(24)
+    ]
+    
+    return {
+        "chatbot_id": chatbot_id,
+        "hourly_data": hourly_data,
+        "peak_hour": max(hourly_counts.items(), key=lambda x: x[1])[0] if hourly_counts else 0,
+        "total_messages": len(messages)
+    }
