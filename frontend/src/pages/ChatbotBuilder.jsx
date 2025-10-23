@@ -66,6 +66,20 @@ const ChatbotBuilder = () => {
     }
   };
 
+  const refreshChatbot = async () => {
+    try {
+      const chatbotResponse = await chatbotAPI.get(id);
+      setChatbot(chatbotResponse.data);
+    } catch (error) {
+      console.error('Error refreshing chatbot:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to refresh chatbot',
+        variant: 'destructive'
+      });
+    }
+  };
+
   const handleSaveSettings = async () => {
     try {
       setSaving(true);
