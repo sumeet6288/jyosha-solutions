@@ -249,13 +249,15 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
               placeholder="https://example.com/logo.png"
             />
             {customization.logo_url && (
-              <div className="mt-2">
+              <div className="mt-2 p-3 border border-gray-200 rounded-lg bg-gray-50">
+                <p className="text-xs text-gray-500 mb-2">Logo Preview:</p>
                 <img 
                   src={customization.logo_url} 
                   alt="Logo preview" 
                   className="h-12 object-contain"
                   onError={(e) => {
-                    e.target.style.display = 'none';
+                    e.target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="50"><rect width="100" height="50" fill="%23e5e7eb"/><text x="50" y="25" text-anchor="middle" fill="%236b7280" font-size="10">Invalid URL</text></svg>';
+                    e.target.classList.add('opacity-50');
                   }}
                 />
               </div>
