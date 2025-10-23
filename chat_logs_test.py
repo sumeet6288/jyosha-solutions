@@ -436,7 +436,7 @@ class ChatLogsAPITester:
 def main():
     """Main test execution"""
     # Get base URL from environment
-    base_url = "https://deps-ready.preview.emergentagent.com"
+    base_url = "https://fast-install-1.preview.emergentagent.com"
     
     print(f"Testing Chat Logs Analytics API at: {base_url}")
     
