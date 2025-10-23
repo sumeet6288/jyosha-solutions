@@ -71,12 +71,40 @@ const ChatPreviewModal = ({ isOpen, onClose, chatbot }) => {
           {messages.map((message, index) => (
             <div key={index} className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               {message.role === 'assistant' && (
-                <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center flex-shrink-0">
-                  <Bot className="w-5 h-5 text-white" />
+                <div 
+                  className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                  style={{ 
+                    backgroundColor: chatbot?.primary_color || '#7c3aed',
+                    backgroundImage: chatbot?.avatar_url ? `url(${chatbot.avatar_url})` : 'none',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                >
+                  {!chatbot?.avatar_url && <Bot className="w-5 h-5 text-white" />}
                 </div>
               )}
-              <div className={`max-w-[70%] rounded-2xl px-4 py-2 ${message.role === 'user' ? 'bg-black text-white' : 'bg-white text-gray-900 border border-gray-200'}`}>
-                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+              <div 
+                className={`max-w-[70%] px-4 py-2 ${
+                  chatbot?.bubble_style === 'square' ? 'rounded-md' : 
+                  chatbot?.bubble_style === 'smooth' ? 'rounded-xl' : 
+                  'rounded-2xl'
+                } ${
+                  chatbot?.font_size === 'small' ? 'text-sm' : 
+                  chatbot?.font_size === 'large' ? 'text-base' : 
+                  'text-sm'
+                }`}
+                style={{
+                  backgroundColor: message.role === 'user' 
+                    ? chatbot?.primary_color || '#7c3aed'
+                    : chatbot?.widget_theme === 'dark' ? '#374151' : '#ffffff',
+                  color: message.role === 'user' 
+                    ? '#ffffff'
+                    : chatbot?.widget_theme === 'dark' ? '#ffffff' : '#111827',
+                  border: message.role === 'assistant' ? `1px solid ${chatbot?.widget_theme === 'dark' ? '#4b5563' : '#e5e7eb'}` : 'none',
+                  fontFamily: chatbot?.font_family || 'Inter, system-ui, sans-serif'
+                }}
+              >
+                <p className="whitespace-pre-wrap">{message.content}</p>
               </div>
               {message.role === 'user' && (
                 <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center flex-shrink-0">
