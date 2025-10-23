@@ -157,10 +157,16 @@ class ChatbotResponse(BaseModel):
     last_trained: Optional[datetime] = None
     primary_color: str = "#7c3aed"
     secondary_color: str = "#a78bfa"
+    accent_color: str = "#ec4899"
     logo_url: Optional[str] = None
     avatar_url: Optional[str] = None
     widget_position: str = "bottom-right"
     widget_theme: str = "light"
+    font_family: str = "Inter, system-ui, sans-serif"
+    font_size: str = "medium"
+    bubble_style: str = "rounded"
+    widget_size: str = "medium"
+    auto_expand: bool = False
     public_access: bool = False
     webhook_url: Optional[str] = None
     webhook_enabled: bool = False
