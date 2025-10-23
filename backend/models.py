@@ -75,10 +75,18 @@ class Chatbot(BaseModel):
     # Customization fields
     primary_color: str = "#7c3aed"  # Default purple
     secondary_color: str = "#a78bfa"  # Light purple
+    accent_color: str = "#ec4899"  # Default pink
     logo_url: Optional[str] = None
     avatar_url: Optional[str] = None
     widget_position: Literal["bottom-right", "bottom-left", "top-right", "top-left"] = "bottom-right"
     widget_theme: Literal["light", "dark", "auto"] = "light"
+    
+    # New appearance features
+    font_family: str = "Inter, system-ui, sans-serif"
+    font_size: Literal["small", "medium", "large"] = "medium"
+    bubble_style: Literal["rounded", "square", "smooth"] = "rounded"
+    widget_size: Literal["small", "medium", "large"] = "medium"
+    auto_expand: bool = False
     
     # Sharing & Integration
     public_access: bool = False
