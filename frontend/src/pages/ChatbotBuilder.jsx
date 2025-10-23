@@ -257,7 +257,7 @@ const ChatbotBuilder = () => {
       </nav>
 
       <div className="p-4 sm:p-6 max-w-[95%] mx-auto relative z-10">
-        <Tabs defaultValue="sources" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           {/* Mobile: Horizontal scrolling tabs */}
           <div className="mb-6 overflow-x-auto scrollbar-hide">
             <TabsList className="inline-flex w-max min-w-full lg:grid lg:w-full lg:grid-cols-6 gap-2 bg-white/80 backdrop-blur-sm border-2 border-purple-200/50 p-1 rounded-xl shadow-lg animate-fade-in-up">
