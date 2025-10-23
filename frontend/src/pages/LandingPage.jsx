@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const features = [
     {
