@@ -64,6 +64,7 @@ function AppContent() {
         </Routes>
       </BrowserRouter>
       <Toaster />
+      <SonnerToaster position="top-right" richColors />
     </div>
   );
 }
