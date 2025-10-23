@@ -194,7 +194,11 @@
 }
 
 .animate-blob {
-  animation: blob 7s infinite;
+  animation: blob 20s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 15s ease-in-out infinite;
 }
 
 .animate-fade-in-up {
