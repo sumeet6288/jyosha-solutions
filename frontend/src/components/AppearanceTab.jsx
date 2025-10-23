@@ -126,7 +126,104 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
               className="w-20 h-20 rounded-lg shadow-md"
               style={{ backgroundColor: customization.secondary_color }}
             />
+            <div 
+              className="w-20 h-20 rounded-lg shadow-md"
+              style={{ backgroundColor: customization.accent_color }}
+            />
           </div>
+        </div>
+      </div>
+
+      {/* Font Customization */}
+      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div className="flex items-center space-x-2 mb-4">
+          <Type className="w-5 h-5 text-purple-600" />
+          <h3 className="text-lg font-semibold">Font Customization</h3>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Font Family
+            </label>
+            <select
+              value={customization.font_family}
+              onChange={(e) => handleChange('font_family', e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            >
+              <option value="Inter, system-ui, sans-serif">Inter (Default)</option>
+              <option value="Arial, sans-serif">Arial</option>
+              <option value="Helvetica, sans-serif">Helvetica</option>
+              <option value="Georgia, serif">Georgia</option>
+              <option value="'Times New Roman', serif">Times New Roman</option>
+              <option value="'Courier New', monospace">Courier New</option>
+              <option value="Verdana, sans-serif">Verdana</option>
+              <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+              <option value="Roboto, sans-serif">Roboto</option>
+              <option value="'Open Sans', sans-serif">Open Sans</option>
+            </select>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Font Size
+            </label>
+            <select
+              value={customization.font_size}
+              onChange={(e) => handleChange('font_size', e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            >
+              <option value="small">Small (14px)</option>
+              <option value="medium">Medium (16px)</option>
+              <option value="large">Large (18px)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Chat Bubble Style */}
+      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div className="flex items-center space-x-2 mb-4">
+          <Layout className="w-5 h-5 text-purple-600" />
+          <h3 className="text-lg font-semibold">Chat Bubble Style</h3>
+        </div>
+        
+        <div className="grid grid-cols-3 gap-4">
+          <button
+            onClick={() => handleChange('bubble_style', 'rounded')}
+            className={`p-4 border-2 rounded-lg transition-all ${
+              customization.bubble_style === 'rounded'
+                ? 'border-purple-500 bg-purple-50'
+                : 'border-gray-200 hover:border-purple-300'
+            }`}
+          >
+            <div className="w-full h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl mb-2"></div>
+            <p className="text-sm font-medium text-center">Rounded</p>
+          </button>
+          
+          <button
+            onClick={() => handleChange('bubble_style', 'smooth')}
+            className={`p-4 border-2 rounded-lg transition-all ${
+              customization.bubble_style === 'smooth'
+                ? 'border-purple-500 bg-purple-50'
+                : 'border-gray-200 hover:border-purple-300'
+            }`}
+          >
+            <div className="w-full h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg mb-2"></div>
+            <p className="text-sm font-medium text-center">Smooth</p>
+          </button>
+          
+          <button
+            onClick={() => handleChange('bubble_style', 'square')}
+            className={`p-4 border-2 rounded-lg transition-all ${
+              customization.bubble_style === 'square'
+                ? 'border-purple-500 bg-purple-50'
+                : 'border-gray-200 hover:border-purple-300'
+            }`}
+          >
+            <div className="w-full h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded mb-2"></div>
+            <p className="text-sm font-medium text-center">Square</p>
+          </button>
         </div>
       </div>
 
