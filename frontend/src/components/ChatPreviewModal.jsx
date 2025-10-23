@@ -13,6 +13,18 @@ const ChatPreviewModal = ({ isOpen, onClose, chatbot }) => {
   const [loading, setLoading] = useState(false);
   const [sessionId] = useState(() => `session-${Date.now()}`);
 
+  // Log chatbot colors for debugging
+  React.useEffect(() => {
+    if (chatbot) {
+      console.log('ChatPreviewModal - Chatbot colors:', {
+        primary_color: chatbot.primary_color,
+        secondary_color: chatbot.secondary_color,
+        widget_theme: chatbot.widget_theme,
+        bubble_style: chatbot.bubble_style
+      });
+    }
+  }, [chatbot]);
+
   const handleSend = async () => {
     if (!input.trim() || loading) return;
 
