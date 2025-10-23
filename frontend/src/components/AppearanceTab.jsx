@@ -31,7 +31,9 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
     try {
       await chatbotAPI.update(chatbot.id, customization);
       toast.success('Appearance updated successfully!');
-      onUpdate && onUpdate();
+      if (onUpdate) {
+        await onUpdate();
+      }
     } catch (error) {
       console.error('Error updating appearance:', error);
       toast.error('Failed to update appearance');
