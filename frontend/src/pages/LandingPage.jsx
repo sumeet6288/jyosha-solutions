@@ -117,22 +117,22 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-8 relative z-10">
-        <div className="max-w-[95%] mx-auto grid md:grid-cols-2 gap-16 items-center">
-          <div className="space-y-8 animate-fade-in-up">
+      <section className="pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-8 relative z-10">
+        <div className="max-w-[95%] mx-auto grid md:grid-cols-2 gap-8 sm:gap-16 items-center">
+          <div className="space-y-6 sm:space-y-8 animate-fade-in-up">
             <div className="inline-block">
-              <span className="px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-sm font-medium inline-flex items-center gap-2 animate-bounce-subtle">
-                <Sparkles className="w-4 h-4" />
+              <span className="px-3 sm:px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-xs sm:text-sm font-medium inline-flex items-center gap-2 animate-bounce-subtle">
+                <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
                 AI-Powered Customer Support
               </span>
             </div>
-            <h1 className="text-6xl md:text-7xl font-bold leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
               <span className="bg-gradient-to-r from-gray-900 via-purple-900 to-pink-900 bg-clip-text text-transparent animate-gradient">
                 AI that listens,<br />learns, and delights<br />every customer
               </span>
             </h1>
-            <p className="text-xl text-gray-600 leading-relaxed">
-              BotSmith helps you design and deploy smart AI agents<br />that enhance customer support.
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
+              BotSmith helps you design and deploy smart AI agents that enhance customer support.
             </p>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <Button 
