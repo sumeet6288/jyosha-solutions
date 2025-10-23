@@ -49,7 +49,7 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
           <h3 className="text-lg font-semibold">Color Theme</h3>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Primary Color
@@ -88,6 +88,27 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
                 onChange={(e) => handleChange('secondary_color', e.target.value)}
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="#a78bfa"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Accent Color
+            </label>
+            <div className="flex items-center space-x-3">
+              <input
+                type="color"
+                value={customization.accent_color}
+                onChange={(e) => handleChange('accent_color', e.target.value)}
+                className="h-10 w-20 rounded border border-gray-300 cursor-pointer"
+              />
+              <input
+                type="text"
+                value={customization.accent_color}
+                onChange={(e) => handleChange('accent_color', e.target.value)}
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                placeholder="#ec4899"
               />
             </div>
           </div>
