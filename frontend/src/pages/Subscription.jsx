@@ -183,40 +183,41 @@ const SubscriptionNew = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-blue-50 to-purple-50 p-6 animate-fade-in">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-blue-50 to-purple-50 p-4 sm:p-6 animate-fade-in">
       <div className="max-w-[95%] mx-auto">
         {/* Back to Dashboard Button */}
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <button
             onClick={() => navigate('/dashboard')}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-gray-700 hover:text-purple-600 font-medium group"
+            className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-gray-700 hover:text-purple-600 font-medium group text-sm sm:text-base"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            Back to Dashboard
+            <span className="hidden sm:inline">Back to Dashboard</span>
+            <span className="sm:hidden">Back</span>
           </button>
         </div>
 
         {/* Success Message */}
         {showSuccess && (
-          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3 animate-bounce-in">
-            <CheckCircle className="w-6 h-6 text-green-600" />
+          <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2 sm:gap-3 animate-bounce-in">
+            <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 flex-shrink-0" />
             <div>
-              <h3 className="font-semibold text-green-900">Payment Successful!</h3>
-              <p className="text-sm text-green-700">Your subscription has been activated. Welcome aboard! 🎉</p>
+              <h3 className="font-semibold text-green-900 text-sm sm:text-base">Payment Successful!</h3>
+              <p className="text-xs sm:text-sm text-green-700">Your subscription has been activated. Welcome aboard! 🎉</p>
             </div>
           </div>
         )}
 
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full text-white font-medium mb-4 shadow-lg">
-            <Sparkles className="w-4 h-4" />
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full text-white font-medium mb-3 sm:mb-4 shadow-lg text-xs sm:text-sm">
+            <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
             <span>Simple, Transparent Pricing</span>
           </div>
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent px-4">
             Choose Your Perfect Plan
           </h1>
-          <p className="text-gray-600 text-xl max-w-2xl mx-auto">
+          <p className="text-gray-600 text-sm sm:text-lg md:text-xl max-w-2xl mx-auto px-4">
             Start free and scale as you grow. No hidden fees, cancel anytime.
           </p>
         </div>
