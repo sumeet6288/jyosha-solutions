@@ -231,24 +231,24 @@ const ChatbotBuilder = () => {
 
       {/* Top Navigation */}
       <nav className="bg-white/80 backdrop-blur-lg border-b border-purple-200/50 sticky top-0 z-50 shadow-sm">
-        <div className="px-8 py-4 flex items-center justify-between max-w-[95%] mx-auto">
-          <div className="flex items-center gap-6 animate-fade-in-right">
-            <Button variant="ghost" onClick={() => navigate('/dashboard')} className="group hover:bg-purple-50 transition-all duration-300">
+        <div className="px-4 sm:px-8 py-4 flex items-center justify-between max-w-[95%] mx-auto">
+          <div className="flex items-center gap-2 sm:gap-6 animate-fade-in-right">
+            <Button variant="ghost" onClick={() => navigate('/dashboard')} className="group hover:bg-purple-50 transition-all duration-300 p-2">
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
             </Button>
-            <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">{chatbot.name}</h1>
-              <p className="text-xs text-gray-500">ID: {chatbot.id}</p>
+            <div className="min-w-0">
+              <h1 className="text-base sm:text-xl font-bold bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent truncate">{chatbot.name}</h1>
+              <p className="text-xs text-gray-500 truncate hidden sm:block">ID: {chatbot.id}</p>
             </div>
           </div>
-          <div className="flex items-center gap-4 animate-fade-in">
+          <div className="flex items-center gap-2 sm:gap-4 animate-fade-in">
             <Button 
               variant="outline" 
               onClick={() => setIsPreviewModalOpen(true)}
-              className="border-2 border-purple-300 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 hover:text-white hover:border-transparent transition-all duration-300 transform hover:scale-105 group"
+              className="border-2 border-purple-300 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 hover:text-white hover:border-transparent transition-all duration-300 transform hover:scale-105 group text-xs sm:text-sm px-2 sm:px-4"
             >
-              <MessageSquare className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
-              Preview
+              <MessageSquare className="w-4 h-4 sm:mr-2 group-hover:scale-110 transition-transform" />
+              <span className="hidden sm:inline">Preview</span>
             </Button>
             <UserProfileDropdown user={user} onLogout={handleLogout} />
           </div>
