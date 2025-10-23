@@ -103,10 +103,16 @@ class ChatbotCreate(BaseModel):
     welcome_message: str = "Hello! How can I help you today?"
     primary_color: str = "#7c3aed"
     secondary_color: str = "#a78bfa"
+    accent_color: str = "#ec4899"
     logo_url: Optional[str] = None
     avatar_url: Optional[str] = None
     widget_position: Literal["bottom-right", "bottom-left", "top-right", "top-left"] = "bottom-right"
     widget_theme: Literal["light", "dark", "auto"] = "light"
+    font_family: str = "Inter, system-ui, sans-serif"
+    font_size: Literal["small", "medium", "large"] = "medium"
+    bubble_style: Literal["rounded", "square", "smooth"] = "rounded"
+    widget_size: Literal["small", "medium", "large"] = "medium"
+    auto_expand: bool = False
 
 
 class ChatbotUpdate(BaseModel):
