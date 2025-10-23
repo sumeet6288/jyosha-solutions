@@ -509,7 +509,7 @@ Key Features:
 
 def main():
     """Main test execution"""
-    base_url = "https://package-setup.preview.emergentagent.com"
+    base_url = "https://dependency-demo.preview.emergentagent.com"
     
     print(f"Testing Chatbot Builder API (Focused) at: {base_url}")
     
