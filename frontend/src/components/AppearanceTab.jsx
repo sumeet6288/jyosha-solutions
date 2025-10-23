@@ -7,11 +7,17 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
   const [customization, setCustomization] = useState({
     primary_color: chatbot?.primary_color || '#7c3aed',
     secondary_color: chatbot?.secondary_color || '#a78bfa',
+    accent_color: chatbot?.accent_color || '#ec4899',
     logo_url: chatbot?.logo_url || '',
     avatar_url: chatbot?.avatar_url || '',
     welcome_message: chatbot?.welcome_message || 'Hello! How can I help you today?',
     widget_position: chatbot?.widget_position || 'bottom-right',
     widget_theme: chatbot?.widget_theme || 'light',
+    font_family: chatbot?.font_family || 'Inter, system-ui, sans-serif',
+    font_size: chatbot?.font_size || 'medium',
+    bubble_style: chatbot?.bubble_style || 'rounded',
+    widget_size: chatbot?.widget_size || 'medium',
+    auto_expand: chatbot?.auto_expand || false,
   });
 
   const [saving, setSaving] = useState(false);
