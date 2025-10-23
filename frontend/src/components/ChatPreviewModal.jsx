@@ -61,11 +61,27 @@ const ChatPreviewModal = ({ isOpen, onClose, chatbot }) => {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex-1 overflow-y-auto space-y-4 p-4 bg-gray-50 rounded-lg">
+        <div 
+          className="flex-1 overflow-y-auto space-y-4 p-4 rounded-lg"
+          style={{
+            backgroundColor: chatbot?.widget_theme === 'dark' ? '#1f2937' : '#f9fafb'
+          }}
+        >
           {messages.length === 0 && (
             <div className="text-center py-12">
-              <Bot className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-              <p className="text-gray-600">{chatbot?.welcome_message || 'Hello! How can I help you today?'}</p>
+              <Bot 
+                className="w-12 h-12 mx-auto mb-4" 
+                style={{ color: chatbot?.primary_color || '#7c3aed' }}
+              />
+              <p 
+                className="font-medium"
+                style={{ 
+                  color: chatbot?.widget_theme === 'dark' ? '#e5e7eb' : '#4b5563',
+                  fontFamily: chatbot?.font_family || 'Inter, system-ui, sans-serif'
+                }}
+              >
+                {chatbot?.welcome_message || 'Hello! How can I help you today?'}
+              </p>
             </div>
           )}
           {messages.map((message, index) => (
