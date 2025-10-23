@@ -14,21 +14,27 @@ const AdvancedAnalytics = ({ chatbotId }) => {
   const [topQuestions, setTopQuestions] = useState(null);
   const [satisfaction, setSatisfaction] = useState(null);
   const [performance, setPerformance] = useState(null);
+  const [responseTimeTrend, setResponseTimeTrend] = useState(null);
+  const [hourlyActivity, setHourlyActivity] = useState(null);
 
   const loadAnalytics = async () => {
     setLoading(true);
     try {
-      const [trends, questions, sat, perf] = await Promise.all([
+      const [trends, questions, sat, perf, responseTrend, hourly] = await Promise.all([
         api.get(`/api/analytics/trends/${chatbotId}?period=${period}`).then(r => r.data),
         api.get(`/api/analytics/top-questions/${chatbotId}`).then(r => r.data),
         api.get(`/api/analytics/satisfaction/${chatbotId}`).then(r => r.data),
         api.get(`/api/analytics/performance/${chatbotId}`).then(r => r.data),
+        api.get(`/api/analytics/response-time-trend/${chatbotId}?period=${period}`).then(r => r.data),
+        api.get(`/api/analytics/hourly-activity/${chatbotId}`).then(r => r.data),
       ]);
       
       setTrendData(trends);
       setTopQuestions(questions);
       setSatisfaction(sat);
       setPerformance(perf);
+      setResponseTimeTrend(responseTrend);
+      setHourlyActivity(hourly);
     } catch (error) {
       console.error('Error loading analytics:', error);
     } finally {
