@@ -20,6 +20,7 @@ import Resources from './pages/Resources';
 import NotFound from './pages/NotFound';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import { Toaster } from './components/ui/toaster';
+import { Toaster as SonnerToaster } from 'sonner';
 
 const ProtectedRoute = ({ children }) => {
   // Bypass authentication for now - direct access to all routes
