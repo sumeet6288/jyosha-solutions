@@ -255,34 +255,43 @@ const ChatbotBuilder = () => {
         </div>
       </nav>
 
-      <div className="p-6 max-w-[95%] mx-auto relative z-10">
+      <div className="p-4 sm:p-6 max-w-[95%] mx-auto relative z-10">
         <Tabs defaultValue="sources" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 mb-6 bg-white/80 backdrop-blur-sm border-2 border-purple-200/50 p-1 rounded-xl shadow-lg animate-fade-in-up">
-            <TabsTrigger value="sources" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
-              <FileText className="w-4 h-4 mr-2" />
-              Sources
-            </TabsTrigger>
-            <TabsTrigger value="settings" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
-              <Settings className="w-4 h-4 mr-2" />
-              Settings
-            </TabsTrigger>
-            <TabsTrigger value="appearance" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
-              <Palette className="w-4 h-4 mr-2" />
-              Appearance
-            </TabsTrigger>
-            <TabsTrigger value="widget" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
-              <MessageSquare className="w-4 h-4 mr-2" />
-              Widget
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
-              <BarChart3 className="w-4 h-4 mr-2" />
-              Analytics
-            </TabsTrigger>
-            <TabsTrigger value="advanced-analytics" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300">
-              <TrendingUp className="w-4 h-4 mr-2" />
-              Insights
-            </TabsTrigger>
-          </TabsList>
+          {/* Mobile: Horizontal scrolling tabs */}
+          <div className="mb-6 overflow-x-auto scrollbar-hide">
+            <TabsList className="inline-flex w-max min-w-full lg:grid lg:w-full lg:grid-cols-6 gap-2 bg-white/80 backdrop-blur-sm border-2 border-purple-200/50 p-1 rounded-xl shadow-lg animate-fade-in-up">
+              <TabsTrigger value="sources" className="whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300 flex-shrink-0">
+                <FileText className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">Sources</span>
+                <span className="sm:hidden">Sources</span>
+              </TabsTrigger>
+              <TabsTrigger value="settings" className="whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300 flex-shrink-0">
+                <Settings className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">Settings</span>
+                <span className="sm:hidden">Settings</span>
+              </TabsTrigger>
+              <TabsTrigger value="appearance" className="whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300 flex-shrink-0">
+                <Palette className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">Appearance</span>
+                <span className="sm:hidden">Appear</span>
+              </TabsTrigger>
+              <TabsTrigger value="widget" className="whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300 flex-shrink-0">
+                <MessageSquare className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">Widget</span>
+                <span className="sm:hidden">Widget</span>
+              </TabsTrigger>
+              <TabsTrigger value="analytics" className="whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300 flex-shrink-0">
+                <BarChart3 className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">Analytics</span>
+                <span className="sm:hidden">Analytics</span>
+              </TabsTrigger>
+              <TabsTrigger value="advanced-analytics" className="whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300 flex-shrink-0">
+                <TrendingUp className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">Insights</span>
+                <span className="sm:hidden">Insights</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* Sources Tab */}
           <TabsContent value="sources" className="animate-fade-in-up">
