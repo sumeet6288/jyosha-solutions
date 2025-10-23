@@ -38,6 +38,7 @@ const ChatbotBuilder = () => {
   const [messages, setMessages] = useState([]);
   const [loadingConversations, setLoadingConversations] = useState(false);
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const [activeTab, setActiveTab] = useState('sources');
 
   useEffect(() => {
     loadChatbot();
