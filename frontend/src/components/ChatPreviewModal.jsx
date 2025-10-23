@@ -115,11 +115,29 @@ const ChatPreviewModal = ({ isOpen, onClose, chatbot }) => {
           ))}
           {loading && (
             <div className="flex gap-3 justify-start">
-              <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center flex-shrink-0">
-                <Bot className="w-5 h-5 text-white" />
+              <div 
+                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ 
+                  backgroundColor: chatbot?.primary_color || '#7c3aed',
+                  backgroundImage: chatbot?.avatar_url ? `url(${chatbot.avatar_url})` : 'none',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center'
+                }}
+              >
+                {!chatbot?.avatar_url && <Bot className="w-5 h-5 text-white" />}
               </div>
-              <div className="bg-white rounded-2xl px-4 py-2 border border-gray-200">
-                <Loader2 className="w-5 h-5 animate-spin text-gray-600" />
+              <div 
+                className={`px-4 py-2 border ${
+                  chatbot?.bubble_style === 'square' ? 'rounded-md' : 
+                  chatbot?.bubble_style === 'smooth' ? 'rounded-xl' : 
+                  'rounded-2xl'
+                }`}
+                style={{
+                  backgroundColor: chatbot?.widget_theme === 'dark' ? '#374151' : '#ffffff',
+                  borderColor: chatbot?.widget_theme === 'dark' ? '#4b5563' : '#e5e7eb'
+                }}
+              >
+                <Loader2 className="w-5 h-5 animate-spin" style={{ color: chatbot?.primary_color || '#7c3aed' }} />
               </div>
             </div>
           )}
