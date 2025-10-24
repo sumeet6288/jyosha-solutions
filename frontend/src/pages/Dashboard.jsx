@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { Plus, MessageSquare, Activity, TrendingUp, BarChart3, CreditCard, Sparkles } from 'lucide-react';
+import { Plus, MessageSquare, Activity, TrendingUp, BarChart3, CreditCard, Sparkles, FileText, Globe, BookOpen } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import UserProfileDropdown from '../components/UserProfileDropdown';
 import ResponsiveNav from '../components/ResponsiveNav';
