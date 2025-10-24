@@ -84,13 +84,29 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
     }
     await db_instance.messages.insert_one(user_message)
     
+    # Get training data context
+    sources = await db_instance.sources.find({
+        "chatbot_id": chatbot_id,
+        "status": "processed"
+    }).to_list(length=None)
+    
+    # Combine all source content
+    context = "\n\n".join([source.get("content", "") for source in sources])
+    
     # Get AI response
     chat_service = ChatService()
-    ai_response = await chat_service.get_chat_response(
-        chatbot_id=chatbot_id,
-        message=request.message,
-        conversation_id=conversation_id
-    )
+    try:
+        ai_response = await chat_service.generate_response(
+            message=request.message,
+            session_id=request.session_id,
+            system_message=chatbot.get("instructions", "You are a helpful assistant."),
+            model=chatbot.get("model", "gpt-4o-mini"),
+            provider=chatbot.get("provider", "openai"),
+            context=context if context else None
+        )
+    except Exception as e:
+        logger.error(f"AI response error in public chat: {str(e)}")
+        ai_response = "I'm sorry, I'm having trouble processing your request right now. Please try again later."
     
     # Save AI message
     ai_message = {
