@@ -59,11 +59,28 @@ const LandingPage = () => {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-b border-gray-200/50 z-50 shadow-sm">
         <div className="max-w-[95%] mx-auto px-4 sm:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 group cursor-pointer" onClick={() => navigate('/')}>
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
-              <span className="text-white font-bold text-lg">B</span>
+          <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate('/')}>
+            {/* Enhanced Logo */}
+            <div className="relative">
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-600 via-pink-500 to-purple-700 rounded-xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg shadow-purple-500/40">
+                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+                  <circle cx="12" cy="11" r="1.5"/>
+                  <circle cx="8" cy="11" r="1.5"/>
+                  <circle cx="16" cy="11" r="1.5"/>
+                </svg>
+              </div>
+              {/* Animated ring */}
+              <div className="absolute inset-0 rounded-xl border-2 border-purple-400 opacity-0 group-hover:opacity-100 group-hover:scale-125 transition-all duration-500"></div>
             </div>
-            <span className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">BotSmith</span>
+            
+            {/* Enhanced Brand Name */}
+            <div className="flex flex-col -space-y-1">
+              <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 via-pink-500 to-purple-700 bg-clip-text text-transparent group-hover:from-purple-700 group-hover:via-pink-600 group-hover:to-purple-800 transition-all duration-300">
+                BotSmith
+              </span>
+              <span className="text-[10px] font-medium text-gray-500 tracking-wide">Powered by Jyosha Solutions</span>
+            </div>
           </div>
           
           {/* Desktop Navigation */}
