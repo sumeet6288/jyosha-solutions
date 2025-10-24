@@ -178,50 +178,130 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Plan Usage Widget */}
+        {/* Free Plan Section - Matching uploaded UI design */}
         {usageStats && (
-          <div className="bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 rounded-2xl border-2 border-white/50 p-1 mb-8 animate-fade-in-up shadow-2xl">
-            <div className="bg-white/95 backdrop-blur-sm rounded-xl p-6">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Sparkles className="w-5 h-5 text-purple-600" />
-                    <h3 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{usageStats.plan?.name} Plan</h3>
+          <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 mb-8 animate-fade-in-up">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-white" />
                   </div>
-                  <p className="text-sm text-gray-600">Current usage overview</p>
+                  <h2 className="text-2xl font-bold text-gray-900">{usageStats.plan?.name} Plan</h2>
                 </div>
-                <Button
-                  onClick={() => navigate('/subscription')}
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/30 transform hover:scale-105 transition-all duration-300"
-                >
-                  View Details
-                </Button>
+                <p className="text-sm text-gray-600">Monitor your resource usage and limits</p>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                {[
-                  { label: 'Chatbots', current: usageStats.usage?.chatbots?.current, limit: usageStats.usage?.chatbots?.limit, percentage: usageStats.usage?.chatbots?.percentage },
-                  { label: 'Messages', current: usageStats.usage?.messages?.current, limit: usageStats.usage?.messages?.limit, percentage: usageStats.usage?.messages?.percentage },
-                  { label: 'Files', current: usageStats.usage?.file_uploads?.current, limit: usageStats.usage?.file_uploads?.limit, percentage: usageStats.usage?.file_uploads?.percentage },
-                  { label: 'Websites', current: usageStats.usage?.website_sources?.current, limit: usageStats.usage?.website_sources?.limit, percentage: usageStats.usage?.website_sources?.percentage },
-                  { label: 'Text Sources', current: usageStats.usage?.text_sources?.current, limit: usageStats.usage?.text_sources?.limit, percentage: usageStats.usage?.text_sources?.percentage }
-                ].map((item, index) => (
-                  <div key={index} className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200/50 hover:border-purple-400 hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                    <p className="text-xs text-gray-600 mb-1 font-medium">{item.label}</p>
-                    <p className="text-xl font-bold text-gray-900">
-                      {item.current}/{item.limit === 999999 || item.limit === 999999999 ? '∞' : item.limit?.toLocaleString()}
-                    </p>
-                    <div className="mt-2 w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                      <div 
-                        className={`h-2 rounded-full transition-all duration-500 ${
-                          item.percentage >= 90 ? 'bg-gradient-to-r from-red-500 to-red-600' : 
-                          item.percentage >= 75 ? 'bg-gradient-to-r from-orange-500 to-orange-600' : 
-                          'bg-gradient-to-r from-green-500 to-emerald-600'
-                        }`}
-                        style={{ width: `${Math.min(item.percentage || 0, 100)}%` }}
-                      />
-                    </div>
+              <Button
+                onClick={() => navigate('/subscription')}
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-2 rounded-xl font-semibold shadow-lg"
+              >
+                Upgrade Plan
+              </Button>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+              {/* Chatbots */}
+              <div className="bg-white rounded-xl p-5 border border-gray-200 hover:shadow-md transition-all duration-300">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+                    <MessageSquare className="w-5 h-5 text-white" />
                   </div>
-                ))}
+                  <p className="text-sm font-semibold text-gray-700">Chatbots</p>
+                </div>
+                <p className="text-3xl font-bold text-gray-900 mb-2">
+                  {usageStats.usage?.chatbots?.current}/{usageStats.usage?.chatbots?.limit}
+                </p>
+                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden mb-1">
+                  <div 
+                    className={`h-2 rounded-full transition-all duration-500 ${
+                      usageStats.usage?.chatbots?.percentage >= 90 ? 'bg-red-500' : 
+                      usageStats.usage?.chatbots?.percentage >= 75 ? 'bg-orange-500' : 
+                      'bg-gray-300'
+                    }`}
+                    style={{ width: `${Math.min(usageStats.usage?.chatbots?.percentage || 0, 100)}%` }}
+                  />
+                </div>
+                <p className="text-xs text-gray-600">{usageStats.usage?.chatbots?.percentage}% used</p>
+              </div>
+
+              {/* Messages */}
+              <div className="bg-white rounded-xl p-5 border border-gray-200 hover:shadow-md transition-all duration-300">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center">
+                    <Activity className="w-5 h-5 text-white" />
+                  </div>
+                  <p className="text-sm font-semibold text-gray-700">Messages</p>
+                </div>
+                <p className="text-3xl font-bold text-gray-900 mb-2">
+                  {usageStats.usage?.messages?.current}/{usageStats.usage?.messages?.limit === 999999 || usageStats.usage?.messages?.limit === 999999999 ? '∞' : usageStats.usage?.messages?.limit?.toLocaleString()}
+                </p>
+                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden mb-1">
+                  <div 
+                    className="h-2 rounded-full bg-gray-300 transition-all duration-500"
+                    style={{ width: `${Math.min(usageStats.usage?.messages?.percentage || 0, 100)}%` }}
+                  />
+                </div>
+                <p className="text-xs text-gray-600">{usageStats.usage?.messages?.percentage}% used</p>
+              </div>
+
+              {/* Files */}
+              <div className="bg-white rounded-xl p-5 border border-gray-200 hover:shadow-md transition-all duration-300">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-400 to-pink-500 flex items-center justify-center">
+                    <FileText className="w-5 h-5 text-white" />
+                  </div>
+                  <p className="text-sm font-semibold text-gray-700">Files</p>
+                </div>
+                <p className="text-3xl font-bold text-gray-900 mb-2">
+                  {usageStats.usage?.file_uploads?.current}/{usageStats.usage?.file_uploads?.limit}
+                </p>
+                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden mb-1">
+                  <div 
+                    className="h-2 rounded-full bg-gray-300 transition-all duration-500"
+                    style={{ width: `${Math.min(usageStats.usage?.file_uploads?.percentage || 0, 100)}%` }}
+                  />
+                </div>
+                <p className="text-xs text-gray-600">{usageStats.usage?.file_uploads?.percentage}% used</p>
+              </div>
+
+              {/* Websites */}
+              <div className="bg-white rounded-xl p-5 border border-gray-200 hover:shadow-md transition-all duration-300">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
+                    <Globe className="w-5 h-5 text-white" />
+                  </div>
+                  <p className="text-sm font-semibold text-gray-700">Websites</p>
+                </div>
+                <p className="text-3xl font-bold text-gray-900 mb-2">
+                  {usageStats.usage?.website_sources?.current}/{usageStats.usage?.website_sources?.limit}
+                </p>
+                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden mb-1">
+                  <div 
+                    className="h-2 rounded-full bg-gray-300 transition-all duration-500"
+                    style={{ width: `${Math.min(usageStats.usage?.website_sources?.percentage || 0, 100)}%` }}
+                  />
+                </div>
+                <p className="text-xs text-gray-600">{usageStats.usage?.website_sources?.percentage}% used</p>
+              </div>
+
+              {/* Text Sources */}
+              <div className="bg-white rounded-xl p-5 border border-gray-200 hover:shadow-md transition-all duration-300">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                    <BookOpen className="w-5 h-5 text-white" />
+                  </div>
+                  <p className="text-sm font-semibold text-gray-700">Text Sources</p>
+                </div>
+                <p className="text-3xl font-bold text-gray-900 mb-2">
+                  {usageStats.usage?.text_sources?.current}/{usageStats.usage?.text_sources?.limit}
+                </p>
+                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden mb-1">
+                  <div 
+                    className="h-2 rounded-full bg-gray-300 transition-all duration-500"
+                    style={{ width: `${Math.min(usageStats.usage?.text_sources?.percentage || 0, 100)}%` }}
+                  />
+                </div>
+                <p className="text-xs text-gray-600">{usageStats.usage?.text_sources?.percentage}% used</p>
               </div>
             </div>
           </div>
