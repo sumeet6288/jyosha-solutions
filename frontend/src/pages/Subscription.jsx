@@ -341,24 +341,24 @@ const SubscriptionNew = () => {
           })}
         </div>
 
-        {/* Additional Info Section */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-12 shadow-xl max-w-4xl mx-auto mb-8">
-          <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-pink-600 to-blue-600 bg-clip-text text-transparent text-center">
+        {/* Additional Info Section - Reduced to 80% */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg max-w-4xl mx-auto mb-6">
+          <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-pink-600 to-blue-600 bg-clip-text text-transparent text-center">
             Need help choosing?
           </h2>
-          <p className="text-gray-600 text-lg mb-8 text-center">
+          <p className="text-gray-600 text-base mb-6 text-center">
             Not sure which plan is right for you? Our team is here to help you find the perfect fit for your needs.
           </p>
-          <div className="flex flex-wrap gap-4 justify-center">
+          <div className="flex flex-wrap gap-3 justify-center">
             <Button 
-              className="bg-gradient-to-r from-pink-500 to-purple-500 hover:shadow-lg text-white rounded-xl px-8 py-6"
+              className="bg-gradient-to-r from-pink-500 to-purple-500 hover:shadow-lg text-white rounded-lg px-6 py-4 text-sm"
               onClick={() => navigate('/enterprise')}
             >
               Talk to Sales
             </Button>
             <Button 
               variant="outline"
-              className="border-2 rounded-xl px-8 py-6"
+              className="border-2 rounded-lg px-6 py-4 text-sm"
               onClick={() => navigate('/resources')}
             >
               View Documentation
@@ -366,16 +366,16 @@ const SubscriptionNew = () => {
           </div>
         </div>
 
-        {/* Secure Payment Info */}
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-200">
-          <div className="flex items-start gap-3">
-            <AlertCircle className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+        {/* Secure Payment Info - Reduced to 80% */}
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 border border-blue-200">
+          <div className="flex items-start gap-2.5">
+            <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
             <div>
-              <h3 className="font-semibold text-gray-900 mb-2">Secure Payment Processing</h3>
-              <p className="text-gray-700 text-sm mb-3">
+              <h3 className="font-semibold text-gray-900 mb-1.5 text-sm">Secure Payment Processing</h3>
+              <p className="text-gray-700 text-xs mb-2">
                 All payments are processed securely through Lemon Squeezy. We never store your payment information.
               </p>
-              <ul className="space-y-1 text-sm text-gray-600">
+              <ul className="space-y-0.5 text-xs text-gray-600">
                 <li>✓ Test mode enabled - No real charges</li>
                 <li>✓ Cancel anytime</li>
                 <li>✓ Instant activation</li>
