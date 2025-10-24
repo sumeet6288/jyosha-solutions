@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Palette, Image, Type, Layout } from 'lucide-react';
+import { Palette, Image, Type, Layout, Eye } from 'lucide-react';
 import { chatbotAPI } from '../utils/api';
 import { toast } from 'sonner';
 
