@@ -8,6 +8,9 @@ from models import (
 )
 from services.chat_service import ChatService
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/public", tags=["public-chat"])
 db_instance = None
