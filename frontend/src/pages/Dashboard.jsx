@@ -325,13 +325,13 @@ const Dashboard = () => {
           
           {chatbots.length === 0 ? (
             <div className="text-center py-16 animate-fade-in">
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-4 transform hover:scale-110 transition-transform duration-300">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <MessageSquare className="w-10 h-10 text-purple-600" />
               </div>
               <h3 className="text-xl font-semibold mb-2 text-gray-900">No chatbots yet</h3>
               <p className="text-gray-600 mb-6">Create your first AI chatbot to get started</p>
               <Button 
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg shadow-purple-500/30 transform hover:scale-105 transition-all duration-300"
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-2 rounded-xl font-semibold shadow-lg"
                 onClick={handleCreateChatbot}
               >
                 <Plus className="w-4 h-4 mr-2" />
@@ -343,40 +343,60 @@ const Dashboard = () => {
               {chatbots.map((bot, index) => (
                 <div 
                   key={bot.id} 
-                  className="group p-6 border-2 border-purple-200/50 rounded-2xl hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 cursor-pointer bg-gradient-to-r from-white to-purple-50/30 transform hover:-translate-y-1 animate-fade-in-up"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  className="group p-6 border border-gray-200 rounded-2xl hover:shadow-lg transition-all duration-300 cursor-pointer bg-white"
                   onClick={() => navigate(`/chatbot/${bot.id}`)}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-3">
-                        <h3 className="text-xl font-bold text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300">{bot.name}</h3>
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          bot.status === 'active' ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/30' : 'bg-gray-200 text-gray-700'
-                        }`}>
-                          {bot.status}
-                        </span>
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start gap-4 flex-1">
+                      {/* Chatbot Icon */}
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center flex-shrink-0">
+                        <MessageSquare className="w-6 h-6 text-white" />
                       </div>
-                      <div className="flex items-center gap-6 text-sm text-gray-600">
-                        <span className="flex items-center gap-1">
-                          <MessageSquare className="w-4 h-4" />
-                          <strong>{bot.conversations_count?.toLocaleString() || 0}</strong> conversations
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Activity className="w-4 h-4" />
-                          <strong>{bot.messages_count?.toLocaleString() || 0}</strong> messages
-                        </span>
-                        <span className="font-medium">Model: <strong className="text-purple-600">{bot.model}</strong></span>
-                        {bot.last_trained && (
-                          <span>Last trained: {new Date(bot.last_trained).toLocaleDateString()}</span>
-                        )}
+                      
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-3">
+                          <h3 className="text-xl font-bold text-gray-900">{bot.name}</h3>
+                          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-500 text-white">
+                            {bot.status}
+                          </span>
+                          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
+                            {bot.model}
+                          </span>
+                        </div>
+                        
+                        <div className="flex items-center gap-6 text-sm text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                              <MessageSquare className="w-4 h-4 text-purple-600" />
+                            </div>
+                            <div>
+                              <p className="text-xs text-gray-500">Conversations</p>
+                              <p className="font-semibold text-gray-900">{bot.conversations_count?.toLocaleString() || 0}</p>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 rounded-lg bg-cyan-100 flex items-center justify-center">
+                              <Activity className="w-4 h-4 text-cyan-600" />
+                            </div>
+                            <div>
+                              <p className="text-xs text-gray-500">Messages</p>
+                              <p className="font-semibold text-gray-900">{bot.messages_count?.toLocaleString() || 0}</p>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
+                    
                     <Button 
                       variant="outline" 
                       onClick={(e) => { e.stopPropagation(); navigate(`/chatbot/${bot.id}`); }}
-                      className="border-2 border-purple-300 hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 hover:text-white hover:border-transparent transition-all duration-300 transform group-hover:scale-105"
+                      className="border-2 border-gray-300 hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all duration-300 flex items-center gap-2"
                     >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
                       Manage
                     </Button>
                   </div>
