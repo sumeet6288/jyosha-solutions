@@ -41,7 +41,7 @@ const ResponsiveNav = ({ user, onLogout }) => {
               <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 via-pink-500 to-purple-700 bg-clip-text text-transparent group-hover:from-purple-700 group-hover:via-pink-600 group-hover:to-purple-800 transition-all duration-300">
                 BotSmith
               </span>
-              <span className="text-[10px] font-medium text-gray-500 tracking-wider uppercase">AI Platform</span>
+              <span className="text-[10px] font-medium text-gray-500 tracking-wide">Powered by Jyosha Solutions</span>
             </div>
           </div>
         </div>
