@@ -140,7 +140,7 @@ const Dashboard = () => {
         </div>
 
         {/* Stats Cards - Matching uploaded UI design */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
           {/* Total Conversations Card */}
           <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 animate-fade-in-up">
             <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-b from-pink-500 to-purple-600 mb-4 shadow-lg">
@@ -175,6 +175,18 @@ const Dashboard = () => {
             </div>
             <p className="text-5xl font-bold text-purple-600 mb-2">{analytics?.total_chatbots || 0}</p>
             <p className="text-gray-600 text-base font-medium">Total Chatbots</p>
+          </div>
+
+          {/* Create Agent Card - NEW */}
+          <div 
+            onClick={handleCreateChatbot}
+            className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-dashed border-purple-300 hover:border-purple-500 animate-fade-in-up animation-delay-400 cursor-pointer group"
+          >
+            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-b from-green-400 to-emerald-600 mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <Plus className="w-8 h-8 text-white" />
+            </div>
+            <p className="text-3xl font-bold text-green-600 mb-2 group-hover:scale-105 transition-transform duration-300">Create</p>
+            <p className="text-gray-600 text-base font-medium">New Agent</p>
           </div>
         </div>
 
