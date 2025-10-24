@@ -409,9 +409,10 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
       <div className="flex justify-between items-center">
         <button
           onClick={handleViewLivePreview}
-          className="px-6 py-3 bg-white border-2 border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition-all shadow-md font-semibold"
+          className="px-6 py-3 bg-white border-2 border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition-all shadow-md font-semibold flex items-center space-x-2"
         >
-          View Live Preview
+          <Eye className="w-5 h-5" />
+          <span>View Live Preview</span>
         </button>
         <button
           onClick={handleSave}
