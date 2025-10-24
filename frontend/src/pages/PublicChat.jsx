@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 
 const PublicChat = () => {
   const { chatbotId } = useParams();
+  const [searchParams] = useSearchParams();
   const [chatbot, setChatbot] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
@@ -23,15 +24,7 @@ const PublicChat = () => {
 
   useEffect(() => {
     loadChatbot();
-  }, [chatbotId]);
-
-  // Reload chatbot when timestamp changes (cache busting)
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('t')) {
-      loadChatbot();
-    }
-  }, [window.location.search]);
+  }, [chatbotId, searchParams.get('t')]);
 
   useEffect(() => {
     scrollToBottom();
