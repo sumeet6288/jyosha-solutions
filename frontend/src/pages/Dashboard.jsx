@@ -190,42 +190,42 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Free Plan Section - Matching uploaded UI design */}
+        {/* Free Plan Section - Reduced to 80% */}
         {usageStats && (
-          <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 mb-8 animate-fade-in-up">
-            <div className="flex items-center justify-between mb-6">
+          <div className="bg-white rounded-xl p-4 shadow-md border border-gray-100 mb-6 animate-fade-in-up">
+            <div className="flex items-center justify-between mb-4">
               <div>
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-white" />
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center">
+                    <Sparkles className="w-4 h-4 text-white" />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-900">{usageStats.plan?.name} Plan</h2>
+                  <h2 className="text-xl font-bold text-gray-900">{usageStats.plan?.name} Plan</h2>
                 </div>
-                <p className="text-sm text-gray-600">Monitor your resource usage and limits</p>
+                <p className="text-xs text-gray-600">Monitor your resource usage and limits</p>
               </div>
               <Button
                 onClick={() => navigate('/subscription')}
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-2 rounded-xl font-semibold shadow-lg"
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-4 py-1.5 rounded-lg font-semibold shadow-md text-sm"
               >
                 Upgrade Plan
               </Button>
             </div>
             
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
               {/* Chatbots */}
-              <div className="bg-white rounded-xl p-5 border border-gray-200 hover:shadow-md transition-all duration-300">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
-                    <MessageSquare className="w-5 h-5 text-white" />
+              <div className="bg-white rounded-lg p-3 border border-gray-200 hover:shadow-md transition-all duration-300">
+                <div className="flex items-center gap-1.5 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
+                    <MessageSquare className="w-4 h-4 text-white" />
                   </div>
-                  <p className="text-sm font-semibold text-gray-700">Chatbots</p>
+                  <p className="text-xs font-semibold text-gray-700">Chatbots</p>
                 </div>
-                <p className="text-3xl font-bold text-gray-900 mb-2">
+                <p className="text-2xl font-bold text-gray-900 mb-1.5">
                   {usageStats.usage?.chatbots?.current}/{usageStats.usage?.chatbots?.limit}
                 </p>
-                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden mb-1">
+                <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden mb-1">
                   <div 
-                    className={`h-2 rounded-full transition-all duration-500 ${
+                    className={`h-1.5 rounded-full transition-all duration-500 ${
                       usageStats.usage?.chatbots?.percentage >= 90 ? 'bg-red-500' : 
                       usageStats.usage?.chatbots?.percentage >= 75 ? 'bg-orange-500' : 
                       'bg-gray-300'
@@ -233,87 +233,87 @@ const Dashboard = () => {
                     style={{ width: `${Math.min(usageStats.usage?.chatbots?.percentage || 0, 100)}%` }}
                   />
                 </div>
-                <p className="text-xs text-gray-600">{usageStats.usage?.chatbots?.percentage}% used</p>
+                <p className="text-[10px] text-gray-600">{usageStats.usage?.chatbots?.percentage}% used</p>
               </div>
 
               {/* Messages */}
-              <div className="bg-white rounded-xl p-5 border border-gray-200 hover:shadow-md transition-all duration-300">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center">
-                    <Activity className="w-5 h-5 text-white" />
+              <div className="bg-white rounded-lg p-3 border border-gray-200 hover:shadow-md transition-all duration-300">
+                <div className="flex items-center gap-1.5 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center">
+                    <Activity className="w-4 h-4 text-white" />
                   </div>
-                  <p className="text-sm font-semibold text-gray-700">Messages</p>
+                  <p className="text-xs font-semibold text-gray-700">Messages</p>
                 </div>
-                <p className="text-3xl font-bold text-gray-900 mb-2">
+                <p className="text-2xl font-bold text-gray-900 mb-1.5">
                   {usageStats.usage?.messages?.current}/{usageStats.usage?.messages?.limit === 999999 || usageStats.usage?.messages?.limit === 999999999 ? '∞' : usageStats.usage?.messages?.limit?.toLocaleString()}
                 </p>
-                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden mb-1">
+                <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden mb-1">
                   <div 
-                    className="h-2 rounded-full bg-gray-300 transition-all duration-500"
+                    className="h-1.5 rounded-full bg-gray-300 transition-all duration-500"
                     style={{ width: `${Math.min(usageStats.usage?.messages?.percentage || 0, 100)}%` }}
                   />
                 </div>
-                <p className="text-xs text-gray-600">{usageStats.usage?.messages?.percentage}% used</p>
+                <p className="text-[10px] text-gray-600">{usageStats.usage?.messages?.percentage}% used</p>
               </div>
 
               {/* Files */}
-              <div className="bg-white rounded-xl p-5 border border-gray-200 hover:shadow-md transition-all duration-300">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-400 to-pink-500 flex items-center justify-center">
-                    <FileText className="w-5 h-5 text-white" />
+              <div className="bg-white rounded-lg p-3 border border-gray-200 hover:shadow-md transition-all duration-300">
+                <div className="flex items-center gap-1.5 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-400 to-pink-500 flex items-center justify-center">
+                    <FileText className="w-4 h-4 text-white" />
                   </div>
-                  <p className="text-sm font-semibold text-gray-700">Files</p>
+                  <p className="text-xs font-semibold text-gray-700">Files</p>
                 </div>
-                <p className="text-3xl font-bold text-gray-900 mb-2">
+                <p className="text-2xl font-bold text-gray-900 mb-1.5">
                   {usageStats.usage?.file_uploads?.current}/{usageStats.usage?.file_uploads?.limit}
                 </p>
-                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden mb-1">
+                <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden mb-1">
                   <div 
-                    className="h-2 rounded-full bg-gray-300 transition-all duration-500"
+                    className="h-1.5 rounded-full bg-gray-300 transition-all duration-500"
                     style={{ width: `${Math.min(usageStats.usage?.file_uploads?.percentage || 0, 100)}%` }}
                   />
                 </div>
-                <p className="text-xs text-gray-600">{usageStats.usage?.file_uploads?.percentage}% used</p>
+                <p className="text-[10px] text-gray-600">{usageStats.usage?.file_uploads?.percentage}% used</p>
               </div>
 
               {/* Websites */}
-              <div className="bg-white rounded-xl p-5 border border-gray-200 hover:shadow-md transition-all duration-300">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
-                    <Globe className="w-5 h-5 text-white" />
+              <div className="bg-white rounded-lg p-3 border border-gray-200 hover:shadow-md transition-all duration-300">
+                <div className="flex items-center gap-1.5 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
+                    <Globe className="w-4 h-4 text-white" />
                   </div>
-                  <p className="text-sm font-semibold text-gray-700">Websites</p>
+                  <p className="text-xs font-semibold text-gray-700">Websites</p>
                 </div>
-                <p className="text-3xl font-bold text-gray-900 mb-2">
+                <p className="text-2xl font-bold text-gray-900 mb-1.5">
                   {usageStats.usage?.website_sources?.current}/{usageStats.usage?.website_sources?.limit}
                 </p>
-                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden mb-1">
+                <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden mb-1">
                   <div 
-                    className="h-2 rounded-full bg-gray-300 transition-all duration-500"
+                    className="h-1.5 rounded-full bg-gray-300 transition-all duration-500"
                     style={{ width: `${Math.min(usageStats.usage?.website_sources?.percentage || 0, 100)}%` }}
                   />
                 </div>
-                <p className="text-xs text-gray-600">{usageStats.usage?.website_sources?.percentage}% used</p>
+                <p className="text-[10px] text-gray-600">{usageStats.usage?.website_sources?.percentage}% used</p>
               </div>
 
               {/* Text Sources */}
-              <div className="bg-white rounded-xl p-5 border border-gray-200 hover:shadow-md transition-all duration-300">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
-                    <BookOpen className="w-5 h-5 text-white" />
+              <div className="bg-white rounded-lg p-3 border border-gray-200 hover:shadow-md transition-all duration-300">
+                <div className="flex items-center gap-1.5 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                    <BookOpen className="w-4 h-4 text-white" />
                   </div>
-                  <p className="text-sm font-semibold text-gray-700">Text Sources</p>
+                  <p className="text-xs font-semibold text-gray-700">Text Sources</p>
                 </div>
-                <p className="text-3xl font-bold text-gray-900 mb-2">
+                <p className="text-2xl font-bold text-gray-900 mb-1.5">
                   {usageStats.usage?.text_sources?.current}/{usageStats.usage?.text_sources?.limit}
                 </p>
-                <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden mb-1">
+                <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden mb-1">
                   <div 
-                    className="h-2 rounded-full bg-gray-300 transition-all duration-500"
+                    className="h-1.5 rounded-full bg-gray-300 transition-all duration-500"
                     style={{ width: `${Math.min(usageStats.usage?.text_sources?.percentage || 0, 100)}%` }}
                   />
                 </div>
-                <p className="text-xs text-gray-600">{usageStats.usage?.text_sources?.percentage}% used</p>
+                <p className="text-[10px] text-gray-600">{usageStats.usage?.text_sources?.percentage}% used</p>
               </div>
             </div>
           </div>
