@@ -388,12 +388,35 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
         </div>
       </div>
 
-      {/* Save Button */}
-      <div className="flex justify-end">
+      {/* Live Preview Notice */}
+      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+        <div className="flex items-start space-x-3">
+          <div className="flex-shrink-0">
+            <svg className="w-5 h-5 text-blue-600 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <h4 className="text-sm font-semibold text-blue-900 mb-1">Live Preview</h4>
+            <p className="text-sm text-blue-700">
+              After saving, click "View Live Preview" below to see your changes in action. The preview will open in a new tab with the latest appearance settings.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex justify-between items-center">
+        <button
+          onClick={handleViewLivePreview}
+          className="px-6 py-3 bg-white border-2 border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition-all shadow-md font-semibold"
+        >
+          View Live Preview
+        </button>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg disabled:opacity-50"
+          className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg disabled:opacity-50 font-semibold"
         >
           {saving ? 'Saving...' : 'Save Appearance'}
         </button>
