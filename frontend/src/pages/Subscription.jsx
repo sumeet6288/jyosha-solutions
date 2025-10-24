@@ -255,8 +255,8 @@ const SubscriptionNew = () => {
           </div>
         )}
 
-        {/* All Plans Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8 sm:mb-12">
+        {/* All Plans Grid - Reduced to 80% */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-6 sm:mb-8">
           {plans.map((plan, index) => {
             const Icon = plan.icon;
             const isPopular = plan.popular;
@@ -267,59 +267,59 @@ const SubscriptionNew = () => {
               <div
                 key={plan.id}
                 className={`relative group ${
-                  isPopular ? 'lg:-mt-4 lg:mb-4' : ''
+                  isPopular ? 'lg:-mt-3 lg:mb-3' : ''
                 }`}
               >
                 {/* Popular Badge */}
                 {isPopular && (
-                  <div className="absolute -top-4 sm:-top-5 left-1/2 transform -translate-x-1/2 z-10">
-                    <span className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg">
+                  <div className="absolute -top-3 sm:-top-4 left-1/2 transform -translate-x-1/2 z-10">
+                    <span className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold shadow-md">
                       ⭐ Most Popular
                     </span>
                   </div>
                 )}
 
                 {/* Card */}
-                <div className={`h-full bg-white rounded-2xl sm:rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden ${
-                  isPopular ? 'ring-2 sm:ring-4 ring-purple-500 ring-opacity-50' : ''
+                <div className={`h-full bg-white rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden ${
+                  isPopular ? 'ring-2 sm:ring-3 ring-purple-500 ring-opacity-50' : ''
                 }`}>
                   {/* Gradient Header */}
-                  <div className={`bg-gradient-to-br ${plan.gradient} p-5 sm:p-8 text-white`}>
-                    <div className="flex items-center justify-between mb-3 sm:mb-4">
-                      <Icon className="w-8 h-8 sm:w-10 sm:h-10" />
+                  <div className={`bg-gradient-to-br ${plan.gradient} p-4 sm:p-5 text-white`}>
+                    <div className="flex items-center justify-between mb-2 sm:mb-3">
+                      <Icon className="w-6 h-6 sm:w-8 sm:h-8" />
                       {isPopular && (
-                        <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 animate-pulse" />
+                        <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse" />
                       )}
                     </div>
-                    <h3 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2">{plan.name}</h3>
-                    <p className="text-white/90 text-xs sm:text-sm mb-4 sm:mb-6">{plan.description}</p>
+                    <h3 className="text-lg sm:text-xl font-bold mb-1">{plan.name}</h3>
+                    <p className="text-white/90 text-[10px] sm:text-xs mb-3 sm:mb-4">{plan.description}</p>
                     
-                    <div className="mb-2">
-                      <span className="text-3xl sm:text-4xl md:text-5xl font-bold">{plan.price}</span>
+                    <div className="mb-1.5">
+                      <span className="text-2xl sm:text-3xl md:text-4xl font-bold">{plan.price}</span>
                       {plan.period && (
-                        <span className="text-white/80 text-sm sm:text-base md:text-lg">{plan.period}</span>
+                        <span className="text-white/80 text-xs sm:text-sm md:text-base">{plan.period}</span>
                       )}
                     </div>
                   </div>
 
                   {/* Features */}
-                  <div className="p-5 sm:p-8">
-                    <ul className="space-y-2.5 sm:space-y-4 mb-6 sm:mb-8">
+                  <div className="p-4 sm:p-5">
+                    <ul className="space-y-2 sm:space-y-2.5 mb-4 sm:mb-5">
                       {plan.features.map((feature, i) => (
-                        <li key={i} className="flex items-start gap-2 sm:gap-3">
-                          <div className={`mt-0.5 bg-gradient-to-r ${plan.gradient} rounded-full p-0.5 sm:p-1 flex-shrink-0`}>
-                            <Check className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+                        <li key={i} className="flex items-start gap-1.5 sm:gap-2">
+                          <div className={`mt-0.5 bg-gradient-to-r ${plan.gradient} rounded-full p-0.5 flex-shrink-0`}>
+                            <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" />
                           </div>
-                          <span className="text-gray-700 text-xs sm:text-sm leading-tight">{feature}</span>
+                          <span className="text-gray-700 text-[10px] sm:text-xs leading-tight">{feature}</span>
                         </li>
                       ))}
                     </ul>
 
                     {/* CTA Button */}
                     <Button 
-                      className={`w-full py-4 sm:py-6 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 ${
+                      className={`w-full py-3 sm:py-4 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 ${
                         isFree || currentPlan
-                          ? 'border-2 border-gray-300 bg-gray-100 text-gray-500 cursor-not-allowed'
+                          ? 'border border-gray-300 bg-gray-100 text-gray-500 cursor-not-allowed'
                           : `bg-gradient-to-r ${plan.gradient} hover:shadow-lg hover:scale-105 text-white border-0`
                       }`}
                       onClick={() => handleCheckout(plan.id)}
@@ -327,7 +327,7 @@ const SubscriptionNew = () => {
                     >
                       {checkingOut === plan.id ? (
                         <>
-                          <Loader2 className="w-4 h-4 animate-spin mr-2 inline" />
+                          <Loader2 className="w-3 h-3 animate-spin mr-1.5 inline" />
                           Processing...
                         </>
                       ) : (
