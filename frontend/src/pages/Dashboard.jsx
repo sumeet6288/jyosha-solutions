@@ -130,6 +130,15 @@ const Dashboard = () => {
       <ResponsiveNav user={user} onLogout={handleLogout} />
 
       <div className="p-6 sm:p-8 max-w-[95%] mx-auto relative z-10">
+        {/* Welcome Header */}
+        <div className="mb-8 animate-fade-in">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2 flex items-center gap-3">
+            Welcome back, {user?.name || 'Demo User'} 
+            <span className="text-4xl">👋</span>
+          </h1>
+          <p className="text-lg text-gray-600">Here's what's happening with your AI chatbots today</p>
+        </div>
+
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-purple-200/50 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 transform hover:-translate-y-2 animate-fade-in-up overflow-hidden relative">
