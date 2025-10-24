@@ -139,50 +139,42 @@ const Dashboard = () => {
           <p className="text-lg text-gray-600">Here's what's happening with your AI chatbots today</p>
         </div>
 
-        {/* Stats Cards */}
+        {/* Stats Cards - Matching uploaded UI design */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-purple-200/50 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 transform hover:-translate-y-2 animate-fade-in-up overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-pink-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
-            <div className="flex items-center justify-between mb-2 relative z-10">
-              <div className="p-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg shadow-purple-500/30 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                <MessageSquare className="w-6 h-6 text-white" />
-              </div>
+          {/* Total Conversations Card */}
+          <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 animate-fade-in-up">
+            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-b from-pink-500 to-purple-600 mb-4 shadow-lg">
+              <MessageSquare className="w-8 h-8 text-white" />
             </div>
-            <p className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{analytics?.total_conversations?.toLocaleString() || 0}</p>
-            <p className="text-gray-600 text-sm mt-2 font-medium">Total Conversations</p>
+            <p className="text-5xl font-bold text-purple-600 mb-2">{analytics?.total_conversations?.toLocaleString() || 0}</p>
+            <p className="text-gray-600 text-base font-medium">Total Conversations</p>
           </div>
           
-          <div className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-blue-200/50 hover:border-blue-400 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 transform hover:-translate-y-2 animate-fade-in-up animation-delay-300 overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-cyan-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
-            <div className="flex items-center justify-between mb-2 relative z-10">
-              <div className="p-3 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl shadow-lg shadow-blue-500/30 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                <Activity className="w-6 h-6 text-white" />
-              </div>
+          {/* Total Messages Card */}
+          <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 animate-fade-in-up animation-delay-100">
+            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-b from-cyan-400 to-blue-500 mb-4 shadow-lg">
+              <Activity className="w-8 h-8 text-white" />
             </div>
-            <p className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">{analytics?.total_messages?.toLocaleString() || 0}</p>
-            <p className="text-gray-600 text-sm mt-2 font-medium">Total Messages</p>
+            <p className="text-5xl font-bold text-cyan-500 mb-2">{analytics?.total_messages?.toLocaleString() || 0}</p>
+            <p className="text-gray-600 text-base font-medium">Total Messages</p>
           </div>
           
-          <div className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-green-200/50 hover:border-green-400 hover:shadow-2xl hover:shadow-green-500/20 transition-all duration-500 transform hover:-translate-y-2 animate-fade-in-up animation-delay-500 overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-green-600 to-emerald-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
-            <div className="flex items-center justify-between mb-2 relative z-10">
-              <div className="p-3 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl shadow-lg shadow-green-500/30 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                <TrendingUp className="w-6 h-6 text-white" />
-              </div>
+          {/* Active Chatbots Card */}
+          <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 animate-fade-in-up animation-delay-200">
+            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-b from-red-400 to-pink-500 mb-4 shadow-lg">
+              <TrendingUp className="w-8 h-8 text-white" />
             </div>
-            <p className="text-4xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">{analytics?.active_chatbots || 0}</p>
-            <p className="text-gray-600 text-sm mt-2 font-medium">Active Chatbots</p>
+            <p className="text-5xl font-bold text-pink-500 mb-2">{analytics?.active_chatbots || 0}</p>
+            <p className="text-gray-600 text-base font-medium">Active Chatbots</p>
           </div>
           
-          <div className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-orange-200/50 hover:border-orange-400 hover:shadow-2xl hover:shadow-orange-500/20 transition-all duration-500 transform hover:-translate-y-2 animate-fade-in-up animation-delay-700 overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-600 to-pink-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
-            <div className="flex items-center justify-between mb-2 relative z-10">
-              <div className="p-3 bg-gradient-to-br from-orange-500 to-pink-600 rounded-xl shadow-lg shadow-orange-500/30 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                <BarChart3 className="w-6 h-6 text-white" />
-              </div>
+          {/* Total Chatbots Card */}
+          <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 animate-fade-in-up animation-delay-300">
+            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-purple-600 mb-4 shadow-lg">
+              <BarChart3 className="w-8 h-8 text-white" />
             </div>
-            <p className="text-4xl font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent">{analytics?.total_chatbots || 0}</p>
-            <p className="text-gray-600 text-sm mt-2 font-medium">Total Chatbots</p>
+            <p className="text-5xl font-bold text-purple-600 mb-2">{analytics?.total_chatbots || 0}</p>
+            <p className="text-gray-600 text-base font-medium">Total Chatbots</p>
           </div>
         </div>
 
