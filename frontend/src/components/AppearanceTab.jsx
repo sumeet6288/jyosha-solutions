@@ -30,7 +30,7 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
     setSaving(true);
     try {
       await chatbotAPI.update(chatbot.id, customization);
-      toast.success('Appearance updated successfully!');
+      toast.success('Appearance updated successfully! Open the live preview to see changes.');
       if (onUpdate) {
         await onUpdate();
       }
@@ -40,6 +40,12 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleViewLivePreview = () => {
+    // Add timestamp to force reload and bypass cache
+    const previewUrl = `/public-chat/${chatbot.id}?t=${Date.now()}`;
+    window.open(previewUrl, '_blank');
   };
 
   return (
