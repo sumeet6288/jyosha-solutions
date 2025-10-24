@@ -222,21 +222,21 @@ const SubscriptionNew = () => {
           </p>
         </div>
 
-        {/* Current Subscription Status */}
+        {/* Current Subscription Status - Reduced to 80% */}
         {subscriptionStatus?.has_subscription && (
-          <div className="mb-8 p-6 bg-white rounded-xl shadow-lg border-2 border-purple-200">
-            <div className="flex items-center gap-3 mb-2">
-              <Crown className="w-6 h-6 text-purple-600" />
-              <h2 className="text-xl font-bold text-gray-900">Current Subscription</h2>
+          <div className="mb-6 p-4 bg-white rounded-lg shadow-md border border-purple-200">
+            <div className="flex items-center gap-2 mb-1.5">
+              <Crown className="w-5 h-5 text-purple-600" />
+              <h2 className="text-lg font-bold text-gray-900">Current Subscription</h2>
             </div>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-700">
+                <p className="text-gray-700 text-sm">
                   <span className="font-semibold">Plan:</span> {subscriptionStatus.plan}
                 </p>
-                <p className="text-gray-700">
+                <p className="text-gray-700 text-sm">
                   <span className="font-semibold">Status:</span>{' '}
-                  <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                  <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium ${
                     subscriptionStatus.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                   }`}>
                     {subscriptionStatus.status}
@@ -245,8 +245,8 @@ const SubscriptionNew = () => {
               </div>
               {subscriptionStatus.renews_at && (
                 <div className="text-right">
-                  <p className="text-sm text-gray-500">Renews on</p>
-                  <p className="font-semibold text-gray-700">
+                  <p className="text-xs text-gray-500">Renews on</p>
+                  <p className="font-semibold text-gray-700 text-sm">
                     {new Date(subscriptionStatus.renews_at).toLocaleDateString()}
                   </p>
                 </div>
