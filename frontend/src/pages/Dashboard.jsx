@@ -139,54 +139,54 @@ const Dashboard = () => {
           <p className="text-lg text-gray-600">Here's what's happening with your AI chatbots today</p>
         </div>
 
-        {/* Stats Cards - Matching uploaded UI design */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
+        {/* Stats Cards - Matching uploaded UI design - Reduced to 80% */}
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
           {/* Create Agent Card - FIRST POSITION */}
           <div 
             onClick={handleCreateChatbot}
-            className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-dashed border-purple-300 hover:border-purple-500 animate-fade-in-up cursor-pointer group"
+            className="bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 border-2 border-dashed border-purple-300 hover:border-purple-500 animate-fade-in-up cursor-pointer group"
           >
-            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-b from-green-400 to-emerald-600 mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
-              <Plus className="w-8 h-8 text-white" />
+            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-b from-green-400 to-emerald-600 mb-3 shadow-md group-hover:scale-110 transition-transform duration-300">
+              <Plus className="w-6 h-6 text-white" />
             </div>
-            <p className="text-3xl font-bold text-green-600 mb-2 group-hover:scale-105 transition-transform duration-300">Create</p>
-            <p className="text-gray-600 text-base font-medium">New Agent</p>
+            <p className="text-2xl font-bold text-green-600 mb-1 group-hover:scale-105 transition-transform duration-300">Create</p>
+            <p className="text-gray-600 text-sm font-medium">New Agent</p>
           </div>
 
           {/* Total Conversations Card */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 animate-fade-in-up animation-delay-100">
-            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-b from-pink-500 to-purple-600 mb-4 shadow-lg">
-              <MessageSquare className="w-8 h-8 text-white" />
+          <div className="bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 animate-fade-in-up animation-delay-100">
+            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-b from-pink-500 to-purple-600 mb-3 shadow-md">
+              <MessageSquare className="w-6 h-6 text-white" />
             </div>
-            <p className="text-5xl font-bold text-purple-600 mb-2">{analytics?.total_conversations?.toLocaleString() || 0}</p>
-            <p className="text-gray-600 text-base font-medium">Total Conversations</p>
+            <p className="text-4xl font-bold text-purple-600 mb-1">{analytics?.total_conversations?.toLocaleString() || 0}</p>
+            <p className="text-gray-600 text-sm font-medium">Total Conversations</p>
           </div>
           
           {/* Total Messages Card */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 animate-fade-in-up animation-delay-200">
-            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-b from-cyan-400 to-blue-500 mb-4 shadow-lg">
-              <Activity className="w-8 h-8 text-white" />
+          <div className="bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 animate-fade-in-up animation-delay-200">
+            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-b from-cyan-400 to-blue-500 mb-3 shadow-md">
+              <Activity className="w-6 h-6 text-white" />
             </div>
-            <p className="text-5xl font-bold text-cyan-500 mb-2">{analytics?.total_messages?.toLocaleString() || 0}</p>
-            <p className="text-gray-600 text-base font-medium">Total Messages</p>
+            <p className="text-4xl font-bold text-cyan-500 mb-1">{analytics?.total_messages?.toLocaleString() || 0}</p>
+            <p className="text-gray-600 text-sm font-medium">Total Messages</p>
           </div>
           
           {/* Active Chatbots Card */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 animate-fade-in-up animation-delay-300">
-            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-b from-red-400 to-pink-500 mb-4 shadow-lg">
-              <TrendingUp className="w-8 h-8 text-white" />
+          <div className="bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 animate-fade-in-up animation-delay-300">
+            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-b from-red-400 to-pink-500 mb-3 shadow-md">
+              <TrendingUp className="w-6 h-6 text-white" />
             </div>
-            <p className="text-5xl font-bold text-pink-500 mb-2">{analytics?.active_chatbots || 0}</p>
-            <p className="text-gray-600 text-base font-medium">Active Chatbots</p>
+            <p className="text-4xl font-bold text-pink-500 mb-1">{analytics?.active_chatbots || 0}</p>
+            <p className="text-gray-600 text-sm font-medium">Active Chatbots</p>
           </div>
           
           {/* Total Chatbots Card */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 animate-fade-in-up animation-delay-400">
-            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-purple-600 mb-4 shadow-lg">
-              <BarChart3 className="w-8 h-8 text-white" />
+          <div className="bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 animate-fade-in-up animation-delay-400">
+            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-purple-600 mb-3 shadow-md">
+              <BarChart3 className="w-6 h-6 text-white" />
             </div>
-            <p className="text-5xl font-bold text-purple-600 mb-2">{analytics?.total_chatbots || 0}</p>
-            <p className="text-gray-600 text-base font-medium">Total Chatbots</p>
+            <p className="text-4xl font-bold text-purple-600 mb-1">{analytics?.total_chatbots || 0}</p>
+            <p className="text-gray-600 text-sm font-medium">Total Chatbots</p>
           </div>
         </div>
 
