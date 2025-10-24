@@ -208,16 +208,16 @@ const SubscriptionNew = () => {
           </div>
         )}
 
-        {/* Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full text-white font-medium mb-3 sm:mb-4 shadow-lg text-xs sm:text-sm">
-            <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
+        {/* Header - Reduced to 80% */}
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full text-white font-medium mb-2 sm:mb-3 shadow-md text-[10px] sm:text-xs">
+            <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
             <span>Simple, Transparent Pricing</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent px-4">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent px-4">
             Choose Your Perfect Plan
           </h1>
-          <p className="text-gray-600 text-sm sm:text-lg md:text-xl max-w-2xl mx-auto px-4">
+          <p className="text-gray-600 text-xs sm:text-base md:text-lg max-w-2xl mx-auto px-4">
             Start free and scale as you grow. No hidden fees, cancel anytime.
           </p>
         </div>
