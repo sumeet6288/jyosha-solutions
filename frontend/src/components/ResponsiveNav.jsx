@@ -19,14 +19,16 @@ const ResponsiveNav = ({ user, onLogout }) => {
 
   return (
     <nav className="bg-white/80 backdrop-blur-lg border-b border-gray-200/50 sticky top-0 z-50 shadow-sm">
-      <div className="px-4 sm:px-8 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2 cursor-pointer group" onClick={() => navigate('/dashboard')}>
-          <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-purple-500/30">
-            <span className="text-white font-bold text-lg">B</span>
+      <div className="px-4 sm:px-6 py-4 flex items-center justify-between max-w-7xl mx-auto">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 cursor-pointer group" onClick={() => navigate('/dashboard')}>
+            <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-purple-500/30">
+              <span className="text-white font-bold text-lg">B</span>
+            </div>
+            <span className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">
+              BotSmith
+            </span>
           </div>
-          <span className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">
-            BotSmith
-          </span>
         </div>
 
         {/* Desktop Navigation */}
