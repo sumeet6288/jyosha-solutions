@@ -319,18 +319,18 @@ const Dashboard = () => {
           </div>
         )}
 
-        {/* Your Chatbots Section - Matching uploaded UI design */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 animate-fade-in-up">
-          <div className="flex items-center justify-between mb-6">
+        {/* Your Chatbots Section - Reduced to 80% */}
+        <div className="bg-white rounded-xl p-4 shadow-md border border-gray-100 animate-fade-in-up">
+          <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-1">Your Chatbots</h2>
-              <p className="text-sm text-gray-600">Manage and monitor your AI agents</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-0.5">Your Chatbots</h2>
+              <p className="text-xs text-gray-600">Manage and monitor your AI agents</p>
             </div>
             <Button 
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-2 rounded-xl font-semibold shadow-lg flex items-center gap-2"
+              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-4 py-1.5 rounded-lg font-semibold shadow-md flex items-center gap-1.5 text-sm"
               onClick={handleCreateChatbot}
             >
-              <Plus className="w-5 h-5" />
+              <Plus className="w-4 h-4" />
               Create New
             </Button>
           </div>
