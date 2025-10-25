@@ -247,7 +247,12 @@ const Dashboard = () => {
                   <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center">
                     <MessageSquare className="w-4 h-4 text-white" />
                   </div>
-                  <p className="text-xs font-semibold text-gray-700">Chatbots</p>
+                  <div className="flex-1 flex items-center justify-between">
+                    <p className="text-xs font-semibold text-gray-700">Chatbots</p>
+                    {usageStats.usage?.chatbots?.is_custom && (
+                      <span className="text-[9px] bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded-full font-semibold">CUSTOM</span>
+                    )}
+                  </div>
                 </div>
                 <p className="text-2xl font-bold text-gray-900 mb-1.5">
                   {usageStats.usage?.chatbots?.current}/{usageStats.usage?.chatbots?.limit}
@@ -257,6 +262,7 @@ const Dashboard = () => {
                     className={`h-1.5 rounded-full transition-all duration-500 ${
                       usageStats.usage?.chatbots?.percentage >= 90 ? 'bg-red-500' : 
                       usageStats.usage?.chatbots?.percentage >= 75 ? 'bg-orange-500' : 
+                      usageStats.usage?.chatbots?.is_custom ? 'bg-yellow-500' :
                       'bg-gray-300'
                     }`}
                     style={{ width: `${Math.min(usageStats.usage?.chatbots?.percentage || 0, 100)}%` }}
@@ -271,14 +277,21 @@ const Dashboard = () => {
                   <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center">
                     <Activity className="w-4 h-4 text-white" />
                   </div>
-                  <p className="text-xs font-semibold text-gray-700">Messages</p>
+                  <div className="flex-1 flex items-center justify-between">
+                    <p className="text-xs font-semibold text-gray-700">Messages</p>
+                    {usageStats.usage?.messages?.is_custom && (
+                      <span className="text-[9px] bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded-full font-semibold">CUSTOM</span>
+                    )}
+                  </div>
                 </div>
                 <p className="text-2xl font-bold text-gray-900 mb-1.5">
                   {usageStats.usage?.messages?.current}/{usageStats.usage?.messages?.limit === 999999 || usageStats.usage?.messages?.limit === 999999999 ? '∞' : usageStats.usage?.messages?.limit?.toLocaleString()}
                 </p>
                 <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden mb-1">
                   <div 
-                    className="h-1.5 rounded-full bg-gray-300 transition-all duration-500"
+                    className={`h-1.5 rounded-full transition-all duration-500 ${
+                      usageStats.usage?.messages?.is_custom ? 'bg-yellow-500' : 'bg-gray-300'
+                    }`}
                     style={{ width: `${Math.min(usageStats.usage?.messages?.percentage || 0, 100)}%` }}
                   />
                 </div>
@@ -291,14 +304,21 @@ const Dashboard = () => {
                   <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-400 to-pink-500 flex items-center justify-center">
                     <FileText className="w-4 h-4 text-white" />
                   </div>
-                  <p className="text-xs font-semibold text-gray-700">Files</p>
+                  <div className="flex-1 flex items-center justify-between">
+                    <p className="text-xs font-semibold text-gray-700">Files</p>
+                    {usageStats.usage?.file_uploads?.is_custom && (
+                      <span className="text-[9px] bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded-full font-semibold">CUSTOM</span>
+                    )}
+                  </div>
                 </div>
                 <p className="text-2xl font-bold text-gray-900 mb-1.5">
                   {usageStats.usage?.file_uploads?.current}/{usageStats.usage?.file_uploads?.limit}
                 </p>
                 <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden mb-1">
                   <div 
-                    className="h-1.5 rounded-full bg-gray-300 transition-all duration-500"
+                    className={`h-1.5 rounded-full transition-all duration-500 ${
+                      usageStats.usage?.file_uploads?.is_custom ? 'bg-yellow-500' : 'bg-gray-300'
+                    }`}
                     style={{ width: `${Math.min(usageStats.usage?.file_uploads?.percentage || 0, 100)}%` }}
                   />
                 </div>
