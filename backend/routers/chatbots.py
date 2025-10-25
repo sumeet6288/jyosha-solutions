@@ -160,6 +160,46 @@ async def update_chatbot(
         )
 
 
+@router.patch("/{chatbot_id}/toggle", response_model=ChatbotResponse)
+async def toggle_chatbot(
+    chatbot_id: str,
+    current_user: User = Depends(get_mock_user)
+):
+    """Toggle chatbot active/inactive status"""
+    try:
+        # Check if chatbot exists and belongs to user
+        chatbot = await db_instance.chatbots.find_one({
+            "id": chatbot_id,
+            "user_id": current_user.id
+        })
+        
+        if not chatbot:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Chatbot not found"
+            )
+        
+        # Toggle status
+        new_status = "inactive" if chatbot.get("status") == "active" else "active"
+        
+        await db_instance.chatbots.update_one(
+            {"id": chatbot_id},
+            {"$set": {"status": new_status, "updated_at": datetime.now(timezone.utc)}}
+        )
+        
+        # Fetch updated chatbot
+        updated_chatbot = await db_instance.chatbots.find_one({"id": chatbot_id})
+        return ChatbotResponse(**updated_chatbot)
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error toggling chatbot: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to toggle chatbot"
+        )
+
+
 @router.delete("/{chatbot_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_chatbot(
     chatbot_id: str,
