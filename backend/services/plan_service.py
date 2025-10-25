@@ -308,6 +308,19 @@ class PlanService:
         usage = subscription.get("usage", {})
         limits = plan["limits"]
         
+        # Check if user has custom limits and override plan limits
+        users_collection = self.db.users
+        user_doc = await users_collection.find_one({"id": user_id})
+        
+        if user_doc:
+            # Override with custom limits if they exist
+            if user_doc.get("custom_max_chatbots") is not None:
+                limits["max_chatbots"] = user_doc["custom_max_chatbots"]
+            if user_doc.get("custom_max_messages") is not None:
+                limits["max_messages_per_month"] = user_doc["custom_max_messages"]
+            if user_doc.get("custom_max_file_uploads") is not None:
+                limits["max_file_uploads"] = user_doc["custom_max_file_uploads"]
+        
         return {
             "plan": {
                 "id": plan["id"],
@@ -318,17 +331,20 @@ class PlanService:
                 "chatbots": {
                     "current": usage.get("chatbots_count", 0),
                     "limit": limits["max_chatbots"],
-                    "percentage": round((usage.get("chatbots_count", 0) / limits["max_chatbots"]) * 100, 1) if limits["max_chatbots"] < 999999 else 0
+                    "percentage": round((usage.get("chatbots_count", 0) / limits["max_chatbots"]) * 100, 1) if limits["max_chatbots"] < 999999 else 0,
+                    "is_custom": user_doc.get("custom_max_chatbots") is not None if user_doc else False
                 },
                 "messages": {
                     "current": usage.get("messages_this_month", 0),
                     "limit": limits["max_messages_per_month"],
-                    "percentage": round((usage.get("messages_this_month", 0) / limits["max_messages_per_month"]) * 100, 1) if limits["max_messages_per_month"] < 999999 else 0
+                    "percentage": round((usage.get("messages_this_month", 0) / limits["max_messages_per_month"]) * 100, 1) if limits["max_messages_per_month"] < 999999 else 0,
+                    "is_custom": user_doc.get("custom_max_messages") is not None if user_doc else False
                 },
                 "file_uploads": {
                     "current": usage.get("file_uploads_count", 0),
                     "limit": limits["max_file_uploads"],
-                    "percentage": round((usage.get("file_uploads_count", 0) / limits["max_file_uploads"]) * 100, 1) if limits["max_file_uploads"] < 999999 else 0
+                    "percentage": round((usage.get("file_uploads_count", 0) / limits["max_file_uploads"]) * 100, 1) if limits["max_file_uploads"] < 999999 else 0,
+                    "is_custom": user_doc.get("custom_max_file_uploads") is not None if user_doc else False
                 },
                 "website_sources": {
                     "current": usage.get("website_sources_count", 0),
