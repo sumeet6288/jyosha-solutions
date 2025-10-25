@@ -1,7 +1,14 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from typing import Dict, Any
+from typing import Dict, Any, List, Optional
 from datetime import datetime, timedelta
+from pydantic import BaseModel
+import json
+import csv
+import io
+from fastapi.responses import StreamingResponse
+import psutil
+import os
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 db_instance = None
@@ -10,6 +17,27 @@ def init_router(db: AsyncIOMotorDatabase):
     """Initialize router with database instance"""
     global db_instance
     db_instance = db
+
+# Pydantic models
+class UserUpdate(BaseModel):
+    plan: Optional[str] = None
+    max_chatbots: Optional[int] = None
+    max_messages: Optional[int] = None
+    status: Optional[str] = None
+
+class ChatbotUpdate(BaseModel):
+    enabled: Optional[bool] = None
+    status: Optional[str] = None
+
+class BulkOperation(BaseModel):
+    ids: List[str]
+    operation: str  # 'delete', 'enable', 'disable', 'export'
+
+class AIProviderConfig(BaseModel):
+    provider: str
+    api_key: Optional[str] = None
+    enabled: bool = True
+    rate_limit: Optional[int] = None
 
 
 @router.get("/stats")
