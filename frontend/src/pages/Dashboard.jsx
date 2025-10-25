@@ -97,6 +97,33 @@ const Dashboard = () => {
     }
   };
 
+  const handleToggleChatbot = async (e, botId, currentStatus) => {
+    e.stopPropagation();
+    
+    try {
+      const response = await chatbotAPI.toggle(botId);
+      
+      // Update the chatbot in the state
+      setChatbots(prevChatbots => 
+        prevChatbots.map(bot => 
+          bot.id === botId ? { ...bot, status: response.data.status } : bot
+        )
+      );
+      
+      toast({
+        title: 'Success',
+        description: `Chatbot ${response.data.status === 'active' ? 'activated' : 'deactivated'} successfully`
+      });
+    } catch (error) {
+      console.error('Error toggling chatbot:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to toggle chatbot status',
+        variant: 'destructive'
+      });
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50 flex items-center justify-center">
