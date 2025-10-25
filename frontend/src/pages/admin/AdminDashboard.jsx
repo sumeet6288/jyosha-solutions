@@ -12,6 +12,7 @@ import RevenueDashboard from '../../components/admin/RevenueDashboard';
 import AdvancedAnalytics from '../../components/admin/AdvancedAnalytics';
 import SystemSettings from '../../components/admin/SystemSettings';
 import ActivityLogs from '../../components/admin/ActivityLogs';
+import ContactSalesManagement from '../../components/admin/ContactSalesManagement';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
