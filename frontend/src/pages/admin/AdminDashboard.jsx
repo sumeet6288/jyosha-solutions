@@ -244,6 +244,10 @@ const AdminDashboard = () => {
             </div>
           </TabsContent>
 
+          <TabsContent value="revenue">
+            <RevenueDashboard backendUrl={backendUrl} />
+          </TabsContent>
+
           <TabsContent value="users">
             <UsersManagement backendUrl={backendUrl} />
           </TabsContent>
@@ -319,6 +323,14 @@ const AdminDashboard = () => {
             <SystemMonitoring backendUrl={backendUrl} />
           </TabsContent>
 
+          <TabsContent value="analytics">
+            <AdvancedAnalytics backendUrl={backendUrl} />
+          </TabsContent>
+
+          <TabsContent value="logs">
+            <ActivityLogs backendUrl={backendUrl} />
+          </TabsContent>
+
           <TabsContent value="moderation">
             <div className="bg-white rounded-xl border border-gray-200 p-8">
               <h2 className="text-2xl font-bold mb-6">Content Moderation</h2>
@@ -368,15 +380,8 @@ const AdminDashboard = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="analytics">
-            <div className="bg-white rounded-xl border border-gray-200 p-8">
-              <h2 className="text-2xl font-bold mb-6">System Analytics</h2>
-              <div className="text-center py-12 text-gray-500">
-                <BarChart3 className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                <p>Advanced analytics dashboard</p>
-                <p className="text-sm mt-2">Charts and insights will be displayed here</p>
-              </div>
-            </div>
+          <TabsContent value="settings">
+            <SystemSettings backendUrl={backendUrl} />
           </TabsContent>
         </Tabs>
       </div>
