@@ -37,6 +37,10 @@ async def register(user_data: UserCreate):
     user_doc = user.model_dump()
     user_doc['created_at'] = user_doc['created_at'].isoformat()
     user_doc['updated_at'] = user_doc['updated_at'].isoformat()
+    if user_doc.get('last_login'):
+        user_doc['last_login'] = user_doc['last_login'].isoformat()
+    if user_doc.get('suspension_until'):
+        user_doc['suspension_until'] = user_doc['suspension_until'].isoformat()
     
     await users_collection.insert_one(user_doc)
     
@@ -44,7 +48,12 @@ async def register(user_data: UserCreate):
         id=user.id,
         name=user.name,
         email=user.email,
-        created_at=user.created_at
+        created_at=user.created_at,
+        role=user.role,
+        status=user.status,
+        phone=user.phone,
+        avatar_url=user.avatar_url,
+        last_login=user.last_login
     )
 
 
