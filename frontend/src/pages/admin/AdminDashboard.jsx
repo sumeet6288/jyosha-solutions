@@ -17,7 +17,10 @@ const AdminDashboard = () => {
     totalMessages: 0,
     activeIntegrations: 0
   });
+  const [sources, setSources] = useState([]);
+  const [flaggedContent, setFlaggedContent] = useState([]);
   const [loading, setLoading] = useState(true);
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
 
   useEffect(() => {
     // For demo purposes, set a default admin user
@@ -28,12 +31,13 @@ const AdminDashboard = () => {
 
     // Fetch real stats from backend
     fetchAdminStats();
+    fetchSources();
+    fetchFlaggedContent();
   }, [navigate]);
 
   const fetchAdminStats = async () => {
     try {
       setLoading(true);
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
       const response = await fetch(`${backendUrl}/api/admin/stats`);
       const data = await response.json();
       setStats(data);
@@ -41,6 +45,46 @@ const AdminDashboard = () => {
       console.error('Error fetching admin stats:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchSources = async () => {
+    try {
+      const response = await fetch(`${backendUrl}/api/admin/sources`);
+      const data = await response.json();
+      setSources(data.sources || []);
+    } catch (error) {
+      console.error('Error fetching sources:', error);
+    }
+  };
+
+  const fetchFlaggedContent = async () => {
+    try {
+      const response = await fetch(`${backendUrl}/api/admin/moderation/flagged`);
+      const data = await response.json();
+      setFlaggedContent(data.flagged_conversations || []);
+    } catch (error) {
+      console.error('Error fetching flagged content:', error);
+    }
+  };
+
+  const deleteSource = async (sourceId) => {
+    if (!window.confirm('Are you sure you want to delete this source?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${backendUrl}/api/admin/sources/${sourceId}`, {
+        method: 'DELETE'
+      });
+      const data = await response.json();
+      if (data.success) {
+        alert('Source deleted successfully');
+        fetchSources();
+      }
+    } catch (error) {
+      console.error('Error deleting source:', error);
+      alert('Failed to delete source');
     }
   };
 
