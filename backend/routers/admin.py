@@ -39,6 +39,34 @@ class AIProviderConfig(BaseModel):
     enabled: bool = True
     rate_limit: Optional[int] = None
 
+class UserEditData(BaseModel):
+    email: Optional[str] = None
+    name: Optional[str] = None
+    plan: Optional[str] = None
+    max_chatbots: Optional[int] = None
+    max_messages: Optional[int] = None
+    max_file_uploads: Optional[int] = None
+    max_website_sources: Optional[int] = None
+    max_text_sources: Optional[int] = None
+    status: Optional[str] = None
+
+class SystemSettings(BaseModel):
+    maintenance_mode: Optional[bool] = None
+    allow_registrations: Optional[bool] = None
+    default_plan: Optional[str] = None
+    max_chatbots_per_user: Optional[int] = None
+
+class EmailTemplate(BaseModel):
+    name: str
+    subject: str
+    body: str
+    variables: Optional[List[str]] = None
+
+class BulkEmail(BaseModel):
+    subject: str
+    body: str
+    recipient_filter: Optional[str] = None  # 'all', 'free', 'paid'
+
 
 @router.get("/stats")
 async def get_admin_stats() -> Dict[str, Any]:
