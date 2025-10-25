@@ -60,6 +60,7 @@ export const chatbotAPI = {
   get: (id) => api.get(`/chatbots/${id}`),
   update: (id, data) => api.put(`/chatbots/${id}`, data),
   delete: (id) => api.delete(`/chatbots/${id}`),
+  toggle: (id) => api.patch(`/chatbots/${id}/toggle`),
 };
 
 // Source APIs
