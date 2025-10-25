@@ -17,13 +17,38 @@ const Enterprise = () => {
     message: ''
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    toast({
-      title: 'Request Submitted!',
-      description: 'Our team will contact you within 24 hours'
-    });
-    setFormData({ name: '', email: '', company: '', message: '' });
+    
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+      const response = await fetch(`${backendUrl}/api/public/contact-sales`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: 'Request Submitted!',
+          description: data.message || 'Our team will contact you within 24 hours'
+        });
+        setFormData({ name: '', email: '', company: '', message: '' });
+      } else {
+        throw new Error(data.detail || 'Failed to submit form');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to submit form. Please try again later.',
+        variant: 'destructive'
+      });
+    }
   };
 
   const features = [
