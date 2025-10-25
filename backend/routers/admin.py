@@ -1009,7 +1009,7 @@ async def update_system_settings(settings: SystemSettings):
 
 # ==================== ACTIVITY LOGS ====================
 @router.get("/logs/activity")
-async def get_activity_logs(
+async def get_detailed_activity_logs(
     limit: int = 100,
     action: Optional[str] = None,
     user_id: Optional[str] = None
