@@ -29,13 +29,9 @@ export const AuthProvider = ({ children }) => {
 
   const fetchCurrentUser = async () => {
     try {
-      // Try to fetch real user data from API
+      // Try to fetch real user data from API using mock endpoint
       const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
-      const response = await fetch(`${backendUrl}/api/auth/me`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('botsmith_token')}`
-        }
-      });
+      const response = await fetch(`${backendUrl}/api/auth/me/mock`);
       
       if (response.ok) {
         const userData = await response.json();
@@ -43,12 +39,12 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('botsmith_user', JSON.stringify(userData));
         return userData;
       } else {
-        // If API call fails, return mock user
+        // If API call fails, return current user
         return user;
       }
     } catch (error) {
       console.error('Error fetching user:', error);
-      // Return mock user if API fails
+      // Return current user if API fails
       return user;
     }
   };
