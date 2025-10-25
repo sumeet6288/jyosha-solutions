@@ -159,13 +159,16 @@ const AdminDashboard = () => {
         <Tabs defaultValue="overview" className="w-full">
           <TabsList className="mb-6 flex-wrap">
             <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="revenue">Revenue</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
             <TabsTrigger value="chatbots">Chatbots</TabsTrigger>
             <TabsTrigger value="conversations">Conversations</TabsTrigger>
             <TabsTrigger value="sources">Sources</TabsTrigger>
             <TabsTrigger value="monitoring">Monitoring</TabsTrigger>
-            <TabsTrigger value="moderation">Moderation</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="logs">Activity Logs</TabsTrigger>
+            <TabsTrigger value="moderation">Moderation</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
