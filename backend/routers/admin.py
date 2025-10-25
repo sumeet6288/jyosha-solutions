@@ -1023,7 +1023,6 @@ async def get_detailed_activity_logs(
         logs = []
         
         chatbots_collection = db_instance['chatbots']
-        conversations_collection = db_instance['conversations']
         sources_collection = db_instance['sources']
         
         # Get chatbot activities
