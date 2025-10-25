@@ -9,6 +9,7 @@ import io
 from fastapi.responses import StreamingResponse
 import psutil
 import os
+from uuid import uuid4
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 db_instance = None
