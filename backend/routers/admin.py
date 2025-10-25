@@ -1305,7 +1305,8 @@ async def get_system_health():
                     "storageSize": stats.get('storageSize', 0),
                     "indexes": stats.get('indexes', 0)
                 }
-            except:
+            except Exception as e:
+                print(f"Error fetching DB stats: {str(e)}")
                 db_stats = {"error": "Unable to fetch DB stats"}
         
         return {
