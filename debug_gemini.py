@@ -8,7 +8,7 @@ import json
 import uuid
 
 def test_gemini_response():
-    base_url = "https://deps-preview.preview.emergentagent.com"
+    base_url = "https://depend-setup-view.preview.emergentagent.com"
     
     # Create a test user and get auth token
     test_user_email = f"geminitest_{uuid.uuid4().hex[:8]}@example.com"
