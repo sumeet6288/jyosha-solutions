@@ -1214,7 +1214,6 @@ async def clone_chatbot(chatbot_id: str, new_name: str, target_user_id: str):
             raise HTTPException(status_code=404, detail="Chatbot not found")
         
         # Create clone
-        from uuid import uuid4
         clone = original.copy()
         clone['id'] = str(uuid4())
         clone['name'] = new_name
@@ -1229,39 +1228,6 @@ async def clone_chatbot(chatbot_id: str, new_name: str, target_user_id: str):
             "message": "Chatbot cloned successfully",
             "clone_id": clone['id']
         }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-        if format == "csv":
-            # Create CSV
-            output = io.StringIO()
-            if export_data:
-                fieldnames = ['conversation_id', 'chatbot_id', 'user_name', 'user_email', 'status', 'created_at', 'message_count']
-                writer = csv.DictWriter(output, fieldnames=fieldnames)
-                writer.writeheader()
-                for conv in export_data:
-                    writer.writerow({
-                        'conversation_id': conv['conversation_id'],
-                        'chatbot_id': conv['chatbot_id'],
-                        'user_name': conv['user_name'],
-                        'user_email': conv['user_email'],
-                        'status': conv['status'],
-                        'created_at': conv['created_at'],
-                        'message_count': len(conv['messages'])
-                    })
-            
-            output.seek(0)
-            return StreamingResponse(
-                iter([output.getvalue()]),
-                media_type="text/csv",
-                headers={"Content-Disposition": f"attachment; filename=conversations_{datetime.now().strftime('%Y%m%d')}.csv"}
-            )
-        else:
-            # Return JSON
-            return {
-                "conversations": export_data,
-                "total": len(export_data),
-                "exported_at": datetime.now().isoformat()
-            }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
