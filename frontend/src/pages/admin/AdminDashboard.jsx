@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
-import { Users, Bot, BarChart3, Settings, Activity, Database, Shield, LogOut } from 'lucide-react';
+import { Users, Bot, BarChart3, Settings, Activity, Database, Shield, LogOut, MessageSquare, FileText, AlertTriangle, HardDrive } from 'lucide-react';
+import UsersManagement from '../../components/admin/UsersManagement';
+import ChatbotsManagement from '../../components/admin/ChatbotsManagement';
+import ConversationsManagement from '../../components/admin/ConversationsManagement';
+import SystemMonitoring from '../../components/admin/SystemMonitoring';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
