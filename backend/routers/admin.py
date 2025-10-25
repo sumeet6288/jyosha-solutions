@@ -1296,7 +1296,7 @@ async def get_system_health():
         
         # Database stats
         db_stats = {}
-        if db_instance:
+        if db_instance is not None:
             try:
                 stats = await db_instance.command("dbStats")
                 db_stats = {
