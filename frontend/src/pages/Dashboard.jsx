@@ -395,7 +395,9 @@ const Dashboard = () => {
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
                           <h3 className="text-lg font-bold text-gray-900">{bot.name}</h3>
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-500 text-white">
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+                            bot.status === 'active' ? 'bg-green-500 text-white' : 'bg-gray-400 text-white'
+                          }`}>
                             {bot.status}
                           </span>
                           <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-100 text-purple-700">
@@ -427,17 +429,35 @@ const Dashboard = () => {
                       </div>
                     </div>
                     
-                    <Button 
-                      variant="outline" 
-                      onClick={(e) => { e.stopPropagation(); navigate(`/chatbot/${bot.id}`); }}
-                      className="border border-gray-300 hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all duration-300 flex items-center gap-1.5 text-xs px-3 py-1.5"
-                    >
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      Manage
-                    </Button>
+                    <div className="flex items-center gap-2">
+                      {/* Toggle Switch */}
+                      <button
+                        onClick={(e) => handleToggleChatbot(e, bot.id, bot.status)}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 ${
+                          bot.status === 'active' ? 'bg-green-500' : 'bg-gray-300'
+                        }`}
+                        role="switch"
+                        aria-checked={bot.status === 'active'}
+                      >
+                        <span
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                            bot.status === 'active' ? 'translate-x-6' : 'translate-x-1'
+                          }`}
+                        />
+                      </button>
+                      
+                      <Button 
+                        variant="outline" 
+                        onClick={(e) => { e.stopPropagation(); navigate(`/chatbot/${bot.id}`); }}
+                        className="border border-gray-300 hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all duration-300 flex items-center gap-1.5 text-xs px-3 py-1.5"
+                      >
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Manage
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ))}
