@@ -222,6 +222,30 @@ backend:
         agent: "main"
         comment: "Added 2 new powerful graphs to Insights tab: 1) Response Time Trend (LineChart) - tracks chatbot performance over selected period (7/30/90 days), shows avg response time in seconds with date axis. 2) Hourly Activity Distribution (BarChart) - shows message distribution across 24 hours, identifies peak hours, uses green bars for active hours. Backend APIs: GET /api/analytics/response-time-trend/{chatbot_id} and GET /api/analytics/hourly-activity/{chatbot_id}. Insights tab now has 5 total graphs providing comprehensive analytics."
 
+  - task: "Admin User Management System - Complete CRUD"
+    implemented: true
+    working: true
+    file: "/app/backend/routers/admin_users.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented comprehensive admin user management system with 14 API endpoints: GET /enhanced (list users with stats), GET /{user_id}/details, PUT /{user_id}/update (full profile update), DELETE /{user_id} (delete user and all data), POST /{user_id}/reset-password, GET /{user_id}/activity (activity logs), GET /{user_id}/login-history, GET /{user_id}/stats (comprehensive statistics), POST /bulk-operation (bulk delete/role/status changes/export), GET /{user_id}/notes, POST /{user_id}/notes. Updated User model with 20+ new fields including role (user/moderator/admin), status (active/suspended/banned), profile info (phone, address, bio, company, job title), custom limits, activity tracking (last_login, login_count, last_ip), tags, admin_notes. Created LoginHistory and ActivityLog models for tracking. All endpoints support filtering, sorting, pagination."
+
+  - task: "Activity Tracking & Login History"
+    implemented: true
+    working: true
+    file: "/app/backend/routers/admin_users.py, /app/backend/models.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented comprehensive activity tracking system with LoginHistory model (tracks timestamp, IP, user agent, location, success/failure) and ActivityLog model (tracks user actions, resource types, details, timestamps). Created dedicated endpoints for fetching activity logs and login history with pagination and filtering. Added helper function log_activity() to record all admin actions."
+
 frontend:
   - task: "Dashboard with real data"
     implemented: true
