@@ -82,11 +82,25 @@ async def get_current_user(email: str = Depends(get_current_user_email)):
             detail="User not found"
         )
     
+    # Handle datetime fields
+    created_at = user_doc.get('created_at')
+    if isinstance(created_at, str):
+        created_at = datetime.fromisoformat(created_at)
+    
+    last_login = user_doc.get('last_login')
+    if isinstance(last_login, str):
+        last_login = datetime.fromisoformat(last_login)
+    
     return UserResponse(
         id=user_doc['id'],
         name=user_doc['name'],
         email=user_doc['email'],
-        created_at=datetime.fromisoformat(user_doc['created_at'])
+        created_at=created_at,
+        role=user_doc.get('role', 'user'),
+        status=user_doc.get('status', 'active'),
+        phone=user_doc.get('phone'),
+        avatar_url=user_doc.get('avatar_url'),
+        last_login=last_login
     )
 
 
