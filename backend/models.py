@@ -14,6 +14,36 @@ class User(BaseModel):
     password_hash: str
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    
+    # Role & Permissions
+    role: Literal["user", "moderator", "admin"] = "user"
+    
+    # Account Status
+    status: Literal["active", "suspended", "banned"] = "active"
+    suspension_reason: Optional[str] = None
+    suspension_until: Optional[datetime] = None
+    
+    # Profile Information
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    bio: Optional[str] = None
+    avatar_url: Optional[str] = None
+    company: Optional[str] = None
+    job_title: Optional[str] = None
+    
+    # Usage Limits (overrides plan limits if set)
+    custom_max_chatbots: Optional[int] = None
+    custom_max_messages: Optional[int] = None
+    custom_max_file_uploads: Optional[int] = None
+    
+    # Activity Tracking
+    last_login: Optional[datetime] = None
+    login_count: int = 0
+    last_ip: Optional[str] = None
+    
+    # Tags & Notes
+    tags: List[str] = []
+    admin_notes: Optional[str] = None
 
 
 class UserCreate(BaseModel):
