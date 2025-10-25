@@ -640,6 +640,572 @@ async def export_conversations(
                 "messages": messages
             })
         
+
+
+# ==================== REVENUE & BILLING ====================
+@router.get("/revenue/overview")
+async def get_revenue_overview():
+    """Get revenue overview and statistics"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        # Mock data for demo - replace with actual billing database
+        return {
+            "mrr": 15000,  # Monthly Recurring Revenue
+            "arr": 180000,  # Annual Recurring Revenue
+            "total_revenue": 45000,
+            "active_subscriptions": 25,
+            "churned_this_month": 2,
+            "new_this_month": 8,
+            "revenue_by_plan": {
+                "Free": 0,
+                "Starter": 7500,
+                "Professional": 12000,
+                "Enterprise": 25500
+            },
+            "revenue_growth": 15.5,  # percentage
+            "payment_failures": 1,
+            "pending_invoices": 3
+        }
+    except Exception as e:
+        print(f"Error in get_revenue_overview: {str(e)}")
+        return {
+            "mrr": 0,
+            "arr": 0,
+            "total_revenue": 0,
+            "active_subscriptions": 0
+        }
+
+
+@router.get("/revenue/history")
+async def get_revenue_history(days: int = 30):
+    """Get revenue history for charts"""
+    try:
+        # Mock data - replace with actual data
+        history = []
+        from datetime import datetime, timedelta
+        for i in range(days):
+            date = (datetime.now() - timedelta(days=days-i)).strftime('%Y-%m-%d')
+            history.append({
+                "date": date,
+                "revenue": 500 + (i * 50),  # Mock increasing revenue
+                "subscriptions": 20 + i,
+                "new_users": 2 + (i % 5)
+            })
+        return {
+            "history": history,
+            "total": len(history)
+        }
+    except Exception as e:
+        print(f"Error in get_revenue_history: {str(e)}")
+        return {"history": [], "total": 0}
+
+
+@router.get("/users/{user_id}/activity")
+async def get_user_activity(user_id: str):
+    """Get detailed activity timeline for a user"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        conversations_collection = db_instance['conversations']
+        
+        activities = []
+        
+        # Get user's chatbots
+        async for bot in chatbots_collection.find({"user_id": user_id}).sort("created_at", -1):
+            activities.append({
+                "type": "chatbot_created",
+                "title": f"Created chatbot: {bot.get('name')}",
+                "timestamp": bot.get('created_at'),
+                "details": {
+                    "chatbot_id": bot.get('id'),
+                    "provider": bot.get('ai_provider')
+                }
+            })
+        
+        # Get user's chatbot IDs
+        user_chatbots = [bot.get('id') async for bot in chatbots_collection.find({"user_id": user_id})]
+        
+        # Get conversations
+        if user_chatbots:
+            async for conv in conversations_collection.find(
+                {"chatbot_id": {"$in": user_chatbots}}
+            ).sort("created_at", -1).limit(50):
+                activities.append({
+                    "type": "conversation",
+                    "title": f"Conversation with {conv.get('user_name', 'Anonymous')}",
+                    "timestamp": conv.get('created_at'),
+                    "details": {
+                        "conversation_id": conv.get('id'),
+                        "status": conv.get('status')
+                    }
+                })
+        
+        # Sort by timestamp
+        activities.sort(key=lambda x: x['timestamp'], reverse=True)
+        
+        return {
+            "activities": activities[:100],  # Limit to 100
+            "total": len(activities)
+        }
+    except Exception as e:
+        print(f"Error in get_user_activity: {str(e)}")
+        return {"activities": [], "total": 0}
+
+
+@router.put("/users/{user_id}/edit")
+async def edit_user(user_id: str, data: UserEditData):
+    """Edit user details and limits"""
+    try:
+        # In production, update users collection
+        return {
+            "success": True,
+            "message": f"User {user_id} updated successfully",
+            "user": {
+                "user_id": user_id,
+                **data.dict(exclude_unset=True)
+            }
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/users/{user_id}/suspend")
+async def suspend_user(user_id: str):
+    """Suspend/block a user"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        
+        # Disable all user's chatbots
+        result = await chatbots_collection.update_many(
+            {"user_id": user_id},
+            {"$set": {"enabled": False, "status": "suspended"}}
+        )
+        
+        return {
+            "success": True,
+            "message": f"User {user_id} suspended",
+            "chatbots_disabled": result.modified_count
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/users/{user_id}/activate")
+async def activate_user(user_id: str):
+    """Activate a suspended user"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        
+        # Enable all user's chatbots
+        result = await chatbots_collection.update_many(
+            {"user_id": user_id},
+            {"$set": {"enabled": True, "status": "active"}}
+        )
+        
+        return {
+            "success": True,
+            "message": f"User {user_id} activated",
+            "chatbots_enabled": result.modified_count
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ==================== ADVANCED ANALYTICS ====================
+@router.get("/analytics/users/growth")
+async def get_user_growth(days: int = 30):
+    """Get user growth analytics"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        
+        # Get unique users by day
+        pipeline = [
+            {
+                "$group": {
+                    "_id": {
+                        "date": {"$substr": ["$created_at", 0, 10]},
+                        "user_id": "$user_id"
+                    }
+                }
+            },
+            {
+                "$group": {
+                    "_id": "$_id.date",
+                    "count": {"$sum": 1}
+                }
+            },
+            {"$sort": {"_id": 1}}
+        ]
+        
+        growth_data = []
+        async for doc in chatbots_collection.aggregate(pipeline):
+            growth_data.append({
+                "date": doc['_id'],
+                "users": doc['count']
+            })
+        
+        return {
+            "growth": growth_data,
+            "total": len(growth_data)
+        }
+    except Exception as e:
+        print(f"Error in get_user_growth: {str(e)}")
+        return {"growth": [], "total": 0}
+
+
+@router.get("/analytics/messages/volume")
+async def get_message_volume(days: int = 30):
+    """Get message volume over time"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        messages_collection = db_instance['messages']
+        
+        # Get messages by day
+        thirty_days_ago = (datetime.now() - timedelta(days=days)).isoformat()
+        
+        pipeline = [
+            {
+                "$match": {
+                    "timestamp": {"$gte": thirty_days_ago}
+                }
+            },
+            {
+                "$group": {
+                    "_id": {"$substr": ["$timestamp", 0, 10]},
+                    "count": {"$sum": 1}
+                }
+            },
+            {"$sort": {"_id": 1}}
+        ]
+        
+        volume_data = []
+        async for doc in messages_collection.aggregate(pipeline):
+            volume_data.append({
+                "date": doc['_id'],
+                "messages": doc['count']
+            })
+        
+        return {
+            "volume": volume_data,
+            "total": len(volume_data)
+        }
+    except Exception as e:
+        print(f"Error in get_message_volume: {str(e)}")
+        return {"volume": [], "total": 0}
+
+
+@router.get("/analytics/providers/distribution")
+async def get_provider_distribution():
+    """Get AI provider usage distribution"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        
+        pipeline = [
+            {
+                "$group": {
+                    "_id": "$ai_provider",
+                    "count": {"$sum": 1}
+                }
+            },
+            {"$sort": {"count": -1}}
+        ]
+        
+        distribution = []
+        async for doc in chatbots_collection.aggregate(pipeline):
+            distribution.append({
+                "provider": doc['_id'] or 'Unknown',
+                "count": doc['count']
+            })
+        
+        return {
+            "distribution": distribution,
+            "total": len(distribution)
+        }
+    except Exception as e:
+        print(f"Error in get_provider_distribution: {str(e)}")
+        return {"distribution": [], "total": 0}
+
+
+# ==================== SYSTEM SETTINGS ====================
+@router.get("/settings")
+async def get_system_settings():
+    """Get system settings"""
+    try:
+        # Mock settings - in production, fetch from database
+        return {
+            "maintenance_mode": False,
+            "allow_registrations": True,
+            "default_plan": "Free",
+            "max_chatbots_per_user": 1,
+            "ai_providers": {
+                "openai": {"enabled": True, "rate_limit": 100},
+                "claude": {"enabled": True, "rate_limit": 100},
+                "gemini": {"enabled": True, "rate_limit": 100}
+            },
+            "email_notifications": True,
+            "auto_moderation": False
+        }
+    except Exception as e:
+        print(f"Error in get_system_settings: {str(e)}")
+        return {}
+
+
+@router.put("/settings")
+async def update_system_settings(settings: SystemSettings):
+    """Update system settings"""
+    try:
+        # In production, save to database
+        return {
+            "success": True,
+            "message": "Settings updated successfully",
+            "settings": settings.dict(exclude_unset=True)
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ==================== ACTIVITY LOGS ====================
+@router.get("/logs/activity")
+async def get_activity_logs(
+    limit: int = 100,
+    action: Optional[str] = None,
+    user_id: Optional[str] = None
+):
+    """Get detailed activity/audit logs"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        # Build comprehensive activity log from multiple collections
+        logs = []
+        
+        chatbots_collection = db_instance['chatbots']
+        conversations_collection = db_instance['conversations']
+        sources_collection = db_instance['sources']
+        
+        # Get chatbot activities
+        filter_dict = {}
+        if user_id:
+            filter_dict["user_id"] = user_id
+        
+        async for bot in chatbots_collection.find(filter_dict).sort("created_at", -1).limit(limit):
+            logs.append({
+                "id": bot.get('id'),
+                "action": "chatbot_created",
+                "user_id": bot.get('user_id'),
+                "details": f"Created chatbot: {bot.get('name')}",
+                "timestamp": bot.get('created_at'),
+                "entity_type": "chatbot",
+                "entity_id": bot.get('id')
+            })
+        
+        # Get source activities
+        async for source in sources_collection.find(filter_dict if user_id else {}).sort("created_at", -1).limit(limit):
+            logs.append({
+                "id": source.get('id'),
+                "action": "source_added",
+                "user_id": "system",
+                "details": f"Added source: {source.get('name')}",
+                "timestamp": source.get('created_at'),
+                "entity_type": "source",
+                "entity_id": source.get('id')
+            })
+        
+        # Sort by timestamp
+        logs.sort(key=lambda x: x.get('timestamp', ''), reverse=True)
+        
+        return {
+            "logs": logs[:limit],
+            "total": len(logs)
+        }
+    except Exception as e:
+        print(f"Error in get_activity_logs: {str(e)}")
+        return {"logs": [], "total": 0}
+
+
+# ==================== EMAIL MANAGEMENT ====================
+@router.post("/email/send-bulk")
+async def send_bulk_email(email_data: BulkEmail):
+    """Send bulk email to users"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        
+        # Get recipients based on filter
+        recipients = []
+        if email_data.recipient_filter == 'all':
+            user_ids = await chatbots_collection.distinct('user_id')
+            recipients = [f"{uid}@botsmith.co" for uid in user_ids]
+        
+        # In production, integrate with email service (SendGrid, AWS SES, etc.)
+        return {
+            "success": True,
+            "message": f"Email queued for {len(recipients)} recipients",
+            "recipients_count": len(recipients)
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/email/templates")
+async def get_email_templates():
+    """Get email templates"""
+    try:
+        # Mock templates
+        return {
+            "templates": [
+                {
+                    "id": "welcome",
+                    "name": "Welcome Email",
+                    "subject": "Welcome to BotSmith!",
+                    "body": "Hi {{name}}, welcome to BotSmith...",
+                    "variables": ["name", "email"]
+                },
+                {
+                    "id": "upgrade",
+                    "name": "Upgrade Reminder",
+                    "subject": "Upgrade your BotSmith plan",
+                    "body": "You're using {{usage}}% of your plan...",
+                    "variables": ["name", "usage", "plan"]
+                }
+            ],
+            "total": 2
+        }
+    except Exception as e:
+        print(f"Error in get_email_templates: {str(e)}")
+        return {"templates": [], "total": 0}
+
+
+# ==================== BACKUP & EXPORT ====================
+@router.get("/backup/database")
+async def backup_database():
+    """Create database backup"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        # Get all data
+        backup_data = {}
+        
+        for collection_name in ['chatbots', 'sources', 'conversations', 'messages']:
+            collection = db_instance[collection_name]
+            data = []
+            async for doc in collection.find({}):
+                # Remove _id field for JSON serialization
+                doc.pop('_id', None)
+                data.append(doc)
+            backup_data[collection_name] = data
+        
+        backup_data['backup_timestamp'] = datetime.now().isoformat()
+        backup_data['version'] = '1.0'
+        
+        return {
+            "success": True,
+            "backup": backup_data,
+            "collections": len(backup_data) - 2,  # Minus timestamp and version
+            "total_documents": sum(len(v) for k, v in backup_data.items() if isinstance(v, list))
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ==================== CHATBOT ADVANCED MANAGEMENT ====================
+@router.get("/chatbots/{chatbot_id}/details")
+async def get_chatbot_details(chatbot_id: str):
+    """Get comprehensive chatbot details"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        sources_collection = db_instance['sources']
+        conversations_collection = db_instance['conversations']
+        messages_collection = db_instance['messages']
+        
+        # Get chatbot
+        chatbot = await chatbots_collection.find_one({"id": chatbot_id})
+        if not chatbot:
+            raise HTTPException(status_code=404, detail="Chatbot not found")
+        
+        # Get sources
+        sources = []
+        async for source in sources_collection.find({"chatbot_id": chatbot_id}):
+            sources.append({
+                "id": source.get('id'),
+                "name": source.get('name'),
+                "type": source.get('type')
+            })
+        
+        # Get conversations count
+        conv_count = await conversations_collection.count_documents({"chatbot_id": chatbot_id})
+        
+        # Get messages count
+        msg_count = await messages_collection.count_documents({"chatbot_id": chatbot_id})
+        
+        chatbot.pop('_id', None)
+        
+        return {
+            "chatbot": chatbot,
+            "sources": sources,
+            "conversations_count": conv_count,
+            "messages_count": msg_count
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/chatbots/{chatbot_id}/clone")
+async def clone_chatbot(chatbot_id: str, new_name: str, target_user_id: str):
+    """Clone a chatbot"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        
+        # Get original chatbot
+        original = await chatbots_collection.find_one({"id": chatbot_id})
+        if not original:
+            raise HTTPException(status_code=404, detail="Chatbot not found")
+        
+        # Create clone
+        from uuid import uuid4
+        clone = original.copy()
+        clone['id'] = str(uuid4())
+        clone['name'] = new_name
+        clone['user_id'] = target_user_id
+        clone['created_at'] = datetime.now().isoformat()
+        clone.pop('_id', None)
+        
+        await chatbots_collection.insert_one(clone)
+        
+        return {
+            "success": True,
+            "message": "Chatbot cloned successfully",
+            "clone_id": clone['id']
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
         if format == "csv":
             # Create CSV
             output = io.StringIO()
