@@ -42,3 +42,4 @@ anthropic
 google-generativeai
 tiktoken
 tokenizers
+psutil>=5.9.0
