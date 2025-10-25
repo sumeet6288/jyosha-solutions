@@ -286,3 +286,54 @@ async def send_webhook_notification(webhook_url: str, chatbot_id: str, conversat
     except Exception as e:
         # Log error but don't fail the request
         print(f"Webhook notification failed: {e}")
+
+
+
+# ==================== CONTACT SALES ====================
+
+from pydantic import BaseModel, EmailStr
+from uuid import uuid4
+
+class ContactSalesRequest(BaseModel):
+    name: str
+    email: EmailStr
+    company: str
+    message: str
+
+@router.post("/contact-sales")
+async def submit_contact_sales(request: ContactSalesRequest):
+    """Submit contact sales form (no authentication required)"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        contact_sales_collection = db_instance['contact_sales']
+        
+        # Create submission
+        submission = {
+            "id": str(uuid4()),
+            "name": request.name,
+            "email": request.email,
+            "company": request.company,
+            "message": request.message,
+            "status": "new",
+            "notes": "",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        await contact_sales_collection.insert_one(submission)
+        
+        logger.info(f"Contact sales submission received from {request.email}")
+        
+        return {
+            "success": True,
+            "message": "Thank you for your interest! Our team will contact you within 24 hours."
+        }
+    except Exception as e:
+        logger.error(f"Error submitting contact sales: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to submit contact form. Please try again later."
+        )
+
