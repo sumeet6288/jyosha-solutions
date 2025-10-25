@@ -250,7 +250,7 @@ const AdminDashboard = () => {
           </TabsContent>
 
           <TabsContent value="users">
-            <UsersManagement backendUrl={backendUrl} />
+            <EnhancedUsersManagement backendUrl={backendUrl} />
           </TabsContent>
 
           <TabsContent value="chatbots">
