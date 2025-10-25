@@ -4,6 +4,7 @@ import { Button } from '../../components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
 import { Users, Bot, BarChart3, Settings, Activity, Database, Shield, LogOut, MessageSquare, FileText, AlertTriangle, HardDrive, DollarSign, TrendingUp, Mail, Zap } from 'lucide-react';
 import UsersManagement from '../../components/admin/UsersManagement';
+import EnhancedUsersManagement from '../../components/admin/EnhancedUsersManagement';
 import ChatbotsManagement from '../../components/admin/ChatbotsManagement';
 import ConversationsManagement from '../../components/admin/ConversationsManagement';
 import SystemMonitoring from '../../components/admin/SystemMonitoring';
