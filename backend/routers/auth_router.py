@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from models import UserCreate, UserLogin, UserResponse, Token, User
-from auth import get_password_hash, verify_password, create_access_token, get_current_user_email
+from auth import get_password_hash, verify_password, create_access_token, get_current_user_email, get_mock_user
 from datetime import datetime, timezone
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
@@ -12,6 +12,7 @@ def init_router(db):
     """Initialize router with database connection."""
     global users_collection
     users_collection = db.users
+
 
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
