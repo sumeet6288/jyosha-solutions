@@ -62,16 +62,110 @@ class UserResponse(BaseModel):
     name: str
     email: EmailStr
     created_at: datetime
+    role: str = "user"
+    status: str = "active"
+    phone: Optional[str] = None
+    avatar_url: Optional[str] = None
+    last_login: Optional[datetime] = None
 
 
 class UserUpdate(BaseModel):
     name: Optional[str] = None
     email: Optional[EmailStr] = None
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    bio: Optional[str] = None
+    avatar_url: Optional[str] = None
+    company: Optional[str] = None
+    job_title: Optional[str] = None
+
+
+class AdminUserUpdate(BaseModel):
+    """Admin-only user update model with more permissions"""
+    name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    role: Optional[Literal["user", "moderator", "admin"]] = None
+    status: Optional[Literal["active", "suspended", "banned"]] = None
+    suspension_reason: Optional[str] = None
+    suspension_until: Optional[datetime] = None
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    bio: Optional[str] = None
+    avatar_url: Optional[str] = None
+    company: Optional[str] = None
+    job_title: Optional[str] = None
+    custom_max_chatbots: Optional[int] = None
+    custom_max_messages: Optional[int] = None
+    custom_max_file_uploads: Optional[int] = None
+    tags: Optional[List[str]] = None
+    admin_notes: Optional[str] = None
 
 
 class PasswordChange(BaseModel):
     current_password: str
     new_password: str
+
+
+class PasswordReset(BaseModel):
+    """Admin password reset for users"""
+    new_password: str
+
+
+# Login History Model
+class LoginHistory(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    ip_address: Optional[str] = None
+    user_agent: Optional[str] = None
+    location: Optional[str] = None
+    success: bool = True
+
+
+class LoginHistoryResponse(BaseModel):
+    id: str
+    user_id: str
+    timestamp: datetime
+    ip_address: Optional[str]
+    user_agent: Optional[str]
+    location: Optional[str]
+    success: bool
+
+
+# Activity Log Model
+class ActivityLog(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    action: str  # e.g., "created_chatbot", "deleted_source", "updated_settings"
+    resource_type: Optional[str] = None  # e.g., "chatbot", "source", "user"
+    resource_id: Optional[str] = None
+    details: Optional[str] = None
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    ip_address: Optional[str] = None
+
+
+class ActivityLogResponse(BaseModel):
+    id: str
+    user_id: str
+    action: str
+    resource_type: Optional[str]
+    resource_id: Optional[str]
+    details: Optional[str]
+    timestamp: datetime
+    ip_address: Optional[str]
+
+
+# Bulk Operations Model
+class BulkUserOperation(BaseModel):
+    user_ids: List[str]
+    operation: Literal["delete", "change_role", "change_status", "add_tags", "export"]
+    role: Optional[Literal["user", "moderator", "admin"]] = None
+    status: Optional[Literal["active", "suspended", "banned"]] = None
+    tags: Optional[List[str]] = None
 
 
 class Token(BaseModel):
