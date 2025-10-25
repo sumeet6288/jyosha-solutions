@@ -13,7 +13,7 @@ import Footer from '../components/Footer';
 const Dashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { user, logout } = useAuth();
+  const { user, logout, refreshUser } = useAuth();
   const [chatbots, setChatbots] = useState([]);
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,6 +23,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     loadData();
+    // Refresh user data when dashboard loads to get latest admin changes
+    refreshUser();
   }, []);
 
   const loadData = async () => {
