@@ -114,6 +114,25 @@ async def get_current_user(email: str = Depends(get_current_user_email)):
     )
 
 
+@router.get("/me/mock", response_model=UserResponse)
+async def get_mock_user_endpoint():
+    """Get mock user for development (bypasses authentication)."""
+    user = await get_mock_user()
+    
+    return UserResponse(
+        id=user.id,
+        name=user.name,
+        email=user.email,
+        created_at=user.created_at,
+        role=user.role,
+        status=user.status,
+        phone=user.phone,
+        avatar_url=user.avatar_url,
+        last_login=user.last_login
+    )
+
+
+
 @router.post("/logout")
 async def logout():
     """Logout user (client should remove token)."""
