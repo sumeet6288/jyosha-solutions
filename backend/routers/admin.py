@@ -1728,6 +1728,96 @@ async def update_user_enhanced(user_id: str, user_data: dict):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ==================== CONTACT SALES MANAGEMENT ====================
+
+@router.get("/contact-sales")
+async def get_contact_sales_submissions(
+    status: Optional[str] = None,
+    limit: int = 100
+):
+    """Get all contact sales form submissions"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        contact_sales_collection = db_instance['contact_sales']
+        
+        # Build filter
+        filter_dict = {}
+        if status:
+            filter_dict["status"] = status
+        
+        # Get submissions
+        submissions = []
+        async for submission in contact_sales_collection.find(filter_dict).sort("created_at", -1).limit(limit):
+            submissions.append({
+                "id": submission.get('id'),
+                "name": submission.get('name'),
+                "email": submission.get('email'),
+                "company": submission.get('company'),
+                "message": submission.get('message'),
+                "status": submission.get('status', 'new'),
+                "created_at": submission.get('created_at'),
+                "notes": submission.get('notes', '')
+            })
+        
+        return {
+            "submissions": submissions,
+            "total": len(submissions)
+        }
+    except Exception as e:
+        print(f"Error in get_contact_sales_submissions: {str(e)}")
+        return {"submissions": [], "total": 0}
+
+
+@router.put("/contact-sales/{submission_id}")
+async def update_contact_sales_status(submission_id: str, update_data: dict):
+    """Update contact sales submission status"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        contact_sales_collection = db_instance['contact_sales']
+        
+        # Update submission
+        await contact_sales_collection.update_one(
+            {"id": submission_id},
+            {"$set": {
+                "status": update_data.get('status', 'new'),
+                "notes": update_data.get('notes', ''),
+                "updated_at": datetime.now().isoformat()
+            }}
+        )
+        
+        return {
+            "success": True,
+            "message": "Submission updated successfully"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.delete("/contact-sales/{submission_id}")
+async def delete_contact_sales_submission(submission_id: str):
+    """Delete a contact sales submission"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        contact_sales_collection = db_instance['contact_sales']
+        result = await contact_sales_collection.delete_one({"id": submission_id})
+        
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Submission not found")
+        
+        return {
+            "success": True,
+            "message": "Submission deleted successfully"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # ==================== USER SEGMENTATION & ANALYTICS ====================
 
 @router.get("/users/segments")
