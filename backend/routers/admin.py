@@ -641,6 +641,30 @@ async def export_conversations(
                 "messages": messages
             })
         
+        # Return based on format
+        if format == "csv":
+            # Convert to CSV format
+            csv_data = []
+            for conv in export_data:
+                for msg in conv['messages']:
+                    csv_data.append({
+                        "conversation_id": conv['conversation_id'],
+                        "chatbot_id": conv['chatbot_id'],
+                        "user_name": conv['user_name'],
+                        "user_email": conv['user_email'],
+                        "status": conv['status'],
+                        "created_at": conv['created_at'],
+                        "role": msg['role'],
+                        "content": msg['content'],
+                        "timestamp": msg['timestamp']
+                    })
+            return csv_data
+        else:
+            return export_data
+            
+    except Exception as e:
+        print(f"Error in export_conversations: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # ==================== REVENUE & BILLING ====================
