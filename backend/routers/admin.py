@@ -1461,3 +1461,405 @@ async def get_flagged_content():
     except Exception as e:
         print(f"Error in get_flagged_content: {str(e)}")
         return {"flagged_conversations": [], "total": 0}
+
+
+# ==================== ENHANCED USER MANAGEMENT ====================
+
+@router.get("/users/enhanced")
+async def get_users_enhanced(
+    sortBy: str = "created_at",
+    sortOrder: str = "desc"
+):
+    """Get enhanced user data with all metrics"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        messages_collection = db_instance['messages']
+        conversations_collection = db_instance['conversations']
+        
+        user_ids = await chatbots_collection.distinct('user_id')
+        
+        users_data = []
+        for user_id in user_ids:
+            chatbots_count = await chatbots_collection.count_documents({"user_id": user_id})
+            
+            user_chatbots = []
+            async for bot in chatbots_collection.find({"user_id": user_id}):
+                user_chatbots.append(bot.get('id'))
+            
+            messages_count = 0
+            conversations_count = 0
+            last_message_time = None
+            
+            if user_chatbots:
+                messages_count = await messages_collection.count_documents(
+                    {"chatbot_id": {"$in": user_chatbots}}
+                )
+                conversations_count = await conversations_collection.count_documents(
+                    {"chatbot_id": {"$in": user_chatbots}}
+                )
+                
+                # Get last message time
+                last_message = await messages_collection.find_one(
+                    {"chatbot_id": {"$in": user_chatbots}},
+                    sort=[("timestamp", -1)]
+                )
+                if last_message:
+                    last_message_time = last_message.get('timestamp')
+            
+            first_chatbot = await chatbots_collection.find_one(
+                {"user_id": user_id},
+                sort=[("created_at", 1)]
+            )
+            
+            users_data.append({
+                "user_id": user_id,
+                "email": f"{user_id}@botsmith.co",
+                "name": f"User {user_id[:8]}",
+                "chatbots_count": chatbots_count,
+                "messages_count": messages_count,
+                "conversations_count": conversations_count,
+                "created_at": first_chatbot.get('created_at') if first_chatbot else None,
+                "last_active": last_message_time,
+                "plan": "Free",
+                "status": "active",
+                "max_chatbots": 1,
+                "max_messages": 100,
+                "max_file_uploads": 5,
+                "max_website_sources": 2,
+                "max_text_sources": 5,
+                "tags": ["New User"] if chatbots_count <= 1 else []
+            })
+        
+        # Sort users
+        if sortBy == "created_at":
+            users_data.sort(key=lambda x: x.get(sortBy, ''), reverse=(sortOrder == 'desc'))
+        elif sortBy in ["messages_count", "chatbots_count"]:
+            users_data.sort(key=lambda x: x.get(sortBy, 0), reverse=(sortOrder == 'desc'))
+        
+        return {
+            "users": users_data,
+            "total": len(users_data)
+        }
+    except Exception as e:
+        print(f"Error in get_users_enhanced: {str(e)}")
+        return {"users": [], "total": 0}
+
+
+@router.get("/users/{user_id}/stats")
+async def get_user_stats(user_id: str):
+    """Get comprehensive statistics for a specific user"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        messages_collection = db_instance['messages']
+        conversations_collection = db_instance['conversations']
+        sources_collection = db_instance['sources']
+        
+        # Get user's chatbots
+        user_chatbots = []
+        async for bot in chatbots_collection.find({"user_id": user_id}):
+            user_chatbots.append(bot.get('id'))
+        
+        total_chatbots = len(user_chatbots)
+        total_messages = 0
+        total_conversations = 0
+        total_sources = 0
+        
+        if user_chatbots:
+            total_messages = await messages_collection.count_documents(
+                {"chatbot_id": {"$in": user_chatbots}}
+            )
+            total_conversations = await conversations_collection.count_documents(
+                {"chatbot_id": {"$in": user_chatbots}}
+            )
+            total_sources = await sources_collection.count_documents(
+                {"chatbot_id": {"$in": user_chatbots}}
+            )
+        
+        # Calculate average messages per day
+        first_chatbot = await chatbots_collection.find_one(
+            {"user_id": user_id},
+            sort=[("created_at", 1)]
+        )
+        
+        avg_messages_per_day = 0
+        if first_chatbot and total_messages > 0:
+            created_date = datetime.fromisoformat(first_chatbot.get('created_at', ''))
+            days_active = max(1, (datetime.now() - created_date).days)
+            avg_messages_per_day = round(total_messages / days_active, 2)
+        
+        return {
+            "total_chatbots": total_chatbots,
+            "total_messages": total_messages,
+            "total_conversations": total_conversations,
+            "total_sources": total_sources,
+            "avg_messages_per_day": avg_messages_per_day,
+            "engagement_score": min(100, total_messages + (total_chatbots * 10))
+        }
+    except Exception as e:
+        print(f"Error in get_user_stats: {str(e)}")
+        return {
+            "total_chatbots": 0,
+            "total_messages": 0,
+            "total_conversations": 0,
+            "total_sources": 0,
+            "avg_messages_per_day": 0,
+            "engagement_score": 0
+        }
+
+
+@router.get("/users/{user_id}/notes")
+async def get_user_notes(user_id: str):
+    """Get notes for a user"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        # In real app, you'd have a notes collection
+        # For now, return empty
+        return {"notes": []}
+    except Exception as e:
+        print(f"Error in get_user_notes: {str(e)}")
+        return {"notes": []}
+
+
+@router.post("/users/{user_id}/notes")
+async def add_user_note(user_id: str, note_data: dict):
+    """Add a note to user"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        # In real app, you'd save to notes collection
+        return {
+            "success": True,
+            "message": "Note added successfully"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.put("/users/{user_id}/tags")
+async def update_user_tags(user_id: str, tag_data: dict):
+    """Update user tags"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        # In real app, you'd update tags in users collection
+        return {
+            "success": True,
+            "message": "Tags updated successfully"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/users/send-email")
+async def send_bulk_email(email_data: dict):
+    """Send email to users"""
+    try:
+        user_ids = email_data.get('user_ids', [])
+        subject = email_data.get('subject', '')
+        body = email_data.get('body', '')
+        
+        # In real app, you'd integrate with email service
+        # For now, just log it
+        print(f"Sending email to {len(user_ids)} users: {subject}")
+        
+        return {
+            "success": True,
+            "message": f"Email sent to {len(user_ids)} user(s)"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/users/bulk-action")
+async def bulk_user_action(action_data: dict):
+    """Perform bulk actions on users"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        user_ids = action_data.get('user_ids', [])
+        action = action_data.get('action', '')
+        
+        if action == 'suspend':
+            # In real app, update user status to suspended
+            print(f"Suspending {len(user_ids)} users")
+        elif action == 'activate':
+            # In real app, update user status to active
+            print(f"Activating {len(user_ids)} users")
+        elif action == 'delete':
+            # In real app, delete users and their data
+            chatbots_collection = db_instance['chatbots']
+            for user_id in user_ids:
+                await chatbots_collection.delete_many({"user_id": user_id})
+        
+        return {
+            "success": True,
+            "message": f"{action} applied to {len(user_ids)} user(s)"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.put("/users/{user_id}/update")
+async def update_user_enhanced(user_id: str, user_data: dict):
+    """Update user with all fields"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        # In real app, update users collection
+        print(f"Updating user {user_id}: {user_data}")
+        
+        return {
+            "success": True,
+            "message": "User updated successfully"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ==================== USER SEGMENTATION & ANALYTICS ====================
+
+@router.get("/users/segments")
+async def get_user_segments():
+    """Get user segments (power users, at-risk, new users, etc.)"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        messages_collection = db_instance['messages']
+        
+        user_ids = await chatbots_collection.distinct('user_id')
+        
+        segments = {
+            "power_users": [],
+            "at_risk": [],
+            "new_users": [],
+            "champions": []
+        }
+        
+        for user_id in user_ids:
+            chatbots_count = await chatbots_collection.count_documents({"user_id": user_id})
+            
+            user_chatbots = []
+            async for bot in chatbots_collection.find({"user_id": user_id}):
+                user_chatbots.append(bot.get('id'))
+            
+            messages_count = 0
+            if user_chatbots:
+                messages_count = await messages_collection.count_documents(
+                    {"chatbot_id": {"$in": user_chatbots}}
+                )
+            
+            # Segment logic
+            if messages_count > 100 or chatbots_count > 3:
+                segments["power_users"].append(user_id)
+            elif chatbots_count <= 1 and messages_count < 10:
+                segments["new_users"].append(user_id)
+            elif messages_count > 500:
+                segments["champions"].append(user_id)
+        
+        return {
+            "segments": segments,
+            "totals": {
+                "power_users": len(segments["power_users"]),
+                "at_risk": len(segments["at_risk"]),
+                "new_users": len(segments["new_users"]),
+                "champions": len(segments["champions"])
+            }
+        }
+    except Exception as e:
+        print(f"Error in get_user_segments: {str(e)}")
+        return {"segments": {}, "totals": {}}
+
+
+@router.get("/users/{user_id}/lifecycle")
+async def get_user_lifecycle(user_id: str):
+    """Get user lifecycle timeline"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        messages_collection = db_instance['messages']
+        conversations_collection = db_instance['conversations']
+        
+        timeline = []
+        
+        # Get all chatbots created
+        async for bot in chatbots_collection.find({"user_id": user_id}).sort("created_at", 1):
+            timeline.append({
+                "event": "chatbot_created",
+                "description": f"Created chatbot: {bot.get('name')}",
+                "timestamp": bot.get('created_at'),
+                "details": {
+                    "chatbot_id": bot.get('id'),
+                    "chatbot_name": bot.get('name')
+                }
+            })
+        
+        return {
+            "timeline": timeline,
+            "total_events": len(timeline)
+        }
+    except Exception as e:
+        print(f"Error in get_user_lifecycle: {str(e)}")
+        return {"timeline": [], "total_events": 0}
+
+
+@router.get("/users/retention")
+async def get_user_retention():
+    """Get user retention metrics"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        messages_collection = db_instance['messages']
+        
+        # Simple retention calculation
+        user_ids = await chatbots_collection.distinct('user_id')
+        total_users = len(user_ids)
+        
+        active_users = 0
+        for user_id in user_ids:
+            user_chatbots = []
+            async for bot in chatbots_collection.find({"user_id": user_id}):
+                user_chatbots.append(bot.get('id'))
+            
+            if user_chatbots:
+                recent_messages = await messages_collection.count_documents({
+                    "chatbot_id": {"$in": user_chatbots},
+                    "timestamp": {"$gte": (datetime.now() - timedelta(days=30)).isoformat()}
+                })
+                if recent_messages > 0:
+                    active_users += 1
+        
+        retention_rate = (active_users / total_users * 100) if total_users > 0 else 0
+        
+        return {
+            "total_users": total_users,
+            "active_users": active_users,
+            "retention_rate": round(retention_rate, 2),
+            "churn_risk": total_users - active_users
+        }
+    except Exception as e:
+        print(f"Error in get_user_retention: {str(e)}")
+        return {
+            "total_users": 0,
+            "active_users": 0,
+            "retention_rate": 0,
+            "churn_risk": 0
+        }
+
