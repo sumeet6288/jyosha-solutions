@@ -1403,7 +1403,8 @@ async def get_database_stats():
                     "size": coll_stats.get('size', 0),
                     "avgObjSize": coll_stats.get('avgObjSize', 0)
                 })
-            except:
+            except Exception as e:
+                print(f"Error fetching stats for {collection_name}: {str(e)}")
                 pass
         
         return {
