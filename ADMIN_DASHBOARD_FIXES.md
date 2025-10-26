@@ -322,7 +322,7 @@ if db_instance is not None:
 
 ## Access Information
 
-**Admin Dashboard URL:** https://depend-setup-view.preview.emergentagent.com/admin
+**Admin Dashboard URL:** https://quick-installer-2.preview.emergentagent.com/admin
 
 **Status:** ✅ Fully Functional
 
