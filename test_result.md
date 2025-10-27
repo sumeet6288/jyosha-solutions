@@ -354,6 +354,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "✅ TESTED: Account Settings page fully functional. All features working correctly: 1) Profile Update: Successfully changed name from 'User demo-use' to 'John Smith' with success toast notification, 2) Email Update: Successfully updated email to 'test-user@botsmith.com' with success notification, 3) Password Change: Successfully changed password with proper validation and field clearing after success, 4) Delete Account Dialog: Dialog opens correctly with proper warning message, lists all data to be deleted (chatbots, sources, conversations, profile), Cancel button works properly. Minor: HTML validation warning in delete dialog (ul inside p tag) but doesn't affect functionality. All buttons responsive, forms handle validation properly, navigation works correctly."
+      - working: true
+        agent: "main"
+        comment: "Fixed HTML validation issue in delete account dialog - moved ul element outside p tag to comply with HTML standards while maintaining exact same visual appearance and functionality."
 
 metadata:
   created_by: "main_agent"
