@@ -7,6 +7,7 @@ import { useToast } from '../hooks/use-toast';
 import { useAuth } from '../contexts/AuthContext';
 import { userAPI } from '../utils/api';
 import UserProfileDropdown from '../components/UserProfileDropdown';
+import ResponsiveNav from '../components/ResponsiveNav';
 import {
   Dialog,
   DialogContent,
