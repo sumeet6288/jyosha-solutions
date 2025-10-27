@@ -330,15 +330,18 @@ frontend:
 
   - task: "Enhanced Admin User Management Interface"
     implemented: true
-    working: true
+    working: false
     file: "/app/frontend/src/components/admin/EnhancedUsersManagement.jsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Completely rebuilt EnhancedUsersManagement component with comprehensive features: 1) Advanced filtering (search, status, role, sort by multiple fields), 2) User table with 6 action buttons per user (Edit, View Stats, Activity Logs, Login History, Password Reset, Delete), 3) Edit modal with full user profile editing including role, status, profile info, custom limits, admin notes, suspension reason, 4) Stats modal showing usage metrics (chatbots, messages, sources), activity stats (30-day activities, 7-day messages), 5) Activity logs modal displaying all user actions with timestamps, 6) Login history modal showing all login attempts with IP, user agent, location, success/failure, 7) Password reset modal for admin password resets, 8) Bulk actions modal supporting delete, role change, status change, export operations, 9) Pagination and checkbox selection (select all/individual), 10) Beautiful UI with gradient purple/pink theme, status badges (active/suspended/banned), role badges (user/moderator/admin), usage stats display. All modals fully functional with proper API integration."
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL INTEGRATION ISSUE: Account Settings → Admin Panel integration not working due to **MOCKED AUTHENTICATION SYSTEM**. Testing revealed: 1) Account Settings profile updates work temporarily (API returns 200 OK) but don't persist in database, 2) Admin panel users list is empty (GET /api/admin/users/enhanced returns {users: [], total: 0}), 3) Admin stats show 0 total users, 4) Root cause: Mock auth system (/api/auth/me/mock) provides user data in memory but doesn't store in database that admin panel queries, 5) Profile changes revert on page refresh. The admin user management interface works correctly but has no real user data to display because authentication is mocked for development."
 
   - task: "Account Settings Page"
     implemented: true
