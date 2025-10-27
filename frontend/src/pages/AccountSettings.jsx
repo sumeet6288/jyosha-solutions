@@ -201,8 +201,8 @@ const AccountSettings = () => {
         <h1 className="text-3xl font-bold mb-8 text-gray-900">Account Settings</h1>
 
         {/* Profile Information */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-          <h2 className="text-xl font-bold mb-2">Profile Information</h2>
+        <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6 shadow-md hover:shadow-xl transition-all duration-500 hover-lift">
+          <h2 className="text-xl font-bold mb-2 text-gray-900">Profile Information</h2>
           <p className="text-gray-600 text-sm mb-6">
             Update your personal information and profile picture.
           </p>
@@ -210,7 +210,7 @@ const AccountSettings = () => {
           <div className="mb-6">
             <Label className="text-sm font-semibold mb-2">Profile picture</Label>
             <div className="flex items-center gap-4 mt-2">
-              <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white font-semibold text-2xl">
+              <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white font-semibold text-2xl shadow-lg transition-transform duration-300 hover:scale-110">
                 {user?.name?.charAt(0).toUpperCase()}
               </div>
               <div className="flex-1">
@@ -230,14 +230,14 @@ const AccountSettings = () => {
               value={profileData.name}
               onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
               placeholder="Enter your name"
-              className="max-w-md"
+              className="max-w-md transition-all duration-300"
             />
           </div>
 
           <Button
             onClick={handleSaveProfile}
             disabled={isSavingProfile}
-            className="bg-gray-600 hover:bg-gray-700"
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-md hover:shadow-lg transition-all duration-300"
           >
             {isSavingProfile ? 'Saving...' : 'Save changes'}
           </Button>
