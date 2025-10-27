@@ -270,8 +270,8 @@ const AccountSettings = () => {
         </div>
 
         {/* Password */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-          <h2 className="text-xl font-bold mb-2">Password</h2>
+        <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6 shadow-md hover:shadow-xl transition-all duration-500 hover-lift">
+          <h2 className="text-xl font-bold mb-2 text-gray-900">Password</h2>
           <p className="text-gray-600 text-sm mb-6">Change your password</p>
 
           <div className="space-y-4 mb-4">
@@ -287,7 +287,7 @@ const AccountSettings = () => {
                   setPasswordData({ ...passwordData, currentPassword: e.target.value })
                 }
                 placeholder="Enter current password"
-                className="max-w-md"
+                className="max-w-md transition-all duration-300"
               />
             </div>
             <div>
@@ -302,7 +302,7 @@ const AccountSettings = () => {
                   setPasswordData({ ...passwordData, newPassword: e.target.value })
                 }
                 placeholder="Enter new password"
-                className="max-w-md"
+                className="max-w-md transition-all duration-300"
               />
             </div>
             <div>
@@ -317,7 +317,7 @@ const AccountSettings = () => {
                   setPasswordData({ ...passwordData, confirmPassword: e.target.value })
                 }
                 placeholder="Confirm new password"
-                className="max-w-md"
+                className="max-w-md transition-all duration-300"
               />
             </div>
           </div>
@@ -325,7 +325,7 @@ const AccountSettings = () => {
           <Button
             onClick={handleChangePassword}
             disabled={isSavingPassword}
-            className="bg-gray-600 hover:bg-gray-700"
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-md hover:shadow-lg transition-all duration-300"
           >
             {isSavingPassword ? 'Changing...' : 'Change Password'}
           </Button>
