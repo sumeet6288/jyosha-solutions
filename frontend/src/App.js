@@ -27,12 +27,17 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-// Scroll to top on route change
+// Smooth scroll to top on route change
 function ScrollToTop() {
   const location = useLocation();
   
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Smooth scroll to top with animation
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   }, [location.pathname]);
   
   return null;
