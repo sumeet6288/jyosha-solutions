@@ -42,34 +42,20 @@ async def seed_users():
     # Create demo users
     users = []
     
-    # Main demo user
-    demo_user = {
-        "id": "demo-user-123",
-        "name": "Demo User",
-        "email": "demo-user-123@botsmith.com",
-        "password_hash": pwd_context.hash("demo123"),
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "updated_at": datetime.now(timezone.utc).isoformat(),
-        "role": "admin",
-        "status": "active",
-        "phone": "+1-555-0100",
-        "address": "123 Demo Street, San Francisco, CA 94102",
-        "bio": "Demo user account for testing the BotSmith platform",
-        "avatar_url": None,
-        "company": "BotSmith Inc",
-        "job_title": "Administrator",
-        "custom_max_chatbots": None,
-        "custom_max_messages": None,
-        "custom_max_file_uploads": None,
-        "last_login": (datetime.now(timezone.utc) - timedelta(hours=2)).isoformat(),
-        "login_count": 45,
-        "last_ip": "192.168.1.100",
-        "tags": ["demo", "admin"],
-        "admin_notes": "Main demo account for development",
-        "suspension_reason": None,
-        "suspension_until": None
-    }
-    users.append(demo_user)
+    # Update the existing demo user to be an admin
+    await users_collection.update_one(
+        {"id": "demo-user-123"},
+        {"$set": {
+            "role": "admin",
+            "name": "Demo Admin",
+            "company": "BotSmith Inc",
+            "job_title": "Administrator",
+            "bio": "Demo admin account for testing the BotSmith platform",
+            "tags": ["demo", "admin"],
+            "admin_notes": "Main demo account for development"
+        }}
+    )
+    print("✅ Updated demo-user-123 to admin role")
     
     # Create 20 realistic demo users
     for i in range(20):
