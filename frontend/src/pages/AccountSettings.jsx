@@ -187,49 +187,18 @@ const AccountSettings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Top Navigation */}
-      <nav className="bg-white border-b border-gray-200">
-        <div className="px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <div
-              className="flex items-center gap-2 cursor-pointer"
-              onClick={() => navigate('/dashboard')}
-            >
-              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">B</span>
-              </div>
-              <span className="text-xl font-semibold">BotSmith</span>
-            </div>
-            <div className="flex items-center gap-6">
-              <button
-                onClick={() => navigate('/dashboard')}
-                className="text-gray-600 hover:text-black transition-colors"
-              >
-                Chatbots
-              </button>
-              <button
-                onClick={() => navigate('/analytics')}
-                className="text-gray-600 hover:text-black transition-colors"
-              >
-                Analytics
-              </button>
-              <button
-                onClick={() => navigate('/integrations')}
-                className="text-gray-600 hover:text-black transition-colors"
-              >
-                Integrations
-              </button>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <UserProfileDropdown user={user} onLogout={handleLogout} />
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50 relative overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-[800px] h-[800px] bg-gradient-to-br from-purple-400 via-pink-400 to-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute top-1/4 -left-40 w-[700px] h-[700px] bg-gradient-to-br from-pink-400 via-rose-400 to-orange-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+      </div>
 
-      <div className="p-6 max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Account</h1>
+      {/* Top Navigation */}
+      <ResponsiveNav user={user} onLogout={handleLogout} />
+
+      <div className="p-6 max-w-4xl mx-auto relative z-10 animate-fade-in-up">
+        <h1 className="text-3xl font-bold mb-8 text-gray-900">Account Settings</h1>
 
         {/* Profile Information */}
         <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
