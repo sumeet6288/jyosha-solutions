@@ -1,15 +1,17 @@
 import React from 'react';
 
-// Base skeleton component
+// Base skeleton component with smooth shimmer animation
 export const Skeleton = ({ className = '', ...props }) => {
   return (
     <div
-      className={`animate-pulse bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] rounded ${className}`}
+      className={`relative overflow-hidden bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 bg-[length:200%_100%] rounded ${className}`}
       style={{
-        animation: 'shimmer 1.5s infinite'
+        animation: 'shimmer 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
       }}
       {...props}
-    />
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer" />
+    </div>
   );
 };
 
