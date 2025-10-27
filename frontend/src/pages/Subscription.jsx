@@ -183,51 +183,46 @@ const SubscriptionNew = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-blue-50 to-purple-50 p-4 sm:p-6 animate-fade-in">
-      <div className="max-w-[95%] mx-auto">
+    <div className="min-h-screen bg-white p-4 sm:p-6 animate-fade-in">
+      <div className="max-w-7xl mx-auto">
         {/* Back to Dashboard Button */}
-        <div className="mb-4 sm:mb-6">
+        <div className="mb-4">
           <button
             onClick={() => navigate('/dashboard')}
-            className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-gray-700 hover:text-purple-600 font-medium group text-sm sm:text-base"
+            className="inline-flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200 text-gray-700 hover:text-purple-600 font-medium group text-sm"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            <span className="hidden sm:inline">Back to Dashboard</span>
-            <span className="sm:hidden">Back</span>
+            Back to Dashboard
           </button>
         </div>
 
         {/* Success Message */}
         {showSuccess && (
-          <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2 sm:gap-3 animate-bounce-in">
-            <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 flex-shrink-0" />
+          <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2 animate-bounce-in">
+            <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
             <div>
-              <h3 className="font-semibold text-green-900 text-sm sm:text-base">Payment Successful!</h3>
-              <p className="text-xs sm:text-sm text-green-700">Your subscription has been activated. Welcome aboard! 🎉</p>
+              <h3 className="font-semibold text-green-900 text-sm">Payment Successful!</h3>
+              <p className="text-xs text-green-700">Your subscription has been activated. Welcome aboard! 🎉</p>
             </div>
           </div>
         )}
 
-        {/* Header - Reduced to 80% */}
-        <div className="text-center mb-6 sm:mb-8">
-          <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full text-white font-medium mb-2 sm:mb-3 shadow-md text-[10px] sm:text-xs">
-            <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-            <span>Simple, Transparent Pricing</span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-3 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent px-4">
+        {/* Header - Match Pricing Page */}
+        <div className="text-center mb-10">
+          <h1 className="text-4xl font-bold mb-3 text-gray-900">
             Choose Your Perfect Plan
           </h1>
-          <p className="text-gray-600 text-xs sm:text-base md:text-lg max-w-2xl mx-auto px-4">
+          <p className="text-base text-gray-600">
             Start free and scale as you grow. No hidden fees, cancel anytime.
           </p>
         </div>
 
-        {/* Current Subscription Status - Reduced to 80% */}
+        {/* Current Subscription Status */}
         {subscriptionStatus?.has_subscription && (
-          <div className="mb-6 p-4 bg-white rounded-lg shadow-md border border-purple-200">
-            <div className="flex items-center gap-2 mb-1.5">
+          <div className="mb-6 p-4 bg-purple-50 rounded-xl border border-purple-200">
+            <div className="flex items-center gap-2 mb-2">
               <Crown className="w-5 h-5 text-purple-600" />
-              <h2 className="text-lg font-bold text-gray-900">Current Subscription</h2>
+              <h2 className="text-base font-bold text-gray-900">Current Subscription</h2>
             </div>
             <div className="flex items-center justify-between">
               <div>
@@ -236,7 +231,7 @@ const SubscriptionNew = () => {
                 </p>
                 <p className="text-gray-700 text-sm">
                   <span className="font-semibold">Status:</span>{' '}
-                  <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium ${
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                     subscriptionStatus.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                   }`}>
                     {subscriptionStatus.status}
@@ -255,8 +250,8 @@ const SubscriptionNew = () => {
           </div>
         )}
 
-        {/* All Plans Grid - Reduced to 80% */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-6 sm:mb-8">
+        {/* Pricing Cards - Match Pricing Page Design */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
           {plans.map((plan, index) => {
             const Icon = plan.icon;
             const isPopular = plan.popular;
@@ -266,61 +261,54 @@ const SubscriptionNew = () => {
             return (
               <div
                 key={plan.id}
-                className={`relative group ${
-                  isPopular ? 'lg:-mt-3 lg:mb-3' : ''
-                }`}
+                className={`relative ${isPopular ? 'lg:-mt-2' : ''}`}
               >
                 {/* Popular Badge */}
                 {isPopular && (
-                  <div className="absolute -top-3 sm:-top-4 left-1/2 transform -translate-x-1/2 z-10">
-                    <span className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold shadow-md">
-                      ⭐ Most Popular
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                    <span className="bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                      Most Popular
                     </span>
                   </div>
                 )}
 
                 {/* Card */}
-                <div className={`h-full bg-white rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden ${
-                  isPopular ? 'ring-2 sm:ring-3 ring-purple-500 ring-opacity-50' : ''
+                <div className={`h-full bg-white rounded-xl border-2 hover:shadow-lg transition-all duration-300 ${
+                  isPopular ? 'border-purple-500' : currentPlan ? 'border-green-500' : 'border-gray-200'
                 }`}>
-                  {/* Gradient Header */}
-                  <div className={`bg-gradient-to-br ${plan.gradient} p-4 sm:p-5 text-white`}>
-                    <div className="flex items-center justify-between mb-2 sm:mb-3">
-                      <Icon className="w-6 h-6 sm:w-8 sm:h-8" />
-                      {isPopular && (
-                        <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse" />
-                      )}
+                  {/* Header */}
+                  <div className="p-5 border-b border-gray-100">
+                    <div className={`w-10 h-10 bg-gradient-to-br ${plan.gradient} rounded-lg flex items-center justify-center mb-3`}>
+                      <Icon className="w-5 h-5 text-white" />
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold mb-1">{plan.name}</h3>
-                    <p className="text-white/90 text-[10px] sm:text-xs mb-3 sm:mb-4">{plan.description}</p>
+                    <h3 className="text-lg font-bold mb-1">{plan.name}</h3>
+                    <p className="text-gray-600 text-xs mb-3">{plan.description}</p>
                     
-                    <div className="mb-1.5">
-                      <span className="text-2xl sm:text-3xl md:text-4xl font-bold">{plan.price}</span>
+                    <div>
+                      <span className="text-3xl font-bold">{plan.price}</span>
                       {plan.period && (
-                        <span className="text-white/80 text-xs sm:text-sm md:text-base">{plan.period}</span>
+                        <span className="text-gray-500 text-sm">{plan.period}</span>
                       )}
                     </div>
                   </div>
 
                   {/* Features */}
-                  <div className="p-4 sm:p-5">
-                    <ul className="space-y-2 sm:space-y-2.5 mb-4 sm:mb-5">
+                  <div className="p-5">
+                    <ul className="space-y-2 mb-5">
                       {plan.features.map((feature, i) => (
-                        <li key={i} className="flex items-start gap-1.5 sm:gap-2">
-                          <div className={`mt-0.5 bg-gradient-to-r ${plan.gradient} rounded-full p-0.5 flex-shrink-0`}>
-                            <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" />
-                          </div>
-                          <span className="text-gray-700 text-[10px] sm:text-xs leading-tight">{feature}</span>
+                        <li key={i} className="flex items-start gap-2">
+                          <Check className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                          <span className="text-gray-700 text-xs">{feature}</span>
                         </li>
                       ))}
                     </ul>
 
                     {/* CTA Button */}
                     <Button 
-                      className={`w-full py-3 sm:py-4 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 ${
+                      className={`w-full py-2 rounded-lg text-sm font-medium transition-all ${
                         isFree || currentPlan
                           ? 'border border-gray-300 bg-gray-100 text-gray-500 cursor-not-allowed'
-                          : `bg-gradient-to-r ${plan.gradient} hover:shadow-lg hover:scale-105 text-white border-0`
+                          : `bg-gradient-to-r ${plan.gradient} hover:opacity-90 text-white border-0`
                       }`}
                       onClick={() => handleCheckout(plan.id)}
                       disabled={isFree || currentPlan || checkingOut !== null}
@@ -331,7 +319,7 @@ const SubscriptionNew = () => {
                           Processing...
                         </>
                       ) : (
-                        currentPlan ? 'Current Plan' : plan.cta
+                        currentPlan ? '✓ Current Plan' : plan.cta
                       )}
                     </Button>
                   </div>
@@ -341,37 +329,39 @@ const SubscriptionNew = () => {
           })}
         </div>
 
-        {/* Additional Info Section - Reduced to 80% */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg max-w-4xl mx-auto mb-6">
-          <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-pink-600 to-blue-600 bg-clip-text text-transparent text-center">
-            Need help choosing?
-          </h2>
-          <p className="text-gray-600 text-base mb-6 text-center">
-            Not sure which plan is right for you? Our team is here to help you find the perfect fit for your needs.
-          </p>
-          <div className="flex flex-wrap gap-3 justify-center">
-            <Button 
-              className="bg-gradient-to-r from-pink-500 to-purple-500 hover:shadow-lg text-white rounded-lg px-6 py-4 text-sm"
-              onClick={() => navigate('/enterprise')}
-            >
-              Talk to Sales
-            </Button>
-            <Button 
-              variant="outline"
-              className="border-2 rounded-lg px-6 py-4 text-sm"
-              onClick={() => navigate('/resources')}
-            >
-              View Documentation
-            </Button>
+        {/* Help Section - Match Pricing Page */}
+        <div className="mt-12 text-center">
+          <div className="bg-gray-50 rounded-xl p-6 max-w-2xl mx-auto border border-gray-200">
+            <h2 className="text-xl font-bold mb-2">
+              Need help choosing?
+            </h2>
+            <p className="text-gray-600 text-sm mb-4">
+              Not sure which plan is right for you? Our team is here to help.
+            </p>
+            <div className="flex flex-wrap gap-3 justify-center">
+              <Button 
+                className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-6 py-2 text-sm"
+                onClick={() => navigate('/enterprise')}
+              >
+                Talk to Sales
+              </Button>
+              <Button 
+                variant="outline"
+                className="border rounded-lg px-6 py-2 text-sm"
+                onClick={() => navigate('/resources')}
+              >
+                View Documentation
+              </Button>
+            </div>
           </div>
         </div>
 
-        {/* Secure Payment Info - Reduced to 80% */}
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 border border-blue-200">
-          <div className="flex items-start gap-2.5">
+        {/* Secure Payment Info */}
+        <div className="mt-6 bg-blue-50 rounded-lg p-4 border border-blue-200">
+          <div className="flex items-start gap-2">
             <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
             <div>
-              <h3 className="font-semibold text-gray-900 mb-1.5 text-sm">Secure Payment Processing</h3>
+              <h3 className="font-semibold text-gray-900 mb-1 text-sm">Secure Payment Processing</h3>
               <p className="text-gray-700 text-xs mb-2">
                 All payments are processed securely through Lemon Squeezy. We never store your payment information.
               </p>
