@@ -340,6 +340,21 @@ frontend:
         agent: "main"
         comment: "Completely rebuilt EnhancedUsersManagement component with comprehensive features: 1) Advanced filtering (search, status, role, sort by multiple fields), 2) User table with 6 action buttons per user (Edit, View Stats, Activity Logs, Login History, Password Reset, Delete), 3) Edit modal with full user profile editing including role, status, profile info, custom limits, admin notes, suspension reason, 4) Stats modal showing usage metrics (chatbots, messages, sources), activity stats (30-day activities, 7-day messages), 5) Activity logs modal displaying all user actions with timestamps, 6) Login history modal showing all login attempts with IP, user agent, location, success/failure, 7) Password reset modal for admin password resets, 8) Bulk actions modal supporting delete, role change, status change, export operations, 9) Pagination and checkbox selection (select all/individual), 10) Beautiful UI with gradient purple/pink theme, status badges (active/suspended/banned), role badges (user/moderator/admin), usage stats display. All modals fully functional with proper API integration."
 
+  - task: "Account Settings Page"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/AccountSettings.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Account Settings page with profile update, email change, password change, and account deletion functionality"
+      - working: true
+        agent: "testing"
+        comment: "✅ TESTED: Account Settings page fully functional. All features working correctly: 1) Profile Update: Successfully changed name from 'User demo-use' to 'John Smith' with success toast notification, 2) Email Update: Successfully updated email to 'test-user@botsmith.com' with success notification, 3) Password Change: Successfully changed password with proper validation and field clearing after success, 4) Delete Account Dialog: Dialog opens correctly with proper warning message, lists all data to be deleted (chatbots, sources, conversations, profile), Cancel button works properly. Minor: HTML validation warning in delete dialog (ul inside p tag) but doesn't affect functionality. All buttons responsive, forms handle validation properly, navigation works correctly."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
