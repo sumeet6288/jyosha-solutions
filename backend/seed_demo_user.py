@@ -12,7 +12,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 async def seed_demo_user():
     # Get MongoDB URL and DB name from environment
     mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
-    db_name = os.environ.get('DB_NAME', 'chatbase_db')
+    db_name = os.environ.get('DB_NAME', 'botsmith_db')
     
     # Connect to MongoDB
     client = AsyncIOMotorClient(mongo_url)
