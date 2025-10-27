@@ -220,28 +220,97 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-24 px-8 relative z-10">
-        <div className="max-w-[95%] mx-auto">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-purple-900 to-pink-900 bg-clip-text text-transparent">Build Smarter, Support Better, Grow Faster</h2>
-            <p className="text-xl text-gray-600">A complete platform to craft, deploy and refine your AI-Powered agent ecosystem.</p>
+      {/* Features Section - Ultra Premium */}
+      <section className="py-32 px-4 sm:px-8 relative z-10 overflow-hidden">
+        {/* Premium Background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-purple-50/30 to-white pointer-events-none"></div>
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
+          <div className="absolute top-40 right-10 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-20 left-1/3 w-72 h-72 bg-cyan-300 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* Premium Header */}
+          <div className="text-center mb-20 animate-fade-in-up px-4">
+            <div className="inline-block mb-6">
+              <span className="px-6 py-3 rounded-full bg-gradient-to-r from-purple-100 via-pink-100 to-purple-100 text-transparent bg-clip-text font-semibold text-sm tracking-wider uppercase border border-purple-200/50 shadow-lg shadow-purple-500/10">
+                Enterprise-Grade Features
+              </span>
+            </div>
+            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-purple-900 to-gray-900 bg-clip-text text-transparent leading-tight">
+              Build Smarter,<br />Support Better,<br />Grow Faster
+            </h2>
+            <p className="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              A complete platform to craft, deploy and refine your AI-Powered agent ecosystem.
+            </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
+
+          {/* Premium Feature Cards */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
             {features.map((feature, index) => (
               <div 
                 key={index} 
-                className="group p-8 rounded-2xl border border-gray-200 hover:border-transparent hover:shadow-2xl transition-all duration-500 bg-white/50 backdrop-blur-sm relative overflow-hidden animate-fade-in-up"
+                className="group relative animate-fade-in-up"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-500" style={{ backgroundImage: `linear-gradient(to bottom right, var(--tw-gradient-stops))` }}></div>
-                <div className={`w-12 h-12 bg-gradient-to-br ${feature.gradient} rounded-xl flex items-center justify-center text-white mb-4 transform group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300 shadow-lg`}>
-                  {feature.icon}
+                {/* Glow Effect */}
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 rounded-3xl opacity-0 group-hover:opacity-100 blur-xl transition-all duration-700 group-hover:duration-300"></div>
+                
+                {/* Card */}
+                <div className="relative h-full bg-white/80 backdrop-blur-xl rounded-3xl border border-gray-200/50 p-10 shadow-xl hover:shadow-2xl transition-all duration-500 group-hover:border-purple-200/50 group-hover:translate-y-[-8px]">
+                  {/* Gradient Overlay on Hover */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 via-transparent to-pink-50/50 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  {/* Content */}
+                  <div className="relative z-10">
+                    {/* Icon Container with Premium Styling */}
+                    <div className="relative mb-8">
+                      <div className={`w-20 h-20 bg-gradient-to-br ${feature.gradient} rounded-2xl flex items-center justify-center text-white shadow-2xl transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 relative overflow-hidden`}>
+                        {/* Icon Shimmer Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                        <div className="relative z-10 transform group-hover:scale-110 transition-transform duration-300">
+                          {feature.icon}
+                        </div>
+                      </div>
+                      {/* Icon Glow */}
+                      <div className={`absolute inset-0 w-20 h-20 bg-gradient-to-br ${feature.gradient} rounded-2xl opacity-0 group-hover:opacity-30 blur-2xl transition-all duration-500`}></div>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-2xl font-bold mb-4 text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:via-pink-600 group-hover:to-purple-600 group-hover:bg-clip-text transition-all duration-300">
+                      {feature.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-gray-600 leading-relaxed text-lg group-hover:text-gray-700 transition-colors duration-300">
+                      {feature.description}
+                    </p>
+
+                    {/* Premium Arrow Indicator */}
+                    <div className="mt-6 flex items-center text-purple-600 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                      <span className="text-sm font-semibold tracking-wide">Learn More</span>
+                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform duration-300" />
+                    </div>
+                  </div>
+
+                  {/* Corner Accents */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-100/50 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-pink-100/50 to-transparent rounded-tr-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </div>
-                <h3 className="text-xl font-semibold mb-3 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300">{feature.title}</h3>
-                <p className="text-gray-600 group-hover:text-gray-700 transition-colors">{feature.description}</p>
               </div>
             ))}
+          </div>
+
+          {/* Premium Bottom CTA */}
+          <div className="mt-20 text-center animate-fade-in-up">
+            <p className="text-gray-600 text-lg mb-6">Trusted by industry leaders worldwide</p>
+            <div className="flex justify-center items-center gap-3">
+              {[1, 2, 3, 4, 5].map((_, i) => (
+                <Star key={i} className="w-6 h-6 fill-yellow-400 text-yellow-400" />
+              ))}
+              <span className="ml-3 text-gray-900 font-semibold text-lg">4.9/5 from 9000+ customers</span>
+            </div>
           </div>
         </div>
       </section>
