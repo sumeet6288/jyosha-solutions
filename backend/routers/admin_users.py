@@ -62,9 +62,13 @@ async def get_enhanced_users(
         sort_direction = -1 if sortOrder == "desc" else 1
         users = await users_collection.find(query).sort(sortBy, sort_direction).to_list(length=1000)
         
+        print(f"DEBUG: Found {len(users)} users with query: {query}")
+        print(f"DEBUG: First user (if exists): {users[0] if users else 'No users'}")
+        
         # Enhance with statistics
         enhanced_users = []
         for user in users:
+            print(f"DEBUG: Processing user: {user.get('email')}")
             user_id = user.get('id')
             
             # Count chatbots
