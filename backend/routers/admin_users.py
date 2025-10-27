@@ -25,6 +25,27 @@ def init_router(db: AsyncIOMotorDatabase):
 # USER MANAGEMENT ENDPOINTS
 # ============================================================================
 
+@router.get("/test-db")
+async def test_database():
+    """Test database connection and user count"""
+    if db_instance is None:
+        return {"error": "Database not initialized", "db_instance": None}
+    
+    try:
+        users_collection = db_instance['users']
+        count = await users_collection.count_documents({})
+        all_users = await users_collection.find({}).to_list(length=10)
+        
+        return {
+            "database_connected": True,
+            "collection_name": users_collection.name,
+            "total_users": count,
+            "sample_users": [{"id": u.get("id"), "email": u.get("email")} for u in all_users]
+        }
+    except Exception as e:
+        return {"error": str(e)}
+
+
 @router.get("/enhanced")
 async def get_enhanced_users(
     sortBy: str = Query("created_at", description="Field to sort by"),
