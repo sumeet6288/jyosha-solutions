@@ -332,25 +332,25 @@ const AccountSettings = () => {
         </div>
 
         {/* Danger Zone */}
-        <div className="mb-6">
+        <div className="mb-6 animate-scale-in">
           <div className="text-center mb-4">
-            <span className="text-red-600 font-bold text-sm">DANGER ZONE</span>
+            <span className="text-red-600 font-bold text-sm tracking-wider">⚠️ DANGER ZONE ⚠️</span>
           </div>
 
-          <div className="bg-white rounded-xl border-2 border-red-200 p-6">
+          <div className="bg-white rounded-xl border-2 border-red-200 p-6 shadow-md hover:shadow-xl transition-all duration-500 hover:border-red-400">
             <h2 className="text-xl font-bold text-red-600 mb-2">Delete account</h2>
             <p className="text-gray-600 text-sm mb-6">
               Once you delete your account, there is no going back. Please be certain. All
               your uploaded data and trained agents will be deleted.{' '}
-              <span className="font-semibold">This action is not reversible</span>
+              <span className="font-semibold text-red-600">This action is not reversible</span>
             </p>
 
             <Button
               onClick={() => setIsDeleteDialogOpen(true)}
               variant="destructive"
-              className="bg-red-600 hover:bg-red-700"
+              className="bg-red-600 hover:bg-red-700 shadow-md hover:shadow-lg transition-all duration-300"
             >
-              Delete
+              Delete Account
             </Button>
           </div>
         </div>
@@ -358,19 +358,26 @@ const AccountSettings = () => {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-red-600 text-2xl">⚠️ Are you absolutely sure?</DialogTitle>
+            <DialogDescription className="text-base pt-2">
               This action cannot be undone. This will permanently delete your account and
-              remove all your data from our servers.
+              remove all your data from our servers including:
+              <ul className="list-disc list-inside mt-2 space-y-1 text-gray-700">
+                <li>All your chatbots</li>
+                <li>All uploaded sources and files</li>
+                <li>All conversation history</li>
+                <li>Your profile information</li>
+              </ul>
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
+          <DialogFooter className="gap-2 sm:gap-0">
             <Button
               variant="outline"
               onClick={() => setIsDeleteDialogOpen(false)}
               disabled={isDeleting}
+              className="transition-all duration-300"
             >
               Cancel
             </Button>
@@ -378,8 +385,9 @@ const AccountSettings = () => {
               variant="destructive"
               onClick={handleDeleteAccount}
               disabled={isDeleting}
+              className="bg-red-600 hover:bg-red-700 transition-all duration-300"
             >
-              {isDeleting ? 'Deleting...' : 'Delete Account'}
+              {isDeleting ? 'Deleting...' : 'Yes, Delete My Account'}
             </Button>
           </DialogFooter>
         </DialogContent>
