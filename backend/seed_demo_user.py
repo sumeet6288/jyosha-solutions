@@ -10,13 +10,16 @@ from passlib.context import CryptContext
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 async def seed_demo_user():
-    # Get MongoDB URL from environment
+    # Get MongoDB URL and DB name from environment
     mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
+    db_name = os.environ.get('DB_NAME', 'chatbase_db')
     
     # Connect to MongoDB
     client = AsyncIOMotorClient(mongo_url)
-    db = client.botsmith
+    db = client[db_name]
     users_collection = db.users
+    
+    print(f"Using database: {db_name}")
     
     # Check if demo user already exists
     existing_user = await users_collection.find_one({"email": "demo-user-123@botsmith.com"})
