@@ -36,11 +36,11 @@ async def get_enhanced_users(
     """
     Get enhanced user list with all details for admin panel
     """
+    if db_instance is None:
+        logger.error("Database not initialized in admin_users router")
+        return {"success": False, "users": [], "total": 0, "error": "Database not initialized"}
+    
     try:
-        if db_instance is None:
-            logger.error("Database not initialized in admin_users router")
-            raise HTTPException(status_code=500, detail="Database not initialized")
-        
         users_collection = db_instance['users']
         chatbots_collection = db_instance['chatbots']
         messages_collection = db_instance['messages']
@@ -58,13 +58,9 @@ async def get_enhanced_users(
                 {'email': {'$regex': search, '$options': 'i'}}
             ]
         
-        logger.info(f"Fetching users with query: {query}, sortBy: {sortBy}, sortOrder: {sortOrder}")
-        
         # Get users
         sort_direction = -1 if sortOrder == "desc" else 1
         users = await users_collection.find(query).sort(sortBy, sort_direction).to_list(length=1000)
-        
-        logger.info(f"Found {len(users)} users in database")
         
         # Enhance with statistics
         enhanced_users = []
