@@ -98,15 +98,24 @@ async def get_enhanced_users(
             # Count chatbots
             chatbots_count = await chatbots_collection.count_documents({'user_id': user_id})
             
-            # Count messages
-            messages_count = await messages_collection.count_documents({'chatbot_id': {'$in': [
-                bot['id'] async for bot in chatbots_collection.find({'user_id': user_id})
-            ]}})
+            # Get all chatbot IDs for this user first
+            user_chatbot_ids = []
+            async for bot in chatbots_collection.find({'user_id': user_id}, {'id': 1}):
+                user_chatbot_ids.append(bot['id'])
             
-            # Count sources
-            sources_count = await sources_collection.count_documents({'chatbot_id': {'$in': [
-                bot['id'] async for bot in chatbots_collection.find({'user_id': user_id})
-            ]}})
+            # Count messages for all chatbots
+            messages_count = 0
+            if user_chatbot_ids:
+                messages_count = await messages_collection.count_documents({
+                    'chatbot_id': {'$in': user_chatbot_ids}
+                })
+            
+            # Count sources for all chatbots
+            sources_count = 0
+            if user_chatbot_ids:
+                sources_count = await sources_collection.count_documents({
+                    'chatbot_id': {'$in': user_chatbot_ids}
+                })
             
             enhanced_users.append({
                 'user_id': user.get('id'),
