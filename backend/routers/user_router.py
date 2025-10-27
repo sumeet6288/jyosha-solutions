@@ -14,6 +14,22 @@ def init_router(db):
     users_collection = db.users
 
 
+@router.get("/profile", response_model=UserResponse)
+async def get_profile(current_user: User = Depends(get_mock_user)):
+    """Get current user profile information."""
+    return UserResponse(
+        id=current_user.id,
+        name=current_user.name,
+        email=current_user.email,
+        created_at=current_user.created_at,
+        role=current_user.role,
+        status=current_user.status,
+        phone=current_user.phone,
+        avatar_url=current_user.avatar_url,
+        last_login=current_user.last_login
+    )
+
+
 @router.put("/profile", response_model=UserResponse)
 async def update_profile(user_update: UserUpdate, current_user: User = Depends(get_mock_user)):
     """Update user profile information."""
