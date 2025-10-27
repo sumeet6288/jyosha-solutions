@@ -68,7 +68,7 @@ async def get_enhanced_users(
         total_users = await users_collection.count_documents({})
         
         if total_users == 0:
-            return {"success": True, "users": [], "total": 0, "message": "No users in database"}
+            return {"success": True, "users": [], "total": 0, "message": "No users in database", "debug": "count is zero"}
         
         chatbots_collection = db_instance['chatbots']
         messages_collection = db_instance['messages']
