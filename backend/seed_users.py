@@ -30,14 +30,14 @@ async def seed_users():
     db = client[os.environ['DB_NAME']]
     users_collection = db.users
     
-    # Check if users already exist
+    # Check if we already have enough users (more than just the demo user)
     existing_count = await users_collection.count_documents({})
-    if existing_count > 0:
+    if existing_count > 1:
         print(f"Database already has {existing_count} users. Skipping seed.")
         client.close()
         return
     
-    print("Creating demo users...")
+    print("Creating additional demo users...")
     
     # Create demo users
     users = []
