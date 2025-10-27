@@ -1475,22 +1475,30 @@ async def get_users_enhanced(
         if db_instance is None:
             raise HTTPException(status_code=500, detail="Database not initialized")
         
+        users_collection = db_instance['users']
         chatbots_collection = db_instance['chatbots']
         messages_collection = db_instance['messages']
         conversations_collection = db_instance['conversations']
+        sources_collection = db_instance['sources']
         
-        user_ids = await chatbots_collection.distinct('user_id')
+        # Get all users from the users collection
+        all_users = await users_collection.find({}).to_list(length=1000)
         
         users_data = []
-        for user_id in user_ids:
+        for user in all_users:
+            user_id = user.get('id')
+            
+            # Count chatbots for this user
             chatbots_count = await chatbots_collection.count_documents({"user_id": user_id})
             
+            # Get user's chatbot IDs
             user_chatbots = []
-            async for bot in chatbots_collection.find({"user_id": user_id}):
+            async for bot in chatbots_collection.find({"user_id": user_id}, {"id": 1}):
                 user_chatbots.append(bot.get('id'))
             
             messages_count = 0
             conversations_count = 0
+            sources_count = 0
             last_message_time = None
             
             if user_chatbots:
@@ -1498,6 +1506,9 @@ async def get_users_enhanced(
                     {"chatbot_id": {"$in": user_chatbots}}
                 )
                 conversations_count = await conversations_collection.count_documents(
+                    {"chatbot_id": {"$in": user_chatbots}}
+                )
+                sources_count = await sources_collection.count_documents(
                     {"chatbot_id": {"$in": user_chatbots}}
                 )
                 
@@ -1509,34 +1520,38 @@ async def get_users_enhanced(
                 if last_message:
                     last_message_time = last_message.get('timestamp')
             
-            first_chatbot = await chatbots_collection.find_one(
-                {"user_id": user_id},
-                sort=[("created_at", 1)]
-            )
-            
             users_data.append({
                 "user_id": user_id,
-                "email": f"{user_id}@botsmith.co",
-                "name": f"User {user_id[:8]}",
+                "email": user.get('email', f"{user_id}@botsmith.com"),
+                "name": user.get('name', f"User {user_id[:8]}"),
+                "role": user.get('role', 'user'),
+                "status": user.get('status', 'active'),
+                "phone": user.get('phone'),
+                "avatar_url": user.get('avatar_url'),
+                "company": user.get('company'),
+                "job_title": user.get('job_title'),
+                "tags": user.get('tags', []),
                 "chatbots_count": chatbots_count,
                 "messages_count": messages_count,
                 "conversations_count": conversations_count,
-                "created_at": first_chatbot.get('created_at') if first_chatbot else None,
-                "last_active": last_message_time,
-                "plan": "Free",
-                "status": "active",
-                "max_chatbots": 1,
-                "max_messages": 100,
-                "max_file_uploads": 5,
-                "max_website_sources": 2,
-                "max_text_sources": 5,
-                "tags": ["New User"] if chatbots_count <= 1 else []
+                "sources_count": sources_count,
+                "created_at": user.get('created_at'),
+                "last_login": user.get('last_login'),
+                "login_count": user.get('login_count', 0),
+                "last_ip": user.get('last_ip'),
+                "last_active": last_message_time or user.get('last_login'),
+                "suspension_reason": user.get('suspension_reason'),
+                "suspension_until": user.get('suspension_until'),
+                "custom_max_chatbots": user.get('custom_max_chatbots'),
+                "custom_max_messages": user.get('custom_max_messages'),
+                "custom_max_file_uploads": user.get('custom_max_file_uploads'),
+                "admin_notes": user.get('admin_notes')
             })
         
         # Sort users
         if sortBy == "created_at":
             users_data.sort(key=lambda x: x.get(sortBy, ''), reverse=(sortOrder == 'desc'))
-        elif sortBy in ["messages_count", "chatbots_count"]:
+        elif sortBy in ["messages_count", "chatbots_count", "login_count"]:
             users_data.sort(key=lambda x: x.get(sortBy, 0), reverse=(sortOrder == 'desc'))
         
         return {
@@ -1544,8 +1559,8 @@ async def get_users_enhanced(
             "total": len(users_data)
         }
     except Exception as e:
-        print(f"Error in get_users_enhanced: {str(e)}")
-        return {"users": [], "total": 0}
+        logger.error(f"Error in get_users_enhanced: {str(e)}")
+        return {"users": [], "total": 0, "error": str(e)}
 
 
 @router.get("/users/{user_id}/stats")
