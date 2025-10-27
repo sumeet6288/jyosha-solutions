@@ -261,7 +261,7 @@ The BotSmith Admin Dashboard provides comprehensive management capabilities for 
 ## Usage Guide
 
 ### Accessing Admin Dashboard
-1. Navigate to `https://depend-installer.preview.emergentagent.com/admin`
+1. Navigate to `https://install-preview-1.preview.emergentagent.com/admin`
 2. Dashboard loads with overview tab by default
 3. Use tab navigation to access different sections
 
