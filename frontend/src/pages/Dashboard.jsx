@@ -195,6 +195,39 @@ const Dashboard = () => {
           <p className="text-lg text-gray-600">Here's what's happening with your AI chatbots today</p>
         </div>
 
+        {/* Selected Plan Banner */}
+        {selectedPlanInfo && (
+          <div 
+            onClick={() => navigate('/subscription')}
+            className="mb-6 p-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl shadow-lg cursor-pointer hover:shadow-xl transition-all duration-300 animate-fade-in-up border-2 border-purple-600 hover:scale-[1.02]"
+          >
+            <div className="flex items-center justify-between text-white">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                  <Sparkles className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg">
+                    🎉 {selectedPlanInfo.name} Plan Selected!
+                  </h3>
+                  <p className="text-sm text-white/90">
+                    Click here to complete your upgrade to {selectedPlanInfo.name} ({selectedPlanInfo.price}{selectedPlanInfo.period})
+                  </p>
+                </div>
+              </div>
+              <Button 
+                className="bg-white text-purple-600 hover:bg-gray-100 font-semibold"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate('/subscription');
+                }}
+              >
+                Complete Upgrade →
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Stats Cards - Matching uploaded UI design - Reduced to 80% */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
           {/* Create Agent Card - FIRST POSITION */}
