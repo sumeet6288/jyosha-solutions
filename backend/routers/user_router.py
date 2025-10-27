@@ -118,16 +118,49 @@ async def change_password(password_data: PasswordChange, current_user: User = De
 async def delete_account(current_user: User = Depends(get_mock_user)):
     """Delete user account and all associated data."""
     email = current_user.email
+    user_id = current_user.id
     
-    # Delete user
-    result = await users_collection.delete_one({"email": email})
+    # Get database collections
+    from server import db
     
-    if result.deleted_count == 0:
+    try:
+        # Delete associated chatbots
+        chatbots_result = await db.chatbots.delete_many({"user_id": user_id})
+        print(f"Deleted {chatbots_result.deleted_count} chatbots")
+        
+        # Delete associated sources
+        sources_result = await db.sources.delete_many({"user_id": user_id})
+        print(f"Deleted {sources_result.deleted_count} sources")
+        
+        # Delete associated conversations
+        conversations_result = await db.conversations.delete_many({"user_id": user_id})
+        print(f"Deleted {conversations_result.deleted_count} conversations")
+        
+        # Delete associated messages
+        messages_result = await db.messages.delete_many({"user_id": user_id})
+        print(f"Deleted {messages_result.deleted_count} messages")
+        
+        # Finally, delete user
+        result = await users_collection.delete_one({"email": email})
+        
+        if result.deleted_count == 0:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
+        
+        return {
+            "message": "Account and all associated data deleted successfully",
+            "deleted": {
+                "chatbots": chatbots_result.deleted_count,
+                "sources": sources_result.deleted_count,
+                "conversations": conversations_result.deleted_count,
+                "messages": messages_result.deleted_count
+            }
+        }
+    except Exception as e:
+        print(f"Error deleting account: {str(e)}")
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to delete account and associated data"
         )
-    
-    # TODO: Delete associated chatbots, sources, conversations, etc.
-    
-    return {"message": "Account deleted successfully"}
