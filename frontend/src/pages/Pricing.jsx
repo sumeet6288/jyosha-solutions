@@ -90,108 +90,97 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-blue-50 to-purple-50">
+    <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-200 z-50">
-        <div className="max-w-[95%] mx-auto px-8 py-4 flex items-center justify-between">
+      <nav className="border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">B</span>
+            <div className="w-7 h-7 bg-black rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">B</span>
             </div>
-            <span className="text-xl font-semibold">BotSmith</span>
+            <span className="text-lg font-semibold">BotSmith</span>
           </div>
-          <div className="hidden md:flex items-center gap-8">
-            <button onClick={() => navigate('/pricing')} className="text-black font-medium">Pricing</button>
-            <button onClick={() => navigate('/enterprise')} className="text-gray-700 hover:text-black transition-colors">Enterprise</button>
-            <button onClick={() => navigate('/resources')} className="text-gray-700 hover:text-black transition-colors">Resources</button>
+          <div className="hidden md:flex items-center gap-6">
+            <button onClick={() => navigate('/pricing')} className="text-black text-sm font-medium">Pricing</button>
+            <button onClick={() => navigate('/enterprise')} className="text-gray-600 hover:text-black transition-colors text-sm">Enterprise</button>
+            <button onClick={() => navigate('/resources')} className="text-gray-600 hover:text-black transition-colors text-sm">Resources</button>
           </div>
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" onClick={() => navigate('/signin')}>Sign in</Button>
-            <Button className="bg-black hover:bg-gray-800 text-white rounded-lg" onClick={() => navigate('/dashboard')}>
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" onClick={() => navigate('/signin')} className="text-sm">Sign in</Button>
+            <Button className="bg-black hover:bg-gray-800 text-white rounded-lg text-sm" onClick={() => navigate('/dashboard')}>
               Try for Free
             </Button>
           </div>
         </div>
       </nav>
 
-      <div className="pt-32 pb-20 px-8">
-        <div className="max-w-[95%] mx-auto">
+      <div className="py-12 px-4">
+        <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full text-white font-medium mb-6">
-              <Sparkles className="w-4 h-4" />
-              <span>Simple, Transparent Pricing</span>
-            </div>
-            <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
+          <div className="text-center mb-10">
+            <h1 className="text-4xl font-bold mb-3 text-gray-900">
               Choose Your Perfect Plan
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-base text-gray-600">
               Start free and scale as you grow. No hidden fees, cancel anytime.
             </p>
           </div>
 
           {/* Pricing Cards */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
             {plans.map((plan, index) => {
               const Icon = plan.icon;
               return (
                 <div 
                   key={index} 
-                  className={`relative group ${
-                    plan.popular ? 'lg:-mt-4 lg:mb-4' : ''
-                  }`}
+                  className={`relative ${plan.popular ? 'lg:-mt-2' : ''}`}
                 >
                   {/* Popular Badge */}
                   {plan.popular && (
-                    <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 z-10">
-                      <span className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
-                        ⭐ Most Popular
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                      <span className="bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                        Most Popular
                       </span>
                     </div>
                   )}
 
                   {/* Card */}
-                  <div className={`h-full bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden ${
-                    plan.popular ? 'ring-4 ring-purple-500 ring-opacity-50' : ''
+                  <div className={`h-full bg-white rounded-xl border-2 hover:shadow-lg transition-all duration-300 ${
+                    plan.popular ? 'border-purple-500' : 'border-gray-200'
                   }`}>
-                    {/* Gradient Header */}
-                    <div className={`bg-gradient-to-br ${plan.gradient} p-8 text-white`}>
-                      <div className="flex items-center justify-between mb-4">
-                        <Icon className="w-10 h-10" />
-                        {plan.popular && (
-                          <Sparkles className="w-6 h-6 animate-pulse" />
-                        )}
+                    {/* Header */}
+                    <div className="p-5 border-b border-gray-100">
+                      <div className={`w-10 h-10 bg-gradient-to-br ${plan.gradient} rounded-lg flex items-center justify-center mb-3`}>
+                        <Icon className="w-5 h-5 text-white" />
                       </div>
-                      <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                      <p className="text-white/90 text-sm mb-6">{plan.description}</p>
+                      <h3 className="text-lg font-bold mb-1">{plan.name}</h3>
+                      <p className="text-gray-600 text-xs mb-3">{plan.description}</p>
                       
-                      <div className="mb-2">
-                        <span className="text-5xl font-bold">{plan.price}</span>
+                      <div>
+                        <span className="text-3xl font-bold">{plan.price}</span>
                         {plan.period && (
-                          <span className="text-white/80 text-lg">{plan.period}</span>
+                          <span className="text-gray-500 text-sm">{plan.period}</span>
                         )}
                       </div>
                     </div>
 
                     {/* Features */}
-                    <div className="p-8">
-                      <ul className="space-y-4 mb-8">
+                    <div className="p-5">
+                      <ul className="space-y-2 mb-5">
                         {plan.features.map((feature, i) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <div className={`mt-0.5 bg-gradient-to-r ${plan.gradient} rounded-full p-1`}>
-                              <Check className="w-4 h-4 text-white" />
-                            </div>
-                            <span className="text-gray-700 text-sm">{feature}</span>
+                          <li key={i} className="flex items-start gap-2">
+                            <Check className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-gray-700 text-xs">{feature}</span>
                           </li>
                         ))}
                       </ul>
 
                       {/* CTA Button */}
                       <Button 
-                        className={`w-full py-6 rounded-xl font-semibold text-base transition-all duration-300 ${
+                        className={`w-full py-2 rounded-lg text-sm font-medium transition-all ${
                           plan.ctaVariant === 'default'
-                            ? `bg-gradient-to-r ${plan.gradient} hover:shadow-lg hover:scale-105 text-white border-0`
-                            : 'border-2 border-gray-300 hover:border-gray-400 bg-white text-gray-700 hover:bg-gray-50'
+                            ? `bg-gradient-to-r ${plan.gradient} hover:opacity-90 text-white border-0`
+                            : 'border border-gray-300 hover:border-gray-400 bg-white text-gray-700 hover:bg-gray-50'
                         }`}
                         onClick={() => plan.name === 'Enterprise' ? navigate('/enterprise') : navigate('/dashboard')}
                       >
@@ -204,25 +193,25 @@ const Pricing = () => {
             })}
           </div>
 
-          {/* FAQ or Additional Info */}
-          <div className="mt-20 text-center">
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-12 shadow-xl max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-pink-600 to-blue-600 bg-clip-text text-transparent">
+          {/* Help Section */}
+          <div className="mt-12 text-center">
+            <div className="bg-gray-50 rounded-xl p-6 max-w-2xl mx-auto border border-gray-200">
+              <h2 className="text-xl font-bold mb-2">
                 Need help choosing?
               </h2>
-              <p className="text-gray-600 text-lg mb-8">
-                Not sure which plan is right for you? Our team is here to help you find the perfect fit for your needs.
+              <p className="text-gray-600 text-sm mb-4">
+                Not sure which plan is right for you? Our team is here to help.
               </p>
-              <div className="flex flex-wrap gap-4 justify-center">
+              <div className="flex flex-wrap gap-3 justify-center">
                 <Button 
-                  className="bg-gradient-to-r from-pink-500 to-purple-500 hover:shadow-lg text-white rounded-xl px-8 py-6"
+                  className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-6 py-2 text-sm"
                   onClick={() => navigate('/enterprise')}
                 >
                   Talk to Sales
                 </Button>
                 <Button 
                   variant="outline"
-                  className="border-2 rounded-xl px-8 py-6"
+                  className="border rounded-lg px-6 py-2 text-sm"
                   onClick={() => navigate('/resources')}
                 >
                   View Documentation
