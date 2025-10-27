@@ -363,14 +363,18 @@ const AccountSettings = () => {
           <DialogHeader>
             <DialogTitle className="text-red-600 text-2xl">⚠️ Are you absolutely sure?</DialogTitle>
             <DialogDescription className="text-base pt-2">
-              This action cannot be undone. This will permanently delete your account and
-              remove all your data from our servers including:
-              <ul className="list-disc list-inside mt-2 space-y-1 text-gray-700">
-                <li>All your chatbots</li>
-                <li>All uploaded sources and files</li>
-                <li>All conversation history</li>
-                <li>Your profile information</li>
-              </ul>
+              <div>
+                <p className="mb-2">
+                  This action cannot be undone. This will permanently delete your account and
+                  remove all your data from our servers including:
+                </p>
+                <ul className="list-disc list-inside mt-2 space-y-1 text-gray-700">
+                  <li>All your chatbots</li>
+                  <li>All uploaded sources and files</li>
+                  <li>All conversation history</li>
+                  <li>Your profile information</li>
+                </ul>
+              </div>
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2 sm:gap-0">
