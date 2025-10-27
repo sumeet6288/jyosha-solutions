@@ -20,6 +20,7 @@ const Dashboard = () => {
   const [usageStats, setUsageStats] = useState(null);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [upgradeContext, setUpgradeContext] = useState({});
+  const [selectedPlanInfo, setSelectedPlanInfo] = useState(null);
 
   useEffect(() => {
     loadData();
