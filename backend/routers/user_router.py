@@ -17,6 +17,8 @@ def init_router(db):
 @router.put("/profile", response_model=UserResponse)
 async def update_profile(user_update: UserUpdate, current_user: User = Depends(get_mock_user)):
     """Update user profile information."""
+    email = current_user.email
+    
     # Check if new email is already taken
     if user_update.email and user_update.email != email:
         existing_user = await users_collection.find_one({"email": user_update.email})
