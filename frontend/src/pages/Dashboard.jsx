@@ -130,9 +130,16 @@ const Dashboard = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50 flex items-center justify-center">
         <div className="relative">
-          <div className="w-20 h-20 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
-          <div className="absolute inset-0 w-20 h-20 border-4 border-transparent border-t-pink-600 rounded-full animate-spin animation-delay-300"></div>
+          {/* Outer rotating ring */}
+          <div className="w-24 h-24 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+          {/* Middle rotating ring */}
+          <div className="absolute inset-0 w-24 h-24 border-4 border-transparent border-t-pink-600 rounded-full animate-spin animation-delay-300" style={{ animationDuration: '1.2s' }}></div>
+          {/* Inner pulsing circle */}
+          <div className="absolute inset-0 m-auto w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full animate-pulse"></div>
+          {/* Glow effect */}
+          <div className="absolute inset-0 m-auto w-20 h-20 bg-purple-400 rounded-full blur-xl opacity-30 animate-pulse"></div>
         </div>
+        <p className="absolute mt-32 text-lg font-semibold text-gray-700 animate-pulse">Loading your dashboard...</p>
       </div>
     );
   }
