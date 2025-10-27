@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from models import UserResponse, UserUpdate, PasswordChange
-from auth import get_current_user_email, verify_password, get_password_hash
+from models import UserResponse, UserUpdate, PasswordChange, User
+from auth import get_mock_user, verify_password, get_password_hash
 from datetime import datetime, timezone
 
 router = APIRouter(prefix="/user", tags=["User Management"])
@@ -15,7 +15,7 @@ def init_router(db):
 
 
 @router.put("/profile", response_model=UserResponse)
-async def update_profile(user_update: UserUpdate, email: str = Depends(get_current_user_email)):
+async def update_profile(user_update: UserUpdate, current_user: User = Depends(get_mock_user)):
     """Update user profile information."""
     # Check if new email is already taken
     if user_update.email and user_update.email != email:
