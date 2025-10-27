@@ -182,7 +182,19 @@ const Pricing = () => {
                             ? `bg-gradient-to-r ${plan.gradient} hover:opacity-90 text-white border-0`
                             : 'border border-gray-300 hover:border-gray-400 bg-white text-gray-700 hover:bg-gray-50'
                         }`}
-                        onClick={() => plan.name === 'Enterprise' ? navigate('/enterprise') : navigate('/dashboard')}
+                        onClick={() => {
+                          if (plan.name === 'Enterprise') {
+                            navigate('/enterprise');
+                          } else {
+                            // Store selected plan in localStorage
+                            localStorage.setItem('selectedPlan', JSON.stringify({
+                              name: plan.name,
+                              price: plan.price,
+                              period: plan.period
+                            }));
+                            navigate('/dashboard');
+                          }
+                        }}
                       >
                         {plan.cta}
                       </Button>
