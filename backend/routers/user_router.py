@@ -80,8 +80,10 @@ async def update_profile(user_update: UserUpdate, current_user: User = Depends(g
 
 
 @router.put("/password")
-async def change_password(password_data: PasswordChange, email: str = Depends(get_current_user_email)):
+async def change_password(password_data: PasswordChange, current_user: User = Depends(get_mock_user)):
     """Change user password."""
+    email = current_user.email
+    
     # Get user
     user_doc = await users_collection.find_one({"email": email})
     if not user_doc:
