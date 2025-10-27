@@ -32,13 +32,14 @@ const Dashboard = () => {
     if (selectedPlan) {
       try {
         const plan = JSON.parse(selectedPlan);
+        setSelectedPlanInfo(plan);
         // Show notification about selected plan
         toast({
           title: `${plan.name} Plan Selected!`,
-          description: `You've selected the ${plan.name} plan (${plan.price}${plan.period}). Go to Subscription page to complete the upgrade.`,
+          description: `You've selected the ${plan.name} plan (${plan.price}${plan.period}). Click the banner below to complete the upgrade.`,
           duration: 8000,
         });
-        // Clear the selected plan from localStorage
+        // Clear the selected plan from localStorage after setting state
         localStorage.removeItem('selectedPlan');
       } catch (error) {
         console.error('Error parsing selected plan:', error);
