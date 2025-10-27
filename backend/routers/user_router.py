@@ -113,8 +113,10 @@ async def change_password(password_data: PasswordChange, current_user: User = De
 
 
 @router.delete("/account")
-async def delete_account(email: str = Depends(get_current_user_email)):
+async def delete_account(current_user: User = Depends(get_mock_user)):
     """Delete user account and all associated data."""
+    email = current_user.email
+    
     # Delete user
     result = await users_collection.delete_one({"email": email})
     
