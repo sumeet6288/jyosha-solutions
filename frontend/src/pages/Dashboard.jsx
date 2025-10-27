@@ -25,6 +25,24 @@ const Dashboard = () => {
     loadData();
     // Refresh user data when dashboard loads to get latest admin changes
     refreshUser();
+    
+    // Check if user selected a plan from pricing page
+    const selectedPlan = localStorage.getItem('selectedPlan');
+    if (selectedPlan) {
+      try {
+        const plan = JSON.parse(selectedPlan);
+        // Show notification about selected plan
+        toast({
+          title: `${plan.name} Plan Selected!`,
+          description: `You've selected the ${plan.name} plan (${plan.price}${plan.period}). Go to Subscription page to complete the upgrade.`,
+          duration: 8000,
+        });
+        // Clear the selected plan from localStorage
+        localStorage.removeItem('selectedPlan');
+      } catch (error) {
+        console.error('Error parsing selected plan:', error);
+      }
+    }
   }, []);
 
   const loadData = async () => {
