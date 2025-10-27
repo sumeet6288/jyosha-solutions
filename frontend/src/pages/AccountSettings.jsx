@@ -244,8 +244,8 @@ const AccountSettings = () => {
         </div>
 
         {/* Email */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-          <h2 className="text-xl font-bold mb-2">Email</h2>
+        <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6 shadow-md hover:shadow-xl transition-all duration-500 hover-lift">
+          <h2 className="text-xl font-bold mb-2 text-gray-900">Email</h2>
           <p className="text-gray-600 text-sm mb-6">
             Please enter the email address you want to sign in with
           </p>
@@ -256,14 +256,14 @@ const AccountSettings = () => {
               value={emailData.email}
               onChange={(e) => setEmailData({ ...emailData, email: e.target.value })}
               placeholder="Enter your email"
-              className="max-w-md"
+              className="max-w-md transition-all duration-300"
             />
           </div>
 
           <Button
             onClick={handleSaveEmail}
             disabled={isSavingEmail}
-            className="bg-gray-600 hover:bg-gray-700"
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-md hover:shadow-lg transition-all duration-300"
           >
             {isSavingEmail ? 'Saving...' : 'Save'}
           </Button>
