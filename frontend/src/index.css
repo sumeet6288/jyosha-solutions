@@ -79,6 +79,42 @@
   }
 }
 
+/* Premium Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth transitions for all interactive elements */
+button, a, input, textarea, select, [role="button"] {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Premium hover effects */
+button:not(:disabled):hover, 
+a:hover, 
+[role="button"]:not([aria-disabled="true"]):hover {
+  transform: translateY(-2px);
+}
+
+button:not(:disabled):active, 
+a:active, 
+[role="button"]:not([aria-disabled="true"]):active {
+  transform: translateY(0);
+}
+
+/* Smooth card transitions */
+.card, [class*="card"] {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.3s ease;
+}
+
 /* Custom animations */
 @keyframes blob {
   0% {
