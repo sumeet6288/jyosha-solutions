@@ -57,6 +57,10 @@ function AppContent() {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/enterprise" element={<Enterprise />} />
           <Route path="/resources" element={<Resources />} />
+          <Route path="/resources/documentation" element={<Documentation />} />
+          <Route path="/resources/api-reference" element={<APIReference />} />
+          <Route path="/resources/help-center" element={<HelpCenter />} />
+          <Route path="/resources/community" element={<Community />} />
           <Route path="/signin" element={<Navigate to="/dashboard" replace />} />
           <Route path="/signup" element={<Navigate to="/dashboard" replace />} />
           <Route path="/dashboard" element={<Dashboard />} />
