@@ -59,10 +59,34 @@ const Resources = () => {
   ];
 
   const categories = [
-    { title: 'Getting Started', count: '12 articles', color: 'from-purple-500 to-indigo-600' },
-    { title: 'Integration Guides', count: '8 articles', color: 'from-blue-500 to-cyan-600' },
-    { title: 'Best Practices', count: '15 articles', color: 'from-pink-500 to-rose-600' },
-    { title: 'Troubleshooting', count: '20 articles', color: 'from-green-500 to-emerald-600' }
+    { 
+      title: 'Getting Started', 
+      count: '4 articles', 
+      color: 'from-purple-500 to-indigo-600',
+      description: 'Learn the basics and create your first chatbot',
+      icon: '🚀'
+    },
+    { 
+      title: 'User Guides', 
+      count: '5 articles', 
+      color: 'from-blue-500 to-cyan-600',
+      description: 'Master chatbot management and customization',
+      icon: '📚'
+    },
+    { 
+      title: 'Best Practices', 
+      count: '15 articles', 
+      color: 'from-pink-500 to-rose-600',
+      description: 'Tips and tricks for optimal performance',
+      icon: '💡'
+    },
+    { 
+      title: 'Troubleshooting', 
+      count: '20 articles', 
+      color: 'from-green-500 to-emerald-600',
+      description: 'Quick solutions to common issues',
+      icon: '🔧'
+    }
   ];
 
   return (
