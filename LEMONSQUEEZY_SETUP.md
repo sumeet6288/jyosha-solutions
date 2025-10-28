@@ -52,7 +52,7 @@ To enable real-time subscription updates, you need to configure webhooks in your
 
 **Callback URL**: 
 ```
-https://setup-viewer-1.preview.emergentagent.com/api/lemonsqueezy/webhook
+https://deps-quickview.preview.emergentagent.com/api/lemonsqueezy/webhook
 ```
 
 **Signing Secret**:
@@ -86,7 +86,7 @@ Select the following events:
 
 ### Test the Checkout Flow
 
-1. Navigate to: https://setup-viewer-1.preview.emergentagent.com/subscription
+1. Navigate to: https://deps-quickview.preview.emergentagent.com/subscription
 2. Click **Subscribe Now** on either plan (Starter or Professional)
 3. You'll be redirected to Lemon Squeezy checkout page
 4. Use test card details (provided by Lemon Squeezy in test mode)
