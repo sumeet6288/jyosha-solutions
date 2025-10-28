@@ -13,10 +13,10 @@ const Documentation = () => {
       icon: <Rocket className="w-5 h-5" />,
       gradient: 'from-blue-500 to-cyan-600',
       articles: [
-        { title: 'Quick Start Guide', time: '5 min read', description: 'Get up and running in 5 minutes' },
-        { title: 'Installation', time: '10 min read', description: 'Step-by-step installation instructions' },
-        { title: 'Your First Chatbot', time: '15 min read', description: 'Create your first AI chatbot' },
-        { title: 'Adding Knowledge Base', time: '8 min read', description: 'Upload files and websites as sources' },
+        { title: 'Quick Start Guide', time: '5 min read', description: 'Get up and running in 5 minutes', slug: 'quick-start-guide' },
+        { title: 'Installation', time: '10 min read', description: 'Step-by-step installation instructions', slug: null },
+        { title: 'Your First Chatbot', time: '15 min read', description: 'Create your first AI chatbot', slug: null },
+        { title: 'Adding Knowledge Base', time: '8 min read', description: 'Upload files and websites as sources', slug: 'adding-knowledge-base' },
       ]
     },
     {
@@ -24,11 +24,11 @@ const Documentation = () => {
       icon: <BookOpen className="w-5 h-5" />,
       gradient: 'from-purple-500 to-pink-600',
       articles: [
-        { title: 'Chatbot Management', time: '12 min read', description: 'Create, update, and manage chatbots' },
-        { title: 'Customization Options', time: '10 min read', description: 'Brand colors, logos, and themes' },
-        { title: 'Analytics & Insights', time: '15 min read', description: 'Track performance and user engagement' },
-        { title: 'Sharing & Deployment', time: '8 min read', description: 'Embed codes and public links' },
-        { title: 'Account Settings', time: '5 min read', description: 'Manage your profile and preferences' },
+        { title: 'Chatbot Management', time: '12 min read', description: 'Create, update, and manage chatbots', slug: 'chatbot-management' },
+        { title: 'Customization Options', time: '10 min read', description: 'Brand colors, logos, and themes', slug: 'customization-options' },
+        { title: 'Analytics & Insights', time: '15 min read', description: 'Track performance and user engagement', slug: 'analytics-insights' },
+        { title: 'Sharing & Deployment', time: '8 min read', description: 'Embed codes and public links', slug: 'sharing-deployment' },
+        { title: 'Account Settings', time: '5 min read', description: 'Manage your profile and preferences', slug: null },
       ]
     },
     {
@@ -36,10 +36,10 @@ const Documentation = () => {
       icon: <Shield className="w-5 h-5" />,
       gradient: 'from-red-500 to-rose-600',
       articles: [
-        { title: 'Authentication & Authorization', time: '12 min read', description: 'JWT tokens and user roles' },
-        { title: 'Data Protection', time: '10 min read', description: 'Encryption and privacy' },
-        { title: 'API Security', time: '15 min read', description: 'Rate limiting and validation' },
-        { title: 'Best Practices', time: '8 min read', description: 'Security guidelines' },
+        { title: 'Authentication & Authorization', time: '12 min read', description: 'JWT tokens and user roles', slug: null },
+        { title: 'Data Protection', time: '10 min read', description: 'Encryption and privacy', slug: null },
+        { title: 'API Security', time: '15 min read', description: 'Rate limiting and validation', slug: null },
+        { title: 'Best Practices', time: '8 min read', description: 'Security guidelines', slug: null },
       ]
     },
   ];
