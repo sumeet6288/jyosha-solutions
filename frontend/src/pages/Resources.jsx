@@ -153,23 +153,34 @@ const Resources = () => {
           </div>
 
           {/* Resources Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
             {resources.map((resource, index) => (
               <div 
                 key={index} 
-                className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border-2 border-purple-200/50 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 transform hover:-translate-y-2 cursor-pointer animate-fade-in-up"
+                className="group bg-white/90 backdrop-blur-sm p-8 rounded-2xl border-2 border-purple-200/50 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/30 transition-all duration-500 transform hover:-translate-y-3 cursor-pointer animate-fade-in-up relative overflow-hidden"
                 style={{ animationDelay: `${index * 50}ms` }}
                 onClick={() => resource.link !== '#' && navigate(resource.link)}
               >
-                <div className={`w-14 h-14 bg-gradient-to-br ${resource.gradient} rounded-xl flex items-center justify-center text-white mb-4 shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
-                  {resource.icon}
+                {/* Gradient overlay on hover */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${resource.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}></div>
+                
+                <div className="relative z-10">
+                  <div className={`w-16 h-16 bg-gradient-to-br ${resource.gradient} rounded-2xl flex items-center justify-center text-white mb-5 shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
+                    {resource.icon}
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300">{resource.title}</h3>
+                  <p className="text-gray-600 mb-4 text-base line-clamp-2 min-h-[3rem]">{resource.description}</p>
+                  <div className="flex items-center gap-2 text-purple-600 font-medium group-hover:text-pink-600 transition-colors">
+                    {resource.link !== '#' ? (
+                      <>
+                        <span>Explore</span>
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                      </>
+                    ) : (
+                      <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">Coming Soon</span>
+                    )}
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300">{resource.title}</h3>
-                <p className="text-gray-600 mb-4 text-sm line-clamp-2">{resource.description}</p>
-                <button className="text-purple-600 font-medium hover:text-pink-600 transition-colors inline-flex items-center gap-2 group">
-                  {resource.link !== '#' ? 'Explore' : 'Coming Soon'}
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
               </div>
             ))}
           </div>
