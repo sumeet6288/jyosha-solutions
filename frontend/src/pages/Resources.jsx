@@ -11,7 +11,7 @@ const Resources = () => {
       icon: <BookOpen className="w-8 h-8" />,
       title: 'Documentation',
       description: 'Complete guides and API references for developers',
-      link: '#',
+      link: '/resources/documentation',
       gradient: 'from-purple-500 to-indigo-600'
     },
     {
@@ -32,14 +32,14 @@ const Resources = () => {
       icon: <HelpCircle className="w-8 h-8" />,
       title: 'Help Center',
       description: 'Get answers to common questions instantly',
-      link: '#',
+      link: '/resources/help-center',
       gradient: 'from-green-500 to-emerald-600'
     },
     {
       icon: <Code className="w-8 h-8" />,
       title: 'API Reference',
       description: 'Comprehensive API documentation for integration',
-      link: '#',
+      link: '/resources/api-reference',
       gradient: 'from-orange-500 to-red-600'
     },
     {
@@ -53,7 +53,7 @@ const Resources = () => {
       icon: <Users2 className="w-8 h-8" />,
       title: 'Community',
       description: 'Join our community forum and connect with others',
-      link: '#',
+      link: '/resources/community',
       gradient: 'from-teal-500 to-cyan-600'
     },
     {
