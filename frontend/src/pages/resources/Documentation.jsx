@@ -32,29 +32,6 @@ const Documentation = () => {
       ]
     },
     {
-      category: 'Developer Guide',
-      icon: <Code className="w-5 h-5" />,
-      gradient: 'from-orange-500 to-red-600',
-      articles: [
-        { title: 'Architecture Overview', time: '20 min read', description: 'System design and components' },
-        { title: 'Backend Development', time: '30 min read', description: 'FastAPI, MongoDB, and services' },
-        { title: 'Frontend Development', time: '25 min read', description: 'React, Tailwind, and components' },
-        { title: 'AI Integration', time: '15 min read', description: 'OpenAI, Claude, and Gemini' },
-        { title: 'Testing', time: '10 min read', description: 'Unit tests and integration tests' },
-      ]
-    },
-    {
-      category: 'Deployment',
-      icon: <Settings className="w-5 h-5" />,
-      gradient: 'from-green-500 to-emerald-600',
-      articles: [
-        { title: 'Docker Deployment', time: '15 min read', description: 'Deploy with Docker Compose' },
-        { title: 'AWS Deployment', time: '20 min read', description: 'Deploy to AWS EC2 or ECS' },
-        { title: 'Google Cloud', time: '20 min read', description: 'Deploy to Google Cloud Run' },
-        { title: 'Production Checklist', time: '10 min read', description: 'Security and performance tips' },
-      ]
-    },
-    {
       category: 'Security',
       icon: <Shield className="w-5 h-5" />,
       gradient: 'from-red-500 to-rose-600',
@@ -63,16 +40,6 @@ const Documentation = () => {
         { title: 'Data Protection', time: '10 min read', description: 'Encryption and privacy' },
         { title: 'API Security', time: '15 min read', description: 'Rate limiting and validation' },
         { title: 'Best Practices', time: '8 min read', description: 'Security guidelines' },
-      ]
-    },
-    {
-      category: 'Database',
-      icon: <Database className="w-5 h-5" />,
-      gradient: 'from-indigo-500 to-purple-600',
-      articles: [
-        { title: 'Database Schema', time: '10 min read', description: 'Collections and models' },
-        { title: 'MongoDB Setup', time: '15 min read', description: 'Installation and configuration' },
-        { title: 'Backup & Recovery', time: '12 min read', description: 'Data protection strategies' },
       ]
     },
   ];
