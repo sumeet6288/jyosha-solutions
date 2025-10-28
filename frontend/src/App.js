@@ -67,6 +67,8 @@ function AppContent() {
           <Route path="/resources" element={<Resources />} />
           <Route path="/resources/documentation" element={<Documentation />} />
           <Route path="/resources/articles/quick-start-guide" element={<QuickStartGuide />} />
+          <Route path="/resources/articles/installation" element={<Installation />} />
+          <Route path="/resources/articles/your-first-chatbot" element={<YourFirstChatbot />} />
           <Route path="/resources/articles/adding-knowledge-base" element={<AddingKnowledgeBase />} />
           <Route path="/resources/articles/customization-options" element={<CustomizationOptions />} />
           <Route path="/resources/articles/analytics-insights" element={<AnalyticsInsights />} />
