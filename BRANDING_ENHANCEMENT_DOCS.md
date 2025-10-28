@@ -309,7 +309,7 @@ transition: 700ms
 
 ## 🚀 Live Preview
 
-**URL**: https://setup-glimpse.preview.emergentagent.com
+**URL**: https://setup-viewer-1.preview.emergentagent.com
 
 ### Check these pages:
 - ✅ Dashboard (main nav)
