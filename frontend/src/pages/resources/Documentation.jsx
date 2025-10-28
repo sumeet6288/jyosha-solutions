@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/button';
-import { BookOpen, ChevronRight, Search, Download, ExternalLink, Home, Rocket, Shield } from 'lucide-react';
+import { BookOpen, ChevronRight, Search, Download, ExternalLink, Home, Rocket, Shield, Code } from 'lucide-react';
 
 const Documentation = () => {
   const navigate = useNavigate();
