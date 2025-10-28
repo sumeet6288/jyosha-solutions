@@ -22,6 +22,8 @@ import APIReference from './pages/resources/APIReference';
 import HelpCenter from './pages/resources/HelpCenter';
 import Community from './pages/resources/Community';
 import QuickStartGuide from './pages/resources/articles/QuickStartGuide';
+import Installation from './pages/resources/articles/Installation';
+import YourFirstChatbot from './pages/resources/articles/YourFirstChatbot';
 import AddingKnowledgeBase from './pages/resources/articles/AddingKnowledgeBase';
 import CustomizationOptions from './pages/resources/articles/CustomizationOptions';
 import AnalyticsInsights from './pages/resources/articles/AnalyticsInsights';
