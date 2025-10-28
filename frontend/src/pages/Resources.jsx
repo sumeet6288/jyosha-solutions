@@ -36,13 +36,6 @@ const Resources = () => {
       gradient: 'from-green-500 to-emerald-600'
     },
     {
-      icon: <Code className="w-8 h-8" />,
-      title: 'API Reference',
-      description: 'Comprehensive API documentation for integration',
-      link: '/resources/api-reference',
-      gradient: 'from-orange-500 to-red-600'
-    },
-    {
       icon: <Lightbulb className="w-8 h-8" />,
       title: 'Use Cases',
       description: 'Real-world examples and implementation guides',
