@@ -141,6 +141,7 @@ const Resources = () => {
                 key={index} 
                 className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border-2 border-purple-200/50 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 transform hover:-translate-y-2 cursor-pointer animate-fade-in-up"
                 style={{ animationDelay: `${index * 50}ms` }}
+                onClick={() => resource.link !== '#' && navigate(resource.link)}
               >
                 <div className={`w-14 h-14 bg-gradient-to-br ${resource.gradient} rounded-xl flex items-center justify-center text-white mb-4 shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
                   {resource.icon}
@@ -148,7 +149,7 @@ const Resources = () => {
                 <h3 className="text-xl font-bold mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300">{resource.title}</h3>
                 <p className="text-gray-600 mb-4 text-sm line-clamp-2">{resource.description}</p>
                 <button className="text-purple-600 font-medium hover:text-pink-600 transition-colors inline-flex items-center gap-2 group">
-                  Learn more 
+                  {resource.link !== '#' ? 'Explore' : 'Coming Soon'}
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
