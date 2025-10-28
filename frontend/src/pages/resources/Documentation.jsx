@@ -46,7 +46,6 @@ const Documentation = () => {
 
   const downloadableDocs = [
     { name: 'Complete Documentation', size: '15 MB', format: 'PDF', icon: <BookOpen className="w-5 h-5" /> },
-    { name: 'API Reference', size: '8 MB', format: 'PDF', icon: <Code className="w-5 h-5" /> },
     { name: 'Quick Start Guide', size: '2 MB', format: 'PDF', icon: <Rocket className="w-5 h-5" /> },
   ];
 
