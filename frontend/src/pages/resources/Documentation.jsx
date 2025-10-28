@@ -14,8 +14,8 @@ const Documentation = () => {
       gradient: 'from-blue-500 to-cyan-600',
       articles: [
         { title: 'Quick Start Guide', time: '5 min read', description: 'Get up and running in 5 minutes', slug: 'quick-start-guide' },
-        { title: 'Installation', time: '10 min read', description: 'Step-by-step installation instructions', slug: null },
-        { title: 'Your First Chatbot', time: '15 min read', description: 'Create your first AI chatbot', slug: null },
+        { title: 'Installation', time: '10 min read', description: 'Step-by-step installation instructions', slug: 'installation' },
+        { title: 'Your First Chatbot', time: '15 min read', description: 'Create your first AI chatbot', slug: 'your-first-chatbot' },
         { title: 'Adding Knowledge Base', time: '8 min read', description: 'Upload files and websites as sources', slug: 'adding-knowledge-base' },
       ]
     },
