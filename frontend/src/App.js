@@ -64,6 +64,12 @@ function AppContent() {
           <Route path="/enterprise" element={<Enterprise />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/resources/documentation" element={<Documentation />} />
+          <Route path="/resources/articles/quick-start-guide" element={<QuickStartGuide />} />
+          <Route path="/resources/articles/adding-knowledge-base" element={<AddingKnowledgeBase />} />
+          <Route path="/resources/articles/customization-options" element={<CustomizationOptions />} />
+          <Route path="/resources/articles/analytics-insights" element={<AnalyticsInsights />} />
+          <Route path="/resources/articles/sharing-deployment" element={<SharingDeployment />} />
+          <Route path="/resources/articles/chatbot-management" element={<ChatbotManagement />} />
           <Route path="/resources/api-reference" element={<APIReference />} />
           <Route path="/resources/help-center" element={<HelpCenter />} />
           <Route path="/resources/community" element={<Community />} />
