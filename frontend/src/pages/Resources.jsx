@@ -144,9 +144,10 @@ const Resources = () => {
                 className="group p-6 bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 hover:border-purple-400 hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl mb-4 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg`}></div>
-                <h3 className="text-lg font-bold mb-1 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300">{category.title}</h3>
-                <p className="text-sm text-gray-500">{category.count}</p>
+                <div className="text-4xl mb-3 transform group-hover:scale-125 transition-transform duration-300">{category.icon}</div>
+                <h3 className="text-lg font-bold mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300">{category.title}</h3>
+                <p className="text-sm text-gray-600 mb-2">{category.description}</p>
+                <p className="text-xs text-gray-500 font-medium">{category.count}</p>
               </div>
             ))}
           </div>
