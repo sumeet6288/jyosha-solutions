@@ -8,8 +8,10 @@ from models import (
 )
 from services.chat_service import ChatService
 from services.rag_service import RAGService
+from services.cache_service import cache_service
 import json
 import logging
+import asyncio
 
 logger = logging.getLogger(__name__)
 
