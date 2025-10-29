@@ -284,68 +284,84 @@ const AdvancedAnalytics = ({ chatbotId }) => {
       {/* New Graphs Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Response Time Trend Chart */}
-        {responseTimeTrend && responseTimeTrend.data && (
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <h4 className="text-lg font-semibold mb-4">Response Time Trend</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={responseTimeTrend.data}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="date" stroke="#888" fontSize={12} />
-                <YAxis stroke="#888" fontSize={12} label={{ value: 'Seconds', angle: -90, position: 'insideLeft', fontSize: 12 }} />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: 'white', 
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '8px'
-                  }}
-                  formatter={(value) => [`${value}s`, 'Avg Response Time']}
-                />
-                <Legend />
-                <Line 
-                  type="monotone" 
-                  dataKey="avg_response_time" 
-                  stroke="#3b82f6" 
-                  strokeWidth={2}
-                  name="Avg Response Time (s)"
-                  dot={{ fill: '#3b82f6' }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-            <p className="text-xs text-gray-500 mt-2 text-center">
-              Track how your chatbot's response speed changes over time
-            </p>
-          </div>
-        )}
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <h4 className="text-lg font-semibold mb-4">Response Time Trend</h4>
+          {responseTimeTrend && responseTimeTrend.data && responseTimeTrend.data.length > 0 && responseTimeTrend.data.some(d => d.avg_response_time > 0) ? (
+            <>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={responseTimeTrend.data}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis dataKey="date" stroke="#888" fontSize={12} />
+                  <YAxis stroke="#888" fontSize={12} label={{ value: 'Seconds', angle: -90, position: 'insideLeft', fontSize: 12 }} allowDecimals={true} />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'white', 
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '8px'
+                    }}
+                    formatter={(value) => [`${value}s`, 'Avg Response Time']}
+                  />
+                  <Legend />
+                  <Line 
+                    type="monotone" 
+                    dataKey="avg_response_time" 
+                    stroke="#3b82f6" 
+                    strokeWidth={2}
+                    name="Avg Response Time (s)"
+                    dot={{ fill: '#3b82f6' }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+              <p className="text-xs text-gray-500 mt-2 text-center">
+                Track how your chatbot's response speed changes over time
+              </p>
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-[300px] text-gray-400">
+              <Clock className="w-16 h-16 mb-4 opacity-30" />
+              <p className="text-lg font-medium">No response time data</p>
+              <p className="text-sm mt-2">Response times will be tracked as conversations happen</p>
+            </div>
+          )}
+        </div>
 
         {/* Hourly Activity Chart */}
-        {hourlyActivity && hourlyActivity.hourly_data && (
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <h4 className="text-lg font-semibold mb-4">Hourly Activity Distribution</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={hourlyActivity.hourly_data}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="hour" stroke="#888" fontSize={10} />
-                <YAxis stroke="#888" fontSize={12} />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: 'white', 
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '8px'
-                  }}
-                  formatter={(value) => [`${value}`, 'Messages']}
-                />
-                <Bar dataKey="messages" fill="#10b981" radius={[8, 8, 0, 0]}>
-                  {hourlyActivity.hourly_data.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.messages > 0 ? '#10b981' : '#e5e7eb'} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-            <p className="text-xs text-gray-500 mt-2 text-center">
-              Peak hour: <span className="font-semibold text-green-600">{hourlyActivity.peak_hour}:00</span> • Total messages: {hourlyActivity.total_messages}
-            </p>
-          </div>
-        )}
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <h4 className="text-lg font-semibold mb-4">Hourly Activity Distribution</h4>
+          {hourlyActivity && hourlyActivity.hourly_data && hourlyActivity.total_messages > 0 ? (
+            <>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={hourlyActivity.hourly_data}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis dataKey="hour" stroke="#888" fontSize={10} />
+                  <YAxis stroke="#888" fontSize={12} allowDecimals={false} />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'white', 
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '8px'
+                    }}
+                    formatter={(value) => [`${value}`, 'Messages']}
+                  />
+                  <Bar dataKey="messages" fill="#10b981" radius={[8, 8, 0, 0]}>
+                    {hourlyActivity.hourly_data.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.messages > 0 ? '#10b981' : '#e5e7eb'} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+              <p className="text-xs text-gray-500 mt-2 text-center">
+                Peak hour: <span className="font-semibold text-green-600">{hourlyActivity.peak_hour}:00</span> • Total messages: {hourlyActivity.total_messages}
+              </p>
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-[300px] text-gray-400">
+              <TrendingUp className="w-16 h-16 mb-4 opacity-30" />
+              <p className="text-lg font-medium">No hourly activity data</p>
+              <p className="text-sm mt-2">Activity patterns will appear as messages are sent</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
