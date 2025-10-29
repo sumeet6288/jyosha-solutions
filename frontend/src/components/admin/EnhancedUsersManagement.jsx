@@ -367,6 +367,14 @@ const EnhancedUsersManagement = ({ backendUrl }) => {
 
   return (
     <div className="space-y-6">
+      {/* Data Change Notification */}
+      {dataChanged && (
+        <div className="fixed top-20 right-4 z-50 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg animate-fade-in flex items-center gap-2">
+          <CheckCircle className="w-4 h-4" />
+          <span>Data updated!</span>
+        </div>
+      )}
+      
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
