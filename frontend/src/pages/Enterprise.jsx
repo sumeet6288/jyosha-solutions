@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -10,12 +10,17 @@ import { useToast } from '../hooks/use-toast';
 const Enterprise = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isLoaded, setIsLoaded] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     company: '',
     message: ''
   });
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
