@@ -137,37 +137,45 @@ const AdvancedAnalytics = ({ chatbotId }) => {
       {trendData && (
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
           <h4 className="text-lg font-semibold mb-4">Message Volume Trends</h4>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={trendData.data}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis dataKey="date" stroke="#888" fontSize={12} />
-              <YAxis stroke="#888" fontSize={12} />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'white', 
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '8px'
-                }}
-              />
-              <Legend />
-              <Line 
-                type="monotone" 
-                dataKey="conversations" 
-                stroke="#7c3aed" 
-                strokeWidth={2}
-                name="Conversations"
-                dot={{ fill: '#7c3aed' }}
-              />
-              <Line 
-                type="monotone" 
-                dataKey="messages" 
-                stroke="#ec4899" 
-                strokeWidth={2}
-                name="Messages"
-                dot={{ fill: '#ec4899' }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+          {trendData.total_messages === 0 && trendData.total_conversations === 0 ? (
+            <div className="flex flex-col items-center justify-center h-[300px] text-gray-400">
+              <MessageSquare className="w-16 h-16 mb-4 opacity-30" />
+              <p className="text-lg font-medium">No message data available</p>
+              <p className="text-sm mt-2">Start chatting to see trends appear here</p>
+            </div>
+          ) : (
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={trendData.data}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis dataKey="date" stroke="#888" fontSize={12} />
+                <YAxis stroke="#888" fontSize={12} allowDecimals={false} />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'white', 
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '8px'
+                  }}
+                />
+                <Legend />
+                <Line 
+                  type="monotone" 
+                  dataKey="conversations" 
+                  stroke="#7c3aed" 
+                  strokeWidth={2}
+                  name="Conversations"
+                  dot={{ fill: '#7c3aed' }}
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="messages" 
+                  stroke="#ec4899" 
+                  strokeWidth={2}
+                  name="Messages"
+                  dot={{ fill: '#ec4899' }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
         </div>
       )}
 
