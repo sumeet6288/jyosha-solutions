@@ -138,7 +138,7 @@ const Enterprise = () => {
           </div>
           
           {/* Hero Section */}
-          <div className="text-center mb-20 animate-fade-in-up">
+          <div className={`text-center mb-20 animate-fade-in-up transform transition-all duration-700 delay-200 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
             <div className="inline-block mb-4">
               <span className="px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-sm font-medium inline-flex items-center gap-2 animate-bounce-subtle">
                 <Building2 className="w-4 h-4" />
