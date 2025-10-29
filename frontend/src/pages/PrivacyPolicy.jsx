@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Shield, Lock, Eye, Database, UserCheck, FileText } from 'lucide-react';
+import { ArrowLeft, Shield, Lock, Eye, Database, UserCheck, FileText, Mail } from 'lucide-react';
 
 const PrivacyPolicy = () => {
   const navigate = useNavigate();
