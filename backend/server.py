@@ -36,6 +36,31 @@ lemonsqueezy.init_router(db)
 admin.init_router(db)
 admin_users.init_router(db)
 
+# WebSocket connection manager for real-time notifications
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: Dict[str, WebSocket] = {}
+    
+    async def connect(self, user_id: str, websocket: WebSocket):
+        await websocket.accept()
+        self.active_connections[user_id] = websocket
+        logger.info(f"WebSocket connected for user: {user_id}")
+    
+    def disconnect(self, user_id: str):
+        if user_id in self.active_connections:
+            del self.active_connections[user_id]
+            logger.info(f"WebSocket disconnected for user: {user_id}")
+    
+    async def send_notification(self, user_id: str, notification: dict):
+        if user_id in self.active_connections:
+            try:
+                await self.active_connections[user_id].send_text(json.dumps(notification))
+            except Exception as e:
+                logger.error(f"Error sending notification to {user_id}: {e}")
+                self.disconnect(user_id)
+
+manager = ConnectionManager()
+
 # Create the main app without a prefix
 # Set max upload size to 100MB
 app = FastAPI(
