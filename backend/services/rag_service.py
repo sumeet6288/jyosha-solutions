@@ -268,7 +268,7 @@ class RAGService:
                     "chunk_overlap": self.chunking_service.chunk_overlap,
                     "top_k_results": self.top_k_results,
                     "similarity_threshold": self.similarity_threshold,
-                    "embedding_model": self.embedding_service.model
+                    "method": "basic_rag_no_embeddings"
                 }
             })
             
