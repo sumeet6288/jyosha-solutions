@@ -49,12 +49,6 @@ const Footer = ({ variant = 'landing' }) => {
                     Subscription
                   </Link>
                 </li>
-                <li>
-                  <Link to="/integrations" className="text-gray-600 hover:text-purple-600 transition-colors text-sm flex items-center group">
-                    <ChevronRight className="w-3 h-3 mr-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    Integrations
-                  </Link>
-                </li>
               </ul>
             </div>
 
