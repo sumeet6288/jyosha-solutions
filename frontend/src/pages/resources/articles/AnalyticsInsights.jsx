@@ -23,8 +23,8 @@ const AnalyticsInsights = () => {
         </div>
       </nav>
 
-      <div className="pt-32 pb-20 px-8">
-        <div className="max-w-4xl mx-auto">
+      <div className="pt-32 pb-20 px-4 md:px-8 lg:px-12">
+        <div className="max-w-[85%] mx-auto">
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-purple-900 to-pink-900 bg-clip-text text-transparent">
             Analytics & Insights
           </h1>
