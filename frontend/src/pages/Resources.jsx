@@ -174,8 +174,8 @@ const Resources = () => {
             {resources.map((resource, index) => (
               <div 
                 key={index} 
-                className="group bg-white/90 backdrop-blur-sm p-8 rounded-2xl border-2 border-purple-200/50 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/30 transition-all duration-500 transform hover:-translate-y-3 cursor-pointer animate-fade-in-up relative overflow-hidden"
-                style={{ animationDelay: `${index * 50}ms` }}
+                className={`group bg-white/90 backdrop-blur-sm p-8 rounded-2xl border-2 border-purple-200/50 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/30 transition-all duration-500 transform hover:-translate-y-3 cursor-pointer animate-fade-in-up relative overflow-hidden ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
+                style={{ animationDelay: `${index * 50}ms`, transitionDelay: `${600 + index * 50}ms` }}
                 onClick={() => resource.link !== '#' && navigate(resource.link)}
               >
                 {/* Gradient overlay on hover */}
