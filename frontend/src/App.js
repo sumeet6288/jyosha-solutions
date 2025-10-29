@@ -59,44 +59,50 @@ function ScrollToTop() {
 }
 
 function AppContent() {
+  const { user } = useAuth();
+  
   return (
     <div className="App">
       <BrowserRouter>
         <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/enterprise" element={<Enterprise />} />
-          <Route path="/resources" element={<Resources />} />
-          <Route path="/resources/documentation" element={<Documentation />} />
-          <Route path="/resources/articles/quick-start-guide" element={<QuickStartGuide />} />
-          <Route path="/resources/articles/installation" element={<Installation />} />
-          <Route path="/resources/articles/your-first-chatbot" element={<YourFirstChatbot />} />
-          <Route path="/resources/articles/adding-knowledge-base" element={<AddingKnowledgeBase />} />
-          <Route path="/resources/articles/customization-options" element={<CustomizationOptions />} />
-          <Route path="/resources/articles/analytics-insights" element={<AnalyticsInsights />} />
-          <Route path="/resources/articles/sharing-deployment" element={<SharingDeployment />} />
-          <Route path="/resources/articles/chatbot-management" element={<ChatbotManagement />} />
-          <Route path="/resources/api-reference" element={<APIReference />} />
-          <Route path="/resources/help-center" element={<HelpCenter />} />
-          <Route path="/resources/community" element={<Community />} />
-          <Route path="/signin" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/signup" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/analytics" element={<Analytics />} />
-          <Route path="/integrations" element={<Integrations />} />
-          <Route path="/subscription" element={<Subscription />} />
-          <Route path="/account-settings" element={<AccountSettings />} />
-          <Route path="/chatbot/:id" element={<ChatbotBuilder />} />
-          <Route path="/embed/:id" element={<EmbedChat />} />
-          <Route path="/chat/:id" element={<ChatPage />} />
-          <Route path="/public-chat/:chatbotId" element={<PublicChat />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <NotificationProvider user={user}>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/enterprise" element={<Enterprise />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/resources/documentation" element={<Documentation />} />
+            <Route path="/resources/articles/quick-start-guide" element={<QuickStartGuide />} />
+            <Route path="/resources/articles/installation" element={<Installation />} />
+            <Route path="/resources/articles/your-first-chatbot" element={<YourFirstChatbot />} />
+            <Route path="/resources/articles/adding-knowledge-base" element={<AddingKnowledgeBase />} />
+            <Route path="/resources/articles/customization-options" element={<CustomizationOptions />} />
+            <Route path="/resources/articles/analytics-insights" element={<AnalyticsInsights />} />
+            <Route path="/resources/articles/sharing-deployment" element={<SharingDeployment />} />
+            <Route path="/resources/articles/chatbot-management" element={<ChatbotManagement />} />
+            <Route path="/resources/api-reference" element={<APIReference />} />
+            <Route path="/resources/help-center" element={<HelpCenter />} />
+            <Route path="/resources/community" element={<Community />} />
+            <Route path="/signin" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/signup" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/integrations" element={<Integrations />} />
+            <Route path="/subscription" element={<Subscription />} />
+            <Route path="/account-settings" element={<AccountSettings />} />
+            <Route path="/notification-preferences" element={<NotificationPreferences />} />
+            <Route path="/chatbot/:id" element={<ChatbotBuilder />} />
+            <Route path="/embed/:id" element={<EmbedChat />} />
+            <Route path="/chat/:id" element={<ChatPage />} />
+            <Route path="/public-chat/:chatbotId" element={<PublicChat />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </NotificationProvider>
       </BrowserRouter>
       <Toaster />
       <SonnerToaster position="top-right" richColors />
+      <HotToaster position="top-right" />
     </div>
   );
 }
