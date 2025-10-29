@@ -193,7 +193,7 @@ const Enterprise = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-10 shadow-2xl animate-fade-in-up">
+          <div className={`bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-10 shadow-2xl animate-fade-in-up transform transition-all duration-700 delay-600 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
             <div className="text-center mb-8">
               <h2 className="text-4xl font-bold mb-3 bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">Contact Sales</h2>
               <p className="text-gray-600 text-lg">Get in touch with our team to discuss your needs</p>
