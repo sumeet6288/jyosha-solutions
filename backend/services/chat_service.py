@@ -1,5 +1,5 @@
 from emergentintegrations.llm.chat import LlmChat, UserMessage
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Tuple
 import logging
 import os
 from dotenv import load_dotenv
@@ -23,8 +23,9 @@ class ChatService:
         system_message: str,
         model: str = "gpt-4o-mini",
         provider: str = "openai",
-        context: Optional[str] = None
-    ) -> str:
+        context: Optional[str] = None,
+        citation_footer: Optional[str] = None
+    ) -> Tuple[str, Optional[str]]:
         """
         Generate AI response using specified model and provider
         
@@ -34,16 +35,18 @@ class ChatService:
             system_message: System instructions for the AI
             model: Model name (e.g., gpt-4o-mini, claude-3-7-sonnet-20250219, gemini-2.0-flash)
             provider: Provider name (openai, anthropic, gemini)
-            context: Additional context (training data)
+            context: Additional context from RAG (pre-formatted with citations)
+            citation_footer: Citation footer to append to response
             
         Returns:
-            AI generated response
+            Tuple of (AI response, citation_footer)
         """
         try:
-            # Enhance system message with context if available
+            # Enhance system message with RAG context if available
             enhanced_system = system_message
             if context:
-                enhanced_system += f"\n\nContext/Knowledge Base:\n{context[:10000]}"  # Limit context size
+                enhanced_system += f"\n\nRelevant Knowledge Base Context:\n{context}"
+                enhanced_system += "\n\nImportant: Use the provided context to answer the question accurately. Reference the source numbers (e.g., 'According to Source 1...') when citing information."
             
             # Initialize chat
             chat = LlmChat(
