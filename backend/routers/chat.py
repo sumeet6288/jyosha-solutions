@@ -69,6 +69,26 @@ async def send_message(chat_request: ChatRequest):
                 user_email=chat_request.user_email
             )
             await db_instance.conversations.insert_one(conversation.model_dump())
+            
+            # Send notification for new conversation
+            try:
+                await notification_service.create_notification(
+                    user_id=user_id,
+                    notification_type="new_conversation",
+                    title="New Conversation Started",
+                    message=f"A new conversation was started with your chatbot '{chatbot.get('name', 'Unknown')}'",
+                    priority="medium",
+                    metadata={
+                        "chatbot_id": chat_request.chatbot_id,
+                        "chatbot_name": chatbot.get("name"),
+                        "conversation_id": conversation.id,
+                        "user_name": chat_request.user_name,
+                        "user_email": chat_request.user_email
+                    },
+                    action_url=f"/chatbot-builder/{chat_request.chatbot_id}?tab=analytics"
+                )
+            except Exception as notif_error:
+                logger.error(f"Failed to create notification: {notif_error}")
         else:
             conversation = Conversation(**conversation)
         
