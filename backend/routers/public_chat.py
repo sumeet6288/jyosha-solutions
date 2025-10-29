@@ -63,9 +63,17 @@ async def get_public_chatbot(chatbot_id: str):
 
 @router.post("/chat/{chatbot_id}", response_model=ChatResponse)
 async def public_chat(chatbot_id: str, request: PublicChatRequest):
-    """Send a message to a public chatbot (no authentication required)"""
-    # Get chatbot
-    chatbot = await db_instance.chatbots.find_one({"id": chatbot_id})
+    """Send a message to a public chatbot (no authentication required) - OPTIMIZED"""
+    # Try to get chatbot from cache first
+    cache_key = f"chatbot:{chatbot_id}"
+    chatbot = cache_service.get(cache_key)
+    
+    if not chatbot:
+        # Cache miss - fetch from database
+        chatbot = await db_instance.chatbots.find_one({"id": chatbot_id})
+        if chatbot:
+            cache_service.set(cache_key, chatbot, ttl_seconds=300)
+    
     if not chatbot:
         raise HTTPException(status_code=404, detail="Chatbot not found")
     
@@ -94,7 +102,7 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
     
     conversation_id = conversation["id"]
     
-    # Save user message
+    # OPTIMIZATION: Parallel save user message and RAG retrieval
     user_message = {
         "id": str(__import__("uuid").uuid4()),
         "conversation_id": conversation_id,
@@ -103,15 +111,17 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
         "content": request.message,
         "timestamp": datetime.now(timezone.utc)
     }
-    await db_instance.messages.insert_one(user_message)
     
-    # Get training data context using RAG
-    rag_result = await rag_service.retrieve_relevant_context(
+    save_message_task = db_instance.messages.insert_one(user_message)
+    rag_task = rag_service.retrieve_relevant_context(
         query=request.message,
         chatbot_id=chatbot_id,
-        top_k=5,
-        min_similarity=0.7
+        top_k=3,  # Reduced from 5 to 3 for faster response
+        min_similarity=0.5  # Adjusted for better balance
     )
+    
+    # Wait for both operations
+    _, rag_result = await asyncio.gather(save_message_task, rag_task)
     
     context = rag_result.get("context") if rag_result.get("has_context") else None
     citation_footer = rag_result.get("citation_footer")
@@ -137,7 +147,7 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
         logger.error(f"AI response error in public chat: {str(e)}")
         ai_response = "I'm sorry, I'm having trouble processing your request right now. Please try again later."
     
-    # Save AI message
+    # OPTIMIZATION: Parallel save AI message and update conversation
     ai_message = {
         "id": str(__import__("uuid").uuid4()),
         "conversation_id": conversation_id,
@@ -146,7 +156,18 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
         "content": ai_response,
         "timestamp": datetime.now(timezone.utc)
     }
-    await db_instance.messages.insert_one(ai_message)
+    
+    save_ai_message_task = db_instance.messages.insert_one(ai_message)
+    update_conversation_task = db_instance.conversations.update_one(
+        {"id": conversation_id},
+        {
+            "$set": {"updated_at": datetime.now(timezone.utc)},
+            "$inc": {"messages_count": 2}
+        }
+    )
+    
+    # Execute both in parallel
+    await asyncio.gather(save_ai_message_task, update_conversation_task)
     
     # Update conversation counts
     await db_instance.conversations.update_one(
