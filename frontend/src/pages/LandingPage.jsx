@@ -44,7 +44,7 @@ const LandingPage = () => {
     {
       icon: <Globe className="w-6 h-6" />,
       title: 'Multi-Channel',
-      description: 'Deploy on website, Slack, and more',
+      description: 'Deploy on website, Slack, WhatsApp, and more',
       gradient: 'from-green-500 to-emerald-500'
     },
     {
