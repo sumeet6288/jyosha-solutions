@@ -108,8 +108,8 @@ const Resources = () => {
           </div>
           <div className="hidden md:flex items-center gap-8">
             <button onClick={() => navigate('/pricing')} className="text-gray-700 hover:text-purple-600 transition-colors font-medium">Pricing</button>
-            <button onClick={() => navigate('/enterprise')} className="text-gray-700 hover:text-purple-600 transition-colors font-medium">Enterprise</button>
-            <button onClick={() => navigate('/resources')} className="text-purple-600 font-semibold">Resources</button>
+            <button onClick={() => navigate('/enterprise')} className="text-gray-700 hover:text-purple-600 transition-colors font-medium">Scale Up</button>
+            <button onClick={() => navigate('/resources')} className="text-purple-600 font-semibold">Learn</button>
           </div>
           <div className="flex items-center gap-4">
             <Button variant="ghost" onClick={() => navigate('/signin')} className="hover:bg-purple-50">Sign in</Button>
