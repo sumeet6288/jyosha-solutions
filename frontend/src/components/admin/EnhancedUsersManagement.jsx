@@ -21,6 +21,11 @@ const EnhancedUsersManagement = ({ backendUrl }) => {
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterRole, setFilterRole] = useState('all');
   
+  // Auto-refresh States
+  const [autoRefresh, setAutoRefresh] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [refreshInterval, setRefreshInterval] = useState(3000); // 3 seconds
+  
   // Modal States
   const [showEditModal, setShowEditModal] = useState(false);
   const [showActivityModal, setShowActivityModal] = useState(false);
@@ -40,9 +45,21 @@ const EnhancedUsersManagement = ({ backendUrl }) => {
   const [bulkRole, setBulkRole] = useState('user');
   const [bulkStatus, setBulkStatus] = useState('active');
 
+  // Fetch users on filter/sort change
   useEffect(() => {
     fetchUsers();
   }, [sortBy, sortOrder, filterStatus, filterRole]);
+
+  // Auto-refresh effect
+  useEffect(() => {
+    if (!autoRefresh) return;
+
+    const interval = setInterval(() => {
+      fetchUsers(true); // Silent refresh (no loading state)
+    }, refreshInterval);
+
+    return () => clearInterval(interval);
+  }, [autoRefresh, refreshInterval, sortBy, sortOrder, filterStatus, filterRole]);
 
   const fetchUsers = async () => {
     try {
