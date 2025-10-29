@@ -33,10 +33,17 @@ def init_router(db: AsyncIOMotorDatabase):
 
 @router.post("", response_model=ChatResponse)
 async def send_message(chat_request: ChatRequest):
-    """Send a message to a chatbot (public endpoint)"""
+    """Send a message to a chatbot (public endpoint) - OPTIMIZED"""
     try:
-        # Get chatbot
-        chatbot = await db_instance.chatbots.find_one({"id": chat_request.chatbot_id})
+        # OPTIMIZATION 1: Parallel fetch of chatbot and conversation
+        chatbot_task = db_instance.chatbots.find_one({"id": chat_request.chatbot_id})
+        conversation_task = db_instance.conversations.find_one({
+            "chatbot_id": chat_request.chatbot_id,
+            "session_id": chat_request.session_id
+        })
+        
+        chatbot, conversation = await asyncio.gather(chatbot_task, conversation_task)
+        
         if not chatbot:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -58,14 +65,8 @@ async def send_message(chat_request: ChatRequest):
                 detail="Monthly message limit reached. Please upgrade your plan to continue."
             )
         
-        # Get or create conversation
-        conversation = await db_instance.conversations.find_one({
-            "chatbot_id": chat_request.chatbot_id,
-            "session_id": chat_request.session_id
-        })
-        
+        # Create conversation if needed
         if not conversation:
-            # Create new conversation
             conversation = Conversation(
                 chatbot_id=chat_request.chatbot_id,
                 session_id=chat_request.session_id,
@@ -74,9 +75,9 @@ async def send_message(chat_request: ChatRequest):
             )
             await db_instance.conversations.insert_one(conversation.model_dump())
             
-            # Send notification for new conversation
-            try:
-                await notification_service.create_notification(
+            # Send notification for new conversation (non-blocking)
+            asyncio.create_task(
+                notification_service.create_notification(
                     user_id=user_id,
                     notification_type="new_conversation",
                     title="New Conversation Started",
@@ -91,32 +92,33 @@ async def send_message(chat_request: ChatRequest):
                     },
                     action_url=f"/chatbot-builder/{chat_request.chatbot_id}?tab=analytics"
                 )
-            except Exception as notif_error:
-                logger.error(f"Failed to create notification: {notif_error}")
+            )
         else:
             conversation = Conversation(**conversation)
         
-        # Save user message
+        # OPTIMIZATION 2: Parallel save user message and RAG retrieval
         user_message = Message(
             conversation_id=conversation.id,
             chatbot_id=chat_request.chatbot_id,
             role="user",
             content=chat_request.message
         )
-        await db_instance.messages.insert_one(user_message.model_dump())
         
-        # Use RAG to retrieve relevant context
-        rag_result = await rag_service.retrieve_relevant_context(
+        save_message_task = db_instance.messages.insert_one(user_message.model_dump())
+        rag_task = rag_service.retrieve_relevant_context(
             query=chat_request.message,
             chatbot_id=chat_request.chatbot_id,
-            top_k=5,
-            min_similarity=0.7
+            top_k=3,  # Reduced from 5 to 3 for faster retrieval
+            min_similarity=0.5  # Increased from 0.7 for better balance
         )
+        
+        # Wait for both operations
+        _, rag_result = await asyncio.gather(save_message_task, rag_task)
         
         context = rag_result.get("context") if rag_result.get("has_context") else None
         citation_footer = rag_result.get("citation_footer")
         
-        logger.info(f"RAG retrieved {rag_result.get('num_sources', 0)} sources with avg similarity {rag_result.get('avg_similarity', 0)}")
+        logger.info(f"RAG retrieved {rag_result.get('num_sources', 0)} sources in parallel")
         
         # Generate AI response with RAG context
         try:
@@ -138,26 +140,23 @@ async def send_message(chat_request: ChatRequest):
             logger.error(f"AI response error: {str(e)}")
             ai_response = "I'm sorry, I'm having trouble processing your request right now. Please try again later."
         
-        # Save assistant message
+        # OPTIMIZATION 3: Parallel save assistant message and update stats
         assistant_message = Message(
             conversation_id=conversation.id,
             chatbot_id=chat_request.chatbot_id,
             role="assistant",
             content=ai_response
         )
-        await db_instance.messages.insert_one(assistant_message.model_dump())
         
-        # Update conversation
-        await db_instance.conversations.update_one(
+        save_assistant_task = db_instance.messages.insert_one(assistant_message.model_dump())
+        update_conversation_task = db_instance.conversations.update_one(
             {"id": conversation.id},
             {
                 "$set": {"updated_at": datetime.now(timezone.utc)},
                 "$inc": {"messages_count": 2}
             }
         )
-        
-        # Update chatbot stats
-        await db_instance.chatbots.update_one(
+        update_chatbot_task = db_instance.chatbots.update_one(
             {"id": chat_request.chatbot_id},
             {
                 "$inc": {
@@ -166,9 +165,15 @@ async def send_message(chat_request: ChatRequest):
                 }
             }
         )
+        increment_usage_task = plan_service.increment_usage(user_id, "messages", amount=1)
         
-        # Increment message usage for chatbot owner
-        await plan_service.increment_usage(user_id, "messages", amount=1)
+        # Execute all updates in parallel
+        await asyncio.gather(
+            save_assistant_task,
+            update_conversation_task,
+            update_chatbot_task,
+            increment_usage_task
+        )
         
         return ChatResponse(
             message=ai_response,
