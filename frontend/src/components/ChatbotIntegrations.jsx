@@ -4,7 +4,6 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { useToast } from '../hooks/use-toast';
-import WhatsAppQRModal from './WhatsAppQRModal';
 import { 
   MessageCircle, 
   Send, 
@@ -20,7 +19,6 @@ import {
 const ChatbotIntegrations = ({ chatbot }) => {
   const { toast } = useToast();
   const [activeIntegration, setActiveIntegration] = useState(null);
-  const [showWhatsAppQR, setShowWhatsAppQR] = useState(false);
 
   const integrations = [
     {
