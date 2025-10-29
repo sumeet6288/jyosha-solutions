@@ -1,13 +1,15 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, WebSocket, WebSocketDisconnect, Depends
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
-from routers import auth_router, user_router, chatbots, sources, chat, analytics, plans, advanced_analytics, public_chat, lemonsqueezy, admin, admin_users
+from routers import auth_router, user_router, chatbots, sources, chat, analytics, plans, advanced_analytics, public_chat, lemonsqueezy, admin, admin_users, notifications
 import auth
 from services.plan_service import plan_service
+from typing import Dict
+import json
 
 
 ROOT_DIR = Path(__file__).parent
