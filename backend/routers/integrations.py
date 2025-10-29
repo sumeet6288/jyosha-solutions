@@ -2,16 +2,25 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Optional, Dict, Any, List
 from datetime import datetime
-from motor.motor_asyncio import AsyncIOMotorClient
+from motor.motor_asyncio import AsyncIOMotorDatabase
 import os
 
-router = APIRouter(prefix="/api/integrations", tags=["integrations"])
+router = APIRouter(prefix="/integrations", tags=["integrations"])
+db_instance = None
 
-# MongoDB connection
-MONGO_URL = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
-client = AsyncIOMotorClient(MONGO_URL)
-db = client['chatbot_db']
-integrations_collection = db['integrations']
+def init_router(db: AsyncIOMotorDatabase):
+    """Initialize router with database instance"""
+    global db_instance
+    db_instance = db
+
+# MongoDB will be accessed via db_instance
+integrations_collection = None
+
+def get_integrations_collection():
+    """Get integrations collection from database"""
+    if db_instance is None:
+        raise HTTPException(status_code=500, detail="Database not initialized")
+    return db_instance['integrations']
 
 class IntegrationConfig(BaseModel):
     name: str
