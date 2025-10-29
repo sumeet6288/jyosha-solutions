@@ -224,7 +224,7 @@ const Pricing = () => {
           </div>
 
           {/* Help Section */}
-          <div className="mt-12 text-center">
+          <div className={`mt-12 text-center transform transition-all duration-700 delay-700 ${isLoaded ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
             <div className="bg-gray-50 rounded-xl p-6 max-w-2xl mx-auto border border-gray-200">
               <h2 className="text-xl font-bold mb-2">
                 Need help choosing?
