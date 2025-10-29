@@ -319,19 +319,6 @@ const ChatbotIntegrations = ({ chatbot }) => {
           </div>
         </div>
       </div>
-
-      {/* WhatsApp QR Modal */}
-      <WhatsAppQRModal
-        isOpen={showWhatsAppQR}
-        onClose={() => setShowWhatsAppQR(false)}
-        chatbotId={chatbot.id}
-        onSuccess={() => {
-          toast({
-            title: 'Success!',
-            description: 'WhatsApp connected successfully'
-          });
-        }}
-      />
     </div>
   );
 };
