@@ -60,7 +60,7 @@ const Footer = ({ variant = 'landing' }) => {
 
             {/* Resources */}
             <div>
-              <h4 className="font-semibold text-gray-900 mb-4 text-sm uppercase tracking-wider">Resources</h4>
+              <h4 className="font-semibold text-gray-900 mb-4 text-sm uppercase tracking-wider">Learn</h4>
               <ul className="space-y-2">
                 <li>
                   <Link to="/resources" className="text-gray-600 hover:text-purple-600 transition-colors text-sm flex items-center group">
