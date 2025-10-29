@@ -309,7 +309,7 @@ transition: 700ms
 
 ## 🚀 Live Preview
 
-**URL**: https://quick-install-7.preview.emergentagent.com
+**URL**: https://quick-setup-26.preview.emergentagent.com
 
 ### Check these pages:
 - ✅ Dashboard (main nav)
