@@ -83,6 +83,7 @@ async def get_user_integrations(user_id: str = "demo-user-123"):
 @router.post("/connect")
 async def connect_integration(integration: IntegrationConfig, user_id: str = "demo-user-123"):
     """Connect a new integration"""
+    integrations_collection = get_integrations_collection()
     
     # Validate required fields
     if not integration.api_key:
