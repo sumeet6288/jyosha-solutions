@@ -134,7 +134,7 @@ const Pricing = () => {
           </div>
           
           {/* Header */}
-          <div className="text-center mb-10">
+          <div className={`text-center mb-10 transform transition-all duration-700 delay-200 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
             <h1 className="text-4xl font-bold mb-3 text-gray-900">
               Choose Your Perfect Plan
             </h1>
