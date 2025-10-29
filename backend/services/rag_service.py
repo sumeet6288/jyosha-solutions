@@ -111,13 +111,13 @@ class RAGService:
         min_similarity: float = None
     ) -> Dict:
         """
-        Retrieve relevant context for a query
+        Retrieve relevant context for a query using text-based search
         
         Args:
             query: User query
             chatbot_id: Chatbot identifier
             top_k: Number of results to return (default: 5)
-            min_similarity: Minimum similarity threshold (default: 0.7)
+            min_similarity: Minimum similarity threshold (default: 0.3)
             
         Returns:
             Dictionary with context, citations, and metadata
@@ -128,17 +128,11 @@ class RAGService:
             
             logger.info(f"Retrieving context for query (chatbot: {chatbot_id}, top_k: {top_k})")
             
-            # Step 1: Generate embedding for query
-            query_embedding = await self.embedding_service.generate_embedding(query)
-            
-            if not query_embedding:
-                logger.warning("Failed to generate query embedding")
-                return self._empty_context()
-            
-            # Step 2: Search vector store
+            # Search using text-based retrieval (no embeddings needed)
             matches = await self.vector_store.search(
                 chatbot_id=chatbot_id,
-                query_embedding=query_embedding,
+                query_embedding=None,  # Not used in basic RAG
+                query=query,  # Pass the query text instead
                 top_k=top_k,
                 min_similarity=min_similarity
             )
