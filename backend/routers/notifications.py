@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import List, Optional
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from auth import get_current_user
+from auth import get_mock_user
 from models import User
 from models_notifications import (
     NotificationResponse,
@@ -33,7 +33,7 @@ async def get_notifications(
     limit: int = Query(50, ge=1, le=100),
     skip: int = Query(0, ge=0),
     unread_only: bool = Query(False),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Get user's notifications"""
     notification_service = NotificationService(db_instance)
@@ -48,7 +48,7 @@ async def get_notifications(
 
 @router.get("/unread-count")
 async def get_unread_count(
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Get count of unread notifications"""
     notification_service = NotificationService(db_instance)
@@ -59,7 +59,7 @@ async def get_unread_count(
 @router.put("/{notification_id}/read")
 async def mark_notification_as_read(
     notification_id: str,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Mark a notification as read"""
     notification_service = NotificationService(db_instance)
@@ -73,7 +73,7 @@ async def mark_notification_as_read(
 
 @router.put("/read-all")
 async def mark_all_notifications_as_read(
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Mark all notifications as read"""
     notification_service = NotificationService(db_instance)
@@ -84,7 +84,7 @@ async def mark_all_notifications_as_read(
 @router.delete("/{notification_id}")
 async def delete_notification(
     notification_id: str,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Delete a notification"""
     notification_service = NotificationService(db_instance)
@@ -98,7 +98,7 @@ async def delete_notification(
 
 @router.get("/preferences")
 async def get_notification_preferences(
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Get user's notification preferences"""
     notification_service = NotificationService(db_instance)
@@ -132,7 +132,7 @@ async def get_notification_preferences(
 @router.put("/preferences")
 async def update_notification_preferences(
     preferences: NotificationPreferencesUpdate,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Update user's notification preferences"""
     notification_service = NotificationService(db_instance)
@@ -151,7 +151,7 @@ async def update_notification_preferences(
 @router.post("/push-subscription")
 async def save_push_subscription(
     subscription: PushSubscriptionRequest,
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Save browser push notification subscription"""
     notification_service = NotificationService(db_instance)
@@ -168,7 +168,7 @@ async def save_push_subscription(
 
 @router.post("/test")
 async def create_test_notification(
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_mock_user)
 ):
     """Create a test notification (for development)"""
     notification_service = NotificationService(db_instance)
