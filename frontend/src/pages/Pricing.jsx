@@ -66,7 +66,7 @@ const Pricing = () => {
       ctaVariant: 'default'
     },
     {
-      name: 'Enterprise',
+      name: 'Scale Up',
       price: 'Custom',
       period: '',
       description: 'Tailored solutions for your needs',
