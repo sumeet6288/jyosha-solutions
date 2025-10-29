@@ -2,6 +2,37 @@
   min-height: 100vh;
 }
 
+/* Performance optimizations for smooth scrolling */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* GPU acceleration for animations */
+.animate-blob,
+.animate-pulse,
+.animate-ping,
+.animate-fade-in,
+.animate-fade-in-up,
+.animate-fade-in-right {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimize backdrop filters */
+.backdrop-blur-sm,
+.backdrop-blur-lg {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  transform: translateZ(0);
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
