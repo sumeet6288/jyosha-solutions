@@ -1,37 +1,34 @@
-import chromadb
-from chromadb.config import Settings
 import logging
 from typing import List, Dict, Optional
 import os
+from motor.motor_asyncio import AsyncIOMotorClient
+from pymongo import TEXT
+import re
+from collections import Counter
+import math
 
 logger = logging.getLogger(__name__)
 
 
 class VectorStore:
-    """Service for managing vector storage using ChromaDB"""
+    """Service for managing document chunks using MongoDB with basic text search"""
     
     def __init__(self):
-        """Initialize ChromaDB client with persistent storage"""
+        """Initialize MongoDB connection for chunk storage"""
         try:
-            # Get absolute path for data directory
-            data_dir = os.path.abspath("/app/backend/chromadb_data")
+            # Get MongoDB connection string
+            mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
+            db_name = os.environ.get('MONGO_DB_NAME', 'botsmith')
             
-            # Ensure directory exists
-            os.makedirs(data_dir, exist_ok=True)
+            # Initialize MongoDB client
+            self.client = AsyncIOMotorClient(mongo_url)
+            self.db = self.client[db_name]
+            self.chunks_collection = self.db['document_chunks']
             
-            # Initialize ChromaDB client with persistent storage
-            self.client = chromadb.PersistentClient(
-                path=data_dir,
-                settings=Settings(
-                    anonymized_telemetry=False,
-                    allow_reset=True
-                )
-            )
-            
-            logger.info(f"ChromaDB initialized with persistent storage at {data_dir}")
+            logger.info(f"MongoDB VectorStore initialized with database: {db_name}")
             
         except Exception as e:
-            logger.error(f"Error initializing ChromaDB: {str(e)}")
+            logger.error(f"Error initializing MongoDB VectorStore: {str(e)}")
             raise Exception(f"Failed to initialize vector store: {str(e)}")
     
     def get_or_create_collection(self, chatbot_id: str):
