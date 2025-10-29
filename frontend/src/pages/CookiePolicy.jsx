@@ -407,7 +407,4 @@ const CookiePolicy = () => {
   );
 };
 
-// Add missing Clock import
-import { Clock } from 'lucide-react';
-
 export default CookiePolicy;
