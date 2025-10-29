@@ -10,6 +10,7 @@ from services.chat_service import ChatService
 from services.rag_service import RAGService
 from services.plan_service import plan_service
 from services.notification_service import NotificationService
+from services.cache_service import cache_service
 import logging
 import asyncio
 
