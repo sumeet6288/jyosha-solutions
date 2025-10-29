@@ -309,7 +309,7 @@ transition: 700ms
 
 ## 🚀 Live Preview
 
-**URL**: https://setup-install-view.preview.emergentagent.com
+**URL**: https://fast-dependency-bot.preview.emergentagent.com
 
 ### Check these pages:
 - ✅ Dashboard (main nav)

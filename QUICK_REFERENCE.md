@@ -3,13 +3,13 @@
 ## 🚀 Quick Navigation
 
 ### For End Users
-- **Homepage**: https://setup-install-view.preview.emergentagent.com/
-- **Start Building**: https://setup-install-view.preview.emergentagent.com/dashboard
-- **Pricing**: https://setup-install-view.preview.emergentagent.com/pricing
-- **Help**: https://setup-install-view.preview.emergentagent.com/resources
+- **Homepage**: https://fast-dependency-bot.preview.emergentagent.com/
+- **Start Building**: https://fast-dependency-bot.preview.emergentagent.com/dashboard
+- **Pricing**: https://fast-dependency-bot.preview.emergentagent.com/pricing
+- **Help**: https://fast-dependency-bot.preview.emergentagent.com/resources
 
 ### For Administrators
-- **Admin Panel**: https://setup-install-view.preview.emergentagent.com/admin
+- **Admin Panel**: https://fast-dependency-bot.preview.emergentagent.com/admin
 - **User Management**: Admin Dashboard → Users Tab
 - **System Settings**: Admin Dashboard → Settings Tab
 
@@ -307,7 +307,7 @@
 
 ### API Base URL
 - Development: `http://localhost:8001`
-- Production: `https://setup-install-view.preview.emergentagent.com`
+- Production: `https://fast-dependency-bot.preview.emergentagent.com`
 
 ---
 
@@ -321,8 +321,8 @@
 
 ### Contact
 - **Email**: support@botsmith.ai
-- **Website**: https://setup-install-view.preview.emergentagent.com
-- **Resources**: https://setup-install-view.preview.emergentagent.com/resources
+- **Website**: https://fast-dependency-bot.preview.emergentagent.com
+- **Resources**: https://fast-dependency-bot.preview.emergentagent.com/resources
 
 ---
 
