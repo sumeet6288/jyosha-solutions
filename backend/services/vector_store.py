@@ -31,31 +31,39 @@ class VectorStore:
             logger.error(f"Error initializing MongoDB VectorStore: {str(e)}")
             raise Exception(f"Failed to initialize vector store: {str(e)}")
     
+    async def ensure_text_index(self, chatbot_id: str):
+        """
+        Ensure text index exists for efficient text search
+        
+        Args:
+            chatbot_id: Chatbot identifier
+        """
+        try:
+            # Create text index on 'text' field if it doesn't exist
+            await self.chunks_collection.create_index([("text", TEXT)])
+            await self.chunks_collection.create_index([("chatbot_id", 1)])
+            await self.chunks_collection.create_index([("source_id", 1)])
+            logger.info(f"Text indexes ensured for chatbot {chatbot_id}")
+        except Exception as e:
+            logger.warning(f"Index may already exist: {str(e)}")
+    
     def get_or_create_collection(self, chatbot_id: str):
         """
-        Get or create a collection for a specific chatbot
+        Compatibility method - returns collection info
         
         Args:
             chatbot_id: Unique identifier for the chatbot
             
         Returns:
-            ChromaDB collection object
+            Dictionary with collection info
         """
         try:
-            # Collection name must be alphanumeric with underscores/hyphens
-            collection_name = f"chatbot_{chatbot_id}".replace("-", "_")
-            
-            # Get or create collection
-            collection = self.client.get_or_create_collection(
-                name=collection_name,
-                metadata={"chatbot_id": chatbot_id}
-            )
-            
-            logger.info(f"Collection '{collection_name}' ready with {collection.count()} items")
-            return collection
-            
+            return {
+                "chatbot_id": chatbot_id,
+                "collection_name": f"chatbot_{chatbot_id}"
+            }
         except Exception as e:
-            logger.error(f"Error getting/creating collection: {str(e)}")
+            logger.error(f"Error getting collection info: {str(e)}")
             raise Exception(f"Failed to get collection: {str(e)}")
     
     async def add_chunks(
