@@ -114,21 +114,29 @@ const AdvancedAnalytics = ({ backendUrl }) => {
             <Users className="w-5 h-5 text-purple-600" />
             User Growth Trend
           </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={userGrowth}>
-              <defs>
-                <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-              <YAxis tick={{ fontSize: 12 }} />
-              <Tooltip />
-              <Area type="monotone" dataKey="users" stroke="#8b5cf6" fillOpacity={1} fill="url(#colorUsers)" name="New Users" />
-            </AreaChart>
-          </ResponsiveContainer>
+          {userGrowth.length > 0 && userGrowth.some(d => d.users > 0) ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart data={userGrowth}>
+                <defs>
+                  <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} allowDecimals={false} />
+                <Tooltip />
+                <Area type="monotone" dataKey="users" stroke="#8b5cf6" fillOpacity={1} fill="url(#colorUsers)" name="New Users" />
+              </AreaChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-[300px] text-gray-400">
+              <Users className="w-16 h-16 mb-4 opacity-30" />
+              <p className="text-lg font-medium">No user data available</p>
+              <p className="text-sm mt-2">User growth trends will appear here</p>
+            </div>
+          )}
         </div>
 
         {/* Message Volume */}
@@ -137,59 +145,83 @@ const AdvancedAnalytics = ({ backendUrl }) => {
             <MessageSquare className="w-5 h-5 text-blue-600" />
             Message Volume Trend
           </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <AreaChart data={messageVolume}>
-              <defs>
-                <linearGradient id="colorMessages" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-              <YAxis tick={{ fontSize: 12 }} />
-              <Tooltip />
-              <Area type="monotone" dataKey="messages" stroke="#3b82f6" fillOpacity={1} fill="url(#colorMessages)" name="Messages" />
-            </AreaChart>
-          </ResponsiveContainer>
+          {messageVolume.length > 0 && messageVolume.some(d => d.messages > 0) ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart data={messageVolume}>
+                <defs>
+                  <linearGradient id="colorMessages" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} allowDecimals={false} />
+                <Tooltip />
+                <Area type="monotone" dataKey="messages" stroke="#3b82f6" fillOpacity={1} fill="url(#colorMessages)" name="Messages" />
+              </AreaChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-[300px] text-gray-400">
+              <MessageSquare className="w-16 h-16 mb-4 opacity-30" />
+              <p className="text-lg font-medium">No message data available</p>
+              <p className="text-sm mt-2">Message volume trends will appear here</p>
+            </div>
+          )}
         </div>
 
         {/* Provider Distribution */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h3 className="text-lg font-bold mb-4">AI Provider Distribution</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={providerDist}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ provider, count }) => `${provider}: ${count}`}
-                outerRadius={100}
-                fill="#8884d8"
-                dataKey="count"
-              >
-                {providerDist.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
+          {providerDist.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={providerDist}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ provider, count }) => `${provider}: ${count}`}
+                  outerRadius={100}
+                  fill="#8884d8"
+                  dataKey="count"
+                >
+                  {providerDist.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-[300px] text-gray-400">
+              <Zap className="w-16 h-16 mb-4 opacity-30" />
+              <p className="text-lg font-medium">No provider data available</p>
+              <p className="text-sm mt-2">AI provider distribution will appear here</p>
+            </div>
+          )}
         </div>
 
         {/* Provider Usage Bar Chart */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h3 className="text-lg font-bold mb-4">Provider Usage Comparison</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={providerDist} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" tick={{ fontSize: 12 }} />
-              <YAxis dataKey="provider" type="category" tick={{ fontSize: 12 }} width={100} />
-              <Tooltip />
-              <Bar dataKey="count" fill="#8b5cf6" name="Chatbots" />
-            </BarChart>
-          </ResponsiveContainer>
+          {providerDist.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={providerDist} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis type="number" tick={{ fontSize: 12 }} allowDecimals={false} />
+                <YAxis dataKey="provider" type="category" tick={{ fontSize: 12 }} width={100} />
+                <Tooltip />
+                <Bar dataKey="count" fill="#8b5cf6" name="Chatbots" />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-[300px] text-gray-400">
+              <TrendingUp className="w-16 h-16 mb-4 opacity-30" />
+              <p className="text-lg font-medium">No provider data available</p>
+              <p className="text-sm mt-2">Provider usage comparison will appear here</p>
+            </div>
+          )}
         </div>
       </div>
 
