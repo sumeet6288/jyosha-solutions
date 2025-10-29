@@ -126,7 +126,7 @@ const Enterprise = () => {
       <div className="pt-32 pb-20 px-8 relative z-10">
         <div className="max-w-[95%] mx-auto">
           {/* Back Button */}
-          <div className="mb-6 animate-fade-in-up">
+          <div className={`mb-6 animate-fade-in-up transform transition-all duration-700 delay-100 ${isLoaded ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`}>
             <Button 
               variant="ghost" 
               onClick={() => navigate('/')} 
