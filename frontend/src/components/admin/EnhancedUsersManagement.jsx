@@ -25,6 +25,8 @@ const EnhancedUsersManagement = ({ backendUrl }) => {
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(new Date());
   const [refreshInterval, setRefreshInterval] = useState(3000); // 3 seconds
+  const [dataChanged, setDataChanged] = useState(false);
+  const [previousUserCount, setPreviousUserCount] = useState(0);
   
   // Modal States
   const [showEditModal, setShowEditModal] = useState(false);
