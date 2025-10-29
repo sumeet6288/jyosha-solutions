@@ -150,7 +150,8 @@ const Pricing = () => {
               return (
                 <div 
                   key={index} 
-                  className={`relative ${plan.popular ? 'lg:-mt-2' : ''}`}
+                  className={`relative ${plan.popular ? 'lg:-mt-2' : ''} transform transition-all duration-700 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
+                  style={{ transitionDelay: `${300 + index * 100}ms` }}
                 >
                   {/* Popular Badge */}
                   {plan.popular && (
