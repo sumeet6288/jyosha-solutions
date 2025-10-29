@@ -102,8 +102,8 @@ const Pricing = () => {
           </div>
           <div className="hidden md:flex items-center gap-6">
             <button onClick={() => navigate('/pricing')} className="text-black text-sm font-medium">Pricing</button>
-            <button onClick={() => navigate('/enterprise')} className="text-gray-600 hover:text-black transition-colors text-sm">Enterprise</button>
-            <button onClick={() => navigate('/resources')} className="text-gray-600 hover:text-black transition-colors text-sm">Resources</button>
+            <button onClick={() => navigate('/enterprise')} className="text-gray-600 hover:text-black transition-colors text-sm">Scale Up</button>
+            <button onClick={() => navigate('/resources')} className="text-gray-600 hover:text-black transition-colors text-sm">Learn</button>
           </div>
           <div className="flex items-center gap-3">
             <Button variant="ghost" onClick={() => navigate('/signin')} className="text-sm">Sign in</Button>
