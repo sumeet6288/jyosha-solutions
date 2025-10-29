@@ -156,8 +156,8 @@ const Enterprise = () => {
             {features.map((feature, index) => (
               <div 
                 key={index} 
-                className="group bg-white/80 backdrop-blur-sm p-8 rounded-2xl border-2 border-purple-200/50 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 transform hover:-translate-y-2 animate-fade-in-up"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className={`group bg-white/80 backdrop-blur-sm p-8 rounded-2xl border-2 border-purple-200/50 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 transform hover:-translate-y-2 animate-fade-in-up ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
+                style={{ animationDelay: `${index * 100}ms`, transitionDelay: `${300 + index * 100}ms` }}
               >
                 <div className={`w-16 h-16 bg-gradient-to-br ${feature.gradient} rounded-xl flex items-center justify-center text-white mb-6 shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
                   {feature.icon}
