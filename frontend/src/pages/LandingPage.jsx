@@ -223,7 +223,7 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-8 relative z-10">
+      <section className="pt-32 sm:pt-40 pb-12 sm:pb-20 px-4 sm:px-8 relative z-10">
         <div className="max-w-[95%] mx-auto grid md:grid-cols-2 gap-8 sm:gap-16 items-center">
           <div className="space-y-6 sm:space-y-8 animate-fade-in-up">
             <div className="inline-block">
