@@ -21,6 +21,8 @@ const Dashboard = () => {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [upgradeContext, setUpgradeContext] = useState({});
   const [selectedPlanInfo, setSelectedPlanInfo] = useState(null);
+  const [autoRefresh, setAutoRefresh] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
 
   useEffect(() => {
     loadData();
@@ -46,6 +48,17 @@ const Dashboard = () => {
       }
     }
   }, []);
+
+  // Auto-refresh effect for dashboard data
+  useEffect(() => {
+    if (!autoRefresh) return;
+
+    const interval = setInterval(() => {
+      loadData(true); // Silent refresh
+    }, 5000); // Refresh every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [autoRefresh]);
 
   const loadData = async () => {
     try {
