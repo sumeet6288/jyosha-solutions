@@ -4,7 +4,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Label } from '../components/ui/label';
-import { Shield, Users, Zap, HeadphonesIcon, CheckCircle, Building2, Globe2, Lock } from 'lucide-react';
+import { Shield, Users, Zap, HeadphonesIcon, CheckCircle, Building2, Globe2, Lock, ArrowLeft } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 
 const Enterprise = () => {
