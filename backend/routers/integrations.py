@@ -144,6 +144,7 @@ async def disconnect_integration(integration_name: str, user_id: str = "demo-use
 @router.get("/{integration_name}")
 async def get_integration_details(integration_name: str, user_id: str = "demo-user-123"):
     """Get details of a specific integration"""
+    integrations_collection = get_integrations_collection()
     
     integration = await integrations_collection.find_one({
         "user_id": user_id,
