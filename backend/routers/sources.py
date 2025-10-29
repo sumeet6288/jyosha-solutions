@@ -308,6 +308,29 @@ async def add_text_source(
         # Increment usage count
         await plan_service.increment_usage(current_user.id, "text_sources")
         
+        # Process with RAG immediately (text is already available)
+        async def process_text():
+            try:
+                logger.info(f"Processing text content with RAG for source {source.id}")
+                rag_result = await rag_service.process_document(
+                    text=content,
+                    chatbot_id=chatbot_id,
+                    source_id=source.id,
+                    source_type="text",
+                    filename=name,
+                    use_paragraph_chunking=True
+                )
+                
+                if rag_result.get("success"):
+                    logger.info(f"RAG processing successful: {rag_result.get('chunks_created')} chunks created")
+                else:
+                    logger.error(f"RAG processing failed: {rag_result.get('error')}")
+            except Exception as e:
+                logger.error(f"Error in RAG processing for text: {str(e)}")
+        
+        # Start background task
+        asyncio.create_task(process_text())
+        
         # Update chatbot last_trained timestamp
         await db_instance.chatbots.update_one(
             {"id": chatbot_id},
