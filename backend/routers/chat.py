@@ -11,6 +11,7 @@ from services.rag_service import RAGService
 from services.plan_service import plan_service
 from services.notification_service import NotificationService
 import logging
+import asyncio
 
 logger = logging.getLogger(__name__)
 
