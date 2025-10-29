@@ -120,6 +120,18 @@ const Enterprise = () => {
 
       <div className="pt-32 pb-20 px-8 relative z-10">
         <div className="max-w-[95%] mx-auto">
+          {/* Back Button */}
+          <div className="mb-6 animate-fade-in-up">
+            <Button 
+              variant="ghost" 
+              onClick={() => navigate('/')} 
+              className="group hover:bg-purple-50 text-gray-700 hover:text-purple-600"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+              Back to Home
+            </Button>
+          </div>
+          
           {/* Hero Section */}
           <div className="text-center mb-20 animate-fade-in-up">
             <div className="inline-block mb-4">
