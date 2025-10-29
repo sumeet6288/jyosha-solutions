@@ -85,6 +85,9 @@ function AppContent() {
             <Route path="/resources/api-reference" element={<APIReference />} />
             <Route path="/resources/help-center" element={<HelpCenter />} />
             <Route path="/resources/community" element={<Community />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="/signin" element={<Navigate to="/dashboard" replace />} />
             <Route path="/signup" element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<Dashboard />} />
