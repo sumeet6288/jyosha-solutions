@@ -127,6 +127,22 @@ async def upload_file_source(
                     }}
                 )
                 
+                # Process with RAG (chunking + embeddings + vector storage)
+                logger.info(f"Processing document with RAG for source {source.id}")
+                rag_result = await rag_service.process_document(
+                    text=content,
+                    chatbot_id=chatbot_id,
+                    source_id=source.id,
+                    source_type="file",
+                    filename=file.filename,
+                    use_paragraph_chunking=True
+                )
+                
+                if rag_result.get("success"):
+                    logger.info(f"RAG processing successful: {rag_result.get('chunks_created')} chunks created")
+                else:
+                    logger.error(f"RAG processing failed: {rag_result.get('error')}")
+                
                 # Update chatbot last_trained timestamp
                 await db_instance.chatbots.update_one(
                     {"id": chatbot_id},
