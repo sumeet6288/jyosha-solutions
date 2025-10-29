@@ -874,6 +874,13 @@ const ChatbotBuilder = () => {
               <AdvancedAnalytics chatbotId={id} />
             </div>
           </TabsContent>
+
+          {/* Integrations Tab */}
+          <TabsContent value="integrations" className="animate-fade-in-up">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-8 shadow-xl">
+              <ChatbotIntegrations chatbot={chatbot} />
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
 
