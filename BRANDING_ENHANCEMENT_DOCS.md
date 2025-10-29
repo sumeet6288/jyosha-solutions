@@ -309,7 +309,7 @@ transition: 700ms
 
 ## 🚀 Live Preview
 
-**URL**: https://setup-viewer-2.preview.emergentagent.com
+**URL**: https://setup-install-view.preview.emergentagent.com
 
 ### Check these pages:
 - ✅ Dashboard (main nav)
