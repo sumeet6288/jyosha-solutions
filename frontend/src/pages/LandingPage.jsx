@@ -255,14 +255,39 @@ const LandingPage = () => {
             </div>
           </div>
           <div className="relative animate-fade-in-right">
+            {/* Enhanced glow with multiple layers */}
             <div className="absolute -inset-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl blur-2xl opacity-20 animate-pulse-slow"></div>
+            <div className="absolute -inset-2 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-3xl blur-xl opacity-10 animate-pulse-slow animation-delay-1000"></div>
+            
+            {/* Main card with enhanced styling */}
             <div className="relative w-full h-[500px] rounded-3xl bg-gradient-to-br from-pink-400 via-purple-400 to-orange-400 p-8 flex items-center justify-center transform hover:scale-105 transition-transform duration-500 shadow-2xl">
-              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl w-full max-w-md transform hover:shadow-purple-500/20 transition-all duration-300">
-                <h3 className="text-lg font-semibold mb-6 text-gray-900">Sources</h3>
-                <button className="w-full border-2 border-dashed border-purple-300 rounded-xl p-8 hover:border-purple-500 hover:bg-purple-50 transition-all duration-300 flex items-center justify-center gap-3 group">
-                  <div className="text-4xl group-hover:scale-125 transition-transform duration-300">▶</div>
-                  <span className="text-gray-700 font-medium group-hover:text-purple-600 transition-colors">Add source</span>
-                </button>
+              {/* Shine effect overlay */}
+              <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-40"></div>
+              <div className="absolute inset-0 rounded-3xl overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent"></div>
+              </div>
+              
+              {/* Floating decorative elements */}
+              <div className="absolute top-8 right-8 w-4 h-4 bg-white/30 rounded-full animate-ping"></div>
+              <div className="absolute bottom-12 left-12 w-3 h-3 bg-yellow-300/40 rounded-full animate-ping animation-delay-1000"></div>
+              <div className="absolute top-1/3 right-16 w-2 h-2 bg-cyan-300/40 rounded-full animate-ping animation-delay-2000"></div>
+              
+              <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl w-full max-w-md transform hover:shadow-purple-500/20 transition-all duration-300 border border-white/50">
+                {/* Inner card glow */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/5 to-pink-500/5"></div>
+                
+                <div className="relative">
+                  <h3 className="text-lg font-semibold mb-6 text-gray-900 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-pulse"></span>
+                    Sources
+                  </h3>
+                  <button className="w-full border-2 border-dashed border-purple-300 rounded-xl p-8 hover:border-purple-500 hover:bg-purple-50 transition-all duration-300 flex items-center justify-center gap-3 group relative overflow-hidden">
+                    {/* Button hover effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/5 to-purple-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                    <div className="text-4xl group-hover:scale-125 transition-transform duration-300 relative z-10">▶</div>
+                    <span className="text-gray-700 font-medium group-hover:text-purple-600 transition-colors relative z-10">Add source</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
