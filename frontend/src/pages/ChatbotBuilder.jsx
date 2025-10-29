@@ -275,7 +275,7 @@ const ChatbotBuilder = () => {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           {/* Mobile: Horizontal scrolling tabs */}
           <div className="mb-6 overflow-x-auto scrollbar-hide">
-            <TabsList className="inline-flex w-max min-w-full lg:grid lg:w-full lg:grid-cols-6 gap-2 bg-white/80 backdrop-blur-sm border-2 border-purple-200/50 p-1 rounded-xl shadow-lg animate-fade-in-up">
+            <TabsList className="inline-flex w-max min-w-full lg:grid lg:w-full lg:grid-cols-7 gap-2 bg-white/80 backdrop-blur-sm border-2 border-purple-200/50 p-1 rounded-xl shadow-lg animate-fade-in-up">
               <TabsTrigger value="sources" className="whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300 flex-shrink-0">
                 <FileText className="w-4 h-4 mr-2" />
                 <span className="hidden sm:inline">Sources</span>
