@@ -120,8 +120,8 @@ const HelpCenter = () => {
         </div>
       </nav>
 
-      <div className="pt-32 pb-20 px-8 relative z-10">
-        <div className="max-w-5xl mx-auto">
+      <div className="pt-32 pb-20 px-4 md:px-8 lg:px-12 relative z-10">
+        <div className="max-w-[90%] mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-full mb-4">
