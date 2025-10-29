@@ -90,6 +90,7 @@ api_router.include_router(public_chat.router)
 api_router.include_router(lemonsqueezy.router, prefix="/lemonsqueezy", tags=["Lemon Squeezy"])
 api_router.include_router(admin.router)
 api_router.include_router(admin_users.router)
+api_router.include_router(notifications.router)
 
 # Include the router in the main app
 app.include_router(api_router)
