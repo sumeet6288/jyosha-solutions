@@ -30,7 +30,6 @@ const Integrations = () => {
     'Calendly': Zap,
     'Slack': MessageCircle,
     'Zendesk': Headphones,
-    'WhatsApp': Phone,
     'Salesforce': Database
   };
 
@@ -39,7 +38,6 @@ const Integrations = () => {
     'Calendly': 'from-blue-500 to-cyan-600',
     'Slack': 'from-pink-500 to-rose-600',
     'Zendesk': 'from-green-500 to-emerald-600',
-    'WhatsApp': 'from-teal-500 to-green-600',
     'Salesforce': 'from-orange-500 to-red-600'
   };
 
@@ -48,8 +46,7 @@ const Integrations = () => {
     { id: 2, name: 'Calendly', description: 'Schedule appointments seamlessly', connected: false },
     { id: 3, name: 'Slack', description: 'Deploy chatbot to Slack workspace', connected: false },
     { id: 4, name: 'Zendesk', description: 'Sync conversations to Zendesk', connected: false },
-    { id: 5, name: 'WhatsApp', description: 'Deploy on WhatsApp Business', connected: false },
-    { id: 6, name: 'Salesforce', description: 'Integrate with Salesforce CRM', connected: false },
+    { id: 5, name: 'Salesforce', description: 'Integrate with Salesforce CRM', connected: false },
   ]);
 
   const handleLogout = () => {
