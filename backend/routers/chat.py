@@ -8,6 +8,7 @@ from models import (
 )
 from services.chat_service import ChatService
 from services.plan_service import plan_service
+from services.notification_service import NotificationService
 import logging
 
 logger = logging.getLogger(__name__)
@@ -15,13 +16,15 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/chat", tags=["chat"])
 db_instance = None
 chat_service = None
+notification_service = None
 
 
 def init_router(db: AsyncIOMotorDatabase):
     """Initialize router with database instance"""
-    global db_instance, chat_service
+    global db_instance, chat_service, notification_service
     db_instance = db
     chat_service = ChatService()
+    notification_service = NotificationService(db)
 
 
 @router.post("", response_model=ChatResponse)
