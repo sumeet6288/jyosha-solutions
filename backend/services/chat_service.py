@@ -64,7 +64,8 @@ class ChatService:
             # Get response
             response = await chat.send_message(user_message)
             
-            return response
+            # Return response with citations if available
+            return (response, citation_footer)
             
         except Exception as e:
             logger.error(f"Error generating response: {str(e)}")
