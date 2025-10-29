@@ -1,6 +1,5 @@
 import logging
 from typing import List, Dict, Optional
-from .embedding_service import EmbeddingService
 from .chunking_service import ChunkingService
 from .vector_store import VectorStore
 
@@ -9,13 +8,12 @@ logger = logging.getLogger(__name__)
 
 class RAGService:
     """
-    Main RAG (Retrieval Augmented Generation) service
-    Orchestrates chunking, embedding, and retrieval
+    Main RAG (Retrieval Augmented Generation) service - Basic version
+    Orchestrates chunking and text-based retrieval (no embeddings)
     """
     
     def __init__(self):
-        """Initialize RAG service with all sub-services"""
-        self.embedding_service = EmbeddingService()
+        """Initialize RAG service with sub-services"""
         self.chunking_service = ChunkingService(
             chunk_size=800,        # 800 tokens per chunk
             chunk_overlap=150      # 150 token overlap
@@ -24,9 +22,9 @@ class RAGService:
         
         # Configuration
         self.top_k_results = 5
-        self.similarity_threshold = 0.7
+        self.similarity_threshold = 0.3  # Lower threshold for text-based search
         
-        logger.info("RAG Service initialized successfully")
+        logger.info("Basic RAG Service initialized successfully (no embeddings)")
     
     async def process_document(
         self,
@@ -38,7 +36,7 @@ class RAGService:
         use_paragraph_chunking: bool = True
     ) -> Dict:
         """
-        Process a document: chunk, embed, and store
+        Process a document: chunk and store (no embeddings in basic RAG)
         
         Args:
             text: Document text content
@@ -78,17 +76,11 @@ class RAGService:
             chunk_stats = self.chunking_service.get_stats(chunks)
             logger.info(f"Created {len(chunks)} chunks: {chunk_stats}")
             
-            # Step 2: Generate embeddings for all chunks
-            chunk_texts = [chunk["text"] for chunk in chunks]
-            embeddings = await self.embedding_service.generate_embeddings_batch(chunk_texts)
-            
-            logger.info(f"Generated {len(embeddings)} embeddings")
-            
-            # Step 3: Store chunks and embeddings in vector database
+            # Step 2: Store chunks directly in MongoDB (no embeddings needed)
             store_result = await self.vector_store.add_chunks(
                 chatbot_id=chatbot_id,
                 chunks=chunks,
-                embeddings=embeddings,
+                embeddings=None,  # No embeddings in basic RAG
                 source_id=source_id,
                 source_type=source_type,
                 filename=filename
@@ -97,7 +89,6 @@ class RAGService:
             return {
                 "success": True,
                 "chunks_created": len(chunks),
-                "embeddings_generated": len(embeddings),
                 "collection_size": store_result.get("collection_size", 0),
                 "chunk_stats": chunk_stats
             }
