@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { BookOpen, Video, FileText, HelpCircle, Code, Lightbulb, Users2, ArrowRight } from 'lucide-react';
+import { BookOpen, Video, FileText, HelpCircle, Code, Lightbulb, Users2, ArrowRight, ArrowLeft } from 'lucide-react';
 
 const Resources = () => {
   const navigate = useNavigate();
