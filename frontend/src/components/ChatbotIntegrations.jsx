@@ -3,7 +3,7 @@ import { Card } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
-import { useToast } from './ui/use-toast';
+import { useToast } from '../hooks/use-toast';
 import { 
   MessageCircle, 
   Send, 
