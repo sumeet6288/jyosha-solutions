@@ -6,6 +6,7 @@ from models import Source, SourceCreate, SourceResponse
 from auth import get_current_user, get_mock_user, User
 from services.document_processor import DocumentProcessor
 from services.website_scraper import WebsiteScraper
+from services.rag_service import RAGService
 from services.plan_service import plan_service
 import logging
 import asyncio
@@ -14,12 +15,14 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/sources", tags=["sources"])
 db_instance = None
+rag_service = None
 
 
 def init_router(db: AsyncIOMotorDatabase):
     """Initialize router with database instance"""
-    global db_instance
+    global db_instance, rag_service
     db_instance = db
+    rag_service = RAGService()
 
 
 async def verify_chatbot_ownership(chatbot_id: str, user_id: str):
