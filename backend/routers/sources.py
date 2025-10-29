@@ -366,7 +366,14 @@ async def delete_source(
         # Verify ownership through chatbot
         await verify_chatbot_ownership(source["chatbot_id"], current_user.id)
         
-        # Delete source
+        # Delete from RAG vector store
+        try:
+            await rag_service.delete_source(source["chatbot_id"], source_id)
+            logger.info(f"Deleted RAG data for source {source_id}")
+        except Exception as e:
+            logger.error(f"Error deleting RAG data: {str(e)}")
+        
+        # Delete source from database
         await db_instance.sources.delete_one({"id": source_id})
         
         return None
