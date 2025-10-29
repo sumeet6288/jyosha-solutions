@@ -36,14 +36,22 @@ def init_router(db: AsyncIOMotorDatabase):
 async def send_message(chat_request: ChatRequest):
     """Send a message to a chatbot (public endpoint) - OPTIMIZED"""
     try:
-        # OPTIMIZATION 1: Parallel fetch of chatbot and conversation
-        chatbot_task = db_instance.chatbots.find_one({"id": chat_request.chatbot_id})
-        conversation_task = db_instance.conversations.find_one({
+        # OPTIMIZATION 0: Try to get chatbot from cache first
+        cache_key = f"chatbot:{chat_request.chatbot_id}"
+        chatbot = cache_service.get(cache_key)
+        
+        if not chatbot:
+            # Cache miss - fetch from database
+            chatbot = await db_instance.chatbots.find_one({"id": chat_request.chatbot_id})
+            if chatbot:
+                # Cache for 5 minutes
+                cache_service.set(cache_key, chatbot, ttl_seconds=300)
+        
+        # OPTIMIZATION 1: Parallel fetch of conversation (chatbot already fetched/cached)
+        conversation = await db_instance.conversations.find_one({
             "chatbot_id": chat_request.chatbot_id,
             "session_id": chat_request.session_id
         })
-        
-        chatbot, conversation = await asyncio.gather(chatbot_task, conversation_task)
         
         if not chatbot:
             raise HTTPException(
