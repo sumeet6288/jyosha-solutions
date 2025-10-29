@@ -86,7 +86,6 @@ function AppContent() {
             <Route path="/signup" element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/analytics" element={<Analytics />} />
-            <Route path="/integrations" element={<Integrations />} />
             <Route path="/subscription" element={<Subscription />} />
             <Route path="/account-settings" element={<AccountSettings />} />
             <Route path="/notification-preferences" element={<NotificationPreferences />} />
