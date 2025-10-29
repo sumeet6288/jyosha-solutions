@@ -27,7 +27,15 @@ def init_router(db: AsyncIOMotorDatabase):
 
 @router.get("/chatbot/{chatbot_id}", response_model=PublicChatbotInfo)
 async def get_public_chatbot(chatbot_id: str):
-    """Get public chatbot information (no authentication required)"""
+    """Get public chatbot information (no authentication required) - CACHED"""
+    # Try cache first
+    cache_key = f"public_chatbot:{chatbot_id}"
+    cached_info = cache_service.get(cache_key)
+    
+    if cached_info:
+        return cached_info
+    
+    # Cache miss - fetch from database
     chatbot = await db_instance.chatbots.find_one({"id": chatbot_id})
     if not chatbot:
         raise HTTPException(status_code=404, detail="Chatbot not found")
@@ -36,7 +44,7 @@ async def get_public_chatbot(chatbot_id: str):
     if not chatbot.get("public_access", False):
         raise HTTPException(status_code=403, detail="This chatbot is not publicly accessible")
     
-    return PublicChatbotInfo(
+    info = PublicChatbotInfo(
         id=chatbot["id"],
         name=chatbot["name"],
         welcome_message=chatbot.get("welcome_message", "Hello! How can I help you today?"),
@@ -46,6 +54,11 @@ async def get_public_chatbot(chatbot_id: str):
         avatar_url=chatbot.get("avatar_url"),
         widget_theme=chatbot.get("widget_theme", "light")
     )
+    
+    # Cache for 5 minutes
+    cache_service.set(cache_key, info, ttl_seconds=300)
+    
+    return info
 
 
 @router.post("/chat/{chatbot_id}", response_model=ChatResponse)
