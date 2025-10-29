@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Cookie, Settings, BarChart3, Shield, X, Check, Info } from 'lucide-react';
+import { ArrowLeft, Cookie, Settings, BarChart3, Shield, X, Check, Info, Clock } from 'lucide-react';
 
 const CookiePolicy = () => {
   const navigate = useNavigate();
