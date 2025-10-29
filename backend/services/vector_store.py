@@ -70,18 +70,18 @@ class VectorStore:
         self,
         chatbot_id: str,
         chunks: List[Dict],
-        embeddings: List[List[float]],
-        source_id: str,
-        source_type: str,
+        embeddings: List[List[float]] = None,  # Kept for compatibility but not used
+        source_id: str = None,
+        source_type: str = None,
         filename: str = None
     ) -> Dict:
         """
-        Add document chunks with embeddings to vector store
+        Add document chunks to MongoDB (basic RAG - no embeddings)
         
         Args:
             chatbot_id: Chatbot identifier
             chunks: List of chunk dictionaries with text and metadata
-            embeddings: List of embedding vectors
+            embeddings: Not used in basic RAG (kept for compatibility)
             source_id: Source document identifier
             source_type: Type of source (file, website, text)
             filename: Optional filename for file sources
@@ -90,60 +90,57 @@ class VectorStore:
             Dictionary with operation statistics
         """
         try:
-            if len(chunks) != len(embeddings):
-                raise ValueError(f"Chunks ({len(chunks)}) and embeddings ({len(embeddings)}) count mismatch")
+            await self.ensure_text_index(chatbot_id)
             
-            collection = self.get_or_create_collection(chatbot_id)
-            
-            # Prepare data for ChromaDB
-            ids = []
+            # Prepare documents for MongoDB
             documents = []
-            metadatas = []
-            embeddings_list = embeddings
             
-            for i, (chunk, embedding) in enumerate(zip(chunks, embeddings)):
+            for i, chunk in enumerate(chunks):
                 # Create unique ID for chunk
                 chunk_id = f"{source_id}_chunk_{i}"
-                ids.append(chunk_id)
                 
-                # Extract text
-                documents.append(chunk["text"])
-                
-                # Prepare metadata
-                metadata = {
+                # Prepare document
+                doc = {
+                    "chunk_id": chunk_id,
+                    "chatbot_id": chatbot_id,
                     "source_id": source_id,
                     "source_type": source_type,
+                    "text": chunk["text"],
                     "chunk_index": chunk.get("chunk_index", i),
-                    "token_count": chunk.get("token_count", 0)
+                    "token_count": chunk.get("token_count", 0),
+                    # Add keywords for better retrieval
+                    "keywords": self._extract_keywords(chunk["text"])
                 }
                 
                 if filename:
-                    metadata["filename"] = filename
+                    doc["filename"] = filename
                 
                 # Add any additional metadata from chunk
                 if "page" in chunk:
-                    metadata["page"] = chunk["page"]
+                    doc["page"] = chunk["page"]
                 
-                metadatas.append(metadata)
+                documents.append(doc)
             
-            # Add to ChromaDB
-            collection.add(
-                ids=ids,
-                documents=documents,
-                metadatas=metadatas,
-                embeddings=embeddings_list
-            )
+            # Insert into MongoDB
+            if documents:
+                result = await self.chunks_collection.insert_many(documents)
+                inserted_count = len(result.inserted_ids)
+            else:
+                inserted_count = 0
             
-            logger.info(f"Added {len(chunks)} chunks to collection for chatbot {chatbot_id}")
+            # Get total count for this chatbot
+            total_count = await self.chunks_collection.count_documents({"chatbot_id": chatbot_id})
+            
+            logger.info(f"Added {inserted_count} chunks to MongoDB for chatbot {chatbot_id}")
             
             return {
                 "success": True,
-                "chunks_added": len(chunks),
-                "collection_size": collection.count()
+                "chunks_added": inserted_count,
+                "collection_size": total_count
             }
             
         except Exception as e:
-            logger.error(f"Error adding chunks to vector store: {str(e)}")
+            logger.error(f"Error adding chunks to MongoDB: {str(e)}")
             raise Exception(f"Failed to add chunks: {str(e)}")
     
     async def search(
