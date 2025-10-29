@@ -31,6 +31,9 @@ import CustomizationOptions from './pages/resources/articles/CustomizationOption
 import AnalyticsInsights from './pages/resources/articles/AnalyticsInsights';
 import SharingDeployment from './pages/resources/articles/SharingDeployment';
 import ChatbotManagement from './pages/resources/articles/ChatbotManagement';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import CookiePolicy from './pages/CookiePolicy';
 import NotFound from './pages/NotFound';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import { Toaster } from './components/ui/toaster';
