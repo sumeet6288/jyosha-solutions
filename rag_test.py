@@ -488,16 +488,23 @@ class RAGSystemTester:
             self.log_result("Chunk Verification", False, f"Exception: {str(e)}")
     
     def test_cleanup(self):
-        """Clean up test resources"""
+        """Clean up test resources (skip deleting existing chatbot)"""
         try:
-            if self.test_chatbot_id:
-                response = self.make_request('DELETE', f'/api/chatbots/{self.test_chatbot_id}')
-                success = response.status_code == 204
-                self.log_result("Cleanup Test Chatbot", success, f"Deleted chatbot: {self.test_chatbot_id}")
+            # Don't delete the existing chatbot, just clean up sources we added
+            if self.test_source_ids:
+                cleaned_sources = 0
+                for source_id in self.test_source_ids[1:]:  # Keep first source, delete others
+                    try:
+                        response = self.make_request('DELETE', f'/api/sources/{source_id}')
+                        if response.status_code == 204:
+                            cleaned_sources += 1
+                    except:
+                        pass
+                self.log_result("Cleanup Test Sources", True, f"Cleaned up {cleaned_sources} test sources")
             else:
-                self.log_result("Cleanup Test Chatbot", True, "No chatbot to clean up")
+                self.log_result("Cleanup Test Sources", True, "No test sources to clean up")
         except Exception as e:
-            self.log_result("Cleanup Test Chatbot", False, f"Exception: {str(e)}")
+            self.log_result("Cleanup Test Sources", False, f"Exception: {str(e)}")
     
     def run_all_tests(self):
         """Run all RAG tests in sequence"""
