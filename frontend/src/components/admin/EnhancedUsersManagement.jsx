@@ -61,9 +61,9 @@ const EnhancedUsersManagement = ({ backendUrl }) => {
     return () => clearInterval(interval);
   }, [autoRefresh, refreshInterval, sortBy, sortOrder, filterStatus, filterRole]);
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       const params = new URLSearchParams({
         sortBy,
         sortOrder
@@ -74,10 +74,11 @@ const EnhancedUsersManagement = ({ backendUrl }) => {
       const response = await fetch(`${backendUrl}/api/admin/users/enhanced?${params}`);
       const data = await response.json();
       setUsers(data.users || []);
+      setLastUpdated(new Date());
     } catch (error) {
       console.error('Error fetching users:', error);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
