@@ -81,7 +81,7 @@ const SubscriptionNew = () => {
     },
     {
       id: 'enterprise',
-      name: 'Enterprise',
+      name: 'Scale Up',
       price: 'Custom',
       period: '',
       description: 'Tailored solutions for your needs',
