@@ -257,7 +257,7 @@ const Enterprise = () => {
           </div>
 
           {/* Trust Badges */}
-          <div className="mt-16 text-center animate-fade-in">
+          <div className={`mt-16 text-center animate-fade-in transform transition-all duration-700 delay-800 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
             <p className="text-gray-500 mb-4">Trusted by enterprise teams worldwide</p>
             <div className="flex flex-wrap justify-center items-center gap-8 opacity-40">
               <div className="text-2xl font-bold">SIEMENS</div>
