@@ -246,6 +246,21 @@ backend:
         agent: "main"
         comment: "Implemented comprehensive activity tracking system with LoginHistory model (tracks timestamp, IP, user agent, location, success/failure) and ActivityLog model (tracks user actions, resource types, details, timestamps). Created dedicated endpoints for fetching activity logs and login history with pagination and filtering. Added helper function log_activity() to record all admin actions."
 
+  - task: "Basic RAG System - Text-Based Implementation (No ChromaDB)"
+    implemented: true
+    working: true
+    file: "/app/backend/services/rag_service.py, /app/backend/services/vector_store.py, /app/backend/services/chunking_service.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Converted RAG system from ChromaDB to basic text-based retrieval using MongoDB. Removed ChromaDB dependency completely, updated vector_store.py to use MongoDB with BM25-like scoring, removed embedding generation from rag_service.py, documents chunked and stored with keywords in MongoDB, search uses text matching and keyword-based scoring instead of vector similarity."
+      - working: true
+        agent: "testing"
+        comment: "✅ COMPREHENSIVE RAG TESTING COMPLETE: All 10 tests passed (100% success rate). Source upload & processing working correctly with chunks stored in MongoDB and keywords extracted. Text-based retrieval using BM25-style scoring successfully finds relevant context for queries about company policies, AI providers, vacation days, training budget, equipment policy. No embedding generation confirmed - system works purely with text matching. Source management (list/delete) working correctly with proper MongoDB chunk cleanup. No ChromaDB references found in code, logs, or dependencies. Citations properly included in AI responses. Basic RAG implementation fully functional without vector embeddings."
+
 frontend:
   - task: "Dashboard with real data"
     implemented: true
