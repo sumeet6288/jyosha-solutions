@@ -265,13 +265,6 @@ const ChatbotIntegrations = ({ chatbot }) => {
                 } text-white`}
                 onClick={() => {
                   if (integration.status === 'coming_soon') return;
-                  
-                  // Open WhatsApp QR modal for WhatsApp integration
-                  if (integration.id === 'whatsapp') {
-                    setShowWhatsAppQR(true);
-                    return;
-                  }
-                  
                   setActiveIntegration(integration);
                   toast({
                     title: integration.status === 'active' ? 'Already Active' : 'Setup Guide',
