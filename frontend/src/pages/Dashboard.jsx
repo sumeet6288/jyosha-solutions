@@ -60,9 +60,9 @@ const Dashboard = () => {
     return () => clearInterval(interval);
   }, [autoRefresh]);
 
-  const loadData = async () => {
+  const loadData = async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       const [chatbotsResponse, analyticsResponse, usageResponse] = await Promise.all([
         chatbotAPI.list(),
         analyticsAPI.getDashboard(),
@@ -72,15 +72,18 @@ const Dashboard = () => {
       setChatbots(chatbotsResponse.data);
       setAnalytics(analyticsResponse.data);
       setUsageStats(usageResponse.data);
+      setLastUpdated(new Date());
     } catch (error) {
       console.error('Error loading dashboard data:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to load dashboard data',
-        variant: 'destructive'
-      });
+      if (!silent) {
+        toast({
+          title: 'Error',
+          description: 'Failed to load dashboard data',
+          variant: 'destructive'
+        });
+      }
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
