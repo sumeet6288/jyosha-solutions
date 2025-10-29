@@ -125,6 +125,7 @@ async def connect_integration(integration: IntegrationConfig, user_id: str = "de
 @router.delete("/{integration_name}")
 async def disconnect_integration(integration_name: str, user_id: str = "demo-user-123"):
     """Disconnect an integration"""
+    integrations_collection = get_integrations_collection()
     
     result = await integrations_collection.delete_one({
         "user_id": user_id,
