@@ -11,7 +11,7 @@ import ResponsiveNav from '../components/ResponsiveNav';
 import { useAuth } from '../contexts/AuthContext';
 import Footer from '../components/Footer';
 import { DashboardSkeleton } from '../components/LoadingSkeleton';
-import api from '../services/api';
+import api from '../utils/api';
 
 const Integrations = () => {
   const navigate = useNavigate();
