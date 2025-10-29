@@ -78,8 +78,8 @@ const Documentation = () => {
         </div>
       </nav>
 
-      <div className="pt-32 pb-20 px-8 relative z-10">
-        <div className="max-w-7xl mx-auto">
+      <div className="pt-32 pb-20 px-4 md:px-8 lg:px-12 relative z-10">
+        <div className="max-w-[95%] mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-full mb-4">
@@ -93,7 +93,7 @@ const Documentation = () => {
           </div>
 
           {/* Search Bar */}
-          <div className="max-w-2xl mx-auto mb-12">
+          <div className="max-w-3xl mx-auto mb-12">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
