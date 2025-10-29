@@ -15,16 +15,16 @@ class RAGService:
     def __init__(self):
         """Initialize RAG service with sub-services"""
         self.chunking_service = ChunkingService(
-            chunk_size=800,        # 800 tokens per chunk
-            chunk_overlap=150      # 150 token overlap
+            chunk_size=600,        # Reduced from 800 to 600 tokens per chunk for faster processing
+            chunk_overlap=100      # Reduced from 150 to 100 token overlap
         )
         self.vector_store = VectorStore()
         
-        # Configuration
-        self.top_k_results = 5
-        self.similarity_threshold = 0.3  # Lower threshold for text-based search
+        # Configuration - OPTIMIZED for speed
+        self.top_k_results = 3  # Reduced from 5 to 3 for faster retrieval
+        self.similarity_threshold = 0.4  # Increased from 0.3 to 0.4 for better quality
         
-        logger.info("Basic RAG Service initialized successfully (no embeddings)")
+        logger.info("Basic RAG Service initialized successfully (no embeddings) - OPTIMIZED")
     
     async def process_document(
         self,
