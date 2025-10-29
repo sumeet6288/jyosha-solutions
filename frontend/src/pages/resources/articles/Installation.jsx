@@ -23,8 +23,8 @@ const Installation = () => {
         </div>
       </nav>
 
-      <div className="pt-32 pb-20 px-8">
-        <div className="max-w-4xl mx-auto">
+      <div className="pt-32 pb-20 px-4 md:px-8 lg:px-12">
+        <div className="max-w-[85%] mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-full mb-6">
             <Download className="w-4 h-4" />
             <span className="font-medium">Installation</span>
