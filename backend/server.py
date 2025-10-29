@@ -120,3 +120,20 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
+
+
+# WebSocket endpoint for real-time notifications
+@app.websocket("/ws/notifications/{user_id}")
+async def websocket_notifications(websocket: WebSocket, user_id: str):
+    await manager.connect(user_id, websocket)
+    try:
+        while True:
+            # Keep connection alive and listen for any messages
+            data = await websocket.receive_text()
+            # Echo back to confirm connection is alive
+            await websocket.send_text(json.dumps({"type": "ping", "message": "Connection alive"}))
+    except WebSocketDisconnect:
+        manager.disconnect(user_id)
+    except Exception as e:
+        logger.error(f"WebSocket error: {e}")
+        manager.disconnect(user_id)
