@@ -3,13 +3,13 @@
 ## 🚀 Quick Navigation
 
 ### For End Users
-- **Homepage**: https://dep-installer-20.preview.emergentagent.com/
-- **Start Building**: https://dep-installer-20.preview.emergentagent.com/dashboard
-- **Pricing**: https://dep-installer-20.preview.emergentagent.com/pricing
-- **Help**: https://dep-installer-20.preview.emergentagent.com/resources
+- **Homepage**: https://quick-install-7.preview.emergentagent.com/
+- **Start Building**: https://quick-install-7.preview.emergentagent.com/dashboard
+- **Pricing**: https://quick-install-7.preview.emergentagent.com/pricing
+- **Help**: https://quick-install-7.preview.emergentagent.com/resources
 
 ### For Administrators
-- **Admin Panel**: https://dep-installer-20.preview.emergentagent.com/admin
+- **Admin Panel**: https://quick-install-7.preview.emergentagent.com/admin
 - **User Management**: Admin Dashboard → Users Tab
 - **System Settings**: Admin Dashboard → Settings Tab
 
@@ -307,7 +307,7 @@
 
 ### API Base URL
 - Development: `http://localhost:8001`
-- Production: `https://dep-installer-20.preview.emergentagent.com`
+- Production: `https://quick-install-7.preview.emergentagent.com`
 
 ---
 
@@ -321,8 +321,8 @@
 
 ### Contact
 - **Email**: support@botsmith.ai
-- **Website**: https://dep-installer-20.preview.emergentagent.com
-- **Resources**: https://dep-installer-20.preview.emergentagent.com/resources
+- **Website**: https://quick-install-7.preview.emergentagent.com
+- **Resources**: https://quick-install-7.preview.emergentagent.com/resources
 
 ---
 

@@ -187,9 +187,9 @@ async def create_checkout(
                     "custom_price": None,
                     "product_options": {
                         "enabled_variants": [int(variant_id)],
-                        "redirect_url": "https://dep-installer-20.preview.emergentagent.com/subscription?success=true",
+                        "redirect_url": "https://quick-install-7.preview.emergentagent.com/subscription?success=true",
                         "receipt_button_text": "Go to Dashboard",
-                        "receipt_link_url": "https://dep-installer-20.preview.emergentagent.com/dashboard"
+                        "receipt_link_url": "https://quick-install-7.preview.emergentagent.com/dashboard"
                     },
                     "checkout_data": {
                         "email": request.user_email,
