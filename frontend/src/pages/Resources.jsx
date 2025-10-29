@@ -203,7 +203,7 @@ const Resources = () => {
           </div>
 
           {/* CTA Section */}
-          <div className="bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 rounded-2xl p-1 shadow-2xl animate-fade-in-up">
+          <div className={`bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 rounded-2xl p-1 shadow-2xl animate-fade-in-up transform transition-all duration-700 delay-900 ${isLoaded ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
             <div className="bg-white/95 backdrop-blur-sm rounded-xl p-12 text-center">
               <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Still have questions?</h2>
               <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">Our support team is here to help you succeed. Get in touch with us anytime.</p>
