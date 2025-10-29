@@ -169,15 +169,6 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
     # Execute both in parallel
     await asyncio.gather(save_ai_message_task, update_conversation_task)
     
-    # Update conversation counts
-    await db_instance.conversations.update_one(
-        {"id": conversation_id},
-        {
-            "$inc": {"messages_count": 2},
-            "$set": {"updated_at": datetime.now(timezone.utc)}
-        }
-    )
-    
     # Update chatbot counts
     await db_instance.chatbots.update_one(
         {"id": chatbot_id},
