@@ -363,8 +363,28 @@ const EnhancedUsersManagement = ({ backendUrl }) => {
             User Management
           </h2>
           <p className="text-gray-600 mt-1">Manage users, roles, permissions, and activity</p>
+          {/* Last Updated Indicator */}
+          <div className="flex items-center gap-2 mt-2">
+            <div className={`flex items-center gap-1 text-xs ${autoRefresh ? 'text-green-600' : 'text-gray-500'}`}>
+              <div className={`w-2 h-2 rounded-full ${autoRefresh ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`}></div>
+              <span>
+                {autoRefresh ? 'Live Updates' : 'Auto-refresh Off'}
+              </span>
+            </div>
+            <span className="text-xs text-gray-400">
+              Last updated: {lastUpdated.toLocaleTimeString()}
+            </span>
+          </div>
         </div>
         <div className="flex gap-2">
+          <Button
+            onClick={() => setAutoRefresh(!autoRefresh)}
+            variant={autoRefresh ? "default" : "outline"}
+            className={autoRefresh ? "bg-green-600 hover:bg-green-700" : ""}
+          >
+            <Zap className={`w-4 h-4 mr-2 ${autoRefresh ? 'animate-pulse' : ''}`} />
+            {autoRefresh ? 'Live' : 'Manual'}
+          </Button>
           <Button
             onClick={() => setShowBulkActionModal(true)}
             disabled={selectedUsers.length === 0}
@@ -374,7 +394,7 @@ const EnhancedUsersManagement = ({ backendUrl }) => {
             Bulk Actions ({selectedUsers.length})
           </Button>
           <Button
-            onClick={fetchUsers}
+            onClick={() => fetchUsers()}
             variant="outline"
           >
             <RefreshCw className="w-4 h-4 mr-2" />
