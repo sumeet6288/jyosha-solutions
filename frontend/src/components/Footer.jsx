@@ -220,7 +220,7 @@ const Footer = ({ variant = 'landing' }) => {
               <li>
                 <Link to="/enterprise" className="text-gray-300 hover:text-white transition-colors flex items-center group">
                   <ChevronRight className="w-4 h-4 mr-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                  Enterprise
+                  Scale Up
                 </Link>
               </li>
               <li>
