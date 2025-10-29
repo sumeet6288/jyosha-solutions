@@ -324,41 +324,32 @@ class VectorStore:
             Dictionary with deletion statistics
         """
         try:
-            collection = self.get_or_create_collection(chatbot_id)
+            # Delete all chunks for this source
+            result = await self.chunks_collection.delete_many({
+                "chatbot_id": chatbot_id,
+                "source_id": source_id
+            })
             
-            # Get all chunks for this source
-            results = collection.get(
-                where={"source_id": source_id},
-                include=["metadatas"]
-            )
+            deleted_count = result.deleted_count
             
-            if results and results["ids"]:
-                # Delete chunks
-                collection.delete(ids=results["ids"])
-                deleted_count = len(results["ids"])
-                
-                logger.info(f"Deleted {deleted_count} chunks for source {source_id}")
-                
-                return {
-                    "success": True,
-                    "chunks_deleted": deleted_count,
-                    "collection_size": collection.count()
-                }
-            else:
-                logger.info(f"No chunks found for source {source_id}")
-                return {
-                    "success": True,
-                    "chunks_deleted": 0,
-                    "collection_size": collection.count()
-                }
+            # Get remaining count for this chatbot
+            total_count = await self.chunks_collection.count_documents({"chatbot_id": chatbot_id})
+            
+            logger.info(f"Deleted {deleted_count} chunks for source {source_id}")
+            
+            return {
+                "success": True,
+                "chunks_deleted": deleted_count,
+                "collection_size": total_count
+            }
                 
         except Exception as e:
-            logger.error(f"Error deleting source from vector store: {str(e)}")
+            logger.error(f"Error deleting source from MongoDB: {str(e)}")
             raise Exception(f"Failed to delete source: {str(e)}")
     
     async def delete_chatbot_collection(self, chatbot_id: str) -> bool:
         """
-        Delete entire collection for a chatbot
+        Delete all chunks for a chatbot
         
         Args:
             chatbot_id: Chatbot identifier
@@ -367,24 +358,23 @@ class VectorStore:
             True if successful
         """
         try:
-            collection_name = f"chatbot_{chatbot_id}".replace("-", "_")
-            self.client.delete_collection(name=collection_name)
-            logger.info(f"Deleted collection {collection_name}")
+            result = await self.chunks_collection.delete_many({"chatbot_id": chatbot_id})
+            logger.info(f"Deleted {result.deleted_count} chunks for chatbot {chatbot_id}")
             return True
             
         except Exception as e:
-            logger.error(f"Error deleting collection: {str(e)}")
+            logger.error(f"Error deleting chatbot collection: {str(e)}")
             return False
     
-    def get_collection_stats(self, chatbot_id: str) -> Dict:
-        """Get statistics about a collection"""
+    async def get_collection_stats(self, chatbot_id: str) -> Dict:
+        """Get statistics about a chatbot's chunks"""
         try:
-            collection = self.get_or_create_collection(chatbot_id)
+            total_chunks = await self.chunks_collection.count_documents({"chatbot_id": chatbot_id})
             
             return {
-                "total_chunks": collection.count(),
-                "collection_name": collection.name,
-                "metadata": collection.metadata
+                "total_chunks": total_chunks,
+                "collection_name": f"chatbot_{chatbot_id}",
+                "metadata": {"chatbot_id": chatbot_id}
             }
             
         except Exception as e:
