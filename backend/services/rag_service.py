@@ -89,8 +89,10 @@ class RAGService:
             return {
                 "success": True,
                 "chunks_created": len(chunks),
-                "collection_size": store_result.get("collection_size", 0),
-                "chunk_stats": chunk_stats
+                "chunks_stored": store_result.get("chunks_added", 0),
+                "total_chunks_in_store": store_result.get("collection_size", 0),
+                "chunk_stats": chunk_stats,
+                "method": "basic_rag_no_embeddings"
             }
             
         except Exception as e:
