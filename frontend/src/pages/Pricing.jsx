@@ -183,7 +183,7 @@ const Pricing = () => {
                             : 'border border-gray-300 hover:border-gray-400 bg-white text-gray-700 hover:bg-gray-50'
                         }`}
                         onClick={() => {
-                          if (plan.name === 'Enterprise') {
+                          if (plan.name === 'Scale Up') {
                             navigate('/enterprise');
                           } else {
                             // Store selected plan in localStorage
