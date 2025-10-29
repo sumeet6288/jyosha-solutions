@@ -9,6 +9,20 @@ const LandingPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
+  const [particles, setParticles] = useState([]);
+
+  // Generate floating particles
+  useEffect(() => {
+    const newParticles = Array.from({ length: 20 }, (_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      size: Math.random() * 8 + 4,
+      duration: Math.random() * 20 + 15,
+      delay: Math.random() * 5
+    }));
+    setParticles(newParticles);
+  }, []);
 
   // Track mouse movement for parallax effect
   useEffect(() => {
