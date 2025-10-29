@@ -306,6 +306,11 @@ const ChatbotBuilder = () => {
                 <span className="hidden sm:inline">Insights</span>
                 <span className="sm:hidden">Insights</span>
               </TabsTrigger>
+              <TabsTrigger value="integrations" className="whitespace-nowrap data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white rounded-lg transition-all duration-300 flex-shrink-0">
+                <Zap className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">Integrations</span>
+                <span className="sm:hidden">Integrations</span>
+              </TabsTrigger>
             </TabsList>
           </div>
 
