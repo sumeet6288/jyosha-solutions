@@ -181,14 +181,14 @@ const AdvancedAnalytics = ({ chatbotId }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Top Questions Chart */}
-        {topQuestions && topQuestions.top_questions.length > 0 && (
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <h4 className="text-lg font-semibold mb-4">Top Asked Questions</h4>
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <h4 className="text-lg font-semibold mb-4">Top Asked Questions</h4>
+          {topQuestions && topQuestions.top_questions.length > 0 ? (
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={topQuestions.top_questions.slice(0, 5)}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                 <XAxis dataKey="question" stroke="#888" fontSize={10} angle={-15} textAnchor="end" height={80} />
-                <YAxis stroke="#888" fontSize={12} />
+                <YAxis stroke="#888" fontSize={12} allowDecimals={false} />
                 <Tooltip 
                   contentStyle={{ 
                     backgroundColor: 'white', 
@@ -199,42 +199,56 @@ const AdvancedAnalytics = ({ chatbotId }) => {
                 <Bar dataKey="count" fill="#7c3aed" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
-          </div>
-        )}
+          ) : (
+            <div className="flex flex-col items-center justify-center h-[300px] text-gray-400">
+              <MessageSquare className="w-16 h-16 mb-4 opacity-30" />
+              <p className="text-lg font-medium">No questions yet</p>
+              <p className="text-sm mt-2">Questions will appear as users interact with your chatbot</p>
+            </div>
+          )}
+        </div>
 
         {/* Satisfaction Distribution Chart */}
-        {satisfaction && satisfactionPieData.length > 0 && (
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-            <h4 className="text-lg font-semibold mb-4">Satisfaction Distribution</h4>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={satisfactionPieData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={100}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {satisfactionPieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="mt-4 text-center">
-              <p className="text-sm text-gray-600">
-                Average Rating: <span className="font-bold text-purple-600">{satisfaction.average_rating.toFixed(1)}/5.0</span>
-              </p>
-              <p className="text-xs text-gray-500 mt-1">
-                Based on {satisfaction.total_ratings} ratings
-              </p>
+        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+          <h4 className="text-lg font-semibold mb-4">Satisfaction Distribution</h4>
+          {satisfaction && satisfactionPieData.length > 0 ? (
+            <>
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={satisfactionPieData}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                    outerRadius={100}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {satisfactionPieData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="mt-4 text-center">
+                <p className="text-sm text-gray-600">
+                  Average Rating: <span className="font-bold text-purple-600">{satisfaction.average_rating.toFixed(1)}/5.0</span>
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Based on {satisfaction.total_ratings} ratings
+                </p>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-[300px] text-gray-400">
+              <Star className="w-16 h-16 mb-4 opacity-30" />
+              <p className="text-lg font-medium">No ratings yet</p>
+              <p className="text-sm mt-2">User satisfaction ratings will be displayed here</p>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Performance Metrics */}
