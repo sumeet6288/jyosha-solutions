@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import List, Optional
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from database import get_db
 from auth import get_current_user
 from models import User
 from models_notifications import (
@@ -13,7 +12,14 @@ from models_notifications import (
 from services.notification_service import NotificationService
 from pydantic import BaseModel
 
-router = APIRouter(prefix="/api/notifications", tags=["notifications"])
+router = APIRouter(prefix="/notifications", tags=["notifications"])
+db_instance = None
+
+
+def init_router(db: AsyncIOMotorDatabase):
+    """Initialize router with database instance"""
+    global db_instance
+    db_instance = db
 
 
 class PushSubscriptionRequest(BaseModel):
@@ -27,11 +33,10 @@ async def get_notifications(
     limit: int = Query(50, ge=1, le=100),
     skip: int = Query(0, ge=0),
     unread_only: bool = Query(False),
-    current_user: User = Depends(get_current_user),
-    db: AsyncIOMotorDatabase = Depends(get_db)
+    current_user: User = Depends(get_current_user)
 ):
     """Get user's notifications"""
-    notification_service = NotificationService(db)
+    notification_service = NotificationService(db_instance)
     notifications = await notification_service.get_user_notifications(
         user_id=current_user.id,
         limit=limit,
@@ -43,11 +48,10 @@ async def get_notifications(
 
 @router.get("/unread-count")
 async def get_unread_count(
-    current_user: User = Depends(get_current_user),
-    db: AsyncIOMotorDatabase = Depends(get_db)
+    current_user: User = Depends(get_current_user)
 ):
     """Get count of unread notifications"""
-    notification_service = NotificationService(db)
+    notification_service = NotificationService(db_instance)
     count = await notification_service.get_unread_count(current_user.id)
     return {"count": count}
 
@@ -55,11 +59,10 @@ async def get_unread_count(
 @router.put("/{notification_id}/read")
 async def mark_notification_as_read(
     notification_id: str,
-    current_user: User = Depends(get_current_user),
-    db: AsyncIOMotorDatabase = Depends(get_db)
+    current_user: User = Depends(get_current_user)
 ):
     """Mark a notification as read"""
-    notification_service = NotificationService(db)
+    notification_service = NotificationService(db_instance)
     success = await notification_service.mark_as_read(notification_id, current_user.id)
     
     if not success:
@@ -70,11 +73,10 @@ async def mark_notification_as_read(
 
 @router.put("/read-all")
 async def mark_all_notifications_as_read(
-    current_user: User = Depends(get_current_user),
-    db: AsyncIOMotorDatabase = Depends(get_db)
+    current_user: User = Depends(get_current_user)
 ):
     """Mark all notifications as read"""
-    notification_service = NotificationService(db)
+    notification_service = NotificationService(db_instance)
     count = await notification_service.mark_all_as_read(current_user.id)
     return {"message": f"Marked {count} notifications as read"}
 
@@ -82,11 +84,10 @@ async def mark_all_notifications_as_read(
 @router.delete("/{notification_id}")
 async def delete_notification(
     notification_id: str,
-    current_user: User = Depends(get_current_user),
-    db: AsyncIOMotorDatabase = Depends(get_db)
+    current_user: User = Depends(get_current_user)
 ):
     """Delete a notification"""
-    notification_service = NotificationService(db)
+    notification_service = NotificationService(db_instance)
     success = await notification_service.delete_notification(notification_id, current_user.id)
     
     if not success:
@@ -97,11 +98,10 @@ async def delete_notification(
 
 @router.get("/preferences")
 async def get_notification_preferences(
-    current_user: User = Depends(get_current_user),
-    db: AsyncIOMotorDatabase = Depends(get_db)
+    current_user: User = Depends(get_current_user)
 ):
     """Get user's notification preferences"""
-    notification_service = NotificationService(db)
+    notification_service = NotificationService(db_instance)
     prefs = await notification_service.get_user_preferences(current_user.id)
     
     # Return default preferences if not set
@@ -132,11 +132,10 @@ async def get_notification_preferences(
 @router.put("/preferences")
 async def update_notification_preferences(
     preferences: NotificationPreferencesUpdate,
-    current_user: User = Depends(get_current_user),
-    db: AsyncIOMotorDatabase = Depends(get_db)
+    current_user: User = Depends(get_current_user)
 ):
     """Update user's notification preferences"""
-    notification_service = NotificationService(db)
+    notification_service = NotificationService(db_instance)
     
     # Convert to dict and remove None values
     prefs_dict = {k: v for k, v in preferences.dict().items() if v is not None}
@@ -152,11 +151,10 @@ async def update_notification_preferences(
 @router.post("/push-subscription")
 async def save_push_subscription(
     subscription: PushSubscriptionRequest,
-    current_user: User = Depends(get_current_user),
-    db: AsyncIOMotorDatabase = Depends(get_db)
+    current_user: User = Depends(get_current_user)
 ):
     """Save browser push notification subscription"""
-    notification_service = NotificationService(db)
+    notification_service = NotificationService(db_instance)
     
     result = await notification_service.save_push_subscription(
         user_id=current_user.id,
@@ -170,11 +168,10 @@ async def save_push_subscription(
 
 @router.post("/test")
 async def create_test_notification(
-    current_user: User = Depends(get_current_user),
-    db: AsyncIOMotorDatabase = Depends(get_db)
+    current_user: User = Depends(get_current_user)
 ):
     """Create a test notification (for development)"""
-    notification_service = NotificationService(db)
+    notification_service = NotificationService(db_instance)
     
     notification = await notification_service.create_notification(
         user_id=current_user.id,
