@@ -22,6 +22,16 @@ const ChatbotIntegrations = ({ chatbot }) => {
 
   const integrations = [
     {
+      id: 'whatsapp',
+      name: 'WhatsApp',
+      description: 'Connect your chatbot to WhatsApp Business API',
+      icon: <Phone className="w-6 h-6" />,
+      gradient: 'from-green-500 to-green-600',
+      status: 'available',
+      setupRequired: ['Phone Number', 'API Key', 'Webhook URL'],
+      instructions: 'Connect your WhatsApp Business API account to enable chatbot responses on WhatsApp.'
+    },
+    {
       id: 'slack',
       name: 'Slack',
       description: 'Deploy chatbot to your Slack workspace',
