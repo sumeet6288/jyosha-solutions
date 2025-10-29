@@ -43,6 +43,7 @@ class IntegrationResponse(BaseModel):
 @router.get("/")
 async def get_user_integrations(user_id: str = "demo-user-123"):
     """Get all integrations for the current user"""
+    integrations_collection = get_integrations_collection()
     integrations = await integrations_collection.find({"user_id": user_id}).to_list(100)
     
     # Define all available integrations
