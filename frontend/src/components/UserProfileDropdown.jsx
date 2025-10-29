@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MessageSquare, Settings, Users, LogOut } from 'lucide-react';
+import { MessageSquare, Settings, Users, LogOut, Bell } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
