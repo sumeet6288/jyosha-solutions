@@ -75,7 +75,16 @@ const EnhancedUsersManagement = ({ backendUrl }) => {
       
       const response = await fetch(`${backendUrl}/api/admin/users/enhanced?${params}`);
       const data = await response.json();
-      setUsers(data.users || []);
+      
+      // Check if data changed
+      const newUsers = data.users || [];
+      if (silent && previousUserCount > 0 && newUsers.length !== previousUserCount) {
+        setDataChanged(true);
+        setTimeout(() => setDataChanged(false), 2000);
+      }
+      
+      setPreviousUserCount(newUsers.length);
+      setUsers(newUsers);
       setLastUpdated(new Date());
     } catch (error) {
       console.error('Error fetching users:', error);
