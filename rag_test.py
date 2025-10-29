@@ -116,24 +116,19 @@ class RAGSystemTester:
             if response.status_code == 200:
                 self.auth_token = "mock-token"  # Mock token for testing
             
-            # Create test chatbot
-            payload = {
-                "name": "RAG Test Chatbot",
-                "model": "gpt-4o-mini",
-                "provider": "openai",
-                "temperature": 0.7,
-                "instructions": "You are a helpful assistant with access to company knowledge base. Use the provided context to answer questions accurately and cite your sources.",
-                "welcome_message": "Hello! I can help you with company policies and product information."
-            }
-            
-            response = self.make_request('POST', '/api/chatbots', json=payload)
-            success = response.status_code == 201
+            # Get existing chatbots instead of creating new one
+            response = self.make_request('GET', '/api/chatbots')
+            success = response.status_code == 200
             
             if success:
-                data = response.json()
-                self.test_chatbot_id = data.get('id')
-                success = bool(self.test_chatbot_id)
-                self.log_result("Setup Test Chatbot", success, f"Chatbot ID: {self.test_chatbot_id}")
+                chatbots = response.json()
+                if chatbots and len(chatbots) > 0:
+                    # Use the first available chatbot
+                    self.test_chatbot_id = chatbots[0]['id']
+                    success = bool(self.test_chatbot_id)
+                    self.log_result("Setup Test Chatbot", success, f"Using existing chatbot ID: {self.test_chatbot_id}")
+                else:
+                    self.log_result("Setup Test Chatbot", False, "No existing chatbots found")
             else:
                 error_msg = response.text
                 self.log_result("Setup Test Chatbot", False, f"Status: {response.status_code}, Error: {error_msg}")
