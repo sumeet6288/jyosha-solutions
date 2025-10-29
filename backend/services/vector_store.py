@@ -228,7 +228,7 @@ class VectorStore:
         min_similarity: float = 0.0
     ) -> List[Dict]:
         """
-        Search for relevant chunks using text-based search (BM25-like scoring)
+        Search for relevant chunks using text-based search (BM25-like scoring) - OPTIMIZED
         
         Args:
             chatbot_id: Chatbot identifier
@@ -245,23 +245,39 @@ class VectorStore:
                 logger.warning("No query provided for search")
                 return []
             
-            # Get all chunks for this chatbot
-            cursor = self.chunks_collection.find({"chatbot_id": chatbot_id})
-            all_chunks = await cursor.to_list(length=None)
-            
-            if not all_chunks:
-                logger.info(f"No chunks found for chatbot {chatbot_id}")
-                return []
-            
-            # Calculate average document length
-            avg_doc_length = sum(len(chunk["text"].split()) for chunk in all_chunks) / len(all_chunks)
-            
-            # Extract query terms
+            # Extract query terms first
             query_terms = self._extract_keywords(query, max_keywords=10)
+            query_terms_lower = [term.lower() for term in query_terms]
             
-            # Score all documents
+            # OPTIMIZATION: Use MongoDB text search with $regex for initial filtering
+            # This reduces the number of chunks we need to score in Python
+            regex_filters = [{"text": {"$regex": term, "$options": "i"}} for term in query_terms]
+            
+            # Get only chunks that match at least one query term (much faster than loading all)
+            cursor = self.chunks_collection.find({
+                "chatbot_id": chatbot_id,
+                "$or": regex_filters
+            }).limit(top_k * 3)  # Get 3x more for better scoring, but not all chunks
+            
+            matched_chunks = await cursor.to_list(length=top_k * 3)
+            
+            if not matched_chunks:
+                # Fallback: if no matches with keywords, get most recent chunks
+                logger.info(f"No keyword matches for chatbot {chatbot_id}, using recent chunks")
+                cursor = self.chunks_collection.find(
+                    {"chatbot_id": chatbot_id}
+                ).sort("_id", -1).limit(top_k)
+                matched_chunks = await cursor.to_list(length=top_k)
+                
+                if not matched_chunks:
+                    return []
+            
+            # Calculate average document length from matched chunks only
+            avg_doc_length = sum(len(chunk["text"].split()) for chunk in matched_chunks) / len(matched_chunks)
+            
+            # Score matched documents
             scored_chunks = []
-            for chunk in all_chunks:
+            for chunk in matched_chunks:
                 score = self._calculate_bm25_score(
                     query_terms=query_terms,
                     doc_text=chunk["text"],
