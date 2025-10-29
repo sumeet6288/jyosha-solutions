@@ -169,7 +169,7 @@ const Enterprise = () => {
           </div>
 
           {/* Benefits Section */}
-          <div className="bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 rounded-2xl p-1 mb-20 shadow-2xl animate-fade-in-up">
+          <div className={`bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 rounded-2xl p-1 mb-20 shadow-2xl animate-fade-in-up transform transition-all duration-700 delay-500 ${isLoaded ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
             <div className="bg-white/95 backdrop-blur-sm rounded-xl p-8">
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">What's Included</h2>
