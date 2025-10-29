@@ -11,6 +11,7 @@ import ResponsiveNav from '../components/ResponsiveNav';
 import { useAuth } from '../contexts/AuthContext';
 import Footer from '../components/Footer';
 import { DashboardSkeleton } from '../components/LoadingSkeleton';
+import api from '../services/api';
 
 const Integrations = () => {
   const navigate = useNavigate();
@@ -19,10 +20,12 @@ const Integrations = () => {
   const [selectedIntegration, setSelectedIntegration] = useState(null);
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
   const [isManageModalOpen, setIsManageModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [connectionData, setConnectionData] = useState({
     apiKey: '',
     webhookUrl: '',
-    workspaceId: ''
+    workspaceId: '',
+    phoneNumber: ''
   });
 
   const integrationIcons = {
@@ -30,6 +33,7 @@ const Integrations = () => {
     'Calendly': Zap,
     'Slack': MessageCircle,
     'Zendesk': Headphones,
+    'WhatsApp': Phone,
     'Salesforce': Database
   };
 
@@ -38,16 +42,49 @@ const Integrations = () => {
     'Calendly': 'from-blue-500 to-cyan-600',
     'Slack': 'from-pink-500 to-rose-600',
     'Zendesk': 'from-green-500 to-emerald-600',
+    'WhatsApp': 'from-teal-500 to-green-600',
     'Salesforce': 'from-orange-500 to-red-600'
   };
 
-  const [integrations, setIntegrations] = useState([
-    { id: 1, name: 'Stripe', description: 'Accept payments directly in chat', connected: false },
-    { id: 2, name: 'Calendly', description: 'Schedule appointments seamlessly', connected: false },
-    { id: 3, name: 'Slack', description: 'Deploy chatbot to Slack workspace', connected: false },
-    { id: 4, name: 'Zendesk', description: 'Sync conversations to Zendesk', connected: false },
-    { id: 5, name: 'Salesforce', description: 'Integrate with Salesforce CRM', connected: false },
-  ]);
+  const integrationDescriptions = {
+    'Stripe': 'Accept payments directly in chat',
+    'Calendly': 'Schedule appointments seamlessly',
+    'Slack': 'Deploy chatbot to Slack workspace',
+    'Zendesk': 'Sync conversations to Zendesk',
+    'WhatsApp': 'Deploy on WhatsApp Business',
+    'Salesforce': 'Integrate with Salesforce CRM'
+  };
+
+  const [integrations, setIntegrations] = useState([]);
+
+  useEffect(() => {
+    fetchIntegrations();
+  }, []);
+
+  const fetchIntegrations = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get('/integrations/');
+      const integrationsData = response.data.map(int => ({
+        id: int.id || int.name,
+        name: int.name,
+        description: integrationDescriptions[int.name],
+        connected: int.connected,
+        connected_at: int.connected_at,
+        config: int.config
+      }));
+      setIntegrations(integrationsData);
+    } catch (error) {
+      console.error('Error fetching integrations:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load integrations',
+        variant: 'destructive'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -57,7 +94,7 @@ const Integrations = () => {
   const handleConnect = (integration) => {
     setSelectedIntegration(integration);
     setIsConnectModalOpen(true);
-    setConnectionData({ apiKey: '', webhookUrl: '', workspaceId: '' });
+    setConnectionData({ apiKey: '', webhookUrl: '', workspaceId: '', phoneNumber: '' });
   };
 
   const handleManage = (integration) => {
@@ -65,7 +102,7 @@ const Integrations = () => {
     setIsManageModalOpen(true);
   };
 
-  const handleConfirmConnect = () => {
+  const handleConfirmConnect = async () => {
     if (!connectionData.apiKey) {
       toast({
         title: 'Error',
@@ -75,34 +112,54 @@ const Integrations = () => {
       return;
     }
 
-    setIntegrations(integrations.map(int => 
-      int.id === selectedIntegration.id 
-        ? { ...int, connected: true }
-        : int
-    ));
+    try {
+      await api.post('/integrations/connect', {
+        name: selectedIntegration.name,
+        api_key: connectionData.apiKey,
+        webhook_url: connectionData.webhookUrl,
+        workspace_id: connectionData.workspaceId,
+        phone_number: connectionData.phoneNumber
+      });
 
-    toast({
-      title: 'Connected!',
-      description: `${selectedIntegration.name} has been connected successfully`
-    });
+      toast({
+        title: 'Connected!',
+        description: `${selectedIntegration.name} has been connected successfully`
+      });
 
-    setIsConnectModalOpen(false);
+      setIsConnectModalOpen(false);
+      fetchIntegrations();
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.response?.data?.detail || 'Failed to connect integration',
+        variant: 'destructive'
+      });
+    }
   };
 
-  const handleDisconnect = () => {
-    setIntegrations(integrations.map(int => 
-      int.id === selectedIntegration.id 
-        ? { ...int, connected: false }
-        : int
-    ));
+  const handleDisconnect = async () => {
+    try {
+      await api.delete(`/integrations/${selectedIntegration.name}`);
 
-    toast({
-      title: 'Disconnected',
-      description: `${selectedIntegration.name} has been disconnected`
-    });
+      toast({
+        title: 'Disconnected',
+        description: `${selectedIntegration.name} has been disconnected`
+      });
 
-    setIsManageModalOpen(false);
+      setIsManageModalOpen(false);
+      fetchIntegrations();
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.response?.data?.detail || 'Failed to disconnect integration',
+        variant: 'destructive'
+      });
+    }
   };
+
+  if (loading) {
+    return <DashboardSkeleton />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50 relative overflow-hidden animate-fade-in">
