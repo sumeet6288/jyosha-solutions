@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, CreditCard } from 'lucide-react';
 import UserProfileDropdown from './UserProfileDropdown';
+import NotificationBell from './NotificationBell';
 
 const ResponsiveNav = ({ user, onLogout }) => {
   const navigate = useNavigate();
