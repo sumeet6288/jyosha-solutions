@@ -50,6 +50,10 @@ const UserProfileDropdown = ({ user, onLogout }) => {
           <Settings className="mr-2 h-4 w-4" />
           Account settings
         </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => navigate('/notification-preferences')} className="cursor-pointer">
+          <Bell className="mr-2 h-4 w-4" />
+          Notification preferences
+        </DropdownMenuItem>
         <DropdownMenuItem onClick={() => navigate('/workspace')} className="cursor-pointer">
           <Users className="mr-2 h-4 w-4" />
           Create or join workspace
