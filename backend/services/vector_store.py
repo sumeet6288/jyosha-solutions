@@ -143,19 +143,97 @@ class VectorStore:
             logger.error(f"Error adding chunks to MongoDB: {str(e)}")
             raise Exception(f"Failed to add chunks: {str(e)}")
     
+    def _extract_keywords(self, text: str, max_keywords: int = 20) -> List[str]:
+        """
+        Extract important keywords from text for indexing
+        
+        Args:
+            text: Text to extract keywords from
+            max_keywords: Maximum number of keywords to extract
+            
+        Returns:
+            List of keywords
+        """
+        # Convert to lowercase and remove special characters
+        text = text.lower()
+        text = re.sub(r'[^\w\s]', ' ', text)
+        
+        # Split into words
+        words = text.split()
+        
+        # Remove common stop words
+        stop_words = {
+            'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
+            'of', 'with', 'by', 'from', 'as', 'is', 'was', 'are', 'were', 'be',
+            'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will',
+            'would', 'could', 'should', 'may', 'might', 'can', 'this', 'that',
+            'these', 'those', 'i', 'you', 'he', 'she', 'it', 'we', 'they'
+        }
+        
+        # Filter out stop words and short words
+        keywords = [word for word in words if word not in stop_words and len(word) > 2]
+        
+        # Get most common keywords
+        word_counts = Counter(keywords)
+        return [word for word, count in word_counts.most_common(max_keywords)]
+    
+    def _calculate_bm25_score(self, query_terms: List[str], doc_text: str, 
+                             doc_keywords: List[str], avg_doc_length: float,
+                             k1: float = 1.5, b: float = 0.75) -> float:
+        """
+        Calculate BM25 relevance score for document
+        
+        Args:
+            query_terms: List of query terms
+            doc_text: Document text
+            doc_keywords: Document keywords
+            avg_doc_length: Average document length in collection
+            k1: BM25 parameter (term frequency saturation)
+            b: BM25 parameter (length normalization)
+            
+        Returns:
+            BM25 score
+        """
+        doc_length = len(doc_text.split())
+        score = 0.0
+        
+        # Convert doc text and keywords to lowercase for matching
+        doc_text_lower = doc_text.lower()
+        doc_keywords_lower = [kw.lower() for kw in doc_keywords]
+        
+        for term in query_terms:
+            term_lower = term.lower()
+            
+            # Count term frequency in document
+            tf = doc_text_lower.count(term_lower)
+            
+            # Boost if term is in keywords
+            if term_lower in doc_keywords_lower:
+                tf += 2
+            
+            if tf > 0:
+                # Simplified BM25 formula (without IDF component for efficiency)
+                numerator = tf * (k1 + 1)
+                denominator = tf + k1 * (1 - b + b * (doc_length / max(avg_doc_length, 1)))
+                score += numerator / denominator
+        
+        return score
+    
     async def search(
         self,
         chatbot_id: str,
-        query_embedding: List[float],
+        query_embedding: List[float] = None,  # Kept for compatibility but not used
+        query: str = None,
         top_k: int = 5,
-        min_similarity: float = 0.7
+        min_similarity: float = 0.0
     ) -> List[Dict]:
         """
-        Search for similar chunks using vector similarity
+        Search for relevant chunks using text-based search (BM25-like scoring)
         
         Args:
             chatbot_id: Chatbot identifier
-            query_embedding: Query embedding vector
+            query_embedding: Not used in basic RAG (kept for compatibility)
+            query: Query text (required for basic RAG)
             top_k: Number of results to return
             min_similarity: Minimum similarity threshold (0-1)
             
@@ -163,47 +241,75 @@ class VectorStore:
             List of dictionaries with matched chunks and metadata
         """
         try:
-            collection = self.get_or_create_collection(chatbot_id)
-            
-            # Check if collection has any documents
-            if collection.count() == 0:
-                logger.info(f"Collection for chatbot {chatbot_id} is empty")
+            if not query:
+                logger.warning("No query provided for search")
                 return []
             
-            # Search using cosine similarity
-            results = collection.query(
-                query_embeddings=[query_embedding],
-                n_results=top_k,
-                include=["documents", "metadatas", "distances"]
-            )
+            # Get all chunks for this chatbot
+            cursor = self.chunks_collection.find({"chatbot_id": chatbot_id})
+            all_chunks = await cursor.to_list(length=None)
             
-            # Process results
+            if not all_chunks:
+                logger.info(f"No chunks found for chatbot {chatbot_id}")
+                return []
+            
+            # Calculate average document length
+            avg_doc_length = sum(len(chunk["text"].split()) for chunk in all_chunks) / len(all_chunks)
+            
+            # Extract query terms
+            query_terms = self._extract_keywords(query, max_keywords=10)
+            
+            # Score all documents
+            scored_chunks = []
+            for chunk in all_chunks:
+                score = self._calculate_bm25_score(
+                    query_terms=query_terms,
+                    doc_text=chunk["text"],
+                    doc_keywords=chunk.get("keywords", []),
+                    avg_doc_length=avg_doc_length
+                )
+                
+                if score > 0:
+                    scored_chunks.append({
+                        "chunk": chunk,
+                        "score": score
+                    })
+            
+            # Sort by score descending
+            scored_chunks.sort(key=lambda x: x["score"], reverse=True)
+            
+            # Take top k results
+            top_chunks = scored_chunks[:top_k]
+            
+            # Normalize scores to 0-1 range
+            max_score = top_chunks[0]["score"] if top_chunks else 1.0
+            
+            # Format results
             matches = []
-            
-            if results and results["documents"] and len(results["documents"][0]) > 0:
-                for i, (doc, metadata, distance) in enumerate(zip(
-                    results["documents"][0],
-                    results["metadatas"][0],
-                    results["distances"][0]
-                )):
-                    # Convert distance to similarity score (ChromaDB uses L2 distance)
-                    # For normalized vectors: similarity = 1 - (distance^2 / 2)
-                    similarity = max(0, 1 - (distance ** 2) / 2)
-                    
-                    # Filter by minimum similarity
-                    if similarity >= min_similarity:
-                        matches.append({
-                            "text": doc,
-                            "metadata": metadata,
-                            "similarity": round(similarity, 4),
-                            "rank": i + 1
-                        })
+            for i, item in enumerate(top_chunks):
+                chunk = item["chunk"]
+                normalized_score = item["score"] / max_score if max_score > 0 else 0
+                
+                # Filter by minimum similarity
+                if normalized_score >= min_similarity:
+                    matches.append({
+                        "text": chunk["text"],
+                        "metadata": {
+                            "source_id": chunk["source_id"],
+                            "source_type": chunk["source_type"],
+                            "chunk_index": chunk["chunk_index"],
+                            "token_count": chunk.get("token_count", 0),
+                            "filename": chunk.get("filename")
+                        },
+                        "similarity": round(normalized_score, 4),
+                        "rank": i + 1
+                    })
             
             logger.info(f"Found {len(matches)} matches above {min_similarity} similarity for chatbot {chatbot_id}")
             return matches
             
         except Exception as e:
-            logger.error(f"Error searching vector store: {str(e)}")
+            logger.error(f"Error searching MongoDB: {str(e)}")
             return []
     
     async def delete_source(self, chatbot_id: str, source_id: str) -> Dict:
