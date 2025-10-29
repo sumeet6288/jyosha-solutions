@@ -293,6 +293,19 @@ const Integrations = () => {
               </div>
             )}
             
+            {selectedIntegration?.name === 'WhatsApp' && (
+              <div>
+                <Label htmlFor="phoneNumber" className="font-medium text-gray-700">Phone Number</Label>
+                <Input
+                  id="phoneNumber"
+                  placeholder="Enter WhatsApp Business phone number"
+                  value={connectionData.phoneNumber}
+                  onChange={(e) => setConnectionData({...connectionData, phoneNumber: e.target.value})}
+                  className="mt-2 border-2 border-purple-200 focus:border-purple-600 transition-colors"
+                />
+              </div>
+            )}
+            
             <div>
               <Label htmlFor="webhookUrl" className="font-medium text-gray-700">Webhook URL (Optional)</Label>
               <Input
