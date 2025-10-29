@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { BookOpen, Video, FileText, HelpCircle, Code, Lightbulb, Users2, ArrowRight, ArrowLeft } from 'lucide-react';
 
 const Resources = () => {
   const navigate = useNavigate();
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   const resources = [
     {
