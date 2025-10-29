@@ -7,6 +7,7 @@ from models import (
     EmbedConfig, EmbedCodeResponse, ConversationResponse, MessageResponse
 )
 from services.chat_service import ChatService
+from services.rag_service import RAGService
 import json
 import logging
 
@@ -14,11 +15,13 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/public", tags=["public-chat"])
 db_instance = None
+rag_service = None
 
 def init_router(db: AsyncIOMotorDatabase):
     """Initialize router with database instance"""
-    global db_instance
+    global db_instance, rag_service
     db_instance = db
+    rag_service = RAGService()
 
 @router.get("/chatbot/{chatbot_id}", response_model=PublicChatbotInfo)
 async def get_public_chatbot(chatbot_id: str):
