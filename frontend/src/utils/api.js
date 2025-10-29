@@ -113,15 +113,5 @@ export const plansAPI = {
   checkLimit: (limitType) => api.get(`/plans/check-limit/${limitType}`),
 };
 
-// Integrations APIs
-export const integrationsAPI = {
-  generateWhatsAppQR: (chatbotId) => api.post('/integrations/whatsapp/generate-qr', { chatbot_id: chatbotId }),
-  checkWhatsAppStatus: (chatbotId) => api.post('/integrations/whatsapp/check-status', { chatbot_id: chatbotId }),
-  simulateWhatsAppConnect: (chatbotId) => api.post('/integrations/whatsapp/simulate-connect', { chatbot_id: chatbotId }),
-  disconnectWhatsApp: (chatbotId) => api.post('/integrations/whatsapp/disconnect', { chatbot_id: chatbotId }),
-  saveCredentials: (data) => api.post('/integrations/save-credentials', data),
-  getIntegrationStatus: (chatbotId, integrationType) => api.get(`/integrations/status/${chatbotId}/${integrationType}`),
-};
-
 
 export default api;
