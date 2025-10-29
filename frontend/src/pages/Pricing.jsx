@@ -116,6 +116,18 @@ const Pricing = () => {
 
       <div className="py-12 px-4">
         <div className="max-w-7xl mx-auto">
+          {/* Back Button */}
+          <div className="mb-6">
+            <Button 
+              variant="ghost" 
+              onClick={() => navigate('/')} 
+              className="group hover:bg-purple-50 text-gray-700 hover:text-purple-600"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+              Back to Home
+            </Button>
+          </div>
+          
           {/* Header */}
           <div className="text-center mb-10">
             <h1 className="text-4xl font-bold mb-3 text-gray-900">
