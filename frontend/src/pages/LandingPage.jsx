@@ -423,33 +423,45 @@ const LandingPage = () => {
             </p>
           </div>
 
-          {/* Feature Cards */}
+          {/* Feature Cards with Glassmorphism */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
               <div 
                 key={index} 
-                className="group relative animate-fade-in-up"
+                className="group relative animate-fade-in-up transform-3d"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                {/* Subtle Glow on Hover */}
-                <div className="absolute -inset-px bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg transition-opacity duration-500"></div>
+                {/* Animated Glow on Hover */}
+                <div className="absolute -inset-px bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg transition-opacity duration-500 animate-gradient-x"></div>
                 
-                {/* Card */}
-                <div className="relative h-full bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-lg transition-all duration-300 group-hover:border-purple-200 group-hover:translate-y-[-4px]">
-                  {/* Icon */}
-                  <div className={`w-14 h-14 bg-gradient-to-br ${feature.gradient} rounded-xl flex items-center justify-center text-white mb-4 transform group-hover:scale-105 transition-transform duration-300 shadow-md`}>
-                    {feature.icon}
+                {/* Card with Glassmorphism */}
+                <div className="relative h-full glass-card rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 group-hover:translate-y-[-8px] hover-3d overflow-hidden">
+                  {/* Animated background shine */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  {/* Animated corner accent */}
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  {/* Icon with 3D animation */}
+                  <div className={`relative w-14 h-14 bg-gradient-to-br ${feature.gradient} rounded-xl flex items-center justify-center text-white mb-4 transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-lg group-hover:shadow-2xl animate-glow-pulse`}>
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/30 to-transparent"></div>
+                    <div className="relative z-10">{feature.icon}</div>
                   </div>
 
-                  {/* Title */}
-                  <h3 className="text-xl font-bold mb-2 text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300">
+                  {/* Title with gradient on hover */}
+                  <h3 className="relative text-xl font-bold mb-2 text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300 z-10">
                     {feature.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="relative text-gray-600 leading-relaxed z-10">
                     {feature.description}
                   </p>
+                  
+                  {/* Hover indicator */}
+                  <div className="absolute bottom-4 right-4 w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg">
+                    <ChevronRight className="w-4 h-4 text-white" />
+                  </div>
                 </div>
               </div>
             ))}
