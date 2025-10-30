@@ -199,36 +199,36 @@ const SignUp = () => {
             {/* Main card - CRISP WHITE BACKGROUND */}
             <div className="relative bg-white rounded-2xl md:rounded-3xl shadow-2xl p-4 sm:p-6 border border-gray-200 transform transition-all duration-500 hover:shadow-purple-500/20">
               {/* Logo Section with enhanced animations */}
-              <div className="flex items-center gap-2 mb-6 group/logo cursor-pointer animate-slide-in-top" onClick={() => navigate('/')}>
+              <div className="flex items-center gap-2 mb-4 sm:mb-6 group/logo cursor-pointer animate-slide-in-top" onClick={() => navigate('/')}>
                 <div className="relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl blur-md opacity-30 group-hover/logo:opacity-50 transition-opacity duration-500 animate-neon-glow"></div>
                   
-                  <div className="relative w-11 h-11 bg-gradient-to-br from-purple-600 via-fuchsia-500 to-pink-600 rounded-xl flex items-center justify-center transform group-hover/logo:scale-110 group-hover/logo:rotate-12 transition-all duration-500 shadow-xl border-2 border-white/80">
+                  <div className="relative w-10 h-10 sm:w-11 sm:h-11 bg-gradient-to-br from-purple-600 via-fuchsia-500 to-pink-600 rounded-xl flex items-center justify-center transform group-hover/logo:scale-110 group-hover/logo:rotate-12 transition-all duration-500 shadow-xl border-2 border-white/80">
                     <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/40 to-transparent opacity-60"></div>
                     
-                    <Sparkles className="w-6 h-6 text-white relative z-10 drop-shadow-md animate-heartbeat" />
+                    <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-white relative z-10 drop-shadow-md animate-heartbeat" />
                   </div>
                 </div>
                 
                 <div className="flex flex-col -space-y-0.5">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-2xl font-black font-heading tracking-tight bg-gradient-to-r from-purple-700 via-fuchsia-600 to-pink-600 bg-clip-text text-transparent animate-rainbow">
+                    <span className="text-xl sm:text-2xl font-black font-heading tracking-tight bg-gradient-to-r from-purple-700 via-fuchsia-600 to-pink-600 bg-clip-text text-transparent animate-rainbow">
                       BotSmith
                     </span>
-                    <span className="text-[9px] font-bold text-purple-600 bg-purple-100 px-1.5 py-0.5 rounded-full animate-bounce-in stagger-1">AI</span>
+                    <span className="text-[8px] sm:text-[9px] font-bold text-purple-600 bg-purple-100 px-1.5 py-0.5 rounded-full animate-bounce-in stagger-1">AI</span>
                   </div>
                 </div>
               </div>
               
               {/* Heading with stagger animation */}
-              <div className="space-y-2 mb-6">
-                <h1 className="text-3xl font-black font-heading bg-gradient-to-r from-purple-700 via-pink-600 to-orange-600 bg-clip-text text-transparent animate-slide-in-right leading-tight">
+              <div className="space-y-1 sm:space-y-2 mb-4 sm:mb-6">
+                <h1 className="text-2xl sm:text-3xl font-black font-heading bg-gradient-to-r from-purple-700 via-pink-600 to-orange-600 bg-clip-text text-transparent animate-slide-in-right leading-tight">
                   Create your account
                 </h1>
-                <p className="text-gray-600 text-base font-body animate-slide-in-right stagger-1">Start building your AI agents today</p>
+                <p className="text-gray-600 text-sm sm:text-base font-body animate-slide-in-right stagger-1">Start building your AI agents today</p>
               </div>
               
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                 {/* Name Input */}
                 <div className="group/input animate-fade-in-scale stagger-2">
                   <Label htmlFor="name" className="text-gray-700 font-semibold mb-1.5 flex items-center gap-1.5 font-heading text-sm">
