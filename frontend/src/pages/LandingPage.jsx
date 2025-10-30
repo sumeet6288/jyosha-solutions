@@ -726,42 +726,57 @@ const LandingPage = () => {
             </p>
           </div>
 
-          {/* Testimonial Cards */}
+          {/* Testimonial Cards with Glassmorphism */}
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <div 
                 key={index}
-                className="group relative animate-fade-in-up"
+                className="group relative animate-fade-in-up transform-3d"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                {/* Card */}
-                <div className="relative h-full bg-gradient-to-br from-white to-purple-50 rounded-2xl border-2 border-purple-200 p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:border-purple-400 hover:translate-y-[-4px]">
-                  {/* Quote Mark */}
-                  <div className="absolute top-6 right-6 text-6xl text-purple-200 font-serif">"</div>
+                {/* Animated glow border */}
+                <div className="absolute -inset-[2px] bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-sm transition-all duration-500 animate-gradient-x"></div>
+                
+                {/* Card with Premium Glassmorphism */}
+                <div className="relative h-full glass-strong rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:translate-y-[-8px] hover-3d overflow-hidden">
+                  {/* Animated background */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-gradient-xy"></div>
                   
-                  {/* Stars */}
-                  <div className="flex gap-1 mb-4">
+                  {/* Quote Mark with glow */}
+                  <div className="absolute top-6 right-6 text-6xl text-purple-300 font-serif opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500">"</div>
+                  
+                  {/* Stars with animation */}
+                  <div className="relative flex gap-1 mb-4 z-10">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                      <Star 
+                        key={i} 
+                        className="w-5 h-5 fill-yellow-400 text-yellow-400 animate-bounce-subtle" 
+                        style={{ animationDelay: `${i * 100}ms` }}
+                      />
                     ))}
                   </div>
 
                   {/* Testimonial Text */}
-                  <p className="text-gray-700 leading-relaxed mb-6 relative z-10 italic">
+                  <p className="relative text-gray-700 leading-relaxed mb-6 z-10 italic font-medium">
                     {testimonial.text}
                   </p>
 
-                  {/* Author */}
-                  <div className="flex items-center gap-4 pt-4 border-t border-purple-200">
-                    <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-2xl shadow-md">
-                      {testimonial.avatar}
+                  {/* Author with glassmorphism */}
+                  <div className="relative flex items-center gap-4 pt-4 border-t border-purple-200/50 z-10">
+                    <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-2xl shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 animate-glow-pulse">
+                      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/30 to-transparent"></div>
+                      <span className="relative z-10">{testimonial.avatar}</span>
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
+                      <h4 className="font-bold text-gray-900 group-hover:text-purple-600 transition-colors">{testimonial.name}</h4>
                       <p className="text-sm text-gray-600">{testimonial.role}</p>
                       <p className="text-xs text-purple-600 font-semibold">{testimonial.company}</p>
                     </div>
                   </div>
+                  
+                  {/* Decorative particles */}
+                  <div className="absolute top-1/4 left-4 w-2 h-2 bg-purple-400 rounded-full opacity-50 group-hover:opacity-100 animate-float-rotate"></div>
+                  <div className="absolute bottom-1/3 right-6 w-1.5 h-1.5 bg-pink-400 rounded-full opacity-50 group-hover:opacity-100 animate-float-rotate animation-delay-1000"></div>
                 </div>
               </div>
             ))}
