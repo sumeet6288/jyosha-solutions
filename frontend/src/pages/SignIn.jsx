@@ -101,13 +101,13 @@ const SignIn = () => {
       {/* Left Side - Enhanced Form with Glass Morphism and Stagger Animations */}
       <div className="w-full md:w-1/2 flex items-center justify-center p-4 sm:p-8 relative z-10">
         <div className="w-full max-w-lg transform scale-[0.95]">
-          {/* Premium Glass Card with entrance animation */}
+          {/* Premium Glass Card with entrance animation - CRISP & CLEAR */}
           <div className="relative group card-entrance">
-            {/* Animated glow effect */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 rounded-3xl opacity-20 group-hover:opacity-40 blur-2xl transition-all duration-700 animate-rainbow"></div>
+            {/* Animated glow effect - REDUCED BLUR */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 rounded-3xl opacity-10 group-hover:opacity-20 blur-lg transition-all duration-700 animate-rainbow"></div>
             
-            {/* Main card */}
-            <div className="relative bg-white/80 backdrop-blur-2xl rounded-3xl shadow-2xl p-6 border border-white/60 transform transition-all duration-500 hover:shadow-purple-500/30">
+            {/* Main card - CRISP WHITE BACKGROUND */}
+            <div className="relative bg-white rounded-3xl shadow-2xl p-6 border border-gray-200 transform transition-all duration-500 hover:shadow-purple-500/20">
               {/* Logo Section with enhanced animations */}
               <div className="flex items-center gap-2 mb-6 group/logo cursor-pointer animate-slide-in-top" onClick={() => navigate('/')}>
                 <div className="relative">
