@@ -521,25 +521,25 @@ a:active,
   animation: bounce-rotate 3s ease-in-out infinite;
 }
 
-/* Scroll-triggered animation classes */
+/* Scroll-triggered animation classes - FASTER & OPTIMIZED */
 .animate-scroll-slide-up {
-  animation: scroll-slide-up 0.8s ease-out forwards;
+  animation: scroll-slide-up 0.4s ease-out forwards;
 }
 
 .animate-scroll-slide-up-bounce {
-  animation: scroll-slide-up-bounce 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: scroll-slide-up-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 .animate-scroll-fade-in-scale {
-  animation: scroll-fade-in-scale 0.8s ease-out forwards;
+  animation: scroll-fade-in-scale 0.4s ease-out forwards;
 }
 
 .animate-scroll-slide-left {
-  animation: scroll-slide-left 0.8s ease-out forwards;
+  animation: scroll-slide-left 0.4s ease-out forwards;
 }
 
 .animate-scroll-slide-right {
-  animation: scroll-slide-right 0.8s ease-out forwards;
+  animation: scroll-slide-right 0.4s ease-out forwards;
 }
 
 /* Initial state for scroll animations */
