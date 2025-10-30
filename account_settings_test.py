@@ -420,7 +420,7 @@ class AccountSettingsAPITester:
 def main():
     """Main test execution"""
     # Get base URL from environment
-    base_url = "https://preview-setup-6.preview.emergentagent.com"
+    base_url = "https://quick-installer-3.preview.emergentagent.com"
     
     print(f"Testing Account Settings API at: {base_url}")
     

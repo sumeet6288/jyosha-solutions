@@ -3,13 +3,13 @@
 ## 🚀 Quick Navigation
 
 ### For End Users
-- **Homepage**: https://preview-setup-6.preview.emergentagent.com/
-- **Start Building**: https://preview-setup-6.preview.emergentagent.com/dashboard
-- **Pricing**: https://preview-setup-6.preview.emergentagent.com/pricing
-- **Help**: https://preview-setup-6.preview.emergentagent.com/resources
+- **Homepage**: https://quick-installer-3.preview.emergentagent.com/
+- **Start Building**: https://quick-installer-3.preview.emergentagent.com/dashboard
+- **Pricing**: https://quick-installer-3.preview.emergentagent.com/pricing
+- **Help**: https://quick-installer-3.preview.emergentagent.com/resources
 
 ### For Administrators
-- **Admin Panel**: https://preview-setup-6.preview.emergentagent.com/admin
+- **Admin Panel**: https://quick-installer-3.preview.emergentagent.com/admin
 - **User Management**: Admin Dashboard → Users Tab
 - **System Settings**: Admin Dashboard → Settings Tab
 
@@ -307,7 +307,7 @@
 
 ### API Base URL
 - Development: `http://localhost:8001`
-- Production: `https://preview-setup-6.preview.emergentagent.com`
+- Production: `https://quick-installer-3.preview.emergentagent.com`
 
 ---
 
@@ -321,8 +321,8 @@
 
 ### Contact
 - **Email**: support@botsmith.ai
-- **Website**: https://preview-setup-6.preview.emergentagent.com
-- **Resources**: https://preview-setup-6.preview.emergentagent.com/resources
+- **Website**: https://quick-installer-3.preview.emergentagent.com
+- **Resources**: https://quick-installer-3.preview.emergentagent.com/resources
 
 ---
 
