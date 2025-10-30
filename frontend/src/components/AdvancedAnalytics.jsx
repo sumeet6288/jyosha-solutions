@@ -285,26 +285,27 @@ const AdvancedAnalytics = ({ chatbotId }) => {
       )}
 
       {/* New Graphs Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Response Time Trend Chart */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <h4 className="text-lg font-semibold mb-4">Response Time Trend</h4>
+        <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
+          <h4 className="text-base sm:text-lg font-semibold mb-4">Response Time Trend</h4>
           {responseTimeTrend && responseTimeTrend.data && responseTimeTrend.data.length > 0 && responseTimeTrend.data.some(d => d.avg_response_time > 0) ? (
             <>
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={250}>
                 <LineChart data={responseTimeTrend.data}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                  <XAxis dataKey="date" stroke="#888" fontSize={12} />
-                  <YAxis stroke="#888" fontSize={12} label={{ value: 'Seconds', angle: -90, position: 'insideLeft', fontSize: 12 }} allowDecimals={true} />
+                  <XAxis dataKey="date" stroke="#888" fontSize={10} tick={{ fontSize: 10 }} />
+                  <YAxis stroke="#888" fontSize={10} tick={{ fontSize: 10 }} label={{ value: 'Seconds', angle: -90, position: 'insideLeft', fontSize: 10 }} allowDecimals={true} />
                   <Tooltip 
                     contentStyle={{ 
                       backgroundColor: 'white', 
                       border: '1px solid #e5e7eb',
-                      borderRadius: '8px'
+                      borderRadius: '8px',
+                      fontSize: '12px'
                     }}
                     formatter={(value) => [`${value}s`, 'Avg Response Time']}
                   />
-                  <Legend />
+                  <Legend wrapperStyle={{ fontSize: '12px' }} />
                   <Line 
                     type="monotone" 
                     dataKey="avg_response_time" 
@@ -320,29 +321,30 @@ const AdvancedAnalytics = ({ chatbotId }) => {
               </p>
             </>
           ) : (
-            <div className="flex flex-col items-center justify-center h-[300px] text-gray-400">
-              <Clock className="w-16 h-16 mb-4 opacity-30" />
-              <p className="text-lg font-medium">No response time data</p>
-              <p className="text-sm mt-2">Response times will be tracked as conversations happen</p>
+            <div className="flex flex-col items-center justify-center h-[250px] text-gray-400">
+              <Clock className="w-12 h-12 sm:w-16 sm:h-16 mb-4 opacity-30" />
+              <p className="text-base sm:text-lg font-medium">No response time data</p>
+              <p className="text-xs sm:text-sm mt-2 text-center px-4">Response times will be tracked as conversations happen</p>
             </div>
           )}
         </div>
 
         {/* Hourly Activity Chart */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <h4 className="text-lg font-semibold mb-4">Hourly Activity Distribution</h4>
+        <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
+          <h4 className="text-base sm:text-lg font-semibold mb-4">Hourly Activity Distribution</h4>
           {hourlyActivity && hourlyActivity.hourly_data && hourlyActivity.total_messages > 0 ? (
             <>
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={250}>
                 <BarChart data={hourlyActivity.hourly_data}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                  <XAxis dataKey="hour" stroke="#888" fontSize={10} />
-                  <YAxis stroke="#888" fontSize={12} allowDecimals={false} />
+                  <XAxis dataKey="hour" stroke="#888" fontSize={9} tick={{ fontSize: 9 }} />
+                  <YAxis stroke="#888" fontSize={10} tick={{ fontSize: 10 }} allowDecimals={false} />
                   <Tooltip 
                     contentStyle={{ 
                       backgroundColor: 'white', 
                       border: '1px solid #e5e7eb',
-                      borderRadius: '8px'
+                      borderRadius: '8px',
+                      fontSize: '12px'
                     }}
                     formatter={(value) => [`${value}`, 'Messages']}
                   />
@@ -358,10 +360,10 @@ const AdvancedAnalytics = ({ chatbotId }) => {
               </p>
             </>
           ) : (
-            <div className="flex flex-col items-center justify-center h-[300px] text-gray-400">
-              <TrendingUp className="w-16 h-16 mb-4 opacity-30" />
-              <p className="text-lg font-medium">No hourly activity data</p>
-              <p className="text-sm mt-2">Activity patterns will appear as messages are sent</p>
+            <div className="flex flex-col items-center justify-center h-[250px] text-gray-400">
+              <TrendingUp className="w-12 h-12 sm:w-16 sm:h-16 mb-4 opacity-30" />
+              <p className="text-base sm:text-lg font-medium">No hourly activity data</p>
+              <p className="text-xs sm:text-sm mt-2 text-center px-4">Activity patterns will appear as messages are sent</p>
             </div>
           )}
         </div>
