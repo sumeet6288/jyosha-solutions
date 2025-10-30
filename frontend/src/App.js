@@ -78,6 +78,9 @@ function AppContent() {
             <Route path="/enterprise" element={<Enterprise />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/resources/documentation" element={<Documentation />} />
+            <Route path="/resources/getting-started" element={<GettingStarted />} />
+            <Route path="/resources/user-guides" element={<UserGuides />} />
+            <Route path="/resources/best-practices" element={<BestPractices />} />
             <Route path="/resources/articles/quick-start-guide" element={<QuickStartGuide />} />
             <Route path="/resources/articles/installation" element={<Installation />} />
             <Route path="/resources/articles/your-first-chatbot" element={<YourFirstChatbot />} />
