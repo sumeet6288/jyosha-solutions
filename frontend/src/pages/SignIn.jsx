@@ -16,6 +16,9 @@ const SignIn = () => {
     password: ''
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [focusedField, setFocusedField] = useState('');
+  const [particles, setParticles] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
