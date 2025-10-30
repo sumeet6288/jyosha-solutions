@@ -17,6 +17,11 @@ const LandingPage = () => {
   const [differentiatorsRef, differentiatorsVisible] = useScrollAnimation({ threshold: 0.1 });
   const [testimonialsRef, testimonialsVisible] = useScrollAnimation({ threshold: 0.1 });
 
+  // Scroll to top on mount to fix reload issue
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Generate optimized floating particles (reduced from 20 to 10)
   useEffect(() => {
     const newParticles = Array.from({ length: 10 }, (_, i) => ({
