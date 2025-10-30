@@ -494,7 +494,7 @@ const LandingPage = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-20 px-4 sm:px-8 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 relative overflow-hidden">
+      <section className="py-20 px-4 sm:px-8 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 relative overflow-hidden" ref={howItWorksRef}>
         {/* Background decoration */}
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-20 left-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
@@ -503,7 +503,7 @@ const LandingPage = () => {
 
         <div className="max-w-6xl mx-auto relative z-10">
           {/* Header */}
-          <div className="text-center mb-16 animate-fade-in-up">
+          <div className={`text-center mb-16 transition-all duration-800 ${howItWorksVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
             <span className="px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-sm font-medium inline-flex items-center gap-2 mb-4">
               <Clock className="w-4 h-4" />
               Launch in Minutes
@@ -516,13 +516,19 @@ const LandingPage = () => {
             </p>
           </div>
 
-          {/* Steps with Premium Glassmorphism */}
+          {/* Steps with Premium Glassmorphism and Scroll Animation */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {howItWorksSteps.map((step, index) => (
               <div 
                 key={index}
-                className="relative group animate-slide-in-bottom transform-3d"
-                style={{ animationDelay: `${index * 150}ms` }}
+                className={`relative group transform-3d transition-all duration-800 ${
+                  howItWorksVisible 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-20'
+                }`}
+                style={{ 
+                  transitionDelay: howItWorksVisible ? `${index * 150}ms` : '0ms'
+                }}
               >
                 {/* Connecting Arrow with glow (hidden on last item and mobile) */}
                 {index < howItWorksSteps.length - 1 && (
