@@ -219,7 +219,7 @@ const Dashboard = () => {
           >
             <div className="flex items-center justify-between text-white">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                <div className="w-12 h-12 bg-white/30 rounded-lg flex items-center justify-center">
                   <Sparkles className="w-6 h-6" />
                 </div>
                 <div>
