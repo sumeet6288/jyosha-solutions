@@ -538,7 +538,7 @@ a:active,
 }
 
 .animate-slide-in-bottom {
-  animation: slide-in-bottom 0.8s ease-out forwards;
+  animation: slide-in-bottom 0.4s ease-out forwards;
 }
 
 .animate-rotate-slow {
