@@ -586,39 +586,46 @@ const LandingPage = () => {
             </p>
           </div>
 
-          {/* Use Case Cards */}
+          {/* Use Case Cards with Glassmorphism */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {useCases.map((useCase, index) => (
               <div 
                 key={index}
-                className="group relative animate-fade-in-up"
+                className="group relative animate-fade-in-up transform-3d"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                {/* Glow Effect */}
-                <div className="absolute -inset-px bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg transition-opacity duration-500"></div>
+                {/* Animated Glow Effect */}
+                <div className="absolute -inset-px bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg transition-opacity duration-500 animate-gradient-x"></div>
                 
-                {/* Card */}
-                <div className="relative h-full bg-gradient-to-br from-white to-gray-50 rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-xl transition-all duration-300 group-hover:border-transparent">
-                  {/* Icon */}
-                  <div className={`w-16 h-16 bg-gradient-to-br ${useCase.gradient} rounded-2xl flex items-center justify-center text-white mb-4 transform group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                    {useCase.icon}
+                {/* Card with Premium Glassmorphism */}
+                <div className="relative h-full glass-card rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 group-hover:translate-y-[-8px] hover-3d overflow-hidden">
+                  {/* Animated gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-gradient-xy"></div>
+                  
+                  {/* Icon with 3D effect and glow */}
+                  <div className={`relative w-16 h-16 bg-gradient-to-br ${useCase.gradient} rounded-2xl flex items-center justify-center text-white mb-4 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl animate-glow-pulse z-10`}>
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/30 to-transparent"></div>
+                    <div className="relative z-10 transform group-hover:scale-110 transition-transform">{useCase.icon}</div>
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-xl font-bold mb-2 text-gray-900">
+                  <h3 className="relative text-xl font-bold mb-2 text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300 z-10">
                     {useCase.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-gray-600 leading-relaxed text-sm mb-4">
+                  <p className="relative text-gray-600 leading-relaxed text-sm mb-4 z-10">
                     {useCase.description}
                   </p>
 
-                  {/* Stats Badge */}
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">
-                    <TrendingUp className="w-3 h-3" />
+                  {/* Stats Badge with glassmorphism */}
+                  <div className="relative inline-flex items-center gap-2 px-3 py-1 glass rounded-full text-xs font-semibold text-purple-700 z-10 group-hover:scale-105 transition-transform">
+                    <TrendingUp className="w-3 h-3 animate-bounce-subtle" />
                     {useCase.stats}
                   </div>
+                  
+                  {/* Decorative element */}
+                  <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-purple-500/10 to-transparent rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </div>
               </div>
             ))}
