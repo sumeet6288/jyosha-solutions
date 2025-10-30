@@ -660,7 +660,7 @@ const LandingPage = () => {
       </section>
 
       {/* What Makes Us Different Section */}
-      <section className="py-20 px-4 sm:px-8 bg-gradient-to-br from-gray-50 to-purple-50 relative overflow-hidden">
+      <section className="py-20 px-4 sm:px-8 bg-gradient-to-br from-gray-50 to-purple-50 relative overflow-hidden" ref={differentiatorsRef}>
         {/* Background Elements */}
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 right-0 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl animate-pulse-slow"></div>
@@ -669,7 +669,7 @@ const LandingPage = () => {
 
         <div className="max-w-6xl mx-auto relative z-10">
           {/* Header */}
-          <div className="text-center mb-16 animate-fade-in-up">
+          <div className={`text-center mb-16 transition-all duration-800 ${differentiatorsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
             <span className="px-4 py-2 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 text-sm font-medium inline-flex items-center gap-2 mb-4">
               <Sparkles className="w-4 h-4" />
               Why Choose BotSmith
@@ -682,13 +682,19 @@ const LandingPage = () => {
             </p>
           </div>
 
-          {/* Differentiator Cards with Advanced Effects */}
+          {/* Differentiator Cards with Advanced Effects and Scroll Animation */}
           <div className="grid md:grid-cols-2 gap-8">
             {differentiators.map((item, index) => (
               <div 
                 key={index}
-                className="group relative animate-fade-in-up transform-3d"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className={`group relative transform-3d transition-all duration-800 ${
+                  differentiatorsVisible 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-20'
+                }`}
+                style={{ 
+                  transitionDelay: differentiatorsVisible ? `${index * 150}ms` : '0ms'
+                }}
               >
                 {/* Animated Border Gradient with stronger effect */}
                 <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 rounded-2xl opacity-30 group-hover:opacity-100 blur-md transition-all duration-500 animate-gradient-x"></div>
