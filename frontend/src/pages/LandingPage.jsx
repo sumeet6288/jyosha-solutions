@@ -455,6 +455,283 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* How It Works Section */}
+      <section className="py-20 px-4 sm:px-8 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
+          <div className="absolute bottom-20 right-10 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
+        </div>
+
+        <div className="max-w-6xl mx-auto relative z-10">
+          {/* Header */}
+          <div className="text-center mb-16 animate-fade-in-up">
+            <span className="px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-sm font-medium inline-flex items-center gap-2 mb-4">
+              <Clock className="w-4 h-4" />
+              Launch in Minutes
+            </span>
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-900 via-pink-900 to-orange-900 bg-clip-text text-transparent">
+              How It Works
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Four simple steps to transform your customer support with AI
+            </p>
+          </div>
+
+          {/* Steps */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {howItWorksSteps.map((step, index) => (
+              <div 
+                key={index}
+                className="relative group animate-fade-in-up"
+                style={{ animationDelay: `${index * 150}ms` }}
+              >
+                {/* Connecting Arrow (hidden on last item and mobile) */}
+                {index < howItWorksSteps.length - 1 && (
+                  <div className="hidden lg:block absolute top-16 -right-4 z-0">
+                    <ArrowRight className="w-8 h-8 text-purple-300 group-hover:text-purple-500 transition-colors" />
+                  </div>
+                )}
+
+                {/* Card */}
+                <div className="relative bg-white rounded-2xl border-2 border-purple-200 p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-purple-400 hover:translate-y-[-4px]">
+                  {/* Step Number */}
+                  <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                    {step.step}
+                  </div>
+
+                  {/* Icon */}
+                  <div className={`w-16 h-16 bg-gradient-to-br ${step.gradient} rounded-xl flex items-center justify-center text-white mb-4 mt-2 transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-md`}>
+                    {step.icon}
+                  </div>
+
+                  {/* Content */}
+                  <h3 className="text-xl font-bold mb-2 text-gray-900">
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed text-sm">
+                    {step.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom CTA */}
+          <div className="text-center mt-12 animate-fade-in-up">
+            <Button 
+              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-6 text-lg rounded-xl shadow-xl transform hover:scale-105 transition-all duration-300 group"
+              onClick={() => navigate('/dashboard')}
+            >
+              Start Building Now
+              <Rocket className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Use Cases Section */}
+      <section className="py-20 px-4 sm:px-8 relative z-10 bg-white">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-16 animate-fade-in-up">
+            <span className="px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-medium inline-flex items-center gap-2 mb-4">
+              <Award className="w-4 h-4" />
+              Trusted Across Industries
+            </span>
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-purple-900 to-gray-900 bg-clip-text text-transparent">
+              Built for Every Business
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              From startups to enterprises, see how teams use BotSmith to revolutionize customer experience
+            </p>
+          </div>
+
+          {/* Use Case Cards */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {useCases.map((useCase, index) => (
+              <div 
+                key={index}
+                className="group relative animate-fade-in-up"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                {/* Glow Effect */}
+                <div className="absolute -inset-px bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg transition-opacity duration-500"></div>
+                
+                {/* Card */}
+                <div className="relative h-full bg-gradient-to-br from-white to-gray-50 rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-xl transition-all duration-300 group-hover:border-transparent">
+                  {/* Icon */}
+                  <div className={`w-16 h-16 bg-gradient-to-br ${useCase.gradient} rounded-2xl flex items-center justify-center text-white mb-4 transform group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                    {useCase.icon}
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-xl font-bold mb-2 text-gray-900">
+                    {useCase.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-gray-600 leading-relaxed text-sm mb-4">
+                    {useCase.description}
+                  </p>
+
+                  {/* Stats Badge */}
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">
+                    <TrendingUp className="w-3 h-3" />
+                    {useCase.stats}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* What Makes Us Different Section */}
+      <section className="py-20 px-4 sm:px-8 bg-gradient-to-br from-gray-50 to-purple-50 relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl animate-pulse-slow"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl animate-pulse-slow animation-delay-2000"></div>
+        </div>
+
+        <div className="max-w-6xl mx-auto relative z-10">
+          {/* Header */}
+          <div className="text-center mb-16 animate-fade-in-up">
+            <span className="px-4 py-2 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 text-sm font-medium inline-flex items-center gap-2 mb-4">
+              <Sparkles className="w-4 h-4" />
+              Why Choose BotSmith
+            </span>
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-900 via-pink-900 to-purple-900 bg-clip-text text-transparent">
+              What Makes Us Different
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Powerful features that set us apart from traditional chatbot builders
+            </p>
+          </div>
+
+          {/* Differentiator Cards */}
+          <div className="grid md:grid-cols-2 gap-8">
+            {differentiators.map((item, index) => (
+              <div 
+                key={index}
+                className="group relative animate-fade-in-up"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                {/* Animated Border Gradient */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 rounded-2xl opacity-20 group-hover:opacity-100 blur-sm group-hover:blur-md transition-all duration-500 animate-gradient-x"></div>
+                
+                {/* Card */}
+                <div className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100">
+                  <div className="flex items-start gap-4">
+                    {/* Icon */}
+                    <div className={`flex-shrink-0 w-16 h-16 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center text-white transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg`}>
+                      {item.icon}
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-bold mb-3 text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300">
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-600 leading-relaxed">
+                        {item.description}
+                      </p>
+                      
+                      {/* Check Icon */}
+                      <div className="mt-4 flex items-center gap-2 text-green-600">
+                        <Check className="w-5 h-5" />
+                        <span className="text-sm font-semibold">Available Now</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 px-4 sm:px-8 bg-white relative z-10">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-16 animate-fade-in-up">
+            <span className="px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 text-sm font-medium inline-flex items-center gap-2 mb-4">
+              <Star className="w-4 h-4 fill-yellow-700" />
+              Loved by Teams Worldwide
+            </span>
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-purple-900 to-gray-900 bg-clip-text text-transparent">
+              What Our Customers Say
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Join thousands of happy customers who transformed their support with BotSmith
+            </p>
+          </div>
+
+          {/* Testimonial Cards */}
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <div 
+                key={index}
+                className="group relative animate-fade-in-up"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                {/* Card */}
+                <div className="relative h-full bg-gradient-to-br from-white to-purple-50 rounded-2xl border-2 border-purple-200 p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:border-purple-400 hover:translate-y-[-4px]">
+                  {/* Quote Mark */}
+                  <div className="absolute top-6 right-6 text-6xl text-purple-200 font-serif">"</div>
+                  
+                  {/* Stars */}
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                    ))}
+                  </div>
+
+                  {/* Testimonial Text */}
+                  <p className="text-gray-700 leading-relaxed mb-6 relative z-10 italic">
+                    {testimonial.text}
+                  </p>
+
+                  {/* Author */}
+                  <div className="flex items-center gap-4 pt-4 border-t border-purple-200">
+                    <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-2xl shadow-md">
+                      {testimonial.avatar}
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
+                      <p className="text-sm text-gray-600">{testimonial.role}</p>
+                      <p className="text-xs text-purple-600 font-semibold">{testimonial.company}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom Stats */}
+          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center animate-fade-in-up">
+            <div>
+              <div className="text-4xl font-bold text-transparent bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text mb-2">9000+</div>
+              <div className="text-gray-600 font-medium">Happy Customers</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text mb-2">500K+</div>
+              <div className="text-gray-600 font-medium">Conversations/Day</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-transparent bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text mb-2">98%</div>
+              <div className="text-gray-600 font-medium">Uptime</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-transparent bg-gradient-to-r from-orange-600 to-rose-600 bg-clip-text mb-2">4.9/5</div>
+              <div className="text-gray-600 font-medium">Customer Rating</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-24 px-8 bg-gradient-to-br from-gray-900 via-purple-900 to-pink-900 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
