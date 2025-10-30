@@ -107,7 +107,7 @@ const SignIn = () => {
             <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 rounded-3xl opacity-10 group-hover:opacity-20 blur-lg transition-all duration-700 animate-rainbow"></div>
             
             {/* Main card - CRISP WHITE BACKGROUND */}
-            <div className="relative bg-white rounded-3xl shadow-2xl p-6 border border-gray-200 transform transition-all duration-500 hover:shadow-purple-500/20">
+            <div className="relative bg-white rounded-2xl md:rounded-3xl shadow-2xl p-4 sm:p-6 border border-gray-200 transform transition-all duration-500 hover:shadow-purple-500/20">
               {/* Logo Section with enhanced animations */}
               <div className="flex items-center gap-2 mb-6 group/logo cursor-pointer animate-slide-in-top" onClick={() => navigate('/')}>
                 <div className="relative">
