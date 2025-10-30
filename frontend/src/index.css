@@ -85,6 +85,16 @@ html {
   scroll-padding-top: 80px;
 }
 
+/* Prevent content from hiding behind fixed nav */
+body {
+  position: relative;
+}
+
+/* Fixed navigation spacing */
+.fixed-nav-spacing {
+  padding-top: 80px;
+}
+
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
