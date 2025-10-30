@@ -99,8 +99,8 @@ const SignIn = () => {
       </div>
 
       {/* Left Side - Enhanced Form with Glass Morphism and Stagger Animations */}
-      <div className="w-full md:w-1/2 flex items-center justify-center p-4 sm:p-8 relative z-10">
-        <div className="w-full max-w-lg transform scale-[0.95]">
+      <div className="w-full md:w-1/2 flex items-center justify-center p-4 sm:p-6 md:p-8 relative z-10">
+        <div className="w-full max-w-lg transform md:scale-[0.95]">
           {/* Premium Glass Card with entrance animation - CRISP & CLEAR */}
           <div className="relative group card-entrance">
             {/* Animated glow effect - REDUCED BLUR */}
