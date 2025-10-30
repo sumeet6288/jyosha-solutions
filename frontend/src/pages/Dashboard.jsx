@@ -73,9 +73,6 @@ const Dashboard = () => {
       setAnalytics(analyticsResponse.data);
       setUsageStats(usageResponse.data);
       setLastUpdated(new Date());
-      
-      // Load dashboard graph data
-      loadDashboardGraphs();
     } catch (error) {
       console.error('Error loading dashboard data:', error);
       if (!silent) {
@@ -87,56 +84,6 @@ const Dashboard = () => {
       }
     } finally {
       if (!silent) setLoading(false);
-    }
-  };
-  
-  const loadDashboardGraphs = async () => {
-    try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
-      
-      // Generate sample trend data for last 7 days
-      const messagesTrend = [];
-      const conversationsTrend = [];
-      for (let i = 6; i >= 0; i--) {
-        const date = new Date();
-        date.setDate(date.getDate() - i);
-        const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        messagesTrend.push({
-          date: dateStr,
-          messages: Math.floor(Math.random() * 50) + 10
-        });
-        conversationsTrend.push({
-          date: dateStr,
-          conversations: Math.floor(Math.random() * 20) + 5
-        });
-      }
-      
-      // Generate chatbot activity data
-      const chatbotActivity = chatbots.slice(0, 5).map(bot => ({
-        name: bot.name.substring(0, 15),
-        messages: Math.floor(Math.random() * 100) + 20
-      }));
-      
-      // Generate provider distribution
-      const providers = { 'OpenAI': 0, 'Claude': 0, 'Gemini': 0 };
-      chatbots.forEach(bot => {
-        if (bot.provider && providers.hasOwnProperty(bot.provider.charAt(0).toUpperCase() + bot.provider.slice(1))) {
-          providers[bot.provider.charAt(0).toUpperCase() + bot.provider.slice(1)]++;
-        }
-      });
-      
-      const providerDistribution = Object.entries(providers)
-        .filter(([_, count]) => count > 0)
-        .map(([name, value]) => ({ name, value }));
-      
-      setDashboardGraphs({
-        messagesTrend,
-        conversationsTrend,
-        chatbotActivity,
-        providerDistribution
-      });
-    } catch (error) {
-      console.error('Error loading dashboard graphs:', error);
     }
   };
 
