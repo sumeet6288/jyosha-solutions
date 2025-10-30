@@ -309,7 +309,7 @@ transition: 700ms
 
 ## 🚀 Live Preview
 
-**URL**: https://fast-dependency-bot.preview.emergentagent.com
+**URL**: https://quick-setup-27.preview.emergentagent.com
 
 ### Check these pages:
 - ✅ Dashboard (main nav)
