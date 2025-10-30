@@ -506,6 +506,154 @@ const Dashboard = () => {
           </div>
         )}
 
+        {/* Dashboard Analytics Graphs */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* Messages Trend Chart */}
+          <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100 animate-fade-in-up">
+            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <Activity className="w-5 h-5 text-blue-600" />
+              Messages Trend (Last 7 Days)
+            </h3>
+            {dashboardGraphs.messagesTrend.length > 0 ? (
+              <ResponsiveContainer width="100%" height={250}>
+                <LineChart data={dashboardGraphs.messagesTrend}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis dataKey="date" stroke="#888" fontSize={12} />
+                  <YAxis stroke="#888" fontSize={12} allowDecimals={false} />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'white', 
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '8px'
+                    }}
+                  />
+                  <Legend />
+                  <Line 
+                    type="monotone" 
+                    dataKey="messages" 
+                    stroke="#3b82f6" 
+                    strokeWidth={2}
+                    name="Messages"
+                    dot={{ fill: '#3b82f6' }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-[250px] text-gray-400">
+                <Activity className="w-16 h-16 mb-4 opacity-30" />
+                <p className="text-lg font-medium">No message data</p>
+                <p className="text-sm mt-2">Start chatting to see trends</p>
+              </div>
+            )}
+          </div>
+
+          {/* Conversations Trend Chart */}
+          <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100 animate-fade-in-up">
+            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <MessageSquare className="w-5 h-5 text-purple-600" />
+              Conversations Trend (Last 7 Days)
+            </h3>
+            {dashboardGraphs.conversationsTrend.length > 0 ? (
+              <ResponsiveContainer width="100%" height={250}>
+                <LineChart data={dashboardGraphs.conversationsTrend}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis dataKey="date" stroke="#888" fontSize={12} />
+                  <YAxis stroke="#888" fontSize={12} allowDecimals={false} />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'white', 
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '8px'
+                    }}
+                  />
+                  <Legend />
+                  <Line 
+                    type="monotone" 
+                    dataKey="conversations" 
+                    stroke="#7c3aed" 
+                    strokeWidth={2}
+                    name="Conversations"
+                    dot={{ fill: '#7c3aed' }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-[250px] text-gray-400">
+                <MessageSquare className="w-16 h-16 mb-4 opacity-30" />
+                <p className="text-lg font-medium">No conversation data</p>
+                <p className="text-sm mt-2">Start chatting to see trends</p>
+              </div>
+            )}
+          </div>
+
+          {/* Chatbot Activity Chart */}
+          <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100 animate-fade-in-up">
+            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <BarChart3 className="w-5 h-5 text-pink-600" />
+              Top Active Chatbots
+            </h3>
+            {dashboardGraphs.chatbotActivity.length > 0 ? (
+              <ResponsiveContainer width="100%" height={250}>
+                <BarChart data={dashboardGraphs.chatbotActivity}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis dataKey="name" stroke="#888" fontSize={10} angle={-15} textAnchor="end" height={60} />
+                  <YAxis stroke="#888" fontSize={12} allowDecimals={false} />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'white', 
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '8px'
+                    }}
+                  />
+                  <Bar dataKey="messages" fill="#ec4899" radius={[8, 8, 0, 0]} name="Messages" />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-[250px] text-gray-400">
+                <BarChart3 className="w-16 h-16 mb-4 opacity-30" />
+                <p className="text-lg font-medium">No activity data</p>
+                <p className="text-sm mt-2">Create chatbots to see activity</p>
+              </div>
+            )}
+          </div>
+
+          {/* Provider Distribution Chart */}
+          <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100 animate-fade-in-up">
+            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-green-600" />
+              AI Provider Distribution
+            </h3>
+            {dashboardGraphs.providerDistribution.length > 0 ? (
+              <ResponsiveContainer width="100%" height={250}>
+                <PieChart>
+                  <Pie
+                    data={dashboardGraphs.providerDistribution}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name, value }) => `${name}: ${value}`}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {dashboardGraphs.providerDistribution.map((entry, index) => {
+                      const COLORS = ['#7c3aed', '#3b82f6', '#10b981'];
+                      return <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />;
+                    })}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-[250px] text-gray-400">
+                <TrendingUp className="w-16 h-16 mb-4 opacity-30" />
+                <p className="text-lg font-medium">No provider data</p>
+                <p className="text-sm mt-2">Create chatbots to see distribution</p>
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Your Chatbots Section - Reduced to 80% */}
         <div className="bg-white rounded-xl p-4 shadow-md border border-gray-100 animate-fade-in-up">
           <div className="flex items-center justify-between mb-4">
