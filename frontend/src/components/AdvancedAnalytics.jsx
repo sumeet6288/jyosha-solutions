@@ -92,43 +92,43 @@ const AdvancedAnalytics = ({ chatbotId }) => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white shadow-lg">
+        <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-4 sm:p-6 text-white shadow-lg">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-purple-100 text-sm mb-1">Avg Daily Messages</p>
-              <p className="text-3xl font-bold">{trendData?.avg_daily_messages?.toFixed(1) || 0}</p>
+              <p className="text-purple-100 text-xs sm:text-sm mb-1">Avg Daily Messages</p>
+              <p className="text-2xl sm:text-3xl font-bold">{trendData?.avg_daily_messages?.toFixed(1) || 0}</p>
             </div>
-            <TrendingUp className="w-8 h-8 text-purple-200" />
+            <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-purple-200" />
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl p-6 text-white shadow-lg">
+        <div className="bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl p-4 sm:p-6 text-white shadow-lg">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-pink-100 text-sm mb-1">Total Conversations</p>
-              <p className="text-3xl font-bold">{trendData?.total_conversations || 0}</p>
+              <p className="text-pink-100 text-xs sm:text-sm mb-1">Total Conversations</p>
+              <p className="text-2xl sm:text-3xl font-bold">{trendData?.total_conversations || 0}</p>
             </div>
-            <MessageSquare className="w-8 h-8 text-pink-200" />
+            <MessageSquare className="w-6 h-6 sm:w-8 sm:h-8 text-pink-200" />
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl p-6 text-white shadow-lg">
+        <div className="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl p-4 sm:p-6 text-white shadow-lg">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-indigo-100 text-sm mb-1">Satisfaction Rate</p>
-              <p className="text-3xl font-bold">{satisfaction?.satisfaction_percentage?.toFixed(1) || 0}%</p>
+              <p className="text-indigo-100 text-xs sm:text-sm mb-1">Satisfaction Rate</p>
+              <p className="text-2xl sm:text-3xl font-bold">{satisfaction?.satisfaction_percentage?.toFixed(1) || 0}%</p>
             </div>
-            <Star className="w-8 h-8 text-indigo-200" />
+            <Star className="w-6 h-6 sm:w-8 sm:h-8 text-indigo-200" />
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
+        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 sm:p-6 text-white shadow-lg">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-blue-100 text-sm mb-1">Avg Response Time</p>
-              <p className="text-3xl font-bold">{(performance?.avg_response_time_ms / 1000)?.toFixed(1) || 0}s</p>
+              <p className="text-blue-100 text-xs sm:text-sm mb-1">Avg Response Time</p>
+              <p className="text-2xl sm:text-3xl font-bold">{(performance?.avg_response_time_ms / 1000)?.toFixed(1) || 0}s</p>
             </div>
-            <Clock className="w-8 h-8 text-blue-200" />
+            <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-blue-200" />
           </div>
         </div>
       </div>
