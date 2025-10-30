@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '../components/ui/button';
+import { Button } from '../../components/ui/button';
 import { ArrowLeft, Rocket, Settings, Bot, Upload, CheckCircle } from 'lucide-react';
 
 const GettingStarted = () => {
