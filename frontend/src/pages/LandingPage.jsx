@@ -187,8 +187,8 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50 overflow-hidden relative">
-      {/* Advanced Animated background with glassmorphism */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ willChange: 'transform' }}>
+      {/* Advanced Animated background with glassmorphism - Lower z-index */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0" style={{ willChange: 'transform' }}>
         {/* Main gradient blobs */}
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" style={{ transform: 'translateZ(0)' }}></div>
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" style={{ transform: 'translateZ(0)' }}></div>
