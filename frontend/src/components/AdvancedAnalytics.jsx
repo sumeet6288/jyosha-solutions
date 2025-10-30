@@ -180,38 +180,39 @@ const AdvancedAnalytics = ({ chatbotId }) => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Top Questions Chart */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <h4 className="text-lg font-semibold mb-4">Top Asked Questions</h4>
+        <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
+          <h4 className="text-base sm:text-lg font-semibold mb-4">Top Asked Questions</h4>
           {topQuestions && topQuestions.top_questions.length > 0 ? (
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={250}>
               <BarChart data={topQuestions.top_questions.slice(0, 5)}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="question" stroke="#888" fontSize={10} angle={-15} textAnchor="end" height={80} />
-                <YAxis stroke="#888" fontSize={12} allowDecimals={false} />
+                <XAxis dataKey="question" stroke="#888" fontSize={9} angle={-15} textAnchor="end" height={80} tick={{ fontSize: 9 }} />
+                <YAxis stroke="#888" fontSize={10} tick={{ fontSize: 10 }} allowDecimals={false} />
                 <Tooltip 
                   contentStyle={{ 
                     backgroundColor: 'white', 
                     border: '1px solid #e5e7eb',
-                    borderRadius: '8px'
+                    borderRadius: '8px',
+                    fontSize: '12px'
                   }}
                 />
                 <Bar dataKey="count" fill="#7c3aed" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="flex flex-col items-center justify-center h-[300px] text-gray-400">
-              <MessageSquare className="w-16 h-16 mb-4 opacity-30" />
-              <p className="text-lg font-medium">No questions yet</p>
-              <p className="text-sm mt-2">Questions will appear as users interact with your chatbot</p>
+            <div className="flex flex-col items-center justify-center h-[250px] text-gray-400">
+              <MessageSquare className="w-12 h-12 sm:w-16 sm:h-16 mb-4 opacity-30" />
+              <p className="text-base sm:text-lg font-medium">No questions yet</p>
+              <p className="text-xs sm:text-sm mt-2 text-center px-4">Questions will appear as users interact with your chatbot</p>
             </div>
           )}
         </div>
 
         {/* Satisfaction Distribution Chart */}
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <h4 className="text-lg font-semibold mb-4">Satisfaction Distribution</h4>
+        <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
+          <h4 className="text-base sm:text-lg font-semibold mb-4">Satisfaction Distribution</h4>
           {satisfaction && satisfactionPieData.length > 0 ? (
             <>
               <ResponsiveContainer width="100%" height={300}>
