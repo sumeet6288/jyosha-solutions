@@ -148,22 +148,22 @@ const SignUp = () => {
         ))}
       </div>
 
-      {/* Left Side - Enhanced Animated Gradient */}
+      {/* Left Side - Enhanced Animated Gradient - REDUCED BLUR */}
       <div className="hidden md:block md:w-1/2 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-orange-500 via-pink-500 to-purple-500">
           {/* Animated overlay layers */}
           <div className="absolute inset-0 bg-gradient-to-tl from-purple-600/60 via-transparent to-orange-600/60 animate-pulse-slow"></div>
           <div className="absolute inset-0 bg-gradient-to-br from-pink-500/40 via-transparent to-purple-500/40 animate-pulse-slow animation-delay-2000"></div>
           
-          {/* Floating shapes with morph */}
-          <div className="absolute top-40 right-20 w-40 h-40 bg-white/10 rounded-full blur-3xl animate-float-up-down animate-morph"></div>
-          <div className="absolute bottom-20 left-20 w-48 h-48 bg-white/10 rounded-full blur-3xl animate-float-up-down animation-delay-2000 animate-morph"></div>
-          <div className="absolute top-1/2 right-1/3 w-32 h-32 bg-white/10 rounded-full blur-3xl animate-float-up-down animation-delay-4000 animate-morph"></div>
+          {/* Floating shapes with morph - REDUCED BLUR */}
+          <div className="absolute top-40 right-20 w-40 h-40 bg-white/10 rounded-full blur-2xl animate-float-up-down animate-morph"></div>
+          <div className="absolute bottom-20 left-20 w-48 h-48 bg-white/10 rounded-full blur-2xl animate-float-up-down animation-delay-2000 animate-morph"></div>
+          <div className="absolute top-1/2 right-1/3 w-32 h-32 bg-white/10 rounded-full blur-2xl animate-float-up-down animation-delay-4000 animate-morph"></div>
           
           {/* Content with animations */}
           <div className="absolute inset-0 flex flex-col items-center justify-center p-12 text-white">
             <div className="max-w-md text-center space-y-8 transform hover:scale-105 transition-transform duration-700">
-              <div className="inline-block p-5 bg-white/15 backdrop-blur-md rounded-3xl mb-6 animate-bounce-in">
+              <div className="inline-block p-5 bg-white/20 rounded-3xl mb-6 animate-bounce-in">
                 <Shield className="w-20 h-20 animate-neon-glow" />
               </div>
               <h2 className="text-6xl font-black font-display drop-shadow-2xl leading-tight animate-slide-in-left">
