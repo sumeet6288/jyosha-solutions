@@ -554,7 +554,7 @@ class RAGSystemTester:
 def main():
     """Main test execution"""
     # Get base URL from environment or use default
-    base_url = "https://preview-deps.preview.emergentagent.com"
+    base_url = "https://preview-setup-6.preview.emergentagent.com"
     
     print(f"Testing RAG System at: {base_url}")
     
