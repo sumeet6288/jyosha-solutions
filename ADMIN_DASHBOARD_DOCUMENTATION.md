@@ -261,7 +261,7 @@ The BotSmith Admin Dashboard provides comprehensive management capabilities for 
 ## Usage Guide
 
 ### Accessing Admin Dashboard
-1. Navigate to `https://instadeps.preview.emergentagent.com/admin`
+1. Navigate to `https://preview-deps.preview.emergentagent.com/admin`
 2. Dashboard loads with overview tab by default
 3. Use tab navigation to access different sections
 

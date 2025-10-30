@@ -309,7 +309,7 @@ transition: 700ms
 
 ## 🚀 Live Preview
 
-**URL**: https://instadeps.preview.emergentagent.com
+**URL**: https://preview-deps.preview.emergentagent.com
 
 ### Check these pages:
 - ✅ Dashboard (main nav)

@@ -3,13 +3,13 @@
 ## 🚀 Quick Navigation
 
 ### For End Users
-- **Homepage**: https://instadeps.preview.emergentagent.com/
-- **Start Building**: https://instadeps.preview.emergentagent.com/dashboard
-- **Pricing**: https://instadeps.preview.emergentagent.com/pricing
-- **Help**: https://instadeps.preview.emergentagent.com/resources
+- **Homepage**: https://preview-deps.preview.emergentagent.com/
+- **Start Building**: https://preview-deps.preview.emergentagent.com/dashboard
+- **Pricing**: https://preview-deps.preview.emergentagent.com/pricing
+- **Help**: https://preview-deps.preview.emergentagent.com/resources
 
 ### For Administrators
-- **Admin Panel**: https://instadeps.preview.emergentagent.com/admin
+- **Admin Panel**: https://preview-deps.preview.emergentagent.com/admin
 - **User Management**: Admin Dashboard → Users Tab
 - **System Settings**: Admin Dashboard → Settings Tab
 
@@ -307,7 +307,7 @@
 
 ### API Base URL
 - Development: `http://localhost:8001`
-- Production: `https://instadeps.preview.emergentagent.com`
+- Production: `https://preview-deps.preview.emergentagent.com`
 
 ---
 
@@ -321,8 +321,8 @@
 
 ### Contact
 - **Email**: support@botsmith.ai
-- **Website**: https://instadeps.preview.emergentagent.com
-- **Resources**: https://instadeps.preview.emergentagent.com/resources
+- **Website**: https://preview-deps.preview.emergentagent.com
+- **Resources**: https://preview-deps.preview.emergentagent.com/resources
 
 ---
 
