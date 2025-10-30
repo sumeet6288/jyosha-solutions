@@ -354,7 +354,7 @@ const LandingPage = () => {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <Button 
                 className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-6 text-lg rounded-xl shadow-2xl shadow-purple-500/30 transform hover:scale-105 transition-all duration-300 group"
-                onClick={() => navigate('/dashboard')}
+                onClick={() => navigate('/signup')}
               >
                 Build your agent
                 <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
