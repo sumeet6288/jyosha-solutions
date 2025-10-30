@@ -215,9 +215,9 @@ const SignIn = () => {
                 <Button 
                   type="submit" 
                   disabled={isLoading}
-                  className="w-full relative group/btn overflow-hidden bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 hover:from-purple-700 hover:via-pink-700 hover:to-orange-700 text-white py-5 rounded-xl shadow-2xl shadow-purple-500/40 transform hover:scale-[1.02] hover:shadow-3xl hover:shadow-purple-500/50 transition-all duration-500 btn-ripple animate-bounce-in stagger-5 mt-6"
+                  className="w-full relative group/btn overflow-hidden bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 hover:from-purple-700 hover:via-pink-700 hover:to-orange-700 text-white py-4 sm:py-5 rounded-xl shadow-2xl shadow-purple-500/40 transform hover:scale-[1.02] hover:shadow-3xl hover:shadow-purple-500/50 transition-all duration-500 btn-ripple animate-bounce-in stagger-5 mt-4 sm:mt-6"
                 >
-                  <span className="relative z-10 flex items-center justify-center gap-2 text-base font-bold font-heading">
+                  <span className="relative z-10 flex items-center justify-center gap-2 text-sm sm:text-base font-bold font-heading">
                     {isLoading ? (
                       <>
                         <div className="w-4 h-4 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
