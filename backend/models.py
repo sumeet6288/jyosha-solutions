@@ -560,3 +560,85 @@ class PlanUpgradeRequest(BaseModel):
     """Plan upgrade request"""
     new_plan_id: str = Field(description="ID of the plan to upgrade to")
 
+
+# Integration Models
+class Integration(BaseModel):
+    """Model for storing integration configurations"""
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    chatbot_id: str
+    integration_type: Literal["whatsapp", "slack", "telegram", "discord", "webchat", "api", "twilio", "messenger"]
+    enabled: bool = False
+    credentials: dict = Field(default_factory=dict)  # Stores API keys, tokens, etc.
+    status: Literal["connected", "disconnected", "error", "pending"] = "pending"
+    last_tested: Optional[datetime] = None
+    last_used: Optional[datetime] = None
+    error_message: Optional[str] = None
+    metadata: dict = Field(default_factory=dict)  # Additional configuration
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class IntegrationCreate(BaseModel):
+    """Model for creating/updating integration"""
+    integration_type: Literal["whatsapp", "slack", "telegram", "discord", "webchat", "api", "twilio", "messenger"]
+    credentials: dict
+    metadata: Optional[dict] = None
+
+
+class IntegrationUpdate(BaseModel):
+    """Model for updating integration"""
+    credentials: Optional[dict] = None
+    enabled: Optional[bool] = None
+    metadata: Optional[dict] = None
+
+
+class IntegrationResponse(BaseModel):
+    """Model for integration response"""
+    id: str
+    chatbot_id: str
+    integration_type: str
+    enabled: bool
+    status: str
+    last_tested: Optional[datetime] = None
+    last_used: Optional[datetime] = None
+    error_message: Optional[str] = None
+    has_credentials: bool  # Don't expose actual credentials
+    created_at: datetime
+    updated_at: datetime
+
+
+class IntegrationLog(BaseModel):
+    """Model for integration activity logs"""
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    chatbot_id: str
+    integration_id: str
+    integration_type: str
+    event_type: Literal["enabled", "disabled", "tested", "message_sent", "message_received", "error", "configured"]
+    status: Literal["success", "failure", "warning"] = "success"
+    message: str
+    metadata: dict = Field(default_factory=dict)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class IntegrationLogResponse(BaseModel):
+    """Model for integration log response"""
+    id: str
+    chatbot_id: str
+    integration_id: str
+    integration_type: str
+    event_type: str
+    status: str
+    message: str
+    metadata: dict
+    timestamp: datetime
+
+
+class TestConnectionRequest(BaseModel):
+    """Model for testing integration connection"""
+    integration_type: str
+    credentials: dict
+
