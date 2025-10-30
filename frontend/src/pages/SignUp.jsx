@@ -190,14 +190,14 @@ const SignUp = () => {
 
       {/* Right Side - Enhanced Form */}
       <div className="w-full md:w-1/2 flex items-center justify-center p-4 sm:p-8 relative z-10">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-md transform scale-[0.85]">
           {/* Premium Glass Card with entrance animation */}
           <div className="relative group card-entrance">
             {/* Animated glow effect */}
             <div className="absolute -inset-1 bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 rounded-3xl opacity-20 group-hover:opacity-40 blur-2xl transition-all duration-700 animate-rainbow"></div>
             
             {/* Main card */}
-            <div className="relative bg-white/80 backdrop-blur-2xl rounded-3xl shadow-2xl p-8 border border-white/60 transform transition-all duration-500 hover:shadow-purple-500/30">
+            <div className="relative bg-white/80 backdrop-blur-2xl rounded-3xl shadow-2xl p-6 border border-white/60 transform transition-all duration-500 hover:shadow-purple-500/30">
               {/* Logo Section with enhanced animations */}
               <div className="flex items-center gap-3 mb-8 group/logo cursor-pointer animate-slide-in-top" onClick={() => navigate('/')}>
                 <div className="relative">
