@@ -235,7 +235,7 @@ const SignUp = () => {
                     <User className="w-3.5 h-3.5 text-purple-600" />
                     Full Name
                   </Label>
-                  <div className={`relative mt-1.5 transition-all duration-500 ${focusedField === 'name' ? 'scale-[1.03] shadow-2xl shadow-purple-500/30' : ''}`}>
+                  <div className={`relative mt-1.5 transition-all duration-500 ${focusedField === 'name' ? 'scale-[1.02] shadow-xl shadow-purple-500/20' : ''}`}>
                     <Input
                       id="name"
                       type="text"
@@ -244,12 +244,12 @@ const SignUp = () => {
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
                       onFocus={() => setFocusedField('name')}
                       onBlur={() => setFocusedField('')}
-                      className="pl-3 pr-3 py-5 font-body text-sm bg-white/60 backdrop-blur-sm border-2 border-purple-200/60 focus:border-purple-500 focus:bg-white/90 rounded-xl transition-all duration-500 focus:shadow-2xl focus:shadow-purple-500/30"
+                      className="pl-3 pr-3 py-5 font-body text-sm bg-white border-2 border-purple-200 focus:border-purple-500 focus:bg-white rounded-xl transition-all duration-500 focus:shadow-xl focus:shadow-purple-500/20"
                       required
                     />
                     {focusedField === 'name' && (
                       <>
-                        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-purple-400/30 to-pink-400/30 rounded-xl blur-xl animate-neon-glow"></div>
+                        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-xl blur-md animate-neon-glow"></div>
                         <div className="absolute -top-0.5 left-3 right-3 h-0.5 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 rounded-full"></div>
                       </>
                     )}
