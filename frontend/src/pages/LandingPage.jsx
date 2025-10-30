@@ -220,22 +220,22 @@ const LandingPage = () => {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.03)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_80%)]"></div>
       </div>
 
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-b border-gray-200/50 z-50 shadow-sm">
+      {/* Navigation with Glassmorphism */}
+      <nav className="fixed top-0 left-0 right-0 glass-strong backdrop-blur-xl border-b border-white/30 z-50 shadow-lg shadow-purple-500/10">
         <div className="max-w-[95%] mx-auto px-4 sm:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate('/')}>
-            {/* Premium 3D Logo */}
-            <div className="relative">
-              {/* Background glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-500"></div>
+            {/* Premium 3D Logo with glow animation */}
+            <div className="relative transform-3d">
+              {/* Background glow effect with animation */}
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 animate-glow-pulse"></div>
               
               {/* Main logo container */}
-              <div className="relative w-12 h-12 bg-gradient-to-br from-purple-600 via-fuchsia-500 to-pink-600 rounded-2xl flex items-center justify-center transform group-hover:scale-105 group-hover:rotate-6 transition-all duration-500 shadow-2xl border border-white/20">
+              <div className="relative w-12 h-12 bg-gradient-to-br from-purple-600 via-fuchsia-500 to-pink-600 rounded-2xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl border border-white/20 animate-gradient-xy">
                 {/* Inner gradient highlight */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/30 to-transparent opacity-50"></div>
                 
                 {/* Bot icon with 3D effect */}
-                <svg className="w-7 h-7 text-white relative z-10 drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-7 h-7 text-white relative z-10 drop-shadow-lg group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
                   {/* Robot head */}
                   <path d="M12 2C11.45 2 11 2.45 11 3V4H7C5.89 4 5 4.89 5 6V18C5 19.11 5.89 20 7 20H17C18.11 20 19 19.11 19 18V6C19 4.89 18.11 4 17 4H13V3C13 2.45 12.55 2 12 2M7 6H17V18H7V6Z"/>
                   {/* Eyes */}
@@ -247,13 +247,13 @@ const LandingPage = () => {
                   <circle cx="12" cy="3" r="1"/>
                 </svg>
                 
-                {/* Sparkle effects */}
+                {/* Sparkle effects with animation */}
                 <div className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-300 rounded-full animate-ping"></div>
                 <div className="absolute -bottom-1 -left-1 w-1.5 h-1.5 bg-cyan-300 rounded-full animate-ping" style={{animationDelay: '0.5s'}}></div>
               </div>
               
               {/* Animated orbital ring */}
-              <div className="absolute inset-0 rounded-2xl border-2 border-purple-400/30 opacity-0 group-hover:opacity-100 group-hover:scale-125 transition-all duration-700 animate-pulse"></div>
+              <div className="absolute inset-0 rounded-2xl border-2 border-purple-400/30 opacity-0 group-hover:opacity-100 group-hover:scale-125 transition-all duration-700 animate-rotate-slow"></div>
             </div>
             
             {/* Premium Brand Typography */}
