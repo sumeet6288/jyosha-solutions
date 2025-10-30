@@ -7,7 +7,7 @@ from models import (
     Integration, IntegrationCreate, IntegrationUpdate, IntegrationResponse,
     IntegrationLog, IntegrationLogResponse, TestConnectionRequest
 )
-from auth import get_current_user
+from auth import get_current_user, get_mock_user
 import httpx
 
 router = APIRouter(prefix="/api/integrations", tags=["integrations"])
