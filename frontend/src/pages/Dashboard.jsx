@@ -13,7 +13,7 @@ import Footer from '../components/Footer';
 const Dashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { user, logout, refreshUser} = useAuth();
+  const { user, logout, refreshUser } = useAuth();
   const [chatbots, setChatbots] = useState([]);
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,14 +23,6 @@ const Dashboard = () => {
   const [selectedPlanInfo, setSelectedPlanInfo] = useState(null);
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(new Date());
-  
-  // Dashboard graphs data
-  const [dashboardGraphs, setDashboardGraphs] = useState({
-    messagesTrend: [],
-    conversationsTrend: [],
-    chatbotActivity: [],
-    providerDistribution: []
-  });
 
   useEffect(() => {
     loadData();
