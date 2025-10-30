@@ -69,28 +69,32 @@ const Resources = () => {
       count: '4 articles', 
       color: 'from-purple-500 to-indigo-600',
       description: 'Learn the basics and create your first chatbot',
-      icon: '🚀'
+      icon: '🚀',
+      link: '/resources/getting-started'
     },
     { 
       title: 'User Guides', 
-      count: '5 articles', 
+      count: '7 articles', 
       color: 'from-blue-500 to-cyan-600',
       description: 'Master chatbot management and customization',
-      icon: '📚'
+      icon: '📚',
+      link: '/resources/user-guides'
     },
     { 
       title: 'Best Practices', 
       count: '15 articles', 
       color: 'from-pink-500 to-rose-600',
       description: 'Tips and tricks for optimal performance',
-      icon: '💡'
+      icon: '💡',
+      link: '/resources/best-practices'
     },
     { 
       title: 'Troubleshooting', 
       count: '20 articles', 
       color: 'from-green-500 to-emerald-600',
       description: 'Quick solutions to common issues',
-      icon: '🔧'
+      icon: '🔧',
+      link: '/resources/help-center'
     }
   ];
 
