@@ -10,7 +10,7 @@ from models import (
 from auth import get_current_user, get_mock_user
 import httpx
 
-router = APIRouter(prefix="/api/integrations", tags=["integrations"])
+router = APIRouter(prefix="/integrations", tags=["integrations"])
 
 # MongoDB connection
 MONGO_URL = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
