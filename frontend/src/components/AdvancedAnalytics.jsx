@@ -256,29 +256,29 @@ const AdvancedAnalytics = ({ chatbotId }) => {
 
       {/* Performance Metrics */}
       {performance && (
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <h4 className="text-lg font-semibold mb-4">Performance Metrics</h4>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 bg-purple-50 rounded-lg">
-              <p className="text-sm text-gray-600 mb-1">Fastest Response</p>
-              <p className="text-2xl font-bold text-purple-600">
+        <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
+          <h4 className="text-base sm:text-lg font-semibold mb-4">Performance Metrics</h4>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+            <div className="p-3 sm:p-4 bg-purple-50 rounded-lg">
+              <p className="text-xs sm:text-sm text-gray-600 mb-1">Fastest Response</p>
+              <p className="text-xl sm:text-2xl font-bold text-purple-600">
                 {(performance.fastest_response_ms / 1000).toFixed(2)}s
               </p>
             </div>
-            <div className="p-4 bg-pink-50 rounded-lg">
-              <p className="text-sm text-gray-600 mb-1">Average Response</p>
-              <p className="text-2xl font-bold text-pink-600">
+            <div className="p-3 sm:p-4 bg-pink-50 rounded-lg">
+              <p className="text-xs sm:text-sm text-gray-600 mb-1">Average Response</p>
+              <p className="text-xl sm:text-2xl font-bold text-pink-600">
                 {(performance.avg_response_time_ms / 1000).toFixed(2)}s
               </p>
             </div>
-            <div className="p-4 bg-indigo-50 rounded-lg">
-              <p className="text-sm text-gray-600 mb-1">Slowest Response</p>
-              <p className="text-2xl font-bold text-indigo-600">
+            <div className="p-3 sm:p-4 bg-indigo-50 rounded-lg">
+              <p className="text-xs sm:text-sm text-gray-600 mb-1">Slowest Response</p>
+              <p className="text-xl sm:text-2xl font-bold text-indigo-600">
                 {(performance.slowest_response_ms / 1000).toFixed(2)}s
               </p>
             </div>
           </div>
-          <p className="text-sm text-gray-500 mt-4 text-center">
+          <p className="text-xs sm:text-sm text-gray-500 mt-4 text-center">
             Total Responses: {performance.total_responses}
           </p>
         </div>
