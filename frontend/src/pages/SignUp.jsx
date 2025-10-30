@@ -191,22 +191,22 @@ const SignUp = () => {
       {/* Right Side - Enhanced Form */}
       <div className="w-full md:w-1/2 flex items-center justify-center p-4 sm:p-8 relative z-10">
         <div className="w-full max-w-lg transform scale-[0.95]">
-          {/* Premium Glass Card with entrance animation */}
+          {/* Premium Glass Card with entrance animation - CRISP & CLEAR */}
           <div className="relative group card-entrance">
-            {/* Animated glow effect */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 rounded-3xl opacity-20 group-hover:opacity-40 blur-2xl transition-all duration-700 animate-rainbow"></div>
+            {/* Animated glow effect - REDUCED BLUR */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 rounded-3xl opacity-10 group-hover:opacity-20 blur-lg transition-all duration-700 animate-rainbow"></div>
             
-            {/* Main card */}
-            <div className="relative bg-white/80 backdrop-blur-2xl rounded-3xl shadow-2xl p-6 border border-white/60 transform transition-all duration-500 hover:shadow-purple-500/30">
+            {/* Main card - CRISP WHITE BACKGROUND */}
+            <div className="relative bg-white rounded-3xl shadow-2xl p-6 border border-gray-200 transform transition-all duration-500 hover:shadow-purple-500/20">
               {/* Logo Section with enhanced animations */}
               <div className="flex items-center gap-2 mb-6 group/logo cursor-pointer animate-slide-in-top" onClick={() => navigate('/')}>
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl blur-lg opacity-50 group-hover/logo:opacity-80 transition-opacity duration-500 animate-neon-glow"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl blur-md opacity-30 group-hover/logo:opacity-50 transition-opacity duration-500 animate-neon-glow"></div>
                   
-                  <div className="relative w-11 h-11 bg-gradient-to-br from-purple-600 via-fuchsia-500 to-pink-600 rounded-xl flex items-center justify-center transform group-hover/logo:scale-110 group-hover/logo:rotate-12 transition-all duration-500 shadow-xl border-2 border-white/40">
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/50 to-transparent opacity-70"></div>
+                  <div className="relative w-11 h-11 bg-gradient-to-br from-purple-600 via-fuchsia-500 to-pink-600 rounded-xl flex items-center justify-center transform group-hover/logo:scale-110 group-hover/logo:rotate-12 transition-all duration-500 shadow-xl border-2 border-white/80">
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/40 to-transparent opacity-60"></div>
                     
-                    <Sparkles className="w-6 h-6 text-white relative z-10 drop-shadow-lg animate-heartbeat" />
+                    <Sparkles className="w-6 h-6 text-white relative z-10 drop-shadow-md animate-heartbeat" />
                   </div>
                 </div>
                 
