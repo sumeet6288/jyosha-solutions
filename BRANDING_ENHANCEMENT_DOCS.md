@@ -309,7 +309,7 @@ transition: 700ms
 
 ## 🚀 Live Preview
 
-**URL**: https://quick-installer-3.preview.emergentagent.com
+**URL**: https://deps-preview-2.preview.emergentagent.com
 
 ### Check these pages:
 - ✅ Dashboard (main nav)
