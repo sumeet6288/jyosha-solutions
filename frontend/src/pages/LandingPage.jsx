@@ -419,10 +419,10 @@ const LandingPage = () => {
       </section>
 
       {/* Features Section - Streamlined Premium */}
-      <section className="py-16 px-4 sm:px-8 relative z-10">
+      <section className="py-16 px-4 sm:px-8 relative z-10" ref={featuresRef}>
         <div className="max-w-6xl mx-auto relative z-10">
           {/* Header */}
-          <div className="text-center mb-12 animate-fade-in-up">
+          <div className={`text-center mb-12 transition-all duration-800 ${featuresVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
             <h2 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-purple-900 to-gray-900 bg-clip-text text-transparent">
               Build Smarter, Support Better, Grow Faster
             </h2>
@@ -431,13 +431,19 @@ const LandingPage = () => {
             </p>
           </div>
 
-          {/* Feature Cards with Glassmorphism */}
+          {/* Feature Cards with Glassmorphism and Scroll Animation */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
               <div 
                 key={index} 
-                className="group relative animate-fade-in-up transform-3d"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className={`group relative transform-3d transition-all duration-700 ${
+                  featuresVisible 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-16'
+                }`}
+                style={{ 
+                  transitionDelay: featuresVisible ? `${index * 100}ms` : '0ms'
+                }}
               >
                 {/* Animated Glow on Hover */}
                 <div className="absolute -inset-px bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg transition-opacity duration-500 animate-gradient-x"></div>
