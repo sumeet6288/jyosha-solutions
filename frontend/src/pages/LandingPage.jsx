@@ -502,40 +502,55 @@ const LandingPage = () => {
             </p>
           </div>
 
-          {/* Steps */}
+          {/* Steps with Premium Glassmorphism */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {howItWorksSteps.map((step, index) => (
               <div 
                 key={index}
-                className="relative group animate-fade-in-up"
+                className="relative group animate-slide-in-bottom transform-3d"
                 style={{ animationDelay: `${index * 150}ms` }}
               >
-                {/* Connecting Arrow (hidden on last item and mobile) */}
+                {/* Connecting Arrow with glow (hidden on last item and mobile) */}
                 {index < howItWorksSteps.length - 1 && (
-                  <div className="hidden lg:block absolute top-16 -right-4 z-0">
-                    <ArrowRight className="w-8 h-8 text-purple-300 group-hover:text-purple-500 transition-colors" />
+                  <div className="hidden lg:block absolute top-16 -right-4 z-10">
+                    <div className="relative">
+                      <div className="absolute inset-0 blur-md bg-purple-500/50 rounded-full"></div>
+                      <ArrowRight className="relative w-8 h-8 text-purple-400 group-hover:text-purple-600 transition-colors animate-bounce-subtle" />
+                    </div>
                   </div>
                 )}
 
-                {/* Card */}
-                <div className="relative bg-white rounded-2xl border-2 border-purple-200 p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-purple-400 hover:translate-y-[-4px]">
-                  {/* Step Number */}
-                  <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                    {step.step}
+                {/* Card with Advanced Glassmorphism */}
+                <div className="relative glass-strong rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500 hover:translate-y-[-8px] hover-3d overflow-hidden group">
+                  {/* Animated gradient background */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-gradient-xy"></div>
+                  
+                  {/* Glowing border effect */}
+                  <div className="absolute -inset-[1px] bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-2xl opacity-20 group-hover:opacity-40 blur-sm transition-opacity duration-500 animate-gradient-x"></div>
+                  
+                  {/* Step Number with 3D effect */}
+                  <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-2xl transform group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 z-10 animate-gradient-xy">
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/30 to-transparent"></div>
+                    <span className="relative z-10">{step.step}</span>
                   </div>
 
-                  {/* Icon */}
-                  <div className={`w-16 h-16 bg-gradient-to-br ${step.gradient} rounded-xl flex items-center justify-center text-white mb-4 mt-2 transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-md`}>
-                    {step.icon}
+                  {/* Icon with enhanced animation */}
+                  <div className={`relative w-16 h-16 bg-gradient-to-br ${step.gradient} rounded-xl flex items-center justify-center text-white mb-4 mt-2 transform group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 shadow-xl z-10 animate-glow-pulse`}>
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/40 to-transparent"></div>
+                    <div className="relative z-10 transform group-hover:scale-110 transition-transform">{step.icon}</div>
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-xl font-bold mb-2 text-gray-900">
+                  <h3 className="relative text-xl font-bold mb-2 text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300 z-10">
                     {step.title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed text-sm">
+                  <p className="relative text-gray-600 leading-relaxed text-sm z-10">
                     {step.description}
                   </p>
+                  
+                  {/* Floating particles in card */}
+                  <div className="absolute top-2 right-2 w-2 h-2 bg-purple-400 rounded-full opacity-50 group-hover:opacity-100 animate-bounce-rotate"></div>
+                  <div className="absolute bottom-4 left-4 w-1.5 h-1.5 bg-pink-400 rounded-full opacity-50 group-hover:opacity-100 animate-bounce-rotate animation-delay-1000"></div>
                 </div>
               </div>
             ))}
