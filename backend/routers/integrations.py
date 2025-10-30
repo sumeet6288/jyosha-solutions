@@ -14,8 +14,9 @@ router = APIRouter(prefix="/api/integrations", tags=["integrations"])
 
 # MongoDB connection
 MONGO_URL = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
+DB_NAME = os.environ.get('DB_NAME', 'chatbase_db')
 client = AsyncIOMotorClient(MONGO_URL)
-db = client.chatbot_db
+db = client[DB_NAME]
 
 
 async def log_integration_event(
