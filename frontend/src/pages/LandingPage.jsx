@@ -590,10 +590,10 @@ const LandingPage = () => {
       </section>
 
       {/* Use Cases Section */}
-      <section className="py-20 px-4 sm:px-8 relative z-10 bg-white">
+      <section className="py-20 px-4 sm:px-8 relative z-10 bg-white" ref={useCasesRef}>
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-16 animate-fade-in-up">
+          <div className={`text-center mb-16 transition-all duration-800 ${useCasesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
             <span className="px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-medium inline-flex items-center gap-2 mb-4">
               <Award className="w-4 h-4" />
               Trusted Across Industries
@@ -606,13 +606,19 @@ const LandingPage = () => {
             </p>
           </div>
 
-          {/* Use Case Cards with Glassmorphism */}
+          {/* Use Case Cards with Glassmorphism and Scroll Animation */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {useCases.map((useCase, index) => (
               <div 
                 key={index}
-                className="group relative animate-fade-in-up transform-3d"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className={`group relative transform-3d transition-all duration-800 ${
+                  useCasesVisible 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-20'
+                }`}
+                style={{ 
+                  transitionDelay: useCasesVisible ? `${index * 100}ms` : '0ms'
+                }}
               >
                 {/* Animated Glow Effect */}
                 <div className="absolute -inset-px bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-lg transition-opacity duration-500 animate-gradient-x"></div>
