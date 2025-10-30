@@ -132,7 +132,7 @@ async def test_integration_connection(integration_type: str, credentials: dict) 
 
 
 @router.get("/{chatbot_id}", response_model=List[IntegrationResponse])
-async def get_integrations(chatbot_id: str, current_user: dict = Depends(get_current_user)):
+async def get_integrations(chatbot_id: str, current_user: dict = Depends(get_mock_user)):
     """Get all integrations for a chatbot"""
     try:
         # Verify chatbot belongs to user
