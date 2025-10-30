@@ -585,7 +585,7 @@ const LandingPage = () => {
           <div className="text-center mt-12 animate-fade-in-up">
             <Button 
               className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-6 text-lg rounded-xl shadow-xl transform hover:scale-105 transition-all duration-300 group"
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/signup')}
             >
               Start Building Now
               <Rocket className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
