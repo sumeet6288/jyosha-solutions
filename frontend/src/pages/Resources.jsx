@@ -162,6 +162,7 @@ const Resources = () => {
             {categories.map((category, index) => (
               <div 
                 key={index}
+                onClick={() => navigate(category.link)}
                 className={`group p-6 bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 hover:border-purple-400 hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-300 transform hover:-translate-y-2 cursor-pointer ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
                 style={{ animationDelay: `${index * 100}ms`, transitionDelay: `${300 + index * 100}ms` }}
               >
