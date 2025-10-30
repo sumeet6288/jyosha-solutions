@@ -61,6 +61,122 @@ const LandingPage = () => {
     }
   ];
 
+  const howItWorksSteps = [
+    {
+      step: '01',
+      icon: <Upload className="w-8 h-8" />,
+      title: 'Connect Your Data',
+      description: 'Upload documents, add websites, or paste text content. Support for PDF, DOCX, TXT, and more.',
+      gradient: 'from-blue-500 to-cyan-500'
+    },
+    {
+      step: '02',
+      icon: <Brain className="w-8 h-8" />,
+      title: 'Train Your AI',
+      description: 'Our intelligent system automatically processes and learns from your content using advanced RAG technology.',
+      gradient: 'from-purple-500 to-pink-500'
+    },
+    {
+      step: '03',
+      icon: <Palette className="w-8 h-8" />,
+      title: 'Customize & Brand',
+      description: 'Choose colors, upload your logo, set personality, and configure widget appearance to match your brand.',
+      gradient: 'from-orange-500 to-rose-500'
+    },
+    {
+      step: '04',
+      icon: <Rocket className="w-8 h-8" />,
+      title: 'Deploy Anywhere',
+      description: 'Get embed code for your website or share a public chat link. Go live in minutes, not weeks.',
+      gradient: 'from-green-500 to-emerald-500'
+    }
+  ];
+
+  const useCases = [
+    {
+      icon: <ShoppingCart className="w-8 h-8" />,
+      title: 'E-commerce Support',
+      description: 'Handle orders, track shipments, and manage returns 24/7',
+      stats: '3x faster resolution',
+      gradient: 'from-blue-500 to-cyan-500'
+    },
+    {
+      icon: <Briefcase className="w-8 h-8" />,
+      title: 'SaaS Onboarding',
+      description: 'Guide new users through features and answer product questions',
+      stats: '60% less support tickets',
+      gradient: 'from-purple-500 to-pink-500'
+    },
+    {
+      icon: <Heart className="w-8 h-8" />,
+      title: 'Healthcare FAQ',
+      description: 'Answer patient questions about services, hours, and procedures',
+      stats: '85% satisfaction rate',
+      gradient: 'from-rose-500 to-red-500'
+    },
+    {
+      icon: <GraduationCap className="w-8 h-8" />,
+      title: 'Education Assistant',
+      description: 'Help students with course materials, assignments, and schedules',
+      stats: '24/7 availability',
+      gradient: 'from-green-500 to-emerald-500'
+    }
+  ];
+
+  const differentiators = [
+    {
+      icon: <Users className="w-8 h-8" />,
+      title: 'Multi-AI Provider',
+      description: 'Choose from GPT-4o, Claude 3.5 Sonnet, or Gemini 2.0 Flash for your chatbot',
+      gradient: 'from-purple-600 to-pink-600'
+    },
+    {
+      icon: <Brain className="w-8 h-8" />,
+      title: 'Knowledge Base RAG',
+      description: 'AI answers from YOUR data, not generic training. Accurate and contextual responses',
+      gradient: 'from-blue-600 to-cyan-600'
+    },
+    {
+      icon: <Sparkles className="w-8 h-8" />,
+      title: 'No-Code Builder',
+      description: 'Beautiful drag-and-drop interface. Zero coding required, maximum customization',
+      gradient: 'from-orange-600 to-rose-600'
+    },
+    {
+      icon: <TrendingUp className="w-8 h-8" />,
+      title: 'Real-Time Analytics',
+      description: 'Track conversations, satisfaction scores, peak hours, and response times instantly',
+      gradient: 'from-green-600 to-emerald-600'
+    }
+  ];
+
+  const testimonials = [
+    {
+      name: 'Sarah Chen',
+      role: 'CEO, TechFlow',
+      avatar: '👩‍💼',
+      rating: 5,
+      text: 'BotSmith reduced our support tickets by 60% in the first month. The AI understands our products perfectly!',
+      company: 'SaaS Company'
+    },
+    {
+      name: 'Michael Rodriguez',
+      role: 'Customer Success Manager',
+      avatar: '👨‍💻',
+      rating: 5,
+      text: 'The multi-provider AI support is game-changing. We can switch between GPT-4 and Claude based on our needs.',
+      company: 'E-commerce Platform'
+    },
+    {
+      name: 'Emily Watson',
+      role: 'Operations Director',
+      avatar: '👩‍🔬',
+      rating: 5,
+      text: 'Setup took 15 minutes. Our patients love the instant responses. This is the future of healthcare communication.',
+      company: 'Healthcare Provider'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50 overflow-hidden relative">
       {/* Optimized Animated background elements with GPU acceleration */}
