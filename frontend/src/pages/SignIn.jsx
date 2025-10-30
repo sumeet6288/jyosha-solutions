@@ -340,11 +340,11 @@ const SignIn = () => {
           </div>
 
           {/* Footer */}
-          <div className="mt-8 text-center animate-fade-in">
-            <p className="text-sm text-gray-500 font-body">
+          <div className="mt-6 sm:mt-8 text-center animate-fade-in">
+            <p className="text-xs sm:text-sm text-gray-500 font-body">
               © 2025 BotSmith. All rights reserved.
             </p>
-            <p className="text-sm text-gray-600 font-body mt-1">
+            <p className="text-xs sm:text-sm text-gray-600 font-body mt-1">
               Made with <span className="text-red-500 animate-heartbeat inline-block">❤️</span> for better conversations.
             </p>
           </div>
