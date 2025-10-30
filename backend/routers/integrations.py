@@ -172,7 +172,7 @@ async def get_integrations(chatbot_id: str, current_user: dict = Depends(get_moc
 async def create_or_update_integration(
     chatbot_id: str,
     integration_data: IntegrationCreate,
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_mock_user)
 ):
     """Create or update an integration"""
     try:
@@ -263,7 +263,7 @@ async def create_or_update_integration(
 async def toggle_integration(
     chatbot_id: str,
     integration_id: str,
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_mock_user)
 ):
     """Enable or disable an integration"""
     try:
@@ -311,7 +311,7 @@ async def toggle_integration(
 async def test_integration(
     chatbot_id: str,
     integration_id: str,
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_mock_user)
 ):
     """Test an integration connection"""
     try:
@@ -375,7 +375,7 @@ async def test_integration(
 async def delete_integration(
     chatbot_id: str,
     integration_id: str,
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_mock_user)
 ):
     """Delete an integration"""
     try:
@@ -418,7 +418,7 @@ async def delete_integration(
 async def get_integration_logs(
     chatbot_id: str,
     limit: int = 50,
-    current_user: dict = Depends(get_current_user)
+    current_user: dict = Depends(get_mock_user)
 ):
     """Get integration activity logs"""
     try:
