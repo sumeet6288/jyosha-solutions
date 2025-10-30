@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '../components/ui/button';
+import { Button } from '../../components/ui/button';
 import { ArrowLeft, Lightbulb, Target, MessageSquare, TrendingUp, Shield, Zap } from 'lucide-react';
 
 const BestPractices = () => {
