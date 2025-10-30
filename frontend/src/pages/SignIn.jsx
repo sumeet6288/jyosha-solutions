@@ -238,7 +238,7 @@ const SignIn = () => {
                 </Button>
 
                 {/* Divider */}
-                <div className="relative my-5 animate-fade-in-scale stagger-6">
+                <div className="relative my-4 sm:my-5 animate-fade-in-scale stagger-6">
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t-2 border-gray-200"></div>
                   </div>
