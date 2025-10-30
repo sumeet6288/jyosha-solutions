@@ -309,7 +309,7 @@ transition: 700ms
 
 ## 🚀 Live Preview
 
-**URL**: https://deps-visualize.preview.emergentagent.com
+**URL**: https://install-preview-2.preview.emergentagent.com
 
 ### Check these pages:
 - ✅ Dashboard (main nav)
