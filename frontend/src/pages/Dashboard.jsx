@@ -172,8 +172,8 @@ const Dashboard = () => {
           <div className="absolute inset-0 w-24 h-24 border-4 border-transparent border-t-pink-600 rounded-full animate-spin animation-delay-300" style={{ animationDuration: '1.2s' }}></div>
           {/* Inner pulsing circle */}
           <div className="absolute inset-0 m-auto w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full animate-pulse"></div>
-          {/* Glow effect */}
-          <div className="absolute inset-0 m-auto w-20 h-20 bg-purple-400 rounded-full blur-xl opacity-30 animate-pulse"></div>
+          {/* Glow effect - REDUCED BLUR */}
+          <div className="absolute inset-0 m-auto w-20 h-20 bg-purple-400 rounded-full blur-md opacity-20 animate-pulse"></div>
         </div>
         <p className="absolute mt-32 text-lg font-semibold text-gray-700 animate-pulse">Loading your dashboard...</p>
       </div>
