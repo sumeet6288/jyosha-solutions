@@ -136,7 +136,7 @@ async def get_integrations(chatbot_id: str, current_user: dict = Depends(get_moc
     """Get all integrations for a chatbot"""
     try:
         # Verify chatbot belongs to user
-        chatbot = await db.chatbots.find_one({"id": chatbot_id, "user_id": current_user["id"]})
+        chatbot = await db.chatbots.find_one({"id": chatbot_id, "user_id": current_user.id})
         if not chatbot:
             raise HTTPException(status_code=404, detail="Chatbot not found")
         
@@ -177,7 +177,7 @@ async def create_or_update_integration(
     """Create or update an integration"""
     try:
         # Verify chatbot belongs to user
-        chatbot = await db.chatbots.find_one({"id": chatbot_id, "user_id": current_user["id"]})
+        chatbot = await db.chatbots.find_one({"id": chatbot_id, "user_id": current_user.id})
         if not chatbot:
             raise HTTPException(status_code=404, detail="Chatbot not found")
         
@@ -268,7 +268,7 @@ async def toggle_integration(
     """Enable or disable an integration"""
     try:
         # Verify chatbot belongs to user
-        chatbot = await db.chatbots.find_one({"id": chatbot_id, "user_id": current_user["id"]})
+        chatbot = await db.chatbots.find_one({"id": chatbot_id, "user_id": current_user.id})
         if not chatbot:
             raise HTTPException(status_code=404, detail="Chatbot not found")
         
@@ -316,7 +316,7 @@ async def test_integration(
     """Test an integration connection"""
     try:
         # Verify chatbot belongs to user
-        chatbot = await db.chatbots.find_one({"id": chatbot_id, "user_id": current_user["id"]})
+        chatbot = await db.chatbots.find_one({"id": chatbot_id, "user_id": current_user.id})
         if not chatbot:
             raise HTTPException(status_code=404, detail="Chatbot not found")
         
@@ -380,7 +380,7 @@ async def delete_integration(
     """Delete an integration"""
     try:
         # Verify chatbot belongs to user
-        chatbot = await db.chatbots.find_one({"id": chatbot_id, "user_id": current_user["id"]})
+        chatbot = await db.chatbots.find_one({"id": chatbot_id, "user_id": current_user.id})
         if not chatbot:
             raise HTTPException(status_code=404, detail="Chatbot not found")
         
@@ -423,7 +423,7 @@ async def get_integration_logs(
     """Get integration activity logs"""
     try:
         # Verify chatbot belongs to user
-        chatbot = await db.chatbots.find_one({"id": chatbot_id, "user_id": current_user["id"]})
+        chatbot = await db.chatbots.find_one({"id": chatbot_id, "user_id": current_user.id})
         if not chatbot:
             raise HTTPException(status_code=404, detail="Chatbot not found")
         
