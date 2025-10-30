@@ -2,6 +2,34 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+/* Global Performance & Smooth Scroll Optimizations */
+* {
+  scroll-behavior: smooth;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  scroll-behavior: smooth;
+}
+
+/* Hardware acceleration for animations */
+.animate-scroll-slide-up,
+.animate-scroll-slide-up-bounce,
+.animate-scroll-fade-in-scale,
+.animate-scroll-slide-left,
+.animate-scroll-slide-right,
+.card-entrance {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
