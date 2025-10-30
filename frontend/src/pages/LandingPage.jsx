@@ -371,7 +371,7 @@ const LandingPage = () => {
             
             {/* Main card with enhanced styling and performance optimization - Now fully clickable */}
             <div 
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/signup')}
               className="relative w-full h-[500px] rounded-3xl bg-gradient-to-br from-pink-400 via-purple-400 to-orange-400 p-8 flex items-center justify-center transform hover:scale-105 transition-transform duration-500 shadow-2xl cursor-pointer" 
               style={{ transform: 'translateZ(0)', willChange: 'transform' }}
             >
