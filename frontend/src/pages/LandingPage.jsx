@@ -656,23 +656,30 @@ const LandingPage = () => {
             </p>
           </div>
 
-          {/* Differentiator Cards */}
+          {/* Differentiator Cards with Advanced Effects */}
           <div className="grid md:grid-cols-2 gap-8">
             {differentiators.map((item, index) => (
               <div 
                 key={index}
-                className="group relative animate-fade-in-up"
+                className="group relative animate-fade-in-up transform-3d"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                {/* Animated Border Gradient */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 rounded-2xl opacity-20 group-hover:opacity-100 blur-sm group-hover:blur-md transition-all duration-500 animate-gradient-x"></div>
+                {/* Animated Border Gradient with stronger effect */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 rounded-2xl opacity-30 group-hover:opacity-100 blur-md transition-all duration-500 animate-gradient-x"></div>
                 
-                {/* Card */}
-                <div className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100">
-                  <div className="flex items-start gap-4">
-                    {/* Icon */}
-                    <div className={`flex-shrink-0 w-16 h-16 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center text-white transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg`}>
-                      {item.icon}
+                {/* Card with Premium Glassmorphism */}
+                <div className="relative glass-strong rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:translate-y-[-8px] hover-3d overflow-hidden">
+                  {/* Animated background pattern */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-gradient-xy"></div>
+                  
+                  {/* Glowing grid pattern */}
+                  <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.1)_1px,transparent_1px)] bg-[size:20px_20px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  <div className="relative flex items-start gap-4 z-10">
+                    {/* Icon with 3D effect */}
+                    <div className={`flex-shrink-0 w-16 h-16 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center text-white transform group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 shadow-2xl animate-glow-pulse`}>
+                      <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/40 to-transparent"></div>
+                      <div className="relative z-10 transform group-hover:scale-110 transition-transform">{item.icon}</div>
                     </div>
 
                     {/* Content */}
@@ -680,17 +687,21 @@ const LandingPage = () => {
                       <h3 className="text-2xl font-bold mb-3 text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300">
                         {item.title}
                       </h3>
-                      <p className="text-gray-600 leading-relaxed">
+                      <p className="text-gray-600 leading-relaxed mb-4">
                         {item.description}
                       </p>
                       
-                      {/* Check Icon */}
-                      <div className="mt-4 flex items-center gap-2 text-green-600">
-                        <Check className="w-5 h-5" />
+                      {/* Check Icon with glassmorphism */}
+                      <div className="flex items-center gap-2 glass text-green-600 px-3 py-1.5 rounded-full inline-flex group-hover:scale-105 transition-transform">
+                        <Check className="w-5 h-5 animate-bounce-subtle" />
                         <span className="text-sm font-semibold">Available Now</span>
                       </div>
                     </div>
                   </div>
+                  
+                  {/* Decorative floating elements */}
+                  <div className="absolute top-4 right-4 w-3 h-3 bg-purple-400 rounded-full opacity-50 group-hover:opacity-100 animate-float-rotate"></div>
+                  <div className="absolute bottom-6 right-8 w-2 h-2 bg-pink-400 rounded-full opacity-50 group-hover:opacity-100 animate-float-rotate animation-delay-1000"></div>
                 </div>
               </div>
             ))}
