@@ -138,7 +138,7 @@ const SignIn = () => {
                 <p className="text-gray-600 text-sm sm:text-base font-body animate-slide-in-left stagger-1">Sign in to continue your journey with AI</p>
               </div>
               
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                 {/* Email Input with enhanced animations */}
                 <div className="group/input animate-fade-in-scale stagger-2">
                   <Label htmlFor="email" className="text-gray-700 font-semibold mb-1.5 flex items-center gap-1.5 font-heading text-sm">
