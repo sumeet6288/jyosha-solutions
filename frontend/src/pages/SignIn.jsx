@@ -39,11 +39,18 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white flex">
+    <div className="min-h-screen bg-white flex relative overflow-hidden">
+      {/* Animated background blobs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute w-96 h-96 bg-gradient-to-br from-purple-300/30 to-pink-300/30 rounded-full blur-3xl animate-blob top-0 -left-20"></div>
+        <div className="absolute w-96 h-96 bg-gradient-to-br from-blue-300/20 to-cyan-300/20 rounded-full blur-3xl animate-blob animation-delay-2000 top-20 right-0"></div>
+        <div className="absolute w-96 h-96 bg-gradient-to-br from-pink-300/25 to-orange-300/25 rounded-full blur-3xl animate-blob animation-delay-4000 bottom-0 left-1/3"></div>
+      </div>
+
       {/* Left Side - Form */}
-      <div className="w-full md:w-1/2 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
-          <div className="flex items-center gap-3 mb-8 group">
+      <div className="w-full md:w-1/2 flex items-center justify-center p-4 sm:p-8 relative z-10">
+        <div className="w-full max-w-md bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-purple-100">
+          <div className="flex items-center gap-3 mb-8 group cursor-pointer" onClick={() => navigate('/')}>
             {/* Premium 3D Logo - Compact Version */}
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
@@ -71,7 +78,7 @@ const SignIn = () => {
             </div>
           </div>
           
-          <h1 className="text-3xl font-bold mb-2">Welcome back</h1>
+          <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-purple-700 to-pink-600 bg-clip-text text-transparent">Welcome back</h1>
           <p className="text-gray-600 mb-8">Sign in to your account to continue</p>
           
           <form onSubmit={handleSubmit} className="space-y-6">
