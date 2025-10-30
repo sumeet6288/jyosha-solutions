@@ -119,23 +119,23 @@ const SignUp = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 flex relative overflow-hidden">
-      {/* Enhanced Animated background with parallax */}
+      {/* Enhanced Animated background with parallax - REDUCED BLUR */}
       <div 
         className="absolute inset-0 overflow-hidden pointer-events-none"
         style={{
           transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`
         }}
       >
-        {/* Large gradient blobs with morph animation */}
-        <div className="absolute w-[700px] h-[700px] bg-gradient-to-br from-orange-400/30 to-pink-400/30 rounded-full blur-3xl animate-blob animate-morph top-0 -right-40"></div>
-        <div className="absolute w-[600px] h-[600px] bg-gradient-to-br from-purple-400/25 to-cyan-400/20 rounded-full blur-3xl animate-blob animation-delay-2000 animate-morph top-32 -left-32"></div>
-        <div className="absolute w-[650px] h-[650px] bg-gradient-to-br from-pink-400/25 to-purple-400/30 rounded-full blur-3xl animate-blob animation-delay-4000 animate-morph -bottom-40 right-1/4"></div>
+        {/* Large gradient blobs with morph animation - REDUCED BLUR */}
+        <div className="absolute w-[700px] h-[700px] bg-gradient-to-br from-orange-400/20 to-pink-400/20 rounded-full blur-xl animate-blob animate-morph top-0 -right-40"></div>
+        <div className="absolute w-[600px] h-[600px] bg-gradient-to-br from-purple-400/18 to-cyan-400/15 rounded-full blur-xl animate-blob animation-delay-2000 animate-morph top-32 -left-32"></div>
+        <div className="absolute w-[650px] h-[650px] bg-gradient-to-br from-pink-400/18 to-purple-400/20 rounded-full blur-xl animate-blob animation-delay-4000 animate-morph -bottom-40 right-1/4"></div>
         
         {/* Floating particles with enhanced animations */}
         {particles.map((particle) => (
           <div
             key={particle.id}
-            className="absolute bg-white/40 rounded-full animate-float-up-down"
+            className="absolute bg-white/30 rounded-full animate-float-up-down"
             style={{
               left: `${particle.left}%`,
               bottom: '-20px',
