@@ -820,8 +820,12 @@ const LandingPage = () => {
             ))}
           </div>
 
-          {/* Bottom Stats */}
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center animate-fade-in-up">
+          {/* Bottom Stats with Scroll Animation */}
+          <div className={`mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center transition-all duration-800 ${
+            testimonialsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+          }`}
+          style={{ transitionDelay: testimonialsVisible ? '500ms' : '0ms' }}
+          >
             <div>
               <div className="text-4xl font-bold text-transparent bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text mb-2">9000+</div>
               <div className="text-gray-600 font-medium">Happy Customers</div>
