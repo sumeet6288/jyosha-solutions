@@ -183,8 +183,25 @@ const SubscriptionNew = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white p-4 sm:p-6 animate-fade-in">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50 overflow-hidden relative p-4 sm:p-6 animate-fade-in">
+      {/* Advanced Animated background matching Pricing Page */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0" style={{ willChange: 'transform' }}>
+        {/* Main gradient blobs */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-15 animate-blob" style={{ transform: 'translateZ(0)' }}></div>
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-15 animate-blob animation-delay-2000" style={{ transform: 'translateZ(0)' }}></div>
+        <div className="absolute -bottom-32 left-1/3 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-15 animate-blob animation-delay-4000" style={{ transform: 'translateZ(0)' }}></div>
+        
+        {/* Secondary animated layers */}
+        <div className="absolute top-1/4 right-1/3 w-64 h-64 bg-cyan-200 rounded-full mix-blend-multiply filter blur-xl opacity-12 animate-blob animation-delay-1000" style={{ transform: 'translateZ(0)' }}></div>
+        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-rose-200 rounded-full mix-blend-multiply filter blur-xl opacity-12 animate-blob animation-delay-3000" style={{ transform: 'translateZ(0)' }}></div>
+        
+        {/* Geometric floating shapes */}
+        <div className="absolute top-20 right-20 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-3xl rotate-45 animate-float-rotate blur-sm"></div>
+        <div className="absolute bottom-40 left-32 w-24 h-24 bg-gradient-to-br from-blue-400/20 to-cyan-400/20 rounded-2xl rotate-12 animate-float-rotate animation-delay-2000 blur-sm"></div>
+        <div className="absolute top-1/2 right-1/4 w-40 h-40 bg-gradient-to-br from-orange-400/15 to-rose-400/15 rounded-full animate-float animation-delay-1000 blur-md"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Back to Dashboard Button */}
         <div className="mb-4">
           <button
