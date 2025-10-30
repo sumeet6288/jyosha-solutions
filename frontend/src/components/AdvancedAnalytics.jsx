@@ -215,7 +215,7 @@ const AdvancedAnalytics = ({ chatbotId }) => {
           <h4 className="text-base sm:text-lg font-semibold mb-4">Satisfaction Distribution</h4>
           {satisfaction && satisfactionPieData.length > 0 ? (
             <>
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={250}>
                 <PieChart>
                   <Pie
                     data={satisfactionPieData}
@@ -223,19 +223,20 @@ const AdvancedAnalytics = ({ chatbotId }) => {
                     cy="50%"
                     labelLine={false}
                     label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                    outerRadius={100}
+                    outerRadius={80}
                     fill="#8884d8"
                     dataKey="value"
+                    style={{ fontSize: '11px' }}
                   >
                     {satisfactionPieData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip contentStyle={{ fontSize: '12px' }} />
                 </PieChart>
               </ResponsiveContainer>
               <div className="mt-4 text-center">
-                <p className="text-sm text-gray-600">
+                <p className="text-xs sm:text-sm text-gray-600">
                   Average Rating: <span className="font-bold text-purple-600">{satisfaction.average_rating.toFixed(1)}/5.0</span>
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
@@ -244,10 +245,10 @@ const AdvancedAnalytics = ({ chatbotId }) => {
               </div>
             </>
           ) : (
-            <div className="flex flex-col items-center justify-center h-[300px] text-gray-400">
-              <Star className="w-16 h-16 mb-4 opacity-30" />
-              <p className="text-lg font-medium">No ratings yet</p>
-              <p className="text-sm mt-2">User satisfaction ratings will be displayed here</p>
+            <div className="flex flex-col items-center justify-center h-[250px] text-gray-400">
+              <Star className="w-12 h-12 sm:w-16 sm:h-16 mb-4 opacity-30" />
+              <p className="text-base sm:text-lg font-medium">No ratings yet</p>
+              <p className="text-xs sm:text-sm mt-2 text-center px-4">User satisfaction ratings will be displayed here</p>
             </div>
           )}
         </div>
