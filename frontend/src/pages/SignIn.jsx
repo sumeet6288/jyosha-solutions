@@ -20,6 +20,18 @@ const SignIn = () => {
   const [focusedField, setFocusedField] = useState('');
   const [particles, setParticles] = useState([]);
 
+  // Generate floating particles
+  useEffect(() => {
+    const newParticles = Array.from({ length: 20 }, (_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      animationDuration: 15 + Math.random() * 20,
+      animationDelay: Math.random() * 10,
+      size: 4 + Math.random() * 8
+    }));
+    setParticles(newParticles);
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
