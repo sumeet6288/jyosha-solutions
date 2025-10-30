@@ -742,10 +742,10 @@ const LandingPage = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 px-4 sm:px-8 bg-white relative z-10">
+      <section className="py-20 px-4 sm:px-8 bg-white relative z-10" ref={testimonialsRef}>
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-16 animate-fade-in-up">
+          <div className={`text-center mb-16 transition-all duration-800 ${testimonialsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
             <span className="px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 text-sm font-medium inline-flex items-center gap-2 mb-4">
               <Star className="w-4 h-4 fill-yellow-700" />
               Loved by Teams Worldwide
@@ -758,13 +758,19 @@ const LandingPage = () => {
             </p>
           </div>
 
-          {/* Testimonial Cards with Glassmorphism */}
+          {/* Testimonial Cards with Glassmorphism and Scroll Animation */}
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <div 
                 key={index}
-                className="group relative animate-fade-in-up transform-3d"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className={`group relative transform-3d transition-all duration-800 ${
+                  testimonialsVisible 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-20'
+                }`}
+                style={{ 
+                  transitionDelay: testimonialsVisible ? `${index * 150}ms` : '0ms'
+                }}
               >
                 {/* Animated glow border */}
                 <div className="absolute -inset-[2px] bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-100 blur-sm transition-all duration-500 animate-gradient-x"></div>
