@@ -9,7 +9,6 @@ import { useAuth } from '../contexts/AuthContext';
 import { chatbotAPI, analyticsAPI, plansAPI } from '../utils/api';
 import UpgradeModal from '../components/UpgradeModal';
 import Footer from '../components/Footer';
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const Dashboard = () => {
   const navigate = useNavigate();
