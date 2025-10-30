@@ -228,8 +228,8 @@ const LandingPage = () => {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.03)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_80%)]"></div>
       </div>
 
-      {/* Navigation with Glassmorphism */}
-      <nav className="fixed top-0 left-0 right-0 glass-strong backdrop-blur-xl border-b border-white/30 z-50 shadow-lg shadow-purple-500/10">
+      {/* Navigation with Glassmorphism - Highest z-index */}
+      <nav className="fixed top-0 left-0 right-0 glass-strong backdrop-blur-xl border-b border-white/30 z-[100] shadow-lg shadow-purple-500/10">
         <div className="max-w-[95%] mx-auto px-4 sm:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate('/')}>
             {/* Premium 3D Logo with glow animation */}
