@@ -425,7 +425,7 @@ const LandingPage = () => {
 
         <div className="max-w-6xl mx-auto relative z-10">
           {/* Header */}
-          <div className={`text-center mb-16 transition-all duration-800 ${howItWorksVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          <div className={`text-center mb-16 `}>
             <span className="px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-sm font-medium inline-flex items-center gap-2 mb-4">
               <Clock className="w-4 h-4" />
               Launch in Minutes
@@ -515,7 +515,7 @@ const LandingPage = () => {
       <section className="py-20 px-4 sm:px-8 relative z-10 bg-white" ref={useCasesRef}>
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className={`text-center mb-16 transition-all duration-800 ${useCasesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          <div className={`text-center mb-16 `}>
             <span className="px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-medium inline-flex items-center gap-2 mb-4">
               <Award className="w-4 h-4" />
               Trusted Across Industries
@@ -591,7 +591,7 @@ const LandingPage = () => {
 
         <div className="max-w-6xl mx-auto relative z-10">
           {/* Header */}
-          <div className={`text-center mb-16 transition-all duration-800 ${differentiatorsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          <div className={`text-center mb-16 `}>
             <span className="px-4 py-2 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 text-sm font-medium inline-flex items-center gap-2 mb-4">
               <Sparkles className="w-4 h-4" />
               Why Choose BotSmith
@@ -667,7 +667,7 @@ const LandingPage = () => {
       <section className="py-20 px-4 sm:px-8 bg-white relative z-10" ref={testimonialsRef}>
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className={`text-center mb-16 transition-all duration-800 ${testimonialsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          <div className={`text-center mb-16 `}>
             <span className="px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 text-sm font-medium inline-flex items-center gap-2 mb-4">
               <Star className="w-4 h-4 fill-yellow-700" />
               Loved by Teams Worldwide
