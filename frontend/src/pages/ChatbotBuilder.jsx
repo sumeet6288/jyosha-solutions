@@ -536,7 +536,7 @@ const ChatbotBuilder = () => {
   };
 </script>
 <script
-  src="${window.location.origin}/widget.js"
+  src="${window.location.origin}/fast-widget.js"
   chatbot-id="${chatbot.id}"
   domain="${window.location.origin}"
   defer>
@@ -556,7 +556,7 @@ const ChatbotBuilder = () => {
   };
 </script>
 <script
-  src="${window.location.origin}/widget.js"
+  src="${window.location.origin}/fast-widget.js"
   chatbot-id="${chatbot.id}"
   domain="${window.location.origin}"
   defer>
