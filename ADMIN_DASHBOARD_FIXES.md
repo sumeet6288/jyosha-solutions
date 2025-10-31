@@ -322,7 +322,7 @@ if db_instance is not None:
 
 ## Access Information
 
-**Admin Dashboard URL:** https://preview-deps-1.preview.emergentagent.com/admin
+**Admin Dashboard URL:** https://install-preview-3.preview.emergentagent.com/admin
 
 **Status:** ✅ Fully Functional
 
