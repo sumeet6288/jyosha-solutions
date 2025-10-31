@@ -261,33 +261,53 @@
   `;
   document.head.appendChild(style);
 
-  // Create header
+  // Create enhanced header with typing indicator
   const header = document.createElement('div');
   header.style.cssText = `
-    background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+    background: ${currentTheme.gradient};
     color: white;
-    padding: 16px;
+    padding: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   `;
+  
+  const typingIndicator = `
+    <div id="botsmith-typing" style="display: none; margin-top: 4px; font-size: 11px; opacity: 0.9;">
+      <span style="animation: fadeIn 0.5s;">AI is typing</span>
+      <span style="animation: pulse 1.4s infinite;">...</span>
+    </div>
+  `;
+  
   header.innerHTML = `
-    <div style="display: flex; align-items: center; gap: 12px;">
-      <div style="width: 40px; height: 40px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2C6.48 2 2 6.48 2 12C2 13.54 2.38 14.99 3.06 16.27L2 22L7.73 20.94C9.01 21.62 10.46 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C10.69 20 9.45 19.69 8.35 19.14L8 18.96L4.21 19.79L5.04 16.05L4.84 15.68C4.26 14.55 3.94 13.31 3.94 12C3.94 7.59 7.59 3.94 12 3.94C16.41 3.94 20.06 7.59 20.06 12C20.06 16.41 16.41 20 12 20Z" fill="#7c3aed"/>
+    <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
+      <div style="width: 44px; height: 44px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.48 2 2 6.48 2 12C2 13.54 2.38 14.99 3.06 16.27L2 22L7.73 20.94C9.01 21.62 10.46 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C10.69 20 9.45 19.69 8.35 19.14L8 18.96L4.21 19.79L5.04 16.05L4.84 15.68C4.26 14.55 3.94 13.31 3.94 12C3.94 7.59 7.59 3.94 12 3.94C16.41 3.94 20.06 7.59 20.06 12C20.06 16.41 16.41 20 12 20Z" fill="${currentTheme.primary}"/>
         </svg>
       </div>
-      <div>
-        <div style="font-weight: 600; font-size: 16px;">Chat Support</div>
-        <div style="font-size: 12px; opacity: 0.9;">Online now</div>
+      <div style="flex: 1;">
+        <div style="font-weight: 600; font-size: 16px; display: flex; align-items: center; gap: 6px;">
+          Chat Support
+          <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; animation: pulse 2s infinite;"></span>
+        </div>
+        <div style="font-size: 12px; opacity: 0.95;">Usually replies instantly</div>
+        ${typingIndicator}
       </div>
     </div>
-    <button id="botsmith-close" style="background: transparent; border: none; color: white; cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='transparent'">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
+    <div style="display: flex; gap: 8px;">
+      <button id="botsmith-minimize" style="background: rgba(255,255,255,0.15); border: none; color: white; cursor: pointer; padding: 8px; display: flex; align-items: center; justify-content: center; border-radius: 8px; transition: all 0.2s; backdrop-filter: blur(10px);" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <button id="botsmith-close" style="background: rgba(255,255,255,0.15); border: none; color: white; cursor: pointer; padding: 8px; display: flex; align-items: center; justify-content: center; border-radius: 8px; transition: all 0.2s; backdrop-filter: blur(10px);" onmouseover="this.style.background='rgba(255,255,255,0.25)'; this.style.transform='rotate(90deg)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'; this.style.transform='rotate(0deg)'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
   `;
 
   // Create iframe
