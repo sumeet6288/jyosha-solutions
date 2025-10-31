@@ -185,42 +185,12 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50 overflow-hidden relative">
-      {/* Advanced Animated background with glassmorphism - Lower z-index */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0" style={{ willChange: 'transform' }}>
-        {/* Main gradient blobs */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" style={{ transform: 'translateZ(0)' }}></div>
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" style={{ transform: 'translateZ(0)' }}></div>
-        <div className="absolute -bottom-32 left-1/3 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" style={{ transform: 'translateZ(0)' }}></div>
-        
-        {/* Secondary animated layers */}
-        <div className="absolute top-1/4 right-1/3 w-64 h-64 bg-cyan-200 rounded-full mix-blend-multiply filter blur-3xl opacity-15 animate-blob animation-delay-1000" style={{ transform: 'translateZ(0)' }}></div>
-        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-rose-200 rounded-full mix-blend-multiply filter blur-3xl opacity-15 animate-blob animation-delay-3000" style={{ transform: 'translateZ(0)' }}></div>
-        
-        {/* Geometric floating shapes */}
-        <div className="absolute top-20 right-20 w-32 h-32 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-3xl rotate-45 animate-float-rotate blur-sm"></div>
-        <div className="absolute bottom-40 left-32 w-24 h-24 bg-gradient-to-br from-blue-400/20 to-cyan-400/20 rounded-2xl rotate-12 animate-float-rotate animation-delay-2000 blur-sm"></div>
-        <div className="absolute top-1/2 right-1/4 w-40 h-40 bg-gradient-to-br from-orange-400/15 to-rose-400/15 rounded-full animate-float animation-delay-1000 blur-md"></div>
-        
-        {/* Animated gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-pink-500/5 animate-gradient-xy opacity-50"></div>
-        
-        {/* Premium floating particles with glassmorphism */}
-        {particles.map((particle) => (
-          <div
-            key={particle.id}
-            className="absolute rounded-full bg-gradient-to-br from-purple-400 to-pink-400 opacity-20 glass"
-            style={{
-              left: `${particle.left}%`,
-              top: `${particle.top}%`,
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-              animation: `float ${particle.duration}s ease-in-out infinite`,
-              animationDelay: `${particle.delay}s`,
-              transform: 'translateZ(0)',
-              willChange: 'transform'
-            }}
-          />
-        ))}
+      {/* Simplified Static background - No animations for performance */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        {/* Static gradient blobs - no animation */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+        <div className="absolute -bottom-32 left-1/3 w-96 h-96 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-15"></div>
         
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.03)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_80%)]"></div>
