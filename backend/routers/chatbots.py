@@ -7,6 +7,7 @@ from models import (
 )
 from auth import get_current_user, get_mock_user, User
 from services.plan_service import plan_service
+from services.cache_service import cache_service
 import logging
 
 logger = logging.getLogger(__name__)
