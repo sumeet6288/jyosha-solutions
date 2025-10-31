@@ -712,9 +712,26 @@ const ChatbotBuilder = () => {
                           <Button 
                             variant="outline"
                             className="w-full" 
-                            onClick={() => {
-                              navigator.clipboard.writeText(`${window.location.origin}/embed/${chatbot.id}`);
-                              toast({ title: 'Copied!', description: 'Embed URL copied to clipboard' });
+                            onClick={async () => {
+                              const embedUrl = `${window.location.origin}/embed/${chatbot.id}`;
+                              try {
+                                await navigator.clipboard.writeText(embedUrl);
+                                toast({ title: 'Copied!', description: 'Embed URL copied to clipboard' });
+                              } catch (err) {
+                                const textarea = document.createElement('textarea');
+                                textarea.value = embedUrl;
+                                textarea.style.position = 'fixed';
+                                textarea.style.opacity = '0';
+                                document.body.appendChild(textarea);
+                                textarea.select();
+                                try {
+                                  document.execCommand('copy');
+                                  toast({ title: 'Copied!', description: 'Embed URL copied to clipboard' });
+                                } catch (execErr) {
+                                  toast({ title: 'Copy Failed', description: 'Please manually copy the URL above', variant: 'destructive' });
+                                }
+                                document.body.removeChild(textarea);
+                              }
                             }}
                           >
                             Copy URL
