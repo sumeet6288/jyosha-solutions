@@ -433,12 +433,28 @@
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       document.body.appendChild(widgetContainer);
+      showNotification();
+      
+      // Auto-open if configured
+      if (config.autoOpen) {
+        setTimeout(() => {
+          if (!hasBeenOpened) toggleChat();
+        }, config.autoOpenDelay);
+      }
     });
   } else {
     document.body.appendChild(widgetContainer);
+    showNotification();
+    
+    // Auto-open if configured
+    if (config.autoOpen) {
+      setTimeout(() => {
+        if (!hasBeenOpened) toggleChat();
+      }, config.autoOpenDelay);
+    }
   }
 
-  // Expose API for programmatic control
+  // Expose enhanced API for programmatic control
   window.BotSmith = {
     open: () => {
       if (!isOpen) toggleChat();
@@ -446,6 +462,61 @@
     close: () => {
       if (isOpen) toggleChat();
     },
-    toggle: toggleChat
+    toggle: toggleChat,
+    showNotification: () => {
+      notificationBadge.style.display = 'flex';
+    },
+    hideNotification: () => {
+      notificationBadge.style.display = 'none';
+    },
+    setTheme: (themeName) => {
+      if (themes[themeName]) {
+        const newTheme = themes[themeName];
+        chatBubble.style.background = newTheme.gradient;
+        header.style.background = newTheme.gradient;
+      }
+    },
+    setPosition: (positionName) => {
+      if (positions[positionName]) {
+        const newPosition = positions[positionName];
+        Object.keys(newPosition).forEach(key => {
+          widgetContainer.style[key] = newPosition[key];
+        });
+      }
+    },
+    showTyping: () => {
+      const typingEl = document.getElementById('botsmith-typing');
+      if (typingEl) typingEl.style.display = 'block';
+    },
+    hideTyping: () => {
+      const typingEl = document.getElementById('botsmith-typing');
+      if (typingEl) typingEl.style.display = 'none';
+    },
+    isOpen: () => isOpen,
+    destroy: () => {
+      widgetContainer.remove();
+    }
   };
+  
+  // Listen for messages from iframe (for typing indicators, notifications, etc.)
+  window.addEventListener('message', (event) => {
+    if (event.origin !== config.domain) return;
+    
+    const { type, data } = event.data;
+    
+    switch(type) {
+      case 'typing':
+        window.BotSmith.showTyping();
+        break;
+      case 'typing-stop':
+        window.BotSmith.hideTyping();
+        break;
+      case 'notification':
+        if (!isOpen) window.BotSmith.showNotification();
+        break;
+      case 'close':
+        window.BotSmith.close();
+        break;
+    }
+  });
 })();
