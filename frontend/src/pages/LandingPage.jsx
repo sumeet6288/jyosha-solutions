@@ -289,15 +289,15 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section className="pt-32 sm:pt-40 pb-12 sm:pb-20 px-4 sm:px-8 relative z-10">
         <div className="max-w-[95%] mx-auto grid md:grid-cols-2 gap-8 sm:gap-16 items-center">
-          <div className="space-y-6 sm:space-y-8 animate-fade-in-up">
+          <div className="space-y-6 sm:space-y-8">
             <div className="inline-block">
-              <span className="px-3 sm:px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-xs sm:text-sm font-medium inline-flex items-center gap-2 animate-bounce-subtle">
+              <span className="px-3 sm:px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-xs sm:text-sm font-medium inline-flex items-center gap-2">
                 <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
                 AI-Powered Customer Support
               </span>
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 via-purple-900 to-pink-900 bg-clip-text text-transparent animate-gradient">
+              <span className="bg-gradient-to-r from-gray-900 via-purple-900 to-pink-900 bg-clip-text text-transparent">
                 AI that listens,<br />learns, and delights<br />every customer
               </span>
             </h1>
@@ -306,7 +306,7 @@ const LandingPage = () => {
             </p>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <Button 
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-6 text-lg rounded-xl shadow-2xl shadow-purple-500/30 transform hover:scale-105 transition-all duration-300 group"
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-6 text-lg rounded-xl shadow-xl transition-colors duration-300 group"
                 onClick={() => navigate('/signup')}
               >
                 Build your agent
@@ -318,15 +318,11 @@ const LandingPage = () => {
               </span>
             </div>
           </div>
-          <div className="relative animate-fade-in-right">
-            {/* Optimized glow with GPU acceleration */}
-            <div className="absolute -inset-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl blur-2xl opacity-20 animate-pulse-slow" style={{ transform: 'translateZ(0)', willChange: 'opacity' }}></div>
-            
-            {/* Main card with enhanced styling and performance optimization - Now fully clickable */}
+          <div className="relative">
+            {/* Simplified card preview - no animations */}
             <div 
               onClick={() => navigate('/signup')}
-              className="relative w-full h-[500px] rounded-3xl bg-gradient-to-br from-pink-400 via-purple-400 to-orange-400 p-8 flex items-center justify-center transform hover:scale-105 transition-transform duration-500 shadow-2xl cursor-pointer" 
-              style={{ transform: 'translateZ(0)', willChange: 'transform' }}
+              className="relative w-full h-[500px] rounded-3xl bg-gradient-to-br from-pink-400 via-purple-400 to-orange-400 p-8 flex items-center justify-center transition-transform duration-300 hover:scale-105 shadow-2xl cursor-pointer"
             >
               {/* Shine effect overlay */}
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-40 pointer-events-none"></div>
@@ -334,24 +330,15 @@ const LandingPage = () => {
                 <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent"></div>
               </div>
               
-              {/* Optimized floating decorative elements */}
-              <div className="absolute top-8 right-8 w-4 h-4 bg-white/30 rounded-full animate-ping pointer-events-none" style={{ transform: 'translateZ(0)' }}></div>
-              <div className="absolute bottom-12 left-12 w-3 h-3 bg-yellow-300/40 rounded-full animate-ping animation-delay-1000 pointer-events-none" style={{ transform: 'translateZ(0)' }}></div>
-              
-              <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl w-full max-w-md transform hover:shadow-purple-500/20 transition-all duration-300 border border-white/50 pointer-events-none">
-                {/* Inner card glow */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/5 to-pink-500/5"></div>
-                
+              <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl w-full max-w-md transition-shadow duration-300 border border-white/50 pointer-events-none">
                 <div className="relative">
                   <h3 className="text-lg font-semibold mb-6 text-gray-900 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-pulse"></span>
+                    <span className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></span>
                     Sources
                   </h3>
-                  <div className="w-full border-2 border-dashed border-purple-300 rounded-xl p-8 hover:border-purple-500 hover:bg-purple-50 transition-all duration-300 flex items-center justify-center gap-3 group relative overflow-hidden">
-                    {/* Optimized button hover effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/5 to-purple-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" style={{ transform: 'translateZ(0)' }}></div>
-                    <div className="text-4xl group-hover:scale-125 transition-transform duration-300 relative z-10">▶</div>
-                    <span className="text-gray-700 font-medium group-hover:text-purple-600 transition-colors relative z-10">Add source</span>
+                  <div className="w-full border-2 border-dashed border-purple-300 rounded-xl p-8 hover:border-purple-500 hover:bg-purple-50 transition-all duration-300 flex items-center justify-center gap-3 group">
+                    <div className="text-4xl transition-transform duration-300 group-hover:scale-110">▶</div>
+                    <span className="text-gray-700 font-medium group-hover:text-purple-600 transition-colors">Add source</span>
                   </div>
                 </div>
               </div>
