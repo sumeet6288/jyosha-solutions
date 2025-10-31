@@ -615,9 +615,25 @@ const ChatbotBuilder = () => {
                         />
                         <Button 
                           className="mt-2 w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/30 transform hover:scale-105 transition-all duration-300" 
-                          onClick={() => {
-                            navigator.clipboard.writeText(embedCode);
-                            toast({ title: 'Copied!', description: 'Iframe code copied to clipboard' });
+                          onClick={async () => {
+                            try {
+                              await navigator.clipboard.writeText(embedCode);
+                              toast({ title: 'Copied!', description: 'Iframe code copied to clipboard' });
+                            } catch (err) {
+                              const textarea = document.createElement('textarea');
+                              textarea.value = embedCode;
+                              textarea.style.position = 'fixed';
+                              textarea.style.opacity = '0';
+                              document.body.appendChild(textarea);
+                              textarea.select();
+                              try {
+                                document.execCommand('copy');
+                                toast({ title: 'Copied!', description: 'Iframe code copied to clipboard' });
+                              } catch (execErr) {
+                                toast({ title: 'Copy Failed', description: 'Please manually copy the code above', variant: 'destructive' });
+                              }
+                              document.body.removeChild(textarea);
+                            }
                           }}
                         >
                           Copy Iframe Code
