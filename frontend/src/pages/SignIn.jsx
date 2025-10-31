@@ -329,11 +329,11 @@ const SignIn = () => {
 
                 {/* Footer Links */}
                 <div className="text-center text-[9px] sm:text-[10px] text-gray-500 font-body animate-fade-in stagger-2">
-                  <button className="hover:text-purple-600 transition-colors">Privacy Policy</button>
+                  <button onClick={() => navigate('/privacy-policy')} className="hover:text-purple-600 transition-colors">Privacy Policy</button>
                   <span className="mx-1 sm:mx-2">•</span>
-                  <button className="hover:text-purple-600 transition-colors">Terms of Service</button>
+                  <button onClick={() => navigate('/terms-of-service')} className="hover:text-purple-600 transition-colors">Terms of Service</button>
                   <span className="mx-1 sm:mx-2">•</span>
-                  <button className="hover:text-purple-600 transition-colors">Help Center</button>
+                  <button onClick={() => navigate('/resources/help-center')} className="hover:text-purple-600 transition-colors">Help Center</button>
                 </div>
               </div>
             </div>
