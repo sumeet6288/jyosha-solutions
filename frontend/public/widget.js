@@ -379,16 +379,24 @@
   iframe.setAttribute('allow', 'clipboard-read; clipboard-write');
   iframe.setAttribute('loading', 'lazy');
   
-  // Handle loading timeout - if iframe doesn't load in 10 seconds, show error
+  // Handle loading timeout - if iframe doesn't load in 20 seconds, show error
   let loadingTimeout = setTimeout(() => {
     loadingIndicator.style.display = 'none';
     errorIndicator.style.display = 'block';
     document.getElementById('error-message').textContent = 'Loading timeout. Please refresh the page or contact support.';
-  }, 10000);
+  }, 20000);
+  
+  // Secondary timeout - show iframe after 5 seconds even if no message received
+  let fallbackTimeout = setTimeout(() => {
+    if (loadingIndicator.style.display !== 'none') {
+      loadingIndicator.style.display = 'none';
+      iframe.style.display = 'block';
+      clearTimeout(loadingTimeout);
+    }
+  }, 5000);
   
   iframe.onload = () => {
-    clearTimeout(loadingTimeout);
-    // Don't hide loading yet, wait for message from iframe
+    // Don't hide loading yet, wait for message from iframe or fallback timeout
   };
   
   iframeContainer.appendChild(loadingIndicator);
