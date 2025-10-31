@@ -407,19 +407,12 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Social Proof */}
+      {/* Agency Value Proposition */}
       <section className="py-12 border-y border-gray-200 bg-white/50 backdrop-blur-sm relative z-10">
-        <div className="max-w-[95%] mx-auto px-8">
-          <p className="text-center text-gray-600 mb-8 animate-fade-in">
-            Trusted by <span className="font-semibold text-transparent bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text">9000+</span> business worldwide
+        <div className="max-w-5xl mx-auto px-8">
+          <p className="text-center text-xl sm:text-2xl font-semibold text-gray-800 leading-relaxed animate-fade-in">
+            Run an AI Agency Without Coding — <span className="text-transparent bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text">launch, manage, and sell</span> custom AI chatbots and automations under your own brand in minutes.
           </p>
-          <div className="flex flex-wrap justify-center items-center gap-12 opacity-60 animate-fade-in-up animation-delay-300">
-            <div className="text-2xl font-bold hover:opacity-100 transition-opacity cursor-pointer">SIEMENS</div>
-            <div className="text-2xl font-bold hover:opacity-100 transition-opacity cursor-pointer">POSTMAN</div>
-            <div className="text-2xl font-bold hover:opacity-100 transition-opacity cursor-pointer">ALPIAN</div>
-            <div className="text-2xl font-bold hover:opacity-100 transition-opacity cursor-pointer">ONAL</div>
-            <div className="text-2xl font-bold hover:opacity-100 transition-opacity cursor-pointer">ALBARAKA</div>
-          </div>
         </div>
       </section>
 
