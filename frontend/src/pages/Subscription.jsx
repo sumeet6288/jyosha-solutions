@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { 
   Sparkles, Zap, Crown, Check, ArrowRight, 
-  TrendingUp, AlertCircle, Loader2, CreditCard, CheckCircle, Building2, ArrowLeft
+  TrendingUp, AlertCircle, Loader2, CreditCard, CheckCircle, Building2, ArrowLeft, RefreshCw
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import Footer from '../components/Footer';
@@ -17,6 +17,7 @@ const SubscriptionNew = () => {
   const [subscriptionStatus, setSubscriptionStatus] = useState(null);
   const [checkingOut, setCheckingOut] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [syncing, setSyncing] = useState(false);
 
   // Define plans matching the Pricing page
   const plans = [
