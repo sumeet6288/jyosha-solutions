@@ -45,9 +45,21 @@ const PublicChat = () => {
         content: response.data.welcome_message,
         timestamp: new Date()
       }]);
+      
+      // Notify parent iframe that loading is complete
+      if (window.parent !== window) {
+        window.parent.postMessage({ type: 'chatbot-loaded' }, '*');
+      }
     } catch (error) {
       console.error('Error loading chatbot:', error);
-      toast.error('Failed to load chatbot');
+      
+      // Notify parent iframe of error
+      if (window.parent !== window) {
+        window.parent.postMessage({ 
+          type: 'chatbot-error',
+          error: error.response?.data?.detail || 'Failed to load chatbot'
+        }, '*');
+      }
     } finally {
       setLoading(false);
     }
