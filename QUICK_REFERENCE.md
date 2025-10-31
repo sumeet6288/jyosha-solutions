@@ -3,13 +3,13 @@
 ## 🚀 Quick Navigation
 
 ### For End Users
-- **Homepage**: https://install-deps-preview.preview.emergentagent.com/
-- **Start Building**: https://install-deps-preview.preview.emergentagent.com/dashboard
-- **Pricing**: https://install-deps-preview.preview.emergentagent.com/pricing
-- **Help**: https://install-deps-preview.preview.emergentagent.com/resources
+- **Homepage**: https://setup-glimpse-1.preview.emergentagent.com/
+- **Start Building**: https://setup-glimpse-1.preview.emergentagent.com/dashboard
+- **Pricing**: https://setup-glimpse-1.preview.emergentagent.com/pricing
+- **Help**: https://setup-glimpse-1.preview.emergentagent.com/resources
 
 ### For Administrators
-- **Admin Panel**: https://install-deps-preview.preview.emergentagent.com/admin
+- **Admin Panel**: https://setup-glimpse-1.preview.emergentagent.com/admin
 - **User Management**: Admin Dashboard → Users Tab
 - **System Settings**: Admin Dashboard → Settings Tab
 
@@ -307,7 +307,7 @@
 
 ### API Base URL
 - Development: `http://localhost:8001`
-- Production: `https://install-deps-preview.preview.emergentagent.com`
+- Production: `https://setup-glimpse-1.preview.emergentagent.com`
 
 ---
 
@@ -321,8 +321,8 @@
 
 ### Contact
 - **Email**: support@botsmith.ai
-- **Website**: https://install-deps-preview.preview.emergentagent.com
-- **Resources**: https://install-deps-preview.preview.emergentagent.com/resources
+- **Website**: https://setup-glimpse-1.preview.emergentagent.com
+- **Resources**: https://setup-glimpse-1.preview.emergentagent.com/resources
 
 ---
 
