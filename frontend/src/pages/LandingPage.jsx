@@ -8,31 +8,24 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 const LandingPage = () => {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [particles, setParticles] = useState([]);
 
-  // Scroll animation hooks for different sections
-  const [featuresRef, featuresVisible] = useScrollAnimation({ threshold: 0.1 });
-  const [howItWorksRef, howItWorksVisible] = useScrollAnimation({ threshold: 0.1 });
-  const [useCasesRef, useCasesVisible] = useScrollAnimation({ threshold: 0.1 });
-  const [differentiatorsRef, differentiatorsVisible] = useScrollAnimation({ threshold: 0.1 });
-  const [testimonialsRef, testimonialsVisible] = useScrollAnimation({ threshold: 0.1 });
+  // Scroll animation hooks for different sections - removed for performance
+  const featuresRef = React.useRef(null);
+  const howItWorksRef = React.useRef(null);
+  const useCasesRef = React.useRef(null);
+  const differentiatorsRef = React.useRef(null);
+  const testimonialsRef = React.useRef(null);
+  
+  // Set all to visible for instant load
+  const featuresVisible = true;
+  const howItWorksVisible = true;
+  const useCasesVisible = true;
+  const differentiatorsVisible = true;
+  const testimonialsVisible = true;
 
   // Scroll to top on mount to fix reload issue
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-
-  // Generate optimized floating particles (reduced from 20 to 10)
-  useEffect(() => {
-    const newParticles = Array.from({ length: 10 }, (_, i) => ({
-      id: i,
-      left: Math.random() * 100,
-      top: Math.random() * 100,
-      size: Math.random() * 8 + 4,
-      duration: Math.random() * 20 + 15,
-      delay: Math.random() * 5
-    }));
-    setParticles(newParticles);
   }, []);
 
   const features = [
