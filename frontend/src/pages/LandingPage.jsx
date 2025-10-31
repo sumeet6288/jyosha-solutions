@@ -360,7 +360,7 @@ const LandingPage = () => {
       <section className="py-16 px-4 sm:px-8 relative z-10" ref={featuresRef}>
         <div className="max-w-6xl mx-auto relative z-10">
           {/* Header */}
-          <div className={`text-center mb-12 transition-all duration-800 ${featuresVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          <div className={`text-center mb-12 `}>
             <h2 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-purple-900 to-gray-900 bg-clip-text text-transparent">
               Build Smarter, Support Better, Grow Faster
             </h2>
