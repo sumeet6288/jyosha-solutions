@@ -547,7 +547,7 @@ const ChatbotBuilder = () => {
                         />
                         <Button 
                           className="mt-2 w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg shadow-blue-500/30 transform hover:scale-105 transition-all duration-300" 
-                          onClick={() => {
+                          onClick={async () => {
                             const widgetScript = `<!-- BotSmith Widget Script -->
 <script>
   window.botsmithConfig = {
@@ -561,8 +561,30 @@ const ChatbotBuilder = () => {
   domain="${window.location.origin}"
   defer>
 </script>`;
-                            navigator.clipboard.writeText(widgetScript);
-                            toast({ title: 'Copied!', description: 'Widget script copied to clipboard' });
+                            try {
+                              // Try modern clipboard API first
+                              await navigator.clipboard.writeText(widgetScript);
+                              toast({ title: 'Copied!', description: 'Widget script copied to clipboard' });
+                            } catch (err) {
+                              // Fallback to textarea method for older browsers or permission issues
+                              const textarea = document.createElement('textarea');
+                              textarea.value = widgetScript;
+                              textarea.style.position = 'fixed';
+                              textarea.style.opacity = '0';
+                              document.body.appendChild(textarea);
+                              textarea.select();
+                              try {
+                                document.execCommand('copy');
+                                toast({ title: 'Copied!', description: 'Widget script copied to clipboard' });
+                              } catch (execErr) {
+                                toast({ 
+                                  title: 'Copy Failed', 
+                                  description: 'Please manually copy the script above', 
+                                  variant: 'destructive' 
+                                });
+                              }
+                              document.body.removeChild(textarea);
+                            }
                           }}
                         >
                           <MessageSquare className="w-4 h-4 mr-2" />
