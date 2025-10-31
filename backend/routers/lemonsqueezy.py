@@ -87,19 +87,38 @@ async def process_webhook_event(event_data: Dict[str, Any]):
         
         # Handle different event types
         if event_name == "subscription_created":
+            # Map variant_id to plan_id
+            variant_id = str(attributes.get("variant_id", ""))
+            plan_id = "free"  # default
+            if variant_id == VARIANT_IDS["starter"]:
+                plan_id = "starter"
+            elif variant_id == VARIANT_IDS["professional"]:
+                plan_id = "professional"
+            
             # New subscription created
             subscription_data = {
                 "user_id": user_id,
+                "plan_id": plan_id,  # Add plan_id for plan service compatibility
                 "lemonsqueezy_subscription_id": subscription_id,
-                "status": attributes.get("status", "active"),
-                "variant_id": attributes.get("variant_id"),
+                "status": "active",  # Set as active when created
+                "variant_id": variant_id,
                 "product_id": attributes.get("product_id"),
                 "plan_name": attributes.get("product_name", "Unknown"),
                 "price": attributes.get("price", 0),
                 "renews_at": attributes.get("renews_at"),
                 "ends_at": attributes.get("ends_at"),
+                "started_at": datetime.utcnow(),  # Add for plan service compatibility
                 "created_at": datetime.utcnow(),
-                "updated_at": datetime.utcnow()
+                "updated_at": datetime.utcnow(),
+                "auto_renew": True,  # Add for plan service compatibility
+                "usage": {  # Initialize usage tracking
+                    "chatbots_count": 0,
+                    "messages_this_month": 0,
+                    "file_uploads_count": 0,
+                    "website_sources_count": 0,
+                    "text_sources_count": 0,
+                    "last_reset": datetime.utcnow()
+                }
             }
             
             # Insert or update subscription
@@ -108,7 +127,7 @@ async def process_webhook_event(event_data: Dict[str, Any]):
                 {"$set": subscription_data},
                 upsert=True
             )
-            logger.info(f"Subscription created for user {user_id}")
+            logger.info(f"Subscription created for user {user_id} with plan {plan_id}")
             
         elif event_name == "subscription_updated":
             # Subscription updated
