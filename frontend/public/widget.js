@@ -144,51 +144,119 @@
     chatBubble.style.boxShadow = `0 4px 12px ${currentTheme.primary}66`;
   });
 
-  // Create chat window
+  // Create chat window with enhanced styling
   const chatWindow = document.createElement('div');
   chatWindow.id = 'botsmith-window';
+  const windowPosition = config.position.includes('bottom') ? 'bottom: 90px;' : 'top: 90px;';
+  const windowAlign = config.position.includes('right') ? 'right: 20px;' : 'left: 20px;';
+  
   chatWindow.style.cssText = `
     position: fixed;
-    bottom: 90px;
-    right: 20px;
+    ${windowPosition}
+    ${windowAlign}
     width: 400px;
     height: 600px;
     max-width: calc(100vw - 40px);
     max-height: calc(100vh - 120px);
     background: white;
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
     display: none;
     flex-direction: column;
     overflow: hidden;
     z-index: 999998;
-    animation: slideUp 0.3s ease-out;
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(0, 0, 0, 0.08);
   `;
 
-  // Add animation keyframes
+  // Enhanced animation keyframes
   const style = document.createElement('style');
   style.textContent = `
     @keyframes slideUp {
       from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+    }
+    
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
       }
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-10px);
+      }
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+    
+    #botsmith-bubble {
+      animation: bounce 2s infinite;
+    }
+    
     @media (max-width: 768px) {
       #botsmith-window {
         width: calc(100vw - 20px) !important;
         height: calc(100vh - 100px) !important;
         bottom: 10px !important;
+        top: auto !important;
+        left: 10px !important;
         right: 10px !important;
+        border-radius: 16px !important;
       }
       #botsmith-widget-container {
         bottom: 10px !important;
         right: 10px !important;
       }
+    }
+    
+    /* Smooth scrollbar */
+    #botsmith-window ::-webkit-scrollbar {
+      width: 6px;
+    }
+    #botsmith-window ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    #botsmith-window ::-webkit-scrollbar-thumb {
+      background: ${currentTheme.primary};
+      border-radius: 3px;
+    }
+    #botsmith-window ::-webkit-scrollbar-thumb:hover {
+      background: ${currentTheme.secondary};
     }
   `;
   document.head.appendChild(style);
