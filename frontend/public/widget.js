@@ -545,10 +545,14 @@
     
     switch(type) {
       case 'chatbot-loaded':
+        clearTimeout(loadingTimeout);
+        clearTimeout(fallbackTimeout);
         loadingIndicator.style.display = 'none';
         iframe.style.display = 'block';
         break;
       case 'chatbot-error':
+        clearTimeout(loadingTimeout);
+        clearTimeout(fallbackTimeout);
         loadingIndicator.style.display = 'none';
         errorIndicator.style.display = 'block';
         if (error) {
