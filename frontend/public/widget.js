@@ -45,13 +45,38 @@
   widgetContainer.id = 'botsmith-widget-container';
   widgetContainer.style.cssText = `
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    ${currentPosition.bottom ? `bottom: ${currentPosition.bottom};` : ''}
+    ${currentPosition.top ? `top: ${currentPosition.top};` : ''}
+    ${currentPosition.left ? `left: ${currentPosition.left};` : ''}
+    ${currentPosition.right ? `right: ${currentPosition.right};` : ''}
     z-index: 999999;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   `;
 
-  // Create chat bubble button
+  // Create notification badge
+  const notificationBadge = document.createElement('div');
+  notificationBadge.id = 'botsmith-notification';
+  notificationBadge.style.cssText = `
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    background: #ef4444;
+    border-radius: 50%;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    animation: pulse 2s infinite;
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+  `;
+  notificationBadge.textContent = '1';
+
+  // Create chat bubble button with ripple effect
   const chatBubble = document.createElement('button');
   chatBubble.id = 'botsmith-bubble';
   chatBubble.setAttribute('aria-label', 'Open chat');
@@ -64,7 +89,7 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+    background: ${currentTheme.gradient};
     border: none;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
@@ -75,15 +100,48 @@
     position: relative;
     overflow: hidden;
   `;
+  
+  // Add ripple effect container
+  const rippleContainer = document.createElement('div');
+  rippleContainer.style.cssText = `
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    pointer-events: none;
+  `;
+  chatBubble.appendChild(rippleContainer);
 
-  // Hover effect
+  // Ripple effect on click
+  chatBubble.addEventListener('click', function(e) {
+    const ripple = document.createElement('span');
+    ripple.style.cssText = `
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.6);
+      width: 100px;
+      height: 100px;
+      margin-top: -50px;
+      margin-left: -50px;
+      animation: ripple 0.6s;
+      top: ${e.offsetY}px;
+      left: ${e.offsetX}px;
+    `;
+    rippleContainer.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  });
+
+  // Enhanced hover effect
   chatBubble.addEventListener('mouseenter', () => {
-    chatBubble.style.transform = 'scale(1.1)';
-    chatBubble.style.boxShadow = '0 6px 16px rgba(124, 58, 237, 0.5)';
+    chatBubble.style.transform = 'scale(1.1) rotate(5deg)';
+    chatBubble.style.boxShadow = `0 8px 20px ${currentTheme.primary}80`;
   });
   chatBubble.addEventListener('mouseleave', () => {
-    chatBubble.style.transform = 'scale(1)';
-    chatBubble.style.boxShadow = '0 4px 12px rgba(124, 58, 237, 0.4)';
+    chatBubble.style.transform = 'scale(1) rotate(0deg)';
+    chatBubble.style.boxShadow = `0 4px 12px ${currentTheme.primary}66`;
   });
 
   // Create chat window
