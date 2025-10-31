@@ -110,6 +110,8 @@ const SubscriptionNew = () => {
     if (searchParams.get('success') === 'true') {
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 5000);
+      // Sync subscription after successful payment
+      syncSubscription();
     }
   }, [searchParams]);
 
