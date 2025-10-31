@@ -3,13 +3,42 @@
   
   // Get configuration from script tag or window object
   const script = document.currentScript;
-  const chatbotId = script?.getAttribute('chatbot-id') || window.botsmithConfig?.chatbotId;
-  const domain = script?.getAttribute('domain') || window.botsmithConfig?.domain || window.location.origin;
+  const config = {
+    chatbotId: script?.getAttribute('chatbot-id') || window.botsmithConfig?.chatbotId,
+    domain: script?.getAttribute('domain') || window.botsmithConfig?.domain || window.location.origin,
+    position: script?.getAttribute('position') || window.botsmithConfig?.position || 'bottom-right',
+    theme: script?.getAttribute('theme') || window.botsmithConfig?.theme || 'purple',
+    welcomeMessage: script?.getAttribute('welcome-message') || window.botsmithConfig?.welcomeMessage,
+    showNotification: script?.getAttribute('show-notification') !== 'false',
+    autoOpen: script?.getAttribute('auto-open') === 'true',
+    autoOpenDelay: parseInt(script?.getAttribute('auto-open-delay') || '3000')
+  };
   
-  if (!chatbotId) {
+  if (!config.chatbotId) {
     console.error('BotSmith Widget: chatbot-id is required');
     return;
   }
+  
+  // Theme colors
+  const themes = {
+    purple: { primary: '#7c3aed', secondary: '#db2777', gradient: 'linear-gradient(135deg, #7c3aed 0%, #db2777 100%)' },
+    blue: { primary: '#3b82f6', secondary: '#06b6d4', gradient: 'linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%)' },
+    green: { primary: '#10b981', secondary: '#14b8a6', gradient: 'linear-gradient(135deg, #10b981 0%, #14b8a6 100%)' },
+    orange: { primary: '#f97316', secondary: '#f59e0b', gradient: 'linear-gradient(135deg, #f97316 0%, #f59e0b 100%)' },
+    pink: { primary: '#ec4899', secondary: '#f43f5e', gradient: 'linear-gradient(135deg, #ec4899 0%, #f43f5e 100%)' }
+  };
+  
+  const currentTheme = themes[config.theme] || themes.purple;
+  
+  // Position styles
+  const positions = {
+    'bottom-right': { bottom: '20px', right: '20px', left: 'auto', top: 'auto' },
+    'bottom-left': { bottom: '20px', left: '20px', right: 'auto', top: 'auto' },
+    'top-right': { top: '20px', right: '20px', left: 'auto', bottom: 'auto' },
+    'top-left': { top: '20px', left: '20px', right: 'auto', bottom: 'auto' }
+  };
+  
+  const currentPosition = positions[config.position] || positions['bottom-right'];
 
   // Create chat widget container
   const widgetContainer = document.createElement('div');
