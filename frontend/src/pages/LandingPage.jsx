@@ -200,36 +200,26 @@ const LandingPage = () => {
       <nav className="fixed top-0 left-0 right-0 glass-strong backdrop-blur-xl border-b border-white/30 z-[100] shadow-lg shadow-purple-500/10">
         <div className="max-w-[95%] mx-auto px-4 sm:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate('/')}>
-            {/* Premium 3D Logo with glow animation */}
-            <div className="relative transform-3d">
-              {/* Background glow effect with animation */}
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 animate-glow-pulse"></div>
-              
+            {/* Simplified Logo - No animations for performance */}
+            <div className="relative">
               {/* Main logo container */}
-              <div className="relative w-12 h-12 bg-gradient-to-br from-purple-600 via-fuchsia-500 to-pink-600 rounded-2xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-2xl border border-white/20 animate-gradient-xy">
+              <div className="relative w-12 h-12 bg-gradient-to-br from-purple-600 via-fuchsia-500 to-pink-600 rounded-2xl flex items-center justify-center transition-transform duration-300 hover:scale-105 shadow-xl border border-white/20">
                 {/* Inner gradient highlight */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/30 to-transparent opacity-50"></div>
                 
-                {/* Bot icon with 3D effect */}
-                <svg className="w-7 h-7 text-white relative z-10 drop-shadow-lg group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                {/* Bot icon */}
+                <svg className="w-7 h-7 text-white relative z-10 drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
                   {/* Robot head */}
                   <path d="M12 2C11.45 2 11 2.45 11 3V4H7C5.89 4 5 4.89 5 6V18C5 19.11 5.89 20 7 20H17C18.11 20 19 19.11 19 18V6C19 4.89 18.11 4 17 4H13V3C13 2.45 12.55 2 12 2M7 6H17V18H7V6Z"/>
                   {/* Eyes */}
-                  <circle cx="9" cy="10" r="1.5" className="animate-pulse"/>
-                  <circle cx="15" cy="10" r="1.5" className="animate-pulse"/>
+                  <circle cx="9" cy="10" r="1.5"/>
+                  <circle cx="15" cy="10" r="1.5"/>
                   {/* Smile */}
                   <path d="M9 14C9 14 10 15.5 12 15.5S15 14 15 14" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round"/>
                   {/* Antenna */}
                   <circle cx="12" cy="3" r="1"/>
                 </svg>
-                
-                {/* Sparkle effects with animation */}
-                <div className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-300 rounded-full animate-ping"></div>
-                <div className="absolute -bottom-1 -left-1 w-1.5 h-1.5 bg-cyan-300 rounded-full animate-ping" style={{animationDelay: '0.5s'}}></div>
               </div>
-              
-              {/* Animated orbital ring */}
-              <div className="absolute inset-0 rounded-2xl border-2 border-purple-400/30 opacity-0 group-hover:opacity-100 group-hover:scale-125 transition-all duration-700 animate-rotate-slow"></div>
             </div>
             
             {/* Premium Brand Typography */}
