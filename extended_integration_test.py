@@ -404,7 +404,7 @@ class ExtendedIntegrationTester:
 
 def main():
     """Main test execution"""
-    base_url = "https://deps-preview-2.preview.emergentagent.com"
+    base_url = "https://install-deps-preview.preview.emergentagent.com"
     
     print(f"Testing Extended Integration Management APIs at: {base_url}")
     

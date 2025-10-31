@@ -3,13 +3,13 @@
 ## 🚀 Quick Navigation
 
 ### For End Users
-- **Homepage**: https://deps-preview-2.preview.emergentagent.com/
-- **Start Building**: https://deps-preview-2.preview.emergentagent.com/dashboard
-- **Pricing**: https://deps-preview-2.preview.emergentagent.com/pricing
-- **Help**: https://deps-preview-2.preview.emergentagent.com/resources
+- **Homepage**: https://install-deps-preview.preview.emergentagent.com/
+- **Start Building**: https://install-deps-preview.preview.emergentagent.com/dashboard
+- **Pricing**: https://install-deps-preview.preview.emergentagent.com/pricing
+- **Help**: https://install-deps-preview.preview.emergentagent.com/resources
 
 ### For Administrators
-- **Admin Panel**: https://deps-preview-2.preview.emergentagent.com/admin
+- **Admin Panel**: https://install-deps-preview.preview.emergentagent.com/admin
 - **User Management**: Admin Dashboard → Users Tab
 - **System Settings**: Admin Dashboard → Settings Tab
 
@@ -307,7 +307,7 @@
 
 ### API Base URL
 - Development: `http://localhost:8001`
-- Production: `https://deps-preview-2.preview.emergentagent.com`
+- Production: `https://install-deps-preview.preview.emergentagent.com`
 
 ---
 
@@ -321,8 +321,8 @@
 
 ### Contact
 - **Email**: support@botsmith.ai
-- **Website**: https://deps-preview-2.preview.emergentagent.com
-- **Resources**: https://deps-preview-2.preview.emergentagent.com/resources
+- **Website**: https://install-deps-preview.preview.emergentagent.com
+- **Resources**: https://install-deps-preview.preview.emergentagent.com/resources
 
 ---
 
