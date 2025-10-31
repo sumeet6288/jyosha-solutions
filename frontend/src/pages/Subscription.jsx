@@ -140,6 +140,7 @@ const SubscriptionNew = () => {
 
   const syncSubscription = async () => {
     try {
+      setSyncing(true);
       const token = localStorage.getItem('token');
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
       
@@ -155,6 +156,8 @@ const SubscriptionNew = () => {
       await fetchData();
     } catch (error) {
       console.error('Error syncing subscription:', error);
+    } finally {
+      setSyncing(false);
     }
   };
 
