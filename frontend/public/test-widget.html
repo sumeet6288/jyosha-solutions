@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BotSmith Widget Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 BotSmith Widget Test Page</h1>
+        <p>This page tests the BotSmith chat widget integration.</p>
+        
+        <div class="info">
+            <h3>Widget Status:</h3>
+            <p>✅ Widget script loaded</p>
+            <p>✅ Chat bubble should appear in the bottom-right corner</p>
+            <p>✅ Click the bubble to open the chat</p>
+        </div>
+        
+        <div class="info">
+            <h3>Test Instructions:</h3>
+            <ol>
+                <li>Look for the purple chat bubble in the bottom-right corner</li>
+                <li>Click on it to open the chat window</li>
+                <li>Try sending a message</li>
+                <li>Verify that the bot responds</li>
+            </ol>
+        </div>
+        
+        <div class="info">
+            <h3>What to Check:</h3>
+            <ul>
+                <li>✓ Chat bubble animation</li>
+                <li>✓ Chat window opens/closes smoothly</li>
+                <li>✓ Messages send and receive correctly</li>
+                <li>✓ Custom branding (colors, logo) applied</li>
+                <li>✓ Responsive design on mobile</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- BotSmith Widget Script -->
+    <script>
+      // This will be replaced with actual chatbot ID dynamically
+      window.botsmithConfig = {
+        chatbotId: "CHATBOT_ID_PLACEHOLDER",
+        domain: window.location.origin
+      };
+    </script>
+    <script
+      src="/fast-widget.js"
+      chatbot-id="CHATBOT_ID_PLACEHOLDER"
+      defer>
+    </script>
+</body>
+</html>
