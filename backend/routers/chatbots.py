@@ -147,6 +147,10 @@ async def update_chatbot(
                 {"id": chatbot_id},
                 {"$set": update_data}
             )
+            
+            # Invalidate cache for this chatbot
+            cache_service.delete(f"chatbot:{chatbot_id}")
+            cache_service.delete(f"public_chatbot:{chatbot_id}")
         
         # Fetch updated chatbot
         updated_chatbot = await db_instance.chatbots.find_one({"id": chatbot_id})
