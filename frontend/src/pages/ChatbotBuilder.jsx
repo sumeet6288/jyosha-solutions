@@ -659,9 +659,26 @@ const ChatbotBuilder = () => {
                           <Button 
                             variant="outline"
                             className="w-full" 
-                            onClick={() => {
-                              navigator.clipboard.writeText(`${window.location.origin}/chat/${chatbot.id}`);
-                              toast({ title: 'Copied!', description: 'Link copied to clipboard' });
+                            onClick={async () => {
+                              const link = `${window.location.origin}/chat/${chatbot.id}`;
+                              try {
+                                await navigator.clipboard.writeText(link);
+                                toast({ title: 'Copied!', description: 'Link copied to clipboard' });
+                              } catch (err) {
+                                const textarea = document.createElement('textarea');
+                                textarea.value = link;
+                                textarea.style.position = 'fixed';
+                                textarea.style.opacity = '0';
+                                document.body.appendChild(textarea);
+                                textarea.select();
+                                try {
+                                  document.execCommand('copy');
+                                  toast({ title: 'Copied!', description: 'Link copied to clipboard' });
+                                } catch (execErr) {
+                                  toast({ title: 'Copy Failed', description: 'Please manually copy the link above', variant: 'destructive' });
+                                }
+                                document.body.removeChild(textarea);
+                              }
                             }}
                           >
                             Copy Link
