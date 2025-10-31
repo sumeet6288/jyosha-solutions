@@ -271,7 +271,36 @@
       if (!response.ok) throw new Error('Failed to load chatbot');
       
       chatbot = await response.json();
+      
+      // Update header title
       document.getElementById('botsmith-header-title').textContent = chatbot.name || 'Chat Support';
+      
+      // Apply custom colors if available
+      if (chatbot.primary_color) {
+        currentTheme.primary = chatbot.primary_color;
+        currentTheme.secondary = chatbot.secondary_color || chatbot.primary_color;
+        
+        // Update bubble colors
+        bubble.style.background = `linear-gradient(135deg, ${currentTheme.primary} 0%, ${currentTheme.secondary} 100%)`;
+        
+        // Update header colors
+        header.style.background = `linear-gradient(135deg, ${currentTheme.primary} 0%, ${currentTheme.secondary} 100%)`;
+        
+        // Update send button color
+        const sendBtn = document.getElementById('botsmith-send');
+        if (sendBtn) sendBtn.style.background = currentTheme.primary;
+        
+        // Update all bot avatar colors
+        updateBotAvatarColors();
+      }
+      
+      // Update logo if available
+      if (chatbot.logo_url) {
+        const logoContainer = header.querySelector('div > div:first-child');
+        if (logoContainer) {
+          logoContainer.innerHTML = `<img src="${chatbot.logo_url}" alt="Logo" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;">`;
+        }
+      }
       
       // Add welcome message
       if (chatbot.welcome_message) {
@@ -283,6 +312,16 @@
     } finally {
       isLoading = false;
     }
+  }
+  
+  function updateBotAvatarColors() {
+    // Update all existing bot avatars
+    const avatars = messagesContainer.querySelectorAll('div[style*="background"]');
+    avatars.forEach(avatar => {
+      if (avatar.querySelector('svg')) {
+        avatar.style.background = currentTheme.secondary;
+      }
+    });
   }
 
   async function sendMessage(message) {
