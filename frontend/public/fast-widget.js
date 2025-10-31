@@ -214,11 +214,15 @@
       `;
       
       if (msg.role === 'assistant') {
-        msgDiv.innerHTML = `
-          <div style="width: 32px; height: 32px; border-radius: 50%; background: ${currentTheme.secondary}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+        const avatarContent = chatbot?.avatar_url 
+          ? `<img src="${chatbot.avatar_url}" alt="Bot" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">`
+          : `<svg width="18" height="18" viewBox="0 0 24 24" fill="white">
               <path d="M12 2C6.48 2 2 6.48 2 12C2 13.54 2.38 14.99 3.06 16.27L2 22L7.73 20.94C9.01 21.62 10.46 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z"/>
-            </svg>
+            </svg>`;
+            
+        msgDiv.innerHTML = `
+          <div style="width: 32px; height: 32px; border-radius: 50%; background: ${currentTheme.secondary}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden;">
+            ${avatarContent}
           </div>
           <div style="max-width: 70%; padding: 12px 16px; border-radius: 18px; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); word-wrap: break-word; font-size: 14px; line-height: 1.5;">
             ${msg.content}
