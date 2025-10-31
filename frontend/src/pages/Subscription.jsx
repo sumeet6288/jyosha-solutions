@@ -137,6 +137,26 @@ const SubscriptionNew = () => {
     }
   };
 
+  const syncSubscription = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      
+      const response = await axios.post(
+        `${BACKEND_URL}/api/lemonsqueezy/subscription/sync`,
+        {},
+        { headers }
+      );
+      
+      console.log('Subscription synced:', response.data);
+      
+      // Refresh subscription status after sync
+      await fetchData();
+    } catch (error) {
+      console.error('Error syncing subscription:', error);
+    }
+  };
+
   const handleCheckout = async (planId) => {
     if (checkingOut) return;
 
