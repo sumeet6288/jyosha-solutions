@@ -278,7 +278,7 @@ class AIIntegrationTester:
 
 def main():
     """Main test execution"""
-    base_url = "https://setup-glimpse-1.preview.emergentagent.com"
+    base_url = "https://setup-snapshot.preview.emergentagent.com"
     
     print(f"Testing AI Integration at: {base_url}")
     
