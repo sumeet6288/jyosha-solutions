@@ -262,7 +262,7 @@ const LandingPage = () => {
         
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="sm:hidden bg-white border-t border-gray-200 shadow-lg animate-fade-in">
+          <div className="sm:hidden bg-white border-t border-gray-200 shadow-lg">
             <div className="px-4 py-4 space-y-3">
               <button onClick={() => { navigate('/pricing'); setMobileMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-colors font-medium">
                 Pricing
