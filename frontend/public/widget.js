@@ -532,11 +532,21 @@
   
   // Listen for messages from iframe (for typing indicators, notifications, etc.)
   window.addEventListener('message', (event) => {
-    if (event.origin !== config.domain) return;
-    
-    const { type, data } = event.data;
+    // Allow messages from any origin for flexibility (chatbot might be on different domain)
+    const { type, data, error } = event.data;
     
     switch(type) {
+      case 'chatbot-loaded':
+        loadingIndicator.style.display = 'none';
+        iframe.style.display = 'block';
+        break;
+      case 'chatbot-error':
+        loadingIndicator.style.display = 'none';
+        errorIndicator.style.display = 'block';
+        if (error) {
+          document.getElementById('error-message').textContent = error;
+        }
+        break;
       case 'typing':
         window.BotSmith.showTyping();
         break;
