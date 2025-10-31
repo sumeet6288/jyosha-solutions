@@ -252,9 +252,20 @@ const SubscriptionNew = () => {
 
         {/* Header - Match Pricing Page */}
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold mb-3 text-gray-900">
-            Choose Your Perfect Plan
-          </h1>
+          <div className="flex items-center justify-center gap-4 mb-3">
+            <h1 className="text-4xl font-bold text-gray-900">
+              Choose Your Perfect Plan
+            </h1>
+            <button
+              onClick={syncSubscription}
+              disabled={syncing}
+              className="inline-flex items-center gap-2 px-3 py-2 bg-purple-100 hover:bg-purple-200 rounded-lg transition-colors text-purple-700 text-sm font-medium"
+              title="Sync subscription from Lemon Squeezy"
+            >
+              <RefreshCw className={`w-4 h-4 ${syncing ? 'animate-spin' : ''}`} />
+              {syncing ? 'Syncing...' : 'Sync'}
+            </button>
+          </div>
           <p className="text-base text-gray-600">
             Start free and scale as you grow. No hidden fees, cancel anytime.
           </p>
