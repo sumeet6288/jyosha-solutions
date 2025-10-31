@@ -335,6 +335,30 @@
     <div style="font-size: 14px; color: #6b7280;">Loading chat...</div>
   `;
   
+  const errorIndicator = document.createElement('div');
+  errorIndicator.id = 'botsmith-error';
+  errorIndicator.style.cssText = `
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #ef4444;
+    padding: 20px;
+    max-width: 300px;
+    display: none;
+  `;
+  errorIndicator.innerHTML = `
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 12px;">
+      <circle cx="12" cy="12" r="10" stroke="#ef4444" stroke-width="2"/>
+      <path d="M12 8V12M12 16H12.01" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <div style="font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 8px;">Chatbot Not Available</div>
+    <div id="error-message" style="font-size: 13px; color: #6b7280; line-height: 1.5;">
+      This chatbot is not publicly accessible or does not exist. Please contact the website administrator.
+    </div>
+  `;
+  
   const spinAnimation = document.createElement('style');
   spinAnimation.textContent = `
     @keyframes spin {
@@ -355,12 +379,20 @@
   iframe.setAttribute('allow', 'clipboard-read; clipboard-write');
   iframe.setAttribute('loading', 'lazy');
   
-  iframe.onload = () => {
+  // Handle loading timeout - if iframe doesn't load in 10 seconds, show error
+  let loadingTimeout = setTimeout(() => {
     loadingIndicator.style.display = 'none';
-    iframe.style.display = 'block';
+    errorIndicator.style.display = 'block';
+    document.getElementById('error-message').textContent = 'Loading timeout. Please refresh the page or contact support.';
+  }, 10000);
+  
+  iframe.onload = () => {
+    clearTimeout(loadingTimeout);
+    // Don't hide loading yet, wait for message from iframe
   };
   
   iframeContainer.appendChild(loadingIndicator);
+  iframeContainer.appendChild(errorIndicator);
   iframeContainer.appendChild(iframe);
 
   // Assemble chat window
