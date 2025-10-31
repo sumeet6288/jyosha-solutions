@@ -310,36 +310,91 @@
     </div>
   `;
 
-  // Create iframe
+  // Create iframe with loading state
+  const iframeContainer = document.createElement('div');
+  iframeContainer.style.cssText = `
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    position: relative;
+    background: #f9fafb;
+  `;
+  
+  const loadingIndicator = document.createElement('div');
+  loadingIndicator.id = 'botsmith-loading';
+  loadingIndicator.style.cssText = `
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: ${currentTheme.primary};
+  `;
+  loadingIndicator.innerHTML = `
+    <div style="width: 40px; height: 40px; border: 3px solid #e5e7eb; border-top: 3px solid ${currentTheme.primary}; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 12px;"></div>
+    <div style="font-size: 14px; color: #6b7280;">Loading chat...</div>
+  `;
+  
+  const spinAnimation = document.createElement('style');
+  spinAnimation.textContent = `
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  `;
+  document.head.appendChild(spinAnimation);
+  
   const iframe = document.createElement('iframe');
-  iframe.src = `${domain}/embed/${chatbotId}`;
+  iframe.src = `${config.domain}/public-chat/${config.chatbotId}`;
   iframe.style.cssText = `
     width: 100%;
     height: 100%;
     border: none;
-    flex: 1;
+    display: none;
   `;
   iframe.setAttribute('allow', 'clipboard-read; clipboard-write');
+  iframe.setAttribute('loading', 'lazy');
+  
+  iframe.onload = () => {
+    loadingIndicator.style.display = 'none';
+    iframe.style.display = 'block';
+  };
+  
+  iframeContainer.appendChild(loadingIndicator);
+  iframeContainer.appendChild(iframe);
 
   // Assemble chat window
   chatWindow.appendChild(header);
-  chatWindow.appendChild(iframe);
+  chatWindow.appendChild(iframeContainer);
 
+  // Add notification badge to bubble
+  chatBubble.appendChild(notificationBadge);
+  
   // Assemble widget
   widgetContainer.appendChild(chatBubble);
   widgetContainer.appendChild(chatWindow);
 
-  // Toggle chat window
+  // Toggle chat window with enhanced animations
   let isOpen = false;
+  let hasBeenOpened = false;
+  
   function toggleChat() {
     isOpen = !isOpen;
     if (isOpen) {
       chatWindow.style.display = 'flex';
       chatBubble.innerHTML = `
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 6L6 18M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M18 6L6 18M6 6L18 18" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       `;
+      chatBubble.style.animation = 'none';
+      notificationBadge.style.display = 'none';
+      hasBeenOpened = true;
+      
+      // Load iframe content if not loaded yet
+      if (!iframe.src) {
+        iframe.src = `${config.domain}/public-chat/${config.chatbotId}`;
+      }
     } else {
       chatWindow.style.display = 'none';
       chatBubble.innerHTML = `
@@ -347,11 +402,29 @@
           <path d="M12 2C6.48 2 2 6.48 2 12C2 13.54 2.38 14.99 3.06 16.27L2 22L7.73 20.94C9.01 21.62 10.46 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C10.69 20 9.45 19.69 8.35 19.14L8 18.96L4.21 19.79L5.04 16.05L4.84 15.68C4.26 14.55 3.94 13.31 3.94 12C3.94 7.59 7.59 3.94 12 3.94C16.41 3.94 20.06 7.59 20.06 12C20.06 16.41 16.41 20 12 20Z" fill="white"/>
         </svg>
       `;
+      if (!hasBeenOpened) {
+        chatBubble.style.animation = 'bounce 2s infinite';
+      }
+    }
+  }
+  
+  // Show welcome notification
+  function showNotification() {
+    if (config.showNotification && !hasBeenOpened) {
+      setTimeout(() => {
+        notificationBadge.style.display = 'flex';
+      }, 2000);
     }
   }
 
   chatBubble.addEventListener('click', toggleChat);
+  
   header.querySelector('#botsmith-close').addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleChat();
+  });
+  
+  header.querySelector('#botsmith-minimize').addEventListener('click', (e) => {
     e.stopPropagation();
     toggleChat();
   });
