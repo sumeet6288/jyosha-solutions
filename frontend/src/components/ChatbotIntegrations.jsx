@@ -295,21 +295,53 @@ const ChatbotIntegrations = ({ chatbot }) => {
     }
   };
 
-  const copyWebhookURL = () => {
+  const copyWebhookURL = async () => {
     const webhookURL = `${window.location.origin}/api/webhook/${chatbot.id}`;
-    navigator.clipboard.writeText(webhookURL);
-    toast({
-      title: 'Copied!',
-      description: 'Webhook URL copied to clipboard'
-    });
+    try {
+      await navigator.clipboard.writeText(webhookURL);
+      toast({
+        title: 'Copied!',
+        description: 'Webhook URL copied to clipboard'
+      });
+    } catch (err) {
+      const textarea = document.createElement('textarea');
+      textarea.value = webhookURL;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        toast({ title: 'Copied!', description: 'Webhook URL copied to clipboard' });
+      } catch (execErr) {
+        toast({ title: 'Copy Failed', description: 'Could not copy to clipboard', variant: 'destructive' });
+      }
+      document.body.removeChild(textarea);
+    }
   };
 
-  const copyAPIKey = () => {
-    navigator.clipboard.writeText(chatbot.id);
-    toast({
-      title: 'Copied!',
-      description: 'Chatbot ID copied to clipboard'
-    });
+  const copyAPIKey = async () => {
+    try {
+      await navigator.clipboard.writeText(chatbot.id);
+      toast({
+        title: 'Copied!',
+        description: 'Chatbot ID copied to clipboard'
+      });
+    } catch (err) {
+      const textarea = document.createElement('textarea');
+      textarea.value = chatbot.id;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        toast({ title: 'Copied!', description: 'Chatbot ID copied to clipboard' });
+      } catch (execErr) {
+        toast({ title: 'Copy Failed', description: 'Could not copy to clipboard', variant: 'destructive' });
+      }
+      document.body.removeChild(textarea);
+    }
   };
 
   const getStatusBadge = (status, enabled) => {
