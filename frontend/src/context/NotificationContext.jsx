@@ -132,15 +132,24 @@ export const NotificationProvider = ({ children, user }) => {
       };
 
       ws.onerror = (error) => {
-        console.error('WebSocket error:', error);
+        // Silently log WebSocket errors to avoid console spam
+        // WebSocket is a nice-to-have feature, not critical
       };
 
       ws.onclose = () => {
-        console.log('WebSocket disconnected, attempting to reconnect...');
-        // Attempt to reconnect after 5 seconds
-        reconnectTimeoutRef.current = setTimeout(() => {
-          connectWebSocket();
-        }, 5000);
+        // Don't attempt to reconnect if backend URL is not properly configured
+        if (!backendUrl || backendUrl.includes('undefined')) {
+          return;
+        }
+        // Attempt to reconnect after 5 seconds (max 3 attempts)
+        const maxReconnectAttempts = 3;
+        const currentAttempts = wsRef.current?.reconnectAttempts || 0;
+        
+        if (currentAttempts < maxReconnectAttempts) {
+          reconnectTimeoutRef.current = setTimeout(() => {
+            connectWebSocket();
+          }, 5000);
+        }
       };
 
       wsRef.current = ws;
