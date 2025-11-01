@@ -51,6 +51,13 @@ export const NotificationProvider = ({ children, user }) => {
   };
 
   const connectWebSocket = () => {
+    // Disable WebSocket connection in production/preview environments
+    // as it's not supported by the current infrastructure
+    // WebSocket is a nice-to-have feature for real-time notifications
+    // The app works perfectly fine without it using polling instead
+    return;
+    
+    /* WebSocket implementation - currently disabled
     if (!user || !user.id) return;
 
     // Close existing connection if any
@@ -156,6 +163,7 @@ export const NotificationProvider = ({ children, user }) => {
     } catch (error) {
       console.error('Error connecting WebSocket:', error);
     }
+    */
   };
 
   useEffect(() => {
