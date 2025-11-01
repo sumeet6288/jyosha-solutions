@@ -48,16 +48,28 @@ const SharingTab = ({ chatbot, onUpdate }) => {
   const handleSaveSettings = async () => {
     setSaving(true);
     try {
-      await chatbotAPI.update(chatbot.id, {
+      const response = await chatbotAPI.update(chatbot.id, {
         public_access: publicAccess,
         webhook_url: webhookUrl,
         webhook_enabled: webhookEnabled
       });
-      toast.success('Settings updated successfully!');
-      onUpdate && onUpdate();
+      
+      // Update local state with saved values from backend
+      if (response.data) {
+        setPublicAccess(response.data.public_access || false);
+        setWebhookUrl(response.data.webhook_url || '');
+        setWebhookEnabled(response.data.webhook_enabled || false);
+      }
+      
+      toast.success('Settings saved successfully! Your changes are now live.');
+      
+      // Trigger parent refresh to update chatbot data
+      if (onUpdate) {
+        await onUpdate();
+      }
     } catch (error) {
       console.error('Error updating settings:', error);
-      toast.error('Failed to update settings');
+      toast.error('Failed to update settings. Please try again.');
     } finally {
       setSaving(false);
     }
