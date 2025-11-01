@@ -309,7 +309,7 @@ transition: 700ms
 
 ## 🚀 Live Preview
 
-**URL**: https://install-preview-3.preview.emergentagent.com
+**URL**: https://dep-installer-22.preview.emergentagent.com
 
 ### Check these pages:
 - ✅ Dashboard (main nav)
