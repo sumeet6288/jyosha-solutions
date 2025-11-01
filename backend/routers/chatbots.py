@@ -134,11 +134,14 @@ async def update_chatbot(
                 detail="Chatbot not found"
             )
         
-        # Update only provided fields
-        update_data = {
-            k: v for k, v in chatbot_data.model_dump(exclude_unset=True).items()
-            if v is not None
-        }
+        # Update only provided fields (keep False boolean values)
+        update_data = {}
+        for k, v in chatbot_data.model_dump(exclude_unset=True).items():
+            # Include the field if:
+            # 1. It's not None, OR
+            # 2. It's a boolean (to allow False values)
+            if v is not None or isinstance(v, bool):
+                update_data[k] = v
         
         if update_data:
             update_data["updated_at"] = datetime.now(timezone.utc)
