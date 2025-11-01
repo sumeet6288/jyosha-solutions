@@ -36,6 +36,46 @@ const webpackConfig = {
     },
     configure: (webpackConfig) => {
 
+      // Production optimizations - disable source maps and enable aggressive minification
+      if (process.env.NODE_ENV === 'production' || process.env.GENERATE_SOURCEMAP === 'false') {
+        // Disable all source maps
+        webpackConfig.devtool = false;
+        
+        // Configure TerserPlugin for maximum minification
+        const TerserPlugin = require('terser-webpack-plugin');
+        webpackConfig.optimization = {
+          ...webpackConfig.optimization,
+          minimize: true,
+          minimizer: [
+            new TerserPlugin({
+              terserOptions: {
+                parse: {
+                  ecma: 8,
+                },
+                compress: {
+                  ecma: 5,
+                  warnings: false,
+                  comparisons: false,
+                  inline: 2,
+                  drop_console: true,  // Remove console.log in production
+                  drop_debugger: true, // Remove debugger statements
+                  pure_funcs: ['console.log', 'console.info', 'console.debug'], // Remove specific console methods
+                },
+                mangle: {
+                  safari10: true,
+                },
+                output: {
+                  ecma: 5,
+                  comments: false, // Remove all comments
+                  ascii_only: true,
+                },
+              },
+              extractComments: false, // Don't extract comments to separate file
+            }),
+          ],
+        };
+      }
+
       // Disable hot reload completely if environment variable is set
       if (config.disableHotReload) {
         // Remove hot reload related plugins
