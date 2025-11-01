@@ -28,7 +28,7 @@ const Documentation = () => {
         { title: 'Customization Options', time: '10 min read', description: 'Brand colors, logos, and themes', slug: 'customization-options' },
         { title: 'Analytics & Insights', time: '15 min read', description: 'Track performance and user engagement', slug: 'analytics-insights' },
         { title: 'Sharing & Deployment', time: '8 min read', description: 'Embed codes and public links', slug: 'sharing-deployment' },
-        { title: 'Account Settings', time: '5 min read', description: 'Manage your profile and preferences', slug: null },
+        { title: 'Account Settings', time: '5 min read', description: 'Manage your profile and preferences', slug: 'account-settings-guide' },
       ]
     },
     {
