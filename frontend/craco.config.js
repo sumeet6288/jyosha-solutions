@@ -68,6 +68,10 @@ const webpackConfig = {
         webpackConfig.plugins.push(healthPluginInstance);
       }
 
+      // Fix core-js-pure module resolution issue
+      webpackConfig.resolve = webpackConfig.resolve || {};
+      webpackConfig.resolve.symlinks = false;
+
       return webpackConfig;
     },
   },
