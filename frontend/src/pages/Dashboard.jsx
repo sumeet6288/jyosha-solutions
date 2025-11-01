@@ -21,7 +21,7 @@ const Dashboard = () => {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [upgradeContext, setUpgradeContext] = useState({});
   const [selectedPlanInfo, setSelectedPlanInfo] = useState(null);
-  const [autoRefresh, setAutoRefresh] = useState(true);
+  const [autoRefresh, setAutoRefresh] = useState(false); // Disabled by default to prevent error popups
   const [lastUpdated, setLastUpdated] = useState(new Date());
 
   useEffect(() => {
