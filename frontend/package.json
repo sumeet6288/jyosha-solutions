@@ -57,10 +57,11 @@
     "zod": "^3.24.4"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
+    "start": "GENERATE_SOURCEMAP=false craco start",
+    "build": "GENERATE_SOURCEMAP=false INLINE_RUNTIME_CHUNK=false craco build",
+    "build:production": "cross-env GENERATE_SOURCEMAP=false INLINE_RUNTIME_CHUNK=false NODE_ENV=production craco build && node scripts/remove-sourcemaps.js",
     "test": "craco test",
-    "vercel-build": "craco build"
+    "vercel-build": "GENERATE_SOURCEMAP=false craco build"
   },
   "browserslist": {
     "production": [
