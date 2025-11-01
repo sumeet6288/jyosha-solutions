@@ -959,6 +959,13 @@ const ChatbotBuilder = () => {
               <ChatbotIntegrations chatbot={chatbot} />
             </div>
           </TabsContent>
+
+          {/* Share Tab */}
+          <TabsContent value="share" className="animate-fade-in-up">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-8 shadow-xl">
+              <SharingTab chatbot={chatbot} onUpdate={refreshChatbot} />
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
 
