@@ -97,6 +97,44 @@
 #====================================================================================================
 
 
+#====================================================================================================
+# START - Quick Setup Instructions - READ THIS FIRST
+#====================================================================================================
+
+# 🚀 FAST SETUP FOR NEW EMERGENT ACCOUNT
+# ========================================
+# 
+# When loading this repo in a different Emergent account, follow these steps:
+#
+# STEP 1: Run the fast setup script
+#   bash /app/setup.sh
+#
+# This script will:
+#   ✅ Install all backend dependencies (Python packages including emergentintegrations)
+#   ✅ Install all frontend dependencies (React, Tailwind, etc.)
+#   ✅ Restart all services (backend, frontend, MongoDB)
+#   ✅ Verify everything is running
+#
+# STEP 2: Access the application
+#   Frontend: http://localhost:3000
+#   Backend API Docs: http://localhost:8001/docs
+#
+# ALTERNATIVE: Manual Installation (if setup.sh doesn't work)
+#   Backend:  cd /app/backend && pip install -r requirements.txt && pip install emergentintegrations --extra-index-url https://d33sy5i8bnduwe.cloudfront.net/simple/
+#   Frontend: cd /app/frontend && yarn install --frozen-lockfile
+#   Restart:  sudo supervisorctl restart all
+#
+# TIME: Setup takes approximately 2-3 minutes
+#
+# TROUBLESHOOTING:
+#   - If services don't start: sudo supervisorctl status
+#   - Check backend logs: tail -50 /var/log/supervisor/backend.err.log
+#   - Check frontend logs: tail -50 /var/log/supervisor/frontend.out.log
+#
+#====================================================================================================
+# END - Quick Setup Instructions
+#====================================================================================================
+
 
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
