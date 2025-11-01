@@ -61,6 +61,13 @@ export const NotificationProvider = ({ children, user }) => {
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
       const wsUrl = backendUrl.replace(/^https?:/, 'wss:').replace(/^http:/, 'ws:');
+      
+      // Skip WebSocket connection if backend URL is not properly configured
+      if (!backendUrl || backendUrl.includes('undefined')) {
+        console.log('WebSocket skipped - backend URL not configured');
+        return;
+      }
+      
       const ws = new WebSocket(`${wsUrl}/ws/notifications/${user.id}`);
 
       ws.onopen = () => {
