@@ -75,12 +75,18 @@ const Dashboard = () => {
       setLastUpdated(new Date());
     } catch (error) {
       console.error('Error loading dashboard data:', error);
+      // Only show error toast for initial load, not during silent refresh
       if (!silent) {
         toast({
           title: 'Error',
-          description: 'Failed to load dashboard data',
+          description: 'Failed to load dashboard data. Please refresh the page.',
           variant: 'destructive'
         });
+      }
+      // If silent refresh fails, disable auto-refresh to prevent repeated errors
+      if (silent) {
+        setAutoRefresh(false);
+        console.warn('Auto-refresh disabled due to error');
       }
     } finally {
       if (!silent) setLoading(false);
