@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Code, Link2, Download, Webhook, Copy, Check, ExternalLink, Globe } from 'lucide-react';
 import { chatbotAPI } from '../utils/api';
 import axios from 'axios';
@@ -14,6 +14,15 @@ const SharingTab = ({ chatbot, onUpdate }) => {
   const [webhookEnabled, setWebhookEnabled] = useState(chatbot?.webhook_enabled || false);
   const [publicAccess, setPublicAccess] = useState(chatbot?.public_access || false);
   const [saving, setSaving] = useState(false);
+
+  // Update state when chatbot prop changes
+  useEffect(() => {
+    if (chatbot) {
+      setWebhookUrl(chatbot.webhook_url || '');
+      setWebhookEnabled(chatbot.webhook_enabled || false);
+      setPublicAccess(chatbot.public_access || false);
+    }
+  }, [chatbot]);
 
   const publicChatUrl = `${window.location.origin}/public-chat/${chatbot?.id}`;
   
