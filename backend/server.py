@@ -11,6 +11,14 @@ from services.plan_service import plan_service
 from typing import Dict
 import json
 
+# Import security middleware
+from middleware.security import (
+    SecurityHeadersMiddleware,
+    RateLimitMiddleware,
+    InputValidationMiddleware,
+    APIKeyProtectionMiddleware
+)
+
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
