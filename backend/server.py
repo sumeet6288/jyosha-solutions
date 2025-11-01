@@ -105,6 +105,8 @@ api_router.include_router(integrations.router)
 # Include the router in the main app
 app.include_router(api_router)
 
+# Add security middleware (order matters - last added runs first)
+# CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
@@ -112,6 +114,18 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Security headers middleware
+app.add_middleware(SecurityHeadersMiddleware)
+
+# Rate limiting middleware (60 requests/min, 1000 requests/hour)
+app.add_middleware(RateLimitMiddleware, requests_per_minute=60, requests_per_hour=1000)
+
+# Input validation middleware
+app.add_middleware(InputValidationMiddleware)
+
+# API key protection middleware
+app.add_middleware(APIKeyProtectionMiddleware)
 
 # Configure logging
 logging.basicConfig(
