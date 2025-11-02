@@ -401,8 +401,8 @@ class WidgetSettingsTestSuite:
             await self.test_public_chat_widget_reflection(chatbot_id)
             await self.test_invalid_widget_settings(chatbot_id)
             
-            # Cleanup
-            await self.cleanup_test_chatbot(chatbot_id)
+            # Skip cleanup for existing chatbot
+            print("ℹ️  Skipping cleanup - using existing chatbot")
             
         finally:
             await self.cleanup_session()
