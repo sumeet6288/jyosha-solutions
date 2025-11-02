@@ -49,6 +49,15 @@ const ChatbotBuilder = () => {
     loadChatbot();
   }, [id]);
 
+  // Sync public access state with chatbot data
+  useEffect(() => {
+    if (chatbot) {
+      setPublicAccess(chatbot.public_access !== undefined ? chatbot.public_access : true);
+      setWebhookUrl(chatbot.webhook_url || '');
+      setWebhookEnabled(chatbot.webhook_enabled || false);
+    }
+  }, [chatbot]);
+
   const loadChatbot = async () => {
     try {
       setLoading(true);
