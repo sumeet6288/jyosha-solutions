@@ -232,6 +232,80 @@ const ChatbotBuilder = () => {
     navigate('/');
   };
 
+  // Public access and sharing functions
+  const publicChatUrl = chatbot ? `${window.location.origin}/public-chat/${chatbot.id}` : '';
+
+  const copyToClipboard = async (text, type) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(type);
+      toast({
+        title: 'Copied!',
+        description: 'Copied to clipboard successfully'
+      });
+      setTimeout(() => setCopied(''), 2000);
+    } catch (err) {
+      toast({
+        title: 'Copy Failed',
+        description: 'Failed to copy to clipboard',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const handleSavePublicAccess = async () => {
+    try {
+      await chatbotAPI.update(id, {
+        public_access: publicAccess,
+        webhook_url: webhookUrl,
+        webhook_enabled: webhookEnabled
+      });
+      toast({
+        title: 'Success',
+        description: 'Public access settings saved successfully'
+      });
+      await refreshChatbot();
+    } catch (error) {
+      console.error('Error updating public access:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to update settings',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const handleExport = async (format) => {
+    try {
+      const api = axios.create({
+        baseURL: process.env.REACT_APP_BACKEND_URL || ''
+      });
+      const response = await api.get(`/api/public/conversations/${chatbot.id}/export?format=${format}`, {
+        responseType: 'blob'
+      });
+      
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `chatbot_${chatbot.id}_export.${format}`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      
+      toast({
+        title: 'Success',
+        description: `Exported conversations as ${format.toUpperCase()}`
+      });
+    } catch (error) {
+      console.error('Export error:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to export conversations',
+        variant: 'destructive'
+      });
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50 flex items-center justify-center">
