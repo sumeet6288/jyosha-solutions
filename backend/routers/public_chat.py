@@ -180,6 +180,12 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
         }
     )
     
+    # Update user's subscription usage for message count tracking
+    user_id = chatbot.get("user_id")
+    if user_id:
+        from services.plan_service import plan_service
+        await plan_service.increment_usage(user_id, "messages", 2)
+    
     # Send webhook notification if enabled
     if chatbot.get("webhook_enabled") and chatbot.get("webhook_url"):
         await send_webhook_notification(
