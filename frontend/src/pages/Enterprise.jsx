@@ -145,10 +145,10 @@ const Enterprise = () => {
                 For Large Organizations
               </span>
             </div>
-            <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-purple-900 to-pink-900 bg-clip-text text-transparent">
+            <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-purple-900 to-pink-900 bg-clip-text text-transparent">
               Scale Up Solutions
             </h1>
-            <p className="text-2xl text-gray-600 max-w-3xl mx-auto">Powerful AI chatbots with enterprise-grade security, scalability, and dedicated support</p>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Powerful AI chatbots with enterprise-grade security, scalability, and dedicated support</p>
           </div>
 
           {/* Features Grid */}
