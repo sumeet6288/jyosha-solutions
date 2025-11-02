@@ -259,34 +259,42 @@ const AdvancedAnalytics = ({ chatbotId }) => {
       </div>
 
       {/* Performance Metrics */}
-      {performance && (
-        <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
-          <h4 className="text-base sm:text-lg font-semibold mb-4">Performance Metrics</h4>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-            <div className="p-3 sm:p-4 bg-purple-50 rounded-lg">
-              <p className="text-xs sm:text-sm text-gray-600 mb-1">Fastest Response</p>
-              <p className="text-xl sm:text-2xl font-bold text-purple-600">
-                {(performance.fastest_response_ms / 1000).toFixed(2)}s
-              </p>
-            </div>
-            <div className="p-3 sm:p-4 bg-pink-50 rounded-lg">
-              <p className="text-xs sm:text-sm text-gray-600 mb-1">Average Response</p>
-              <p className="text-xl sm:text-2xl font-bold text-pink-600">
-                {(performance.avg_response_time_ms / 1000).toFixed(2)}s
-              </p>
-            </div>
-            <div className="p-3 sm:p-4 bg-indigo-50 rounded-lg">
-              <p className="text-xs sm:text-sm text-gray-600 mb-1">Slowest Response</p>
-              <p className="text-xl sm:text-2xl font-bold text-indigo-600">
-                {(performance.slowest_response_ms / 1000).toFixed(2)}s
-              </p>
-            </div>
+      <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
+        <h4 className="text-base sm:text-lg font-semibold mb-4">Performance Metrics</h4>
+        {!performance || performance.total_responses === 0 ? (
+          <div className="flex flex-col items-center justify-center h-[150px] bg-gradient-to-br from-pink-50 to-rose-50 rounded-lg">
+            <Clock className="w-12 h-12 mb-3 text-pink-300" />
+            <p className="text-base font-semibold text-gray-700">No performance data yet</p>
+            <p className="text-xs mt-1 text-gray-500">Metrics will appear after first responses</p>
           </div>
-          <p className="text-xs sm:text-sm text-gray-500 mt-4 text-center">
-            Total Responses: {performance.total_responses}
-          </p>
-        </div>
-      )}
+        ) : (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+              <div className="p-3 sm:p-4 bg-purple-50 rounded-lg">
+                <p className="text-xs sm:text-sm text-gray-600 mb-1">Fastest Response</p>
+                <p className="text-xl sm:text-2xl font-bold text-purple-600">
+                  {(performance.fastest_response_ms / 1000).toFixed(2)}s
+                </p>
+              </div>
+              <div className="p-3 sm:p-4 bg-pink-50 rounded-lg">
+                <p className="text-xs sm:text-sm text-gray-600 mb-1">Average Response</p>
+                <p className="text-xl sm:text-2xl font-bold text-pink-600">
+                  {(performance.avg_response_time_ms / 1000).toFixed(2)}s
+                </p>
+              </div>
+              <div className="p-3 sm:p-4 bg-indigo-50 rounded-lg">
+                <p className="text-xs sm:text-sm text-gray-600 mb-1">Slowest Response</p>
+                <p className="text-xl sm:text-2xl font-bold text-indigo-600">
+                  {(performance.slowest_response_ms / 1000).toFixed(2)}s
+                </p>
+              </div>
+            </div>
+            <p className="text-xs sm:text-sm text-gray-500 mt-4 text-center">
+              Total Responses: {performance.total_responses}
+            </p>
+          </>
+        )}
+      </div>
 
       {/* New Graphs Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
