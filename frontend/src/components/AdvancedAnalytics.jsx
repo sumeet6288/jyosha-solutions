@@ -184,7 +184,15 @@ const AdvancedAnalytics = ({ chatbotId }) => {
         {/* Top Questions Chart */}
         <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
           <h4 className="text-base sm:text-lg font-semibold mb-4">Top Asked Questions</h4>
-          {topQuestions && topQuestions.top_questions.length > 0 ? (
+          {!topQuestions || topQuestions.top_questions.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-[250px] bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg">
+              <MessageSquare className="w-12 h-12 sm:w-16 sm:h-16 mb-4 text-blue-300" />
+              <p className="text-base sm:text-lg font-semibold text-gray-700">No questions yet</p>
+              <p className="text-xs sm:text-sm mt-2 text-center px-4 text-gray-500">
+                Questions will appear as users interact with your chatbot
+              </p>
+            </div>
+          ) : (
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={topQuestions.top_questions.slice(0, 5)}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -201,19 +209,21 @@ const AdvancedAnalytics = ({ chatbotId }) => {
                 <Bar dataKey="count" fill="#7c3aed" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
-          ) : (
-            <div className="flex flex-col items-center justify-center h-[250px] text-gray-400">
-              <MessageSquare className="w-12 h-12 sm:w-16 sm:h-16 mb-4 opacity-30" />
-              <p className="text-base sm:text-lg font-medium">No questions yet</p>
-              <p className="text-xs sm:text-sm mt-2 text-center px-4">Questions will appear as users interact with your chatbot</p>
-            </div>
           )}
         </div>
 
         {/* Satisfaction Distribution Chart */}
         <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
           <h4 className="text-base sm:text-lg font-semibold mb-4">Satisfaction Distribution</h4>
-          {satisfaction && satisfactionPieData.length > 0 ? (
+          {!satisfaction || satisfactionPieData.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-[250px] bg-gradient-to-br from-yellow-50 to-orange-50 rounded-lg">
+              <Star className="w-12 h-12 sm:w-16 sm:h-16 mb-4 text-yellow-300" />
+              <p className="text-base sm:text-lg font-semibold text-gray-700">No ratings yet</p>
+              <p className="text-xs sm:text-sm mt-2 text-center px-4 text-gray-500">
+                User satisfaction ratings will be displayed here
+              </p>
+            </div>
+          ) : (
             <>
               <ResponsiveContainer width="100%" height={250}>
                 <PieChart>
@@ -244,12 +254,6 @@ const AdvancedAnalytics = ({ chatbotId }) => {
                 </p>
               </div>
             </>
-          ) : (
-            <div className="flex flex-col items-center justify-center h-[250px] text-gray-400">
-              <Star className="w-12 h-12 sm:w-16 sm:h-16 mb-4 opacity-30" />
-              <p className="text-base sm:text-lg font-medium">No ratings yet</p>
-              <p className="text-xs sm:text-sm mt-2 text-center px-4">User satisfaction ratings will be displayed here</p>
-            </div>
           )}
         </div>
       </div>
