@@ -7,7 +7,7 @@ import { Textarea } from '../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Slider } from '../components/ui/slider';
-import { Plus, FileText, Globe, Trash2, Loader2, MessageSquare, ArrowLeft, Settings, Palette, BarChart3, User, Clock, ChevronDown, ChevronUp, TrendingUp, Zap, Share2 } from 'lucide-react';
+import { Plus, FileText, Globe, Trash2, Loader2, MessageSquare, ArrowLeft, Settings, Palette, BarChart3, User, Clock, ChevronDown, ChevronUp, TrendingUp, Zap } from 'lucide-react';
 import UserProfileDropdown from '../components/UserProfileDropdown';
 import AddSourceModal from '../components/AddSourceModal';
 import ChatPreviewModal from '../components/ChatPreviewModal';
