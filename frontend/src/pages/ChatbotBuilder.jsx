@@ -15,7 +15,6 @@ import DeleteConfirmModal from '../components/DeleteConfirmModal';
 import AppearanceTab from '../components/AppearanceTab';
 import AdvancedAnalytics from '../components/AdvancedAnalytics';
 import ChatbotIntegrations from '../components/ChatbotIntegrations';
-import SharingTab from '../components/SharingTab';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../hooks/use-toast';
 import { chatbotAPI, sourceAPI, chatAPI } from '../utils/api';
