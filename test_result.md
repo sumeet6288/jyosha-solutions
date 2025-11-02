@@ -497,6 +497,8 @@ test_plan:
 
 agent_communication:
   - agent: "main"
+    message: "CRITICAL FIX - Message Count Tracking: Fixed dashboard message count not reflecting widget/public chat messages. Root cause: Public chat endpoint was only updating chatbot.messages_count but not subscription.usage.messages_this_month. Fix applied: 1) Updated public_chat.py to call plan_service.increment_usage() after each message exchange (increments by 2 for user+assistant messages), 2) Fixed chat.py regular endpoint to increment by 2 instead of 1. Now all messages from both public widget and regular chat properly update the subscription usage statistics displayed on dashboard plan card."
+  - agent: "main"
     message: "Completed all backend and frontend implementation. Ready for comprehensive testing of all features including auth, chatbot management, source uploads, AI chat, and analytics."
   - agent: "main"
     message: "CRITICAL FIX APPLIED: Added missing get_current_user function in auth.py that returns User object from database. This was causing backend service to fail on startup. Also added missing lxml dependency to requirements.txt. Backend and frontend are now running successfully. Ready for backend testing."
