@@ -353,6 +353,27 @@ class WidgetSettingsTestSuite:
         except Exception as e:
             self.log_test("Cleanup test chatbot", False, f"Exception: {str(e)}")
             
+    async def get_existing_chatbot(self) -> str:
+        """Get existing chatbot for testing"""
+        try:
+            async with self.session.get(f"{API_BASE}/chatbots") as response:
+                if response.status == 200:
+                    chatbots = await response.json()
+                    if chatbots:
+                        chatbot_id = chatbots[0]["id"]
+                        self.log_test("Get existing chatbot", True, f"Using existing chatbot: {chatbot_id}")
+                        return chatbot_id
+                    else:
+                        self.log_test("Get existing chatbot", False, "No chatbots found")
+                        return None
+                else:
+                    error_text = await response.text()
+                    self.log_test("Get existing chatbot", False, f"Status: {response.status}, Error: {error_text}")
+                    return None
+        except Exception as e:
+            self.log_test("Get existing chatbot", False, f"Exception: {str(e)}")
+            return None
+
     async def run_all_tests(self):
         """Run all widget settings tests"""
         print("🚀 Starting Widget Settings Test Suite")
@@ -362,10 +383,10 @@ class WidgetSettingsTestSuite:
         await self.setup_session()
         
         try:
-            # Create test chatbot
-            chatbot_id = await self.create_test_chatbot()
+            # Get existing chatbot (avoid plan limits)
+            chatbot_id = await self.get_existing_chatbot()
             if not chatbot_id:
-                print("❌ Failed to create test chatbot. Aborting tests.")
+                print("❌ No existing chatbot found. Cannot run tests.")
                 return
                 
             self.test_chatbot_id = chatbot_id
