@@ -337,83 +337,83 @@ const LandingPage = () => {
               <div className="absolute top-8 right-8 w-4 h-4 bg-white/30 rounded-full animate-ping pointer-events-none"></div>
               <div className="absolute bottom-12 left-12 w-3 h-3 bg-yellow-300/40 rounded-full animate-ping animation-delay-1000 pointer-events-none"></div>
               
-              <div className="relative bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-2xl w-full max-w-sm transition-shadow duration-300 border border-white/50 pointer-events-none scale-90">
+              <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-2xl w-full max-w-md transition-shadow duration-300 border border-white/50 pointer-events-none">
                 <div className="relative">
                   {/* Chatbot Header */}
-                  <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-200">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center shadow-md">
-                        <Sparkles className="w-4 h-4 text-white" />
+                  <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-200">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center shadow-lg">
+                        <Sparkles className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-xs font-semibold text-gray-900">BotSmith AI</h3>
+                        <h3 className="text-sm font-semibold text-gray-900">BotSmith AI</h3>
                         <div className="flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                          <span className="text-[10px] text-gray-500">Online</span>
+                          <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                          <span className="text-xs text-gray-500">Online</span>
                         </div>
                       </div>
                     </div>
                     <button className="text-gray-400 hover:text-gray-600 transition-colors">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                       </svg>
                     </button>
                   </div>
                   
                   {/* Chat Messages */}
-                  <div className="space-y-2.5 mb-3 max-h-[220px] overflow-hidden">
+                  <div className="space-y-4 mb-4 max-h-[280px] overflow-hidden">
                     {/* AI Message */}
-                    <div className="flex items-start gap-1.5 animate-slide-in-left">
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0 shadow-sm">
-                        <Sparkles className="w-3 h-3 text-white" />
+                    <div className="flex items-start gap-2 animate-slide-in-left">
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                        <Sparkles className="w-4 h-4 text-white" />
                       </div>
-                      <div className="bg-gray-100 rounded-xl rounded-tl-sm px-3 py-2 max-w-[75%] shadow-sm">
-                        <p className="text-xs text-gray-800">👋 Hi! I'm your AI assistant. How can I help you today?</p>
+                      <div className="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-[75%] shadow-sm">
+                        <p className="text-sm text-gray-800">👋 Hi! I'm your AI assistant. How can I help you today?</p>
                       </div>
                     </div>
                     
                     {/* User Message */}
-                    <div className="flex items-start gap-1.5 justify-end animate-slide-in-right animation-delay-300">
-                      <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl rounded-tr-sm px-3 py-2 max-w-[75%] shadow-sm">
-                        <p className="text-xs text-white">What services do you offer?</p>
+                    <div className="flex items-start gap-2 justify-end animate-slide-in-right animation-delay-300">
+                      <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl rounded-tr-sm px-4 py-2.5 max-w-[75%] shadow-md">
+                        <p className="text-sm text-white">What services do you offer?</p>
                       </div>
                     </div>
                     
                     {/* AI Response */}
-                    <div className="flex items-start gap-1.5 animate-slide-in-left animation-delay-600">
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0 shadow-sm">
-                        <Sparkles className="w-3 h-3 text-white" />
+                    <div className="flex items-start gap-2 animate-slide-in-left animation-delay-600">
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                        <Sparkles className="w-4 h-4 text-white" />
                       </div>
-                      <div className="bg-gray-100 rounded-xl rounded-tl-sm px-3 py-2 max-w-[75%] shadow-sm">
-                        <p className="text-xs text-gray-800">I can help with customer support, answer questions, and provide 24/7 assistance! 🚀</p>
+                      <div className="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-[75%] shadow-sm">
+                        <p className="text-sm text-gray-800">I can help with customer support, answer questions, and provide 24/7 assistance! 🚀</p>
                       </div>
                     </div>
                     
                     {/* Typing Indicator */}
-                    <div className="flex items-start gap-1.5 animate-slide-in-left animation-delay-900">
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0 shadow-sm">
-                        <Sparkles className="w-3 h-3 text-white" />
+                    <div className="flex items-start gap-2 animate-slide-in-left animation-delay-900">
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                        <Sparkles className="w-4 h-4 text-white" />
                       </div>
-                      <div className="bg-gray-100 rounded-xl rounded-tl-sm px-3 py-2 shadow-sm">
+                      <div className="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-2.5 shadow-sm">
                         <div className="flex gap-1">
-                          <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></span>
-                          <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce animation-delay-100"></span>
-                          <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce animation-delay-200"></span>
+                          <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
+                          <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce animation-delay-100"></span>
+                          <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce animation-delay-200"></span>
                         </div>
                       </div>
                     </div>
                   </div>
                   
                   {/* Chat Input */}
-                  <div className="flex items-center gap-1.5 p-1.5 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="flex items-center gap-2 p-2 bg-gray-50 rounded-xl border border-gray-200">
                     <input 
                       type="text" 
                       placeholder="Type your message..."
-                      className="flex-1 bg-transparent px-2 py-1.5 text-xs text-gray-700 placeholder-gray-400 outline-none"
+                      className="flex-1 bg-transparent px-3 py-2 text-sm text-gray-700 placeholder-gray-400 outline-none"
                       disabled
                     />
-                    <button className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-1.5 rounded-md hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-sm">
-                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-2 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 shadow-md">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                       </svg>
                     </button>
