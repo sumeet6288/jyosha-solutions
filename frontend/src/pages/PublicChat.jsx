@@ -211,7 +211,7 @@ const PublicChat = () => {
                     : {}
                 }
               >
-                <p className="whitespace-pre-wrap break-words">{message.content}</p>
+                <p className="whitespace-pre-wrap break-words text-sm">{message.content}</p>
               </div>
 
               {message.role === 'user' && (
