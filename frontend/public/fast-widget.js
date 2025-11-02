@@ -222,11 +222,13 @@
 
   function renderMessages() {
     messagesContainer.innerHTML = '';
-    messages.forEach(msg => {
+    messages.forEach((msg, index) => {
       const msgDiv = document.createElement('div');
+      msgDiv.className = 'botsmith-message-item';
       msgDiv.style.cssText = `
         display: flex; gap: 8px; align-items: flex-start;
         ${msg.role === 'user' ? 'justify-content: flex-end;' : ''}
+        animation-delay: ${index === messages.length - 1 ? '0s' : '0s'};
       `;
       
       if (msg.role === 'assistant') {
@@ -255,8 +257,10 @@
       messagesContainer.appendChild(msgDiv);
     });
     
-    // Scroll to bottom
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    // Smooth scroll to bottom to show newest message
+    requestAnimationFrame(() => {
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    });
   }
 
   function showTyping() {
