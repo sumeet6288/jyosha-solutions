@@ -463,14 +463,17 @@ frontend:
   - task: "Public Access Always-On in Widget Tab (Share Tab Removed)"
     implemented: true
     working: true
-    file: "/app/frontend/src/pages/ChatbotBuilder.jsx"
+    file: "/app/frontend/src/pages/ChatbotBuilder.jsx, /app/backend/models.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "✅ MAJOR UI RESTRUCTURE: Removed Share tab completely and moved all public access functionality to Widget tab. Changes: 1) Removed Share tab from navigation and TabsContent, 2) Removed SharingTab component import and Share2 icon, 3) Added public access toggle at top of Widget tab with 'Always ON' badge (public_access defaults to true), 4) Integrated all sharing features in Widget tab: public chat link with copy button and open in new tab, export conversations (JSON/CSV), 5) Added helper functions: copyToClipboard, handleSavePublicAccess, handleExport, 6) Public access section styled with green gradient theme to indicate it's always active, 7) Quick action buttons for exporting data directly from Widget tab. Widget tab now serves as one-stop solution for both embedding chatbot and managing public access. User no longer needs separate Share tab - everything is consolidated in Widget tab with public access prominently displayed at top."
+      - working: true
+        agent: "main"
+        comment: "✅ WIDGET ERROR FIXED: Resolved 'Sorry, I encountered an error. Please try again.' issue in chat widget. Root cause: public_access field was defaulting to false in Chatbot model, preventing widget from working. Fixed by: 1) Updated Chatbot model in models.py to set public_access: bool = True as default (line 216), 2) Updated ChatbotResponse model to also default public_access to True (line 294), 3) Updated existing chatbot in database to have public_access=true, 4) Restarted backend to clear cache. Testing confirmed: Widget now works correctly - messages send successfully, AI responses received, public chat page fully functional. All new chatbots will now have public access enabled by default."
 
 metadata:
   created_by: "main_agent"
