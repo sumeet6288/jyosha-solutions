@@ -282,7 +282,7 @@ class WidgetSettingsTestSuite:
                     return
                     
             # Test public chatbot info endpoint (used by public chat page)
-            async with self.session.get(f"{API_BASE}/public-chat/{chatbot_id}/info") as response:
+            async with self.session.get(f"{API_BASE}/public/chatbot/{chatbot_id}") as response:
                 if response.status == 200:
                     result = await response.json()
                     
