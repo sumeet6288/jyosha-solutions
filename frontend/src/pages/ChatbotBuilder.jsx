@@ -19,6 +19,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../hooks/use-toast';
 import { chatbotAPI, sourceAPI, chatAPI } from '../utils/api';
 import { AI_PROVIDERS, getAllModels } from '../utils/models';
+import axios from 'axios';
 
 const ChatbotBuilder = () => {
   const { id } = useParams();
