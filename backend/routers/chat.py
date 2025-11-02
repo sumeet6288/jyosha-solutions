@@ -174,7 +174,7 @@ async def send_message(chat_request: ChatRequest):
                 }
             }
         )
-        increment_usage_task = plan_service.increment_usage(user_id, "messages", amount=1)
+        increment_usage_task = plan_service.increment_usage(user_id, "messages", amount=2)
         
         # Execute all updates in parallel
         await asyncio.gather(
