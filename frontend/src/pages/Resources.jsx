@@ -151,10 +151,10 @@ const Resources = () => {
                 Learn & Grow
               </span>
             </div>
-            <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-purple-900 to-pink-900 bg-clip-text text-transparent">
+            <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-purple-900 to-pink-900 bg-clip-text text-transparent">
               Learn
             </h1>
-            <p className="text-2xl text-gray-600 max-w-3xl mx-auto">Everything you need to build, deploy, and optimize amazing AI chatbots</p>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Everything you need to build, deploy, and optimize amazing AI chatbots</p>
           </div>
 
           {/* Quick Links Categories */}
