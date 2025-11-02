@@ -118,8 +118,8 @@ app.add_middleware(
 # Security headers middleware
 app.add_middleware(SecurityHeadersMiddleware)
 
-# Rate limiting middleware (60 requests/min, 1000 requests/hour)
-app.add_middleware(RateLimitMiddleware, requests_per_minute=60, requests_per_hour=1000)
+# Rate limiting middleware (200 requests/min, 5000 requests/hour)
+app.add_middleware(RateLimitMiddleware, requests_per_minute=200, requests_per_hour=5000)
 
 # Input validation middleware
 app.add_middleware(InputValidationMiddleware)
