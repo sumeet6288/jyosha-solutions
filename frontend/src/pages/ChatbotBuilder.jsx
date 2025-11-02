@@ -596,6 +596,77 @@ const ChatbotBuilder = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Configuration Panel */}
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-6 shadow-xl space-y-6">
+                {/* Public Access Toggle - Always ON */}
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-5 border-2 border-green-300 shadow-lg">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center shadow-lg shadow-green-500/30">
+                        <Globe className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900">Public Access</h3>
+                        <p className="text-sm text-gray-600">Your chatbot is publicly accessible</p>
+                      </div>
+                    </div>
+                    <div className="px-4 py-2 bg-green-500 text-white rounded-full font-semibold text-sm shadow-lg">
+                      Always ON
+                    </div>
+                  </div>
+                  
+                  {/* Public Chat Link */}
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-2 text-sm font-medium text-gray-700">
+                      <Link2 className="w-4 h-4 text-green-600" />
+                      <span>Share this link:</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="text"
+                        value={publicChatUrl}
+                        readOnly
+                        className="flex-1 px-3 py-2 bg-white border-2 border-green-200 rounded-lg text-sm font-mono"
+                      />
+                      <Button
+                        onClick={() => copyToClipboard(publicChatUrl, 'link')}
+                        className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg shadow-green-500/30"
+                        size="sm"
+                      >
+                        {copied === 'link' ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                      </Button>
+                      <a
+                        href={publicChatUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Quick Actions */}
+                  <div className="flex gap-2 mt-4">
+                    <Button
+                      onClick={() => handleExport('json')}
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 border-green-300 hover:bg-green-50"
+                    >
+                      <Download className="w-3 h-3 mr-1" />
+                      Export JSON
+                    </Button>
+                    <Button
+                      onClick={() => handleExport('csv')}
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 border-green-300 hover:bg-green-50"
+                    >
+                      <Download className="w-3 h-3 mr-1" />
+                      Export CSV
+                    </Button>
+                  </div>
+                </div>
+
                 <div>
                   <h2 className="text-2xl font-bold mb-2 bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">Embed Your Chatbot</h2>
                   <p className="text-gray-600 text-sm">Choose how you want to integrate the chatbot into your website</p>
