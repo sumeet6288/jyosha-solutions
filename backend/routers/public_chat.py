@@ -155,7 +155,8 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
         "chatbot_id": chatbot_id,
         "role": "assistant",
         "content": ai_response,
-        "timestamp": datetime.now(timezone.utc)
+        "created_at": datetime.now(timezone.utc),
+        "timestamp": datetime.now(timezone.utc)  # Keep for backwards compatibility
     }
     
     save_ai_message_task = db_instance.messages.insert_one(ai_message)
