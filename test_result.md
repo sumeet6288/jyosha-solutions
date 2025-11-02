@@ -456,6 +456,21 @@ frontend:
       - working: "NA"
         agent: "main"
         comment: "Created comprehensive dependency installation system to prevent installation errors and ensure smooth setup. Implemented 3 intelligent installation scripts: 1) /app/install_all.sh - Master installer that orchestrates both backend and frontend installation with beautiful formatted output, error handling, and verification steps. 2) /app/backend/install_dependencies.sh - Backend Python dependency installer with retry logic (max 3 attempts), automatic pip/setuptools/wheel upgrade, cache cleaning, force reinstall on failures, custom emergentintegrations installation from private index, verification of critical packages (fastapi, uvicorn, pymongo, motor, litellm, openai, anthropic, google-generativeai). 3) /app/frontend/install_dependencies.sh - Frontend Node.js dependency installer using Yarn with retry logic, frozen lockfile support, cache cleaning, node_modules cleanup on failure, verification of critical packages (react, react-dom, react-router-dom, axios, recharts, lucide-react). Features: Colored output (green for success, yellow for warnings, red for errors, blue for info), automatic error recovery, multiple retry attempts, cache purging to prevent corruption issues, verification of critical packages post-installation, fallback installation methods, detailed logging. All scripts are executable and include comprehensive error handling to resolve common installation issues like corrupted pandas installation, missing dependencies, cache conflicts, and network failures."
+      - working: true
+        agent: "main"
+        comment: "✅ INSTALLATION SCRIPTS REMOVED: Deleted all installation scripts (/app/install_all.sh, /app/setup.sh, /app/fast_start.sh) as per user request. Updated test_result.md to reflect automatic dependency installation via supervisor configuration instead of manual scripts. Dependencies are now automatically installed from requirements.txt and package.json when container starts."
+
+  - task: "Public Access Always-On in Widget Tab (Share Tab Removed)"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/ChatbotBuilder.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "✅ MAJOR UI RESTRUCTURE: Removed Share tab completely and moved all public access functionality to Widget tab. Changes: 1) Removed Share tab from navigation and TabsContent, 2) Removed SharingTab component import and Share2 icon, 3) Added public access toggle at top of Widget tab with 'Always ON' badge (public_access defaults to true), 4) Integrated all sharing features in Widget tab: public chat link with copy button and open in new tab, export conversations (JSON/CSV), 5) Added helper functions: copyToClipboard, handleSavePublicAccess, handleExport, 6) Public access section styled with green gradient theme to indicate it's always active, 7) Quick action buttons for exporting data directly from Widget tab. Widget tab now serves as one-stop solution for both embedding chatbot and managing public access. User no longer needs separate Share tab - everything is consolidated in Widget tab with public access prominently displayed at top."
 
 metadata:
   created_by: "main_agent"
