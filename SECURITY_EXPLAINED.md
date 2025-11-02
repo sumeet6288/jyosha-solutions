@@ -68,10 +68,10 @@ async def get_chatbots(user: User = Depends(get_current_user)):
 **Try This Yourself:**
 ```bash
 # This will FAIL (401 Unauthorized)
-curl https://dep-installer-view.preview.emergentagent.com/api/chatbots
+curl https://deps-preview-3.preview.emergentagent.com/api/chatbots
 
 # This works (with valid token)
-curl -H "Authorization: Bearer YOUR_VALID_TOKEN" https://dep-installer-view.preview.emergentagent.com/api/chatbots
+curl -H "Authorization: Bearer YOUR_VALID_TOKEN" https://deps-preview-3.preview.emergentagent.com/api/chatbots
 ```
 
 ### Layer 2: Rate Limiting (Active)
@@ -147,7 +147,7 @@ curl -H "Authorization: Bearer YOUR_VALID_TOKEN" https://dep-installer-view.prev
 const response = await api.get('/api/chatbots');
 
 // They try to call it directly:
-fetch('https://dep-installer-view.preview.emergentagent.com/api/chatbots')
+fetch('https://deps-preview-3.preview.emergentagent.com/api/chatbots')
   .then(r => r.json())
 
 // Result: ❌ 401 Unauthorized
@@ -276,13 +276,13 @@ When you open DevTools and see the code, you're seeing:
 
 ### Test 1: Try to Access API Without Login
 ```bash
-curl https://dep-installer-view.preview.emergentagent.com/api/chatbots
+curl https://deps-preview-3.preview.emergentagent.com/api/chatbots
 # Expected: 401 Unauthorized ✓
 ```
 
 ### Test 2: Try SQL Injection
 ```bash
-curl -X POST https://dep-installer-view.preview.emergentagent.com/api/chatbots \
+curl -X POST https://deps-preview-3.preview.emergentagent.com/api/chatbots \
   -H "Content-Type: application/json" \
   -d '{"name": "'; DROP TABLE--"}'
 # Expected: 400 Bad Request ✓
@@ -292,7 +292,7 @@ curl -X POST https://dep-installer-view.preview.emergentagent.com/api/chatbots \
 ```bash
 # Make 70 requests quickly
 for i in {1..70}; do
-  curl https://dep-installer-view.preview.emergentagent.com/api/ &
+  curl https://deps-preview-3.preview.emergentagent.com/api/ &
 done
 wait
 # Expected: Some requests get 429 Too Many Requests ✓
@@ -300,7 +300,7 @@ wait
 
 ### Test 4: Check Security Headers
 ```bash
-curl -I https://dep-installer-view.preview.emergentagent.com/
+curl -I https://deps-preview-3.preview.emergentagent.com/
 # Expected: See X-Content-Type-Options, X-Frame-Options, etc. ✓
 ```
 
