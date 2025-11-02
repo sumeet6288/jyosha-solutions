@@ -224,13 +224,13 @@
           <div style="width: 32px; height: 32px; border-radius: 50%; background: ${currentTheme.secondary}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden;">
             ${avatarContent}
           </div>
-          <div style="max-width: 70%; padding: 12px 16px; border-radius: 18px; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); word-wrap: break-word; font-size: 14px; line-height: 1.5;">
+          <div style="max-width: 70%; padding: 12px 16px; border-radius: 18px; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); word-wrap: break-word; font-size: 13px; line-height: 1.5;">
             ${msg.content}
           </div>
         `;
       } else {
         msgDiv.innerHTML = `
-          <div style="max-width: 70%; padding: 12px 16px; border-radius: 18px; background: ${currentTheme.primary}; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); word-wrap: break-word; font-size: 14px; line-height: 1.5;">
+          <div style="max-width: 70%; padding: 12px 16px; border-radius: 18px; background: ${currentTheme.primary}; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); word-wrap: break-word; font-size: 13px; line-height: 1.5;">
             ${msg.content}
           </div>
         `;
