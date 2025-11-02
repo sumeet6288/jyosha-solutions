@@ -40,6 +40,10 @@ const ChatbotBuilder = () => {
   const [loadingConversations, setLoadingConversations] = useState(false);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [activeTab, setActiveTab] = useState('sources');
+  const [publicAccess, setPublicAccess] = useState(true); // Always on by default
+  const [copied, setCopied] = useState('');
+  const [webhookUrl, setWebhookUrl] = useState('');
+  const [webhookEnabled, setWebhookEnabled] = useState(false);
 
   useEffect(() => {
     loadChatbot();
