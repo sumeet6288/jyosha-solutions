@@ -206,11 +206,7 @@
 
   function renderMessages() {
     messagesContainer.innerHTML = '';
-    
-    // Reverse the messages array to show newest at top
-    const reversedMessages = [...messages].reverse();
-    
-    reversedMessages.forEach(msg => {
+    messages.forEach(msg => {
       const msgDiv = document.createElement('div');
       msgDiv.style.cssText = `
         display: flex; gap: 8px; align-items: flex-start;
@@ -243,8 +239,8 @@
       messagesContainer.appendChild(msgDiv);
     });
     
-    // Auto-scroll to top to show newest messages
-    messagesContainer.scrollTop = 0;
+    // Scroll to bottom
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
 
   function showTyping() {
