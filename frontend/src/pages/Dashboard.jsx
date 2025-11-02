@@ -251,7 +251,7 @@ const Dashboard = () => {
         )}
 
         {/* Stats Cards - Matching uploaded UI design - Reduced to 80% */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           {/* Create Agent Card - FIRST POSITION */}
           <div 
             onClick={handleCreateChatbot}
@@ -282,17 +282,8 @@ const Dashboard = () => {
             <p className="text-gray-600 text-sm font-medium">Total Messages</p>
           </div>
           
-          {/* Active Chatbots Card */}
-          <div className="bg-white rounded-xl p-4 shadow-md hover:shadow-2xl transition-all duration-500 ease-out border border-gray-100 animate-fade-in-up animation-delay-300 hover-lift card-glow">
-            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-b from-red-400 to-pink-500 mb-3 shadow-md transition-transform duration-500 hover:scale-110 hover:rotate-3">
-              <TrendingUp className="w-6 h-6 text-white" />
-            </div>
-            <p className="text-4xl font-bold text-pink-500 mb-1 transition-all duration-300">{analytics?.active_chatbots || 0}</p>
-            <p className="text-gray-600 text-sm font-medium">Active Chatbots</p>
-          </div>
-          
           {/* Total Chatbots Card */}
-          <div className="bg-white rounded-xl p-4 shadow-md hover:shadow-2xl transition-all duration-500 ease-out border border-gray-100 animate-fade-in-up animation-delay-400 hover-lift card-glow">
+          <div className="bg-white rounded-xl p-4 shadow-md hover:shadow-2xl transition-all duration-500 ease-out border border-gray-100 animate-fade-in-up animation-delay-300 hover-lift card-glow">
             <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-purple-600 mb-3 shadow-md transition-transform duration-500 hover:scale-110 hover:rotate-3">
               <BarChart3 className="w-6 h-6 text-white" />
             </div>
