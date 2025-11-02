@@ -293,7 +293,15 @@ const AdvancedAnalytics = ({ chatbotId }) => {
         {/* Response Time Trend Chart */}
         <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
           <h4 className="text-base sm:text-lg font-semibold mb-4">Response Time Trend</h4>
-          {responseTimeTrend && responseTimeTrend.data && responseTimeTrend.data.length > 0 && responseTimeTrend.data.some(d => d.avg_response_time > 0) ? (
+          {!responseTimeTrend || !responseTimeTrend.data || responseTimeTrend.data.length === 0 || !responseTimeTrend.data.some(d => d.avg_response_time > 0) ? (
+            <div className="flex flex-col items-center justify-center h-[250px] bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg">
+              <Clock className="w-12 h-12 sm:w-16 sm:h-16 mb-4 text-indigo-300" />
+              <p className="text-base sm:text-lg font-semibold text-gray-700">No response time data yet</p>
+              <p className="text-xs sm:text-sm mt-2 text-center px-4 text-gray-500">
+                Response times will be tracked as conversations happen
+              </p>
+            </div>
+          ) : (
             <>
               <ResponsiveContainer width="100%" height={250}>
                 <LineChart data={responseTimeTrend.data}>
@@ -324,19 +332,21 @@ const AdvancedAnalytics = ({ chatbotId }) => {
                 Track how your chatbot's response speed changes over time
               </p>
             </>
-          ) : (
-            <div className="flex flex-col items-center justify-center h-[250px] text-gray-400">
-              <Clock className="w-12 h-12 sm:w-16 sm:h-16 mb-4 opacity-30" />
-              <p className="text-base sm:text-lg font-medium">No response time data</p>
-              <p className="text-xs sm:text-sm mt-2 text-center px-4">Response times will be tracked as conversations happen</p>
-            </div>
           )}
         </div>
 
         {/* Hourly Activity Chart */}
         <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
           <h4 className="text-base sm:text-lg font-semibold mb-4">Hourly Activity Distribution</h4>
-          {hourlyActivity && hourlyActivity.hourly_data && hourlyActivity.total_messages > 0 ? (
+          {!hourlyActivity || !hourlyActivity.hourly_data || hourlyActivity.total_messages === 0 ? (
+            <div className="flex flex-col items-center justify-center h-[250px] bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg">
+              <TrendingUp className="w-12 h-12 sm:w-16 sm:h-16 mb-4 text-green-300" />
+              <p className="text-base sm:text-lg font-semibold text-gray-700">No hourly activity data yet</p>
+              <p className="text-xs sm:text-sm mt-2 text-center px-4 text-gray-500">
+                Activity patterns will appear as messages are sent
+              </p>
+            </div>
+          ) : (
             <>
               <ResponsiveContainer width="100%" height={250}>
                 <BarChart data={hourlyActivity.hourly_data}>
@@ -363,12 +373,6 @@ const AdvancedAnalytics = ({ chatbotId }) => {
                 Peak hour: <span className="font-semibold text-green-600">{hourlyActivity.peak_hour}:00</span> • Total messages: {hourlyActivity.total_messages}
               </p>
             </>
-          ) : (
-            <div className="flex flex-col items-center justify-center h-[250px] text-gray-400">
-              <TrendingUp className="w-12 h-12 sm:w-16 sm:h-16 mb-4 opacity-30" />
-              <p className="text-base sm:text-lg font-medium">No hourly activity data</p>
-              <p className="text-xs sm:text-sm mt-2 text-center px-4">Activity patterns will appear as messages are sent</p>
-            </div>
           )}
         </div>
       </div>
