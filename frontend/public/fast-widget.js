@@ -264,9 +264,8 @@
         <span class="botsmith-typing-dot"></span>
       </div>
     `;
-    // Add typing indicator at the top (newest position)
-    messagesContainer.prepend(typingDiv);
-    messagesContainer.scrollTop = 0;
+    messagesContainer.appendChild(typingDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
 
   function hideTyping() {
