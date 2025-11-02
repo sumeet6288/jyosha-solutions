@@ -291,7 +291,7 @@ class ChatbotResponse(BaseModel):
     bubble_style: str = "rounded"
     widget_size: str = "medium"
     auto_expand: bool = False
-    public_access: bool = False
+    public_access: bool = True  # Always ON by default
     webhook_url: Optional[str] = None
     webhook_enabled: bool = False
 
