@@ -206,9 +206,9 @@ async def create_checkout(
                     "custom_price": None,
                     "product_options": {
                         "enabled_variants": [int(variant_id)],
-                        "redirect_url": "https://deps-preview-3.preview.emergentagent.com/subscription?success=true",
+                        "redirect_url": "https://install-and-see.preview.emergentagent.com/subscription?success=true",
                         "receipt_button_text": "Go to Dashboard",
-                        "receipt_link_url": "https://deps-preview-3.preview.emergentagent.com/dashboard"
+                        "receipt_link_url": "https://install-and-see.preview.emergentagent.com/dashboard"
                     },
                     "checkout_data": {
                         "email": request.user_email,
