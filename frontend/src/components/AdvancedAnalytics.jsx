@@ -134,51 +134,51 @@ const AdvancedAnalytics = ({ chatbotId }) => {
       </div>
 
       {/* Message Trends Chart */}
-      {trendData && (
-        <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
-          <h4 className="text-base sm:text-lg font-semibold mb-4">Message Volume Trends</h4>
-          {trendData.total_messages === 0 && trendData.total_conversations === 0 ? (
-            <div className="flex flex-col items-center justify-center h-[250px] sm:h-[300px] text-gray-400">
-              <MessageSquare className="w-12 h-12 sm:w-16 sm:h-16 mb-4 opacity-30" />
-              <p className="text-base sm:text-lg font-medium">No message data available</p>
-              <p className="text-xs sm:text-sm mt-2 text-center px-4">Start chatting to see trends appear here</p>
-            </div>
-          ) : (
-            <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={trendData.data}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="date" stroke="#888" fontSize={10} tick={{ fontSize: 10 }} />
-                <YAxis stroke="#888" fontSize={10} tick={{ fontSize: 10 }} allowDecimals={false} />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: 'white', 
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '8px',
-                    fontSize: '12px'
-                  }}
-                />
-                <Legend wrapperStyle={{ fontSize: '12px' }} />
-                <Line 
-                  type="monotone" 
-                  dataKey="conversations" 
-                  stroke="#7c3aed" 
-                  strokeWidth={2}
-                  name="Conversations"
-                  dot={{ fill: '#7c3aed' }}
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="messages" 
-                  stroke="#ec4899" 
-                  strokeWidth={2}
-                  name="Messages"
-                  dot={{ fill: '#ec4899' }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          )}
-        </div>
-      )}
+      <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100">
+        <h4 className="text-base sm:text-lg font-semibold mb-4">Message Volume Trends</h4>
+        {!trendData || trendData.total_messages === 0 && trendData.total_conversations === 0 ? (
+          <div className="flex flex-col items-center justify-center h-[250px] sm:h-[300px] bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg">
+            <MessageSquare className="w-12 h-12 sm:w-16 sm:h-16 mb-4 text-purple-300" />
+            <p className="text-base sm:text-lg font-semibold text-gray-700">No message data available yet</p>
+            <p className="text-xs sm:text-sm mt-2 text-center px-4 text-gray-500">
+              Start chatting with your bot to see message trends appear here
+            </p>
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height={250}>
+            <LineChart data={trendData.data}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+              <XAxis dataKey="date" stroke="#888" fontSize={10} tick={{ fontSize: 10 }} />
+              <YAxis stroke="#888" fontSize={10} tick={{ fontSize: 10 }} allowDecimals={false} />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: 'white', 
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px',
+                  fontSize: '12px'
+                }}
+              />
+              <Legend wrapperStyle={{ fontSize: '12px' }} />
+              <Line 
+                type="monotone" 
+                dataKey="conversations" 
+                stroke="#7c3aed" 
+                strokeWidth={2}
+                name="Conversations"
+                dot={{ fill: '#7c3aed' }}
+              />
+              <Line 
+                type="monotone" 
+                dataKey="messages" 
+                stroke="#ec4899" 
+                strokeWidth={2}
+                name="Messages"
+                dot={{ fill: '#ec4899' }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        )}
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Top Questions Chart */}
