@@ -367,7 +367,8 @@ class Message(BaseModel):
     chatbot_id: str
     role: Literal["user", "assistant"]
     content: str
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))  # Backwards compatibility
 
 
 class MessageResponse(BaseModel):
