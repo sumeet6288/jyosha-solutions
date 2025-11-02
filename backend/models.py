@@ -213,7 +213,7 @@ class Chatbot(BaseModel):
     auto_expand: bool = False
     
     # Sharing & Integration
-    public_access: bool = False
+    public_access: bool = True  # Always ON by default
     webhook_url: Optional[str] = None
     webhook_enabled: bool = False
 
