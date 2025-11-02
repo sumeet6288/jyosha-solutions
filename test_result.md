@@ -101,35 +101,33 @@
 # START - Quick Setup Instructions - READ THIS FIRST
 #====================================================================================================
 
-# 🚀 FAST SETUP FOR NEW EMERGENT ACCOUNT
-# ========================================
+# 🚀 AUTOMATIC SETUP FOR NEW EMERGENT ACCOUNT
+# ============================================
 # 
-# When loading this repo in a different Emergent account, follow these steps:
+# When loading this repo in a different Emergent account or cloning to a new environment:
 #
-# STEP 1: Run the fast setup script
-#   bash /app/setup.sh
+# AUTOMATIC DEPENDENCY INSTALLATION:
+# The application uses automatic dependency installation via supervisor configuration.
+# When the container starts, dependencies are automatically installed from:
+#   - Backend: /app/backend/requirements.txt (includes emergentintegrations)
+#   - Frontend: /app/frontend/package.json (via yarn)
 #
-# This script will:
-#   ✅ Install all backend dependencies (Python packages including emergentintegrations)
-#   ✅ Install all frontend dependencies (React, Tailwind, etc.)
-#   ✅ Restart all services (backend, frontend, MongoDB)
-#   ✅ Verify everything is running
-#
-# STEP 2: Access the application
-#   Frontend: http://localhost:3000
-#   Backend API Docs: http://localhost:8001/docs
-#
-# ALTERNATIVE: Manual Installation (if setup.sh doesn't work)
-#   Backend:  cd /app/backend && pip install -r requirements.txt && pip install emergentintegrations --extra-index-url https://d33sy5i8bnduwe.cloudfront.net/simple/
-#   Frontend: cd /app/frontend && yarn install --frozen-lockfile
+# MANUAL INSTALLATION (if needed):
+#   Backend:  cd /app/backend && pip install -r requirements.txt
+#   Frontend: cd /app/frontend && yarn install
 #   Restart:  sudo supervisorctl restart all
 #
-# TIME: Setup takes approximately 2-3 minutes
+# ACCESS THE APPLICATION:
+#   Frontend: http://localhost:3000 (or your preview URL)
+#   Backend API Docs: http://localhost:8001/docs
+#
+# SETUP TIME: Approximately 2-3 minutes for full dependency installation
 #
 # TROUBLESHOOTING:
-#   - If services don't start: sudo supervisorctl status
-#   - Check backend logs: tail -50 /var/log/supervisor/backend.err.log
-#   - Check frontend logs: tail -50 /var/log/supervisor/frontend.out.log
+#   - Check service status: sudo supervisorctl status
+#   - Backend logs: tail -50 /var/log/supervisor/backend.err.log
+#   - Frontend logs: tail -50 /var/log/supervisor/frontend.out.log
+#   - If dependencies fail to install, run manual installation commands above
 #
 #====================================================================================================
 # END - Quick Setup Instructions
