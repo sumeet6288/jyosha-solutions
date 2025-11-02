@@ -330,15 +330,18 @@ frontend:
   
   - task: "Chatbot Builder"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/ChatbotBuilder.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Complete builder with sources, settings, widget, and analytics tabs"
+      - working: true
+        agent: "testing"
+        comment: "✅ WIDGET SETTINGS COMPREHENSIVE TESTING COMPLETE: All Appearance tab Widget Settings functionality working perfectly (20/20 tests passed - 100% success rate). ✅ WIDGET POSITION: All 4 positions tested and working (bottom-right, bottom-left, top-right, top-left) ✅ WIDGET THEME: All 3 themes tested and working (light, dark, auto) ✅ WIDGET SIZE: All 3 sizes tested and working (small, medium, large) ✅ AUTO-EXPAND TOGGLE: Both true/false states working correctly ✅ SAVE APPEARANCE: Combined widget settings update working - all fields (widget_position, widget_theme, widget_size, auto_expand) plus appearance settings (primary_color, secondary_color, welcome_message) save correctly ✅ DATABASE PERSISTENCE: All widget settings persist correctly in MongoDB after save ✅ PUBLIC CHAT REFLECTION: Widget settings properly available via GET /api/public/chatbot/{chatbot_id} endpoint for public chat page styling ✅ API VALIDATION: PUT /api/chatbots/{chatbot_id} properly validates and rejects invalid widget settings (422 status) ✅ PUBLIC CHAT FUNCTIONALITY: Tested public chat messaging works correctly with widget settings applied. All requested widget settings functionality is fully operational."
   
   - task: "Source management UI"
     implemented: true
