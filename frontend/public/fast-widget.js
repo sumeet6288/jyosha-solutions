@@ -54,6 +54,16 @@
       from { opacity: 0; transform: translateY(30px) scale(0.95); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
+    @keyframes messageSlideIn {
+      from { 
+        opacity: 0; 
+        transform: translateY(20px) scale(0.95);
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1);
+      }
+    }
     @keyframes pulse {
       0%, 100% { transform: scale(1); opacity: 1; }
       50% { transform: scale(1.1); opacity: 0.8; }
@@ -69,6 +79,9 @@
     }
     #botsmith-container * { box-sizing: border-box; }
     .botsmith-bubble { animation: bounce 2s infinite; }
+    .botsmith-message-item {
+      animation: messageSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
     .botsmith-typing-dot {
       width: 8px; height: 8px; border-radius: 50%;
       background: #9ca3af; display: inline-block;
@@ -77,6 +90,9 @@
     .botsmith-typing-dot:nth-child(1) { animation-delay: 0s; }
     .botsmith-typing-dot:nth-child(2) { animation-delay: 0.2s; }
     .botsmith-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    #botsmith-messages {
+      scroll-behavior: smooth;
+    }
     @media (max-width: 768px) {
       #botsmith-window {
         width: 100vw !important; height: 100vh !important;
