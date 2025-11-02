@@ -266,6 +266,7 @@
   function showTyping() {
     const typingDiv = document.createElement('div');
     typingDiv.id = 'botsmith-typing-indicator';
+    typingDiv.className = 'botsmith-message-item';
     typingDiv.style.cssText = 'display: flex; gap: 8px; align-items: center;';
     
     const avatarContent = chatbot?.avatar_url 
@@ -285,7 +286,11 @@
       </div>
     `;
     messagesContainer.appendChild(typingDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    
+    // Smooth scroll to bottom to show typing indicator
+    requestAnimationFrame(() => {
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    });
   }
 
   function hideTyping() {
