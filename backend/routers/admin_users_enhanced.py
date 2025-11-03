@@ -1256,6 +1256,3 @@ async def export_users(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Error exporting users: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
-", "run_lint": false}
