@@ -459,11 +459,15 @@ class ChatMessage(BaseModel):
 
 class ChatRequest(BaseModel):
     message: str
+    chatbot_id: str
     session_id: Optional[str] = None
+    user_name: Optional[str] = None
+    user_email: Optional[str] = None
 
 
 class ChatResponse(BaseModel):
-    response: str
+    message: str
+    conversation_id: str
     session_id: str
 
 
