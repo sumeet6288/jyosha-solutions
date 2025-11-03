@@ -262,9 +262,9 @@ async def advanced_user_search(
 
 @router.post("/segments")
 async def create_user_segment(segment_data: UserSegmentCreate):
-    \"\"\"
+    """
     Create a new user segment with custom filters
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
@@ -299,9 +299,9 @@ async def create_user_segment(segment_data: UserSegmentCreate):
 
 @router.get("/segments")
 async def get_user_segments():
-    \"\"\"
+    """
     Get all user segments
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
@@ -321,9 +321,9 @@ async def get_user_segments():
 
 @router.get("/segments/{segment_id}/users")
 async def get_segment_users(segment_id: str):
-    \"\"\"
+    """
     Get all users in a specific segment
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
@@ -353,9 +353,9 @@ async def get_segment_users(segment_id: str):
 
 @router.put("/segments/{segment_id}")
 async def update_user_segment(segment_id: str, segment_data: UserSegmentCreate):
-    \"\"\"
+    """
     Update an existing user segment
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
@@ -395,9 +395,9 @@ async def update_user_segment(segment_id: str, segment_data: UserSegmentCreate):
 
 @router.delete("/segments/{segment_id}")
 async def delete_user_segment(segment_id: str):
-    \"\"\"
+    """
     Delete a user segment
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
@@ -427,9 +427,9 @@ async def delete_user_segment(segment_id: str):
 
 @router.post("/email-templates")
 async def create_email_template(template_data: EmailTemplateCreate):
-    \"\"\"
+    """
     Create a new email template
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
@@ -460,9 +460,9 @@ async def create_email_template(template_data: EmailTemplateCreate):
 
 @router.get("/email-templates")
 async def get_email_templates():
-    \"\"\"
+    """
     Get all email templates
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
@@ -482,9 +482,9 @@ async def get_email_templates():
 
 @router.delete("/email-templates/{template_id}")
 async def delete_email_template(template_id: str):
-    \"\"\"
+    """
     Delete an email template
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
@@ -510,9 +510,9 @@ async def delete_email_template(template_id: str):
 
 @router.post("/email-campaigns")
 async def create_email_campaign(campaign_data: EmailCampaignCreate, background_tasks: BackgroundTasks):
-    \"\"\"
+    """
     Create and send bulk email campaign to users
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
@@ -574,10 +574,10 @@ async def create_email_campaign(campaign_data: EmailCampaignCreate, background_t
 
 
 async def send_campaign_emails(campaign_id: str, user_ids: List[str], template: dict):
-    \"\"\"
+    """
     Background task to send campaign emails
     Note: This is a mock implementation. In production, integrate with real email service.
-    \"\"\"
+    """
     try:
         campaigns_collection = db_instance['email_campaigns']
         users_collection = db_instance['users']
@@ -615,9 +615,9 @@ async def send_campaign_emails(campaign_id: str, user_ids: List[str], template: 
 
 @router.get("/email-campaigns")
 async def get_email_campaigns():
-    \"\"\"
+    """
     Get all email campaigns
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
@@ -637,9 +637,9 @@ async def get_email_campaigns():
 
 @router.get("/email-campaigns/{campaign_id}")
 async def get_email_campaign(campaign_id: str):
-    \"\"\"
+    """
     Get details of a specific email campaign
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
@@ -668,9 +668,9 @@ async def get_email_campaign(campaign_id: str):
 
 @router.post("/users/{user_id}/lifecycle")
 async def update_user_lifecycle(user_id: str, lifecycle_data: dict):
-    \"\"\"
+    """
     Update user lifecycle stage and related metrics
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
@@ -715,9 +715,9 @@ async def update_user_lifecycle(user_id: str, lifecycle_data: dict):
 
 @router.get("/lifecycle-analytics")
 async def get_lifecycle_analytics():
-    \"\"\"
+    """
     Get analytics about user lifecycle stages
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
@@ -758,10 +758,10 @@ async def get_lifecycle_analytics():
 
 @router.post("/calculate-churn-risk")
 async def calculate_churn_risk_scores():
-    \"\"\"
+    """
     Calculate churn risk scores for all users based on activity
     This is a simple algorithm - can be enhanced with ML models
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
@@ -839,9 +839,9 @@ async def calculate_churn_risk_scores():
 
 @router.post("/impersonate")
 async def start_impersonation(request: ImpersonationRequest):
-    \"\"\"
+    """
     Start an impersonation session (admin logs in as user for support)
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
@@ -895,9 +895,9 @@ async def start_impersonation(request: ImpersonationRequest):
 
 @router.post(\"/impersonate/{session_id}/end\")
 async def end_impersonation(session_id: str):
-    \"\"\"
+    """
     End an impersonation session
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail=\"Database not initialized\")
     
@@ -940,9 +940,9 @@ async def get_impersonation_history(
     limit: int = Query(50, ge=1, le=200),
     page: int = Query(1, ge=1)
 ):
-    \"\"\"
+    """
     Get history of all impersonation sessions
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail=\"Database not initialized\")
     
@@ -975,9 +975,9 @@ async def get_impersonation_history(
 
 @router.post(\"/users/{user_id}/notes\")
 async def add_user_note(user_id: str, note_data: dict):
-    \"\"\"
+    """
     Add a note to a user's profile
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail=\"Database not initialized\")
     
@@ -1013,9 +1013,9 @@ async def add_user_note(user_id: str, note_data: dict):
 
 @router.get(\"/users/{user_id}/notes\")
 async def get_user_notes(user_id: str):
-    \"\"\"
+    """
     Get all notes for a user
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail=\"Database not initialized\")
     
@@ -1044,9 +1044,9 @@ async def get_user_notes(user_id: str):
 
 @router.post(\"/bulk-operations\")
 async def execute_bulk_operation(operation: BulkUserOperation, background_tasks: BackgroundTasks):
-    \"\"\"
+    """
     Execute bulk operations on multiple users
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail=\"Database not initialized\")
     
@@ -1140,9 +1140,9 @@ async def execute_bulk_operation(operation: BulkUserOperation, background_tasks:
 
 
 async def send_bulk_emails(user_ids: List[str], template: dict):
-    \"\"\"
+    """
     Background task to send bulk emails
-    \"\"\"
+    """
     try:
         users_collection = db_instance['users']
         
@@ -1157,9 +1157,9 @@ async def send_bulk_emails(user_ids: List[str], template: dict):
 
 
 async def delete_user_data(user_id: str):
-    \"\"\"
+    """
     Helper function to delete user and all associated data
-    \"\"\"
+    """
     try:
         users_collection = db_instance['users']
         chatbots_collection = db_instance['chatbots']
@@ -1194,9 +1194,9 @@ async def export_users(
     format: str = Query(\"csv\", description=\"Export format: csv or json\"),
     filters: Optional[str] = Query(None, description=\"JSON string of filters to apply\")
 ):
-    \"\"\"
+    """
     Export users with optional filters in CSV or JSON format
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail=\"Database not initialized\")
     
