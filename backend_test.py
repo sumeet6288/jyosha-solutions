@@ -224,7 +224,7 @@ class SubscriptionTestSuite:
     async def ensure_free_plan(self):
         """Ensure user is on Free plan"""
         try:
-            upgrade_data = {"new_plan_id": "free"}
+            upgrade_data = {"plan_id": "free"}
             await self.session.post(f"{API_BASE}/plans/upgrade", json=upgrade_data)
         except:
             pass
