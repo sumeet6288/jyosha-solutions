@@ -257,6 +257,26 @@ const AdminDashboard = () => {
             </div>
           </TabsContent>
 
+          <TabsContent value="advanced-search">
+            <AdvancedUserSearch backendUrl={backendUrl} />
+          </TabsContent>
+
+          <TabsContent value="segmentation">
+            <UserSegmentation backendUrl={backendUrl} />
+          </TabsContent>
+
+          <TabsContent value="email-campaigns">
+            <EmailCampaignBuilder backendUrl={backendUrl} />
+          </TabsContent>
+
+          <TabsContent value="lifecycle">
+            <LifecycleManagement backendUrl={backendUrl} />
+          </TabsContent>
+
+          <TabsContent value="impersonation">
+            <ImpersonationPanel backendUrl={backendUrl} />
+          </TabsContent>
+
           <TabsContent value="revenue">
             <RevenueDashboard backendUrl={backendUrl} />
           </TabsContent>
