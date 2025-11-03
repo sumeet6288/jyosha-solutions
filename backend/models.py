@@ -533,6 +533,73 @@ class ChatbotAnalytics(BaseModel):
     date_range: str
 
 
+# Advanced Analytics Models
+class TrendDataPoint(BaseModel):
+    """Single data point for trend analytics"""
+    date: str
+    conversations: int
+    messages: int
+
+
+class TrendAnalytics(BaseModel):
+    """Trend analytics response"""
+    chatbot_id: str
+    period: str
+    data: List[TrendDataPoint]
+    total_conversations: int
+    total_messages: int
+    avg_daily_conversations: float
+    avg_daily_messages: float
+
+
+class TopQuestion(BaseModel):
+    """Single top question item"""
+    question: str
+    count: int
+    percentage: float
+
+
+class TopQuestionsAnalytics(BaseModel):
+    """Top questions analytics response"""
+    chatbot_id: str
+    top_questions: List[TopQuestion]
+    total_unique_questions: int
+
+
+class SatisfactionAnalytics(BaseModel):
+    """Satisfaction ratings analytics response"""
+    chatbot_id: str
+    average_rating: float
+    total_ratings: int
+    rating_distribution: dict
+    satisfaction_percentage: float
+
+
+class PerformanceMetrics(BaseModel):
+    """Performance metrics response"""
+    chatbot_id: str
+    avg_response_time_ms: float
+    total_responses: int
+    fastest_response_ms: float
+    slowest_response_ms: float
+
+
+class RatingCreate(BaseModel):
+    """Create or update conversation rating"""
+    rating: int = Field(..., ge=1, le=5)
+    feedback: Optional[str] = None
+
+
+class RatingResponse(BaseModel):
+    """Rating response"""
+    id: str
+    conversation_id: str
+    chatbot_id: str
+    rating: int
+    feedback: Optional[str]
+    created_at: datetime
+
+
 # Subscription/Plan Models
 class Subscription(BaseModel):
     model_config = ConfigDict(extra="ignore")
