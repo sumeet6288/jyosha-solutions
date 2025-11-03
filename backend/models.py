@@ -357,6 +357,8 @@ class ChatbotCreate(BaseModel):
     temperature: float = 0.7
     max_tokens: int = 500
     system_message: str = "You are a helpful assistant."
+    instructions: Optional[str] = None  # Alias for system_message
+    welcome_message: str = "Hi! I'm your AI assistant. How can I help you today?"
 
 
 class ChatbotUpdate(BaseModel):
