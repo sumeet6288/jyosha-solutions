@@ -740,7 +740,7 @@ class SubscriptionTestSuite:
                 "content": "This is test text content for usage tracking verification."
             }
             
-            async with self.session.post(f"{API_BASE}/sources/text", json=text_data) as response:
+            async with self.session.post(f"{API_BASE}/sources/chatbot/{chatbot_id}/text", json=text_data) as response:
                 if response.status == 201:
                     result = await response.json()
                     self.test_source_ids.append(result["id"])
