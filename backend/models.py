@@ -624,6 +624,8 @@ class PublicChatRequest(BaseModel):
     """Request model for public chat"""
     message: str
     session_id: str
+    user_name: Optional[str] = None
+    user_email: Optional[str] = None
 
 
 class EmbedConfig(BaseModel):
