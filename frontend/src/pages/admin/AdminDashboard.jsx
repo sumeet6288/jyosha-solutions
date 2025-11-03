@@ -166,6 +166,11 @@ const AdminDashboard = () => {
         <Tabs defaultValue="overview" className="w-full">
           <TabsList className="mb-6 flex-wrap">
             <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="advanced-search">🔍 Advanced Search</TabsTrigger>
+            <TabsTrigger value="segmentation">🎯 Segmentation</TabsTrigger>
+            <TabsTrigger value="email-campaigns">✉️ Email Campaigns</TabsTrigger>
+            <TabsTrigger value="lifecycle">📊 Lifecycle</TabsTrigger>
+            <TabsTrigger value="impersonation">👤 Impersonation</TabsTrigger>
             <TabsTrigger value="revenue">Revenue</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
             <TabsTrigger value="chatbots">Chatbots</TabsTrigger>
