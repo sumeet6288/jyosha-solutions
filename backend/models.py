@@ -476,6 +476,10 @@ class MessageRecord(BaseModel):
     session_id: Optional[str] = None
 
 
+# Alias for compatibility
+Message = MessageRecord
+
+
 class MessageResponse(BaseModel):
     id: str
     role: str
