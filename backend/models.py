@@ -692,6 +692,12 @@ class IntegrationCreate(BaseModel):
     credentials: Dict[str, str]
 
 
+class IntegrationUpdate(BaseModel):
+    """Model for updating integration"""
+    credentials: Optional[Dict[str, str]] = None
+    enabled: Optional[bool] = None
+
+
 class IntegrationResponse(BaseModel):
     id: str
     chatbot_id: str
@@ -701,6 +707,11 @@ class IntegrationResponse(BaseModel):
     connection_status: str
     last_tested: Optional[datetime]
     created_at: datetime
+
+
+class TestConnectionRequest(BaseModel):
+    """Request model for testing integration connection"""
+    credentials: Optional[Dict[str, str]] = None
 
 
 class IntegrationLog(BaseModel):
