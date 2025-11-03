@@ -385,7 +385,7 @@ class SubscriptionTestSuite:
                     "url": url
                 }
                 
-                async with self.session.post(f"{API_BASE}/sources/website", json=website_data) as response:
+                async with self.session.post(f"{API_BASE}/sources/chatbot/{chatbot_id}/website", json=website_data) as response:
                     if i <= 2:  # First 2 should succeed
                         if response.status == 201:
                             result = await response.json()
