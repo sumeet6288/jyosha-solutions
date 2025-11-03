@@ -40,12 +40,12 @@ async def upgrade_plan(
 ):
     """Upgrade user to a new plan"""
     # Verify plan exists
-    new_plan = await plan_service.get_plan_by_id(upgrade_request.new_plan_id)
+    new_plan = await plan_service.get_plan_by_id(upgrade_request.plan_id)
     if not new_plan:
         raise HTTPException(status_code=404, detail="Plan not found")
     
     # Upgrade subscription
-    updated_subscription = await plan_service.upgrade_plan(current_user.id, upgrade_request.new_plan_id)
+    updated_subscription = await plan_service.upgrade_plan(current_user.id, upgrade_request.plan_id)
     
     # Convert ObjectId to string
     if "_id" in updated_subscription:
