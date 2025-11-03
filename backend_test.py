@@ -45,8 +45,8 @@ class SubscriptionTestSuite:
         print(f"{status}: {test_name}")
         if details:
             print(f"   Details: {details}")
-            
-    async def create_test_chatbot(self) -> str:
+
+    async def test_plan_system_basics(self):
         """Create a test chatbot for widget settings testing"""
         try:
             chatbot_data = {
