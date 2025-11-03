@@ -430,7 +430,7 @@ class SubscriptionTestSuite:
                     "content": f"This is test text content {i} for testing text source limits. It contains some sample information about our company policies and procedures."
                 }
                 
-                async with self.session.post(f"{API_BASE}/sources/text", json=text_data) as response:
+                async with self.session.post(f"{API_BASE}/sources/chatbot/{chatbot_id}/text", json=text_data) as response:
                     if i <= 5:  # First 5 should succeed
                         if response.status == 201:
                             result = await response.json()
