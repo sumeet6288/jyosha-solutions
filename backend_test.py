@@ -722,14 +722,11 @@ class SubscriptionTestSuite:
 
         # Test text source tracking
         try:
-            text_data = {
-                "chatbot_id": chatbot_id,
-                "type": "text",
-                "name": "Usage Tracking Text",
-                "content": "This is test text content for usage tracking verification."
-            }
+            form_data = aiohttp.FormData()
+            form_data.add_field('name', "Usage Tracking Text")
+            form_data.add_field('content', "This is test text content for usage tracking verification.")
             
-            async with self.session.post(f"{API_BASE}/sources/chatbot/{chatbot_id}/text", json=text_data) as response:
+            async with self.session.post(f"{API_BASE}/sources/chatbot/{chatbot_id}/text", data=form_data) as response:
                 if response.status == 201:
                     result = await response.json()
                     self.test_source_ids.append(result["id"])
