@@ -700,14 +700,10 @@ class SubscriptionTestSuite:
 
         # Test website source tracking
         try:
-            website_data = {
-                "chatbot_id": chatbot_id,
-                "type": "website",
-                "name": "Usage Tracking Website",
-                "url": "https://example.com"
-            }
+            form_data = aiohttp.FormData()
+            form_data.add_field('url', "https://example.com")
             
-            async with self.session.post(f"{API_BASE}/sources/chatbot/{chatbot_id}/website", json=website_data) as response:
+            async with self.session.post(f"{API_BASE}/sources/chatbot/{chatbot_id}/website", data=form_data) as response:
                 if response.status == 201:
                     result = await response.json()
                     self.test_source_ids.append(result["id"])
