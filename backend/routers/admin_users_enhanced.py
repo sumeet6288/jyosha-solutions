@@ -543,9 +543,9 @@ async def create_email_campaign(campaign_data: EmailCampaignCreate, background_t
             template_id=campaign_data.template_id,
             target_user_ids=list(target_user_ids),
             target_segments=campaign_data.target_segments,
-            status=\"scheduled\" if campaign_data.scheduled_at else \"draft\",
+            status="scheduled" if campaign_data.scheduled_at else "draft",
             scheduled_at=campaign_data.scheduled_at,
-            created_by=\"admin\"
+            created_by="admin"
         )
         
         await campaigns_collection.insert_one(campaign.model_dump())
@@ -553,7 +553,7 @@ async def create_email_campaign(campaign_data: EmailCampaignCreate, background_t
         # If not scheduled, send immediately in background
         if not campaign_data.scheduled_at:
             background_tasks.add_task(send_campaign_emails, campaign.id, list(target_user_ids), template)
-            campaign.status = \"sending\"
+            campaign.status = "sending"
             await campaigns_collection.update_one(
                 {'id': campaign.id},
                 {'$set': {'status': 'sending'}}
@@ -590,10 +590,10 @@ async def send_campaign_emails(campaign_id: str, user_ids: List[str], template: 
                 user = await users_collection.find_one({'id': user_id})
                 if user and user.get('email_notifications', True):
                     # Mock email sending
-                    logger.info(f\"Sending email to {user['email']}: {template['subject']}\")
+                    logger.info(f"Sending email to {user['email']}: {template['subject']}")
                     sent_count += 1
             except Exception as e:
-                logger.error(f\"Failed to send email to user {user_id}: {str(e)}\")
+                logger.error(f"Failed to send email to user {user_id}: {str(e)}")
                 failed_count += 1
         
         # Update campaign status
@@ -607,10 +607,10 @@ async def send_campaign_emails(campaign_id: str, user_ids: List[str], template: 
             }}
         )
         
-        logger.info(f\"Campaign {campaign_id} completed: {sent_count} sent, {failed_count} failed\")
+        logger.info(f"Campaign {campaign_id} completed: {sent_count} sent, {failed_count} failed")
     
     except Exception as e:
-        logger.error(f\"Error in send_campaign_emails: {str(e)}\")
+        logger.error(f"Error in send_campaign_emails: {str(e)}")
 
 
 @router.get("/email-campaigns")
@@ -631,7 +631,7 @@ async def get_email_campaigns():
         }
     
     except Exception as e:
-        logger.error(f\"Error fetching email campaigns: {str(e)}\")
+        logger.error(f"Error fetching email campaigns: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -658,7 +658,7 @@ async def get_email_campaign(campaign_id: str):
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f\"Error fetching email campaign: {str(e)}\")
+        logger.error(f"Error fetching email campaign: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -709,7 +709,7 @@ async def update_user_lifecycle(user_id: str, lifecycle_data: dict):
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f\"Error updating user lifecycle: {str(e)}\")
+        logger.error(f"Error updating user lifecycle: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -752,7 +752,7 @@ async def get_lifecycle_analytics():
         }
     
     except Exception as e:
-        logger.error(f\"Error fetching lifecycle analytics: {str(e)}\")
+        logger.error(f"Error fetching lifecycle analytics: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -829,7 +829,7 @@ async def calculate_churn_risk_scores():
         }
     
     except Exception as e:
-        logger.error(f\"Error calculating churn risk: {str(e)}\")
+        logger.error(f"Error calculating churn risk: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -856,8 +856,8 @@ async def start_impersonation(request: ImpersonationRequest):
         
         # Create impersonation session
         session = ImpersonationSession(
-            admin_id=\"admin\",
-            admin_email=\"admin@botsmith.co\",
+            admin_id="admin",
+            admin_email="admin@botsmith.co",
             target_user_id=request.target_user_id,
             target_user_email=target_user.get('email'),
             reason=request.reason
@@ -867,39 +867,39 @@ async def start_impersonation(request: ImpersonationRequest):
         
         # Log the impersonation start
         activity_log = ActivityLog(
-            user_id=\"admin\",
-            action=\"started_impersonation\",
-            resource_type=\"user\",
+            user_id="admin",
+            action="started_impersonation",
+            resource_type="user",
             resource_id=request.target_user_id,
-            details=f\"Reason: {request.reason}\"
+            details=f"Reason: {request.reason}"
         )
         await db_instance['activity_logs'].insert_one(activity_log.model_dump())
         
         return {
             "success": True,
-            "message": "Impersonation session started\",
-            \"session_id\": session.id,
-            \"target_user\": {
-                \"id\": target_user['id'],
-                \"name\": target_user.get('name'),
-                \"email\": target_user.get('email')
+            "message": "Impersonation session started",
+            "session_id": session.id,
+            "target_user": {
+                "id": target_user['id'],
+                "name": target_user.get('name'),
+                "email": target_user.get('email')
             }
         }
     
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f\"Error starting impersonation: {str(e)}\")
+        logger.error(f"Error starting impersonation: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post(\"/impersonate/{session_id}/end\")
+@router.post("/impersonate/{session_id}/end")
 async def end_impersonation(session_id: str):
     """
     End an impersonation session
     """
     if db_instance is None:
-        raise HTTPException(status_code=500, detail=\"Database not initialized\")
+        raise HTTPException(status_code=500, detail="Database not initialized")
     
     try:
         impersonation_collection = db_instance['impersonation_sessions']
@@ -910,32 +910,32 @@ async def end_impersonation(session_id: str):
         )
         
         if result.matched_count == 0:
-            raise HTTPException(status_code=404, detail=\"Session not found\")
+            raise HTTPException(status_code=404, detail="Session not found")
         
         # Log the impersonation end
         session = await impersonation_collection.find_one({'id': session_id})
         activity_log = ActivityLog(
-            user_id=\"admin\",
-            action=\"ended_impersonation\",
-            resource_type=\"user\",
+            user_id="admin",
+            action="ended_impersonation",
+            resource_type="user",
             resource_id=session['target_user_id'],
-            details=f\"Session duration: {(datetime.now(timezone.utc) - session['started_at']).total_seconds() / 60:.1f} minutes\"
+            details=f"Session duration: {(datetime.now(timezone.utc) - session['started_at']).total_seconds() / 60:.1f} minutes"
         )
         await db_instance['activity_logs'].insert_one(activity_log.model_dump())
         
         return {
-            \"success\": True,
-            \"message\": \"Impersonation session ended\"
+            "success": True,
+            "message": "Impersonation session ended"
         }
     
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f\"Error ending impersonation: {str(e)}\")
+        logger.error(f"Error ending impersonation: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get(\"/impersonation-history\")
+@router.get("/impersonation-history")
 async def get_impersonation_history(
     limit: int = Query(50, ge=1, le=200),
     page: int = Query(1, ge=1)
@@ -944,7 +944,7 @@ async def get_impersonation_history(
     Get history of all impersonation sessions
     """
     if db_instance is None:
-        raise HTTPException(status_code=500, detail=\"Database not initialized\")
+        raise HTTPException(status_code=500, detail="Database not initialized")
     
     try:
         impersonation_collection = db_instance['impersonation_sessions']
@@ -954,18 +954,18 @@ async def get_impersonation_history(
         total = await impersonation_collection.count_documents({})
         
         return {
-            \"success\": True,
-            \"sessions\": sessions,
-            \"pagination\": {
-                \"total\": total,
-                \"page\": page,
-                \"limit\": limit,
-                \"total_pages\": (total + limit - 1) // limit
+            "success": True,
+            "sessions": sessions,
+            "pagination": {
+                "total": total,
+                "page": page,
+                "limit": limit,
+                "total_pages": (total + limit - 1) // limit
             }
         }
     
     except Exception as e:
-        logger.error(f\"Error fetching impersonation history: {str(e)}\")
+        logger.error(f"Error fetching impersonation history: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -973,13 +973,13 @@ async def get_impersonation_history(
 # USER NOTES
 # ============================================================================
 
-@router.post(\"/users/{user_id}/notes\")
+@router.post("/users/{user_id}/notes")
 async def add_user_note(user_id: str, note_data: dict):
     """
     Add a note to a user's profile
     """
     if db_instance is None:
-        raise HTTPException(status_code=500, detail=\"Database not initialized\")
+        raise HTTPException(status_code=500, detail="Database not initialized")
     
     try:
         users_collection = db_instance['users']
@@ -996,45 +996,45 @@ async def add_user_note(user_id: str, note_data: dict):
         )
         
         if result.matched_count == 0:
-            raise HTTPException(status_code=404, detail=\"User not found\")
+            raise HTTPException(status_code=404, detail="User not found")
         
         return {
-            \"success\": True,
-            \"message\": \"Note added successfully\",
-            \"note\": note.model_dump()
+            "success": True,
+            "message": "Note added successfully",
+            "note": note.model_dump()
         }
     
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f\"Error adding user note: {str(e)}\")
+        logger.error(f"Error adding user note: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get(\"/users/{user_id}/notes\")
+@router.get("/users/{user_id}/notes")
 async def get_user_notes(user_id: str):
     """
     Get all notes for a user
     """
     if db_instance is None:
-        raise HTTPException(status_code=500, detail=\"Database not initialized\")
+        raise HTTPException(status_code=500, detail="Database not initialized")
     
     try:
         users_collection = db_instance['users']
         
         user = await users_collection.find_one({'id': user_id}, {'internal_notes': 1})
         if not user:
-            raise HTTPException(status_code=404, detail=\"User not found\")
+            raise HTTPException(status_code=404, detail="User not found")
         
         return {
-            \"success\": True,
-            \"notes\": user.get('internal_notes', [])
+            "success": True,
+            "notes": user.get('internal_notes', [])
         }
     
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f\"Error fetching user notes: {str(e)}\")
+        logger.error(f"Error fetching user notes: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -1042,79 +1042,79 @@ async def get_user_notes(user_id: str):
 # BULK OPERATIONS WITH ENHANCED FEATURES
 # ============================================================================
 
-@router.post(\"/bulk-operations\")
+@router.post("/bulk-operations")
 async def execute_bulk_operation(operation: BulkUserOperation, background_tasks: BackgroundTasks):
     """
     Execute bulk operations on multiple users
     """
     if db_instance is None:
-        raise HTTPException(status_code=500, detail=\"Database not initialized\")
+        raise HTTPException(status_code=500, detail="Database not initialized")
     
     try:
         users_collection = db_instance['users']
         
-        if operation.operation == \"add_tag\":
+        if operation.operation == "add_tag":
             tag = operation.parameters.get('tag')
             result = await users_collection.update_many(
                 {'id': {'$in': operation.user_ids}},
                 {'$addToSet': {'tags': tag}}
             )
-            return {\"success\": True, \"message\": f\"Tag added to {result.modified_count} users\"}
+            return {"success": True, "message": f"Tag added to {result.modified_count} users"}
         
-        elif operation.operation == \"remove_tag\":
+        elif operation.operation == "remove_tag":
             tag = operation.parameters.get('tag')
             result = await users_collection.update_many(
                 {'id': {'$in': operation.user_ids}},
                 {'$pull': {'tags': tag}}
             )
-            return {\"success\": True, \"message\": f\"Tag removed from {result.modified_count} users\"}
+            return {"success": True, "message": f"Tag removed from {result.modified_count} users"}
         
-        elif operation.operation == \"add_segment\":
+        elif operation.operation == "add_segment":
             segment = operation.parameters.get('segment')
             result = await users_collection.update_many(
                 {'id': {'$in': operation.user_ids}},
                 {'$addToSet': {'segments': segment}}
             )
-            return {\"success\": True, \"message\": f\"Segment added to {result.modified_count} users\"}
+            return {"success": True, "message": f"Segment added to {result.modified_count} users"}
         
-        elif operation.operation == \"send_email\":
+        elif operation.operation == "send_email":
             template_id = operation.parameters.get('template_id')
             templates_collection = db_instance['email_templates']
             template = await templates_collection.find_one({'id': template_id})
             
             if not template:
-                raise HTTPException(status_code=404, detail=\"Email template not found\")
+                raise HTTPException(status_code=404, detail="Email template not found")
             
             # Send emails in background
             background_tasks.add_task(send_bulk_emails, operation.user_ids, template)
             
-            return {\"success\": True, \"message\": f\"Emails scheduled for {len(operation.user_ids)} users\"}
+            return {"success": True, "message": f"Emails scheduled for {len(operation.user_ids)} users"}
         
-        elif operation.operation == \"change_role\":
+        elif operation.operation == "change_role":
             new_role = operation.parameters.get('role')
             result = await users_collection.update_many(
                 {'id': {'$in': operation.user_ids}},
                 {'$set': {'role': new_role}}
             )
-            return {\"success\": True, \"message\": f\"Role updated for {result.modified_count} users\"}
+            return {"success": True, "message": f"Role updated for {result.modified_count} users"}
         
-        elif operation.operation == \"change_status\":
+        elif operation.operation == "change_status":
             new_status = operation.parameters.get('status')
             result = await users_collection.update_many(
                 {'id': {'$in': operation.user_ids}},
                 {'$set': {'status': new_status}}
             )
-            return {\"success\": True, \"message\": f\"Status updated for {result.modified_count} users\"}
+            return {"success": True, "message": f"Status updated for {result.modified_count} users"}
         
-        elif operation.operation == \"delete\":
+        elif operation.operation == "delete":
             # Delete users and all their data
             for user_id in operation.user_ids:
                 # This should be done in background for large batches
                 await delete_user_data(user_id)
             
-            return {\"success\": True, \"message\": f\"{len(operation.user_ids)} users deleted\"}
+            return {"success": True, "message": f"{len(operation.user_ids)} users deleted"}
         
-        elif operation.operation == \"export\":
+        elif operation.operation == "export":
             # Export user data
             users = await users_collection.find({'id': {'$in': operation.user_ids}}).to_list(length=10000)
             
@@ -1124,18 +1124,18 @@ async def execute_bulk_operation(operation: BulkUserOperation, background_tasks:
                 user.pop('_id', None)
             
             return {
-                \"success\": True,
-                \"message\": f\"Exported {len(users)} users\",
-                \"data\": users
+                "success": True,
+                "message": f"Exported {len(users)} users",
+                "data": users
             }
         
         else:
-            raise HTTPException(status_code=400, detail=f\"Unknown operation: {operation.operation}\")
+            raise HTTPException(status_code=400, detail=f"Unknown operation: {operation.operation}")
     
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f\"Error executing bulk operation: {str(e)}\")
+        logger.error(f"Error executing bulk operation: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -1150,10 +1150,10 @@ async def send_bulk_emails(user_ids: List[str], template: dict):
             user = await users_collection.find_one({'id': user_id})
             if user and user.get('email_notifications', True):
                 # Mock email sending
-                logger.info(f\"Sending email to {user['email']}: {template['subject']}\")
+                logger.info(f"Sending email to {user['email']}: {template['subject']}")
     
     except Exception as e:
-        logger.error(f\"Error in send_bulk_emails: {str(e)}\")
+        logger.error(f"Error in send_bulk_emails: {str(e)}")
 
 
 async def delete_user_data(user_id: str):
@@ -1182,23 +1182,23 @@ async def delete_user_data(user_id: str):
         await users_collection.delete_one({'id': user_id})
         
     except Exception as e:
-        logger.error(f\"Error deleting user data for {user_id}: {str(e)}\")
+        logger.error(f"Error deleting user data for {user_id}: {str(e)}")
 
 
 # ============================================================================
 # EXPORT & REPORTING
 # ============================================================================
 
-@router.get(\"/export/users\")
+@router.get("/export/users")
 async def export_users(
-    format: str = Query(\"csv\", description=\"Export format: csv or json\"),
-    filters: Optional[str] = Query(None, description=\"JSON string of filters to apply\")
+    format: str = Query("csv", description="Export format: csv or json"),
+    filters: Optional[str] = Query(None, description="JSON string of filters to apply")
 ):
     """
     Export users with optional filters in CSV or JSON format
     """
     if db_instance is None:
-        raise HTTPException(status_code=500, detail=\"Database not initialized\")
+        raise HTTPException(status_code=500, detail="Database not initialized")
     
     try:
         users_collection = db_instance['users']
@@ -1214,14 +1214,14 @@ async def export_users(
             user.pop('password_hash', None)
             user.pop('_id', None)
         
-        if format == \"json\":
+        if format == "json":
             return {
-                \"success\": True,
-                \"format\": \"json\",
-                \"count\": len(users),
-                \"data\": users
+                "success": True,
+                "format": "json",
+                "count": len(users),
+                "data": users
             }
-        elif format == \"csv\":
+        elif format == "csv":
             # Convert to CSV-friendly format
             csv_data = []
             for user in users:
@@ -1243,19 +1243,19 @@ async def export_users(
                 })
             
             return {
-                \"success\": True,
-                \"format\": \"csv\",
-                \"count\": len(csv_data),
-                \"data\": csv_data
+                "success": True,
+                "format": "csv",
+                "count": len(csv_data),
+                "data": csv_data
             }
         else:
-            raise HTTPException(status_code=400, detail=\"Invalid format. Use 'csv' or 'json'\")
+            raise HTTPException(status_code=400, detail="Invalid format. Use 'csv' or 'json'")
     
     except json.JSONDecodeError:
-        raise HTTPException(status_code=400, detail=\"Invalid filters JSON\")
+        raise HTTPException(status_code=400, detail="Invalid filters JSON")
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f\"Error exporting users: {str(e)}\")
+        logger.error(f"Error exporting users: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 ", "run_lint": false}
