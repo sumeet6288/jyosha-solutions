@@ -104,7 +104,17 @@ const PublicChat = () => {
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      toast.error('Failed to send message');
+      console.error('Error details:', error.response?.data || error.message);
+      
+      // Add error message to chat
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: 'Sorry, I encountered an error. Please try again.',
+        timestamp: new Date(),
+        isError: true
+      }]);
+      
+      toast.error(error.response?.data?.detail || 'Failed to send message');
     } finally {
       setSending(false);
     }
