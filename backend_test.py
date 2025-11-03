@@ -419,14 +419,11 @@ class SubscriptionTestSuite:
         # Try to add 6 text sources, 6th should fail
         for i in range(1, 7):
             try:
-                text_data = {
-                    "chatbot_id": chatbot_id,
-                    "type": "text",
-                    "name": f"Test Text Source {i}",
-                    "content": f"This is test text content {i} for testing text source limits. It contains some sample information about our company policies and procedures."
-                }
+                form_data = aiohttp.FormData()
+                form_data.add_field('name', f"Test Text Source {i}")
+                form_data.add_field('content', f"This is test text content {i} for testing text source limits. It contains some sample information about our company policies and procedures.")
                 
-                async with self.session.post(f"{API_BASE}/sources/chatbot/{chatbot_id}/text", json=text_data) as response:
+                async with self.session.post(f"{API_BASE}/sources/chatbot/{chatbot_id}/text", data=form_data) as response:
                     if i <= 5:  # First 5 should succeed
                         if response.status == 201:
                             result = await response.json()
