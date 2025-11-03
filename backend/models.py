@@ -522,6 +522,10 @@ class AnalyticsResponse(BaseModel):
     total_chatbots: int
 
 
+# Alias for compatibility
+DashboardAnalytics = AnalyticsResponse
+
+
 class ChatbotAnalytics(BaseModel):
     total_messages: int
     total_conversations: int
