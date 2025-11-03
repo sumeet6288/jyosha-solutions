@@ -190,7 +190,7 @@ class SubscriptionTestSuite:
 
         # Reset to Free plan for limit testing
         try:
-            upgrade_data = {"new_plan_id": "free"}
+            upgrade_data = {"plan_id": "free"}
             async with self.session.post(f"{API_BASE}/plans/upgrade", json=upgrade_data) as response:
                 if response.status == 200:
                     self.log_test("Reset to Free plan", True, "Reset to Free plan for limit testing")
