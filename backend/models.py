@@ -409,6 +409,15 @@ class ChatbotResponse(BaseModel):
 
 
 # Source Models
+class SourceCreate(BaseModel):
+    """Model for creating a new source"""
+    chatbot_id: str
+    type: Literal["file", "website", "text"]
+    name: str
+    content: Optional[str] = None
+    url: Optional[str] = None
+
+
 class Source(BaseModel):
     model_config = ConfigDict(extra="ignore")
     
