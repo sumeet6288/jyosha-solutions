@@ -47,36 +47,75 @@ class SubscriptionTestSuite:
             print(f"   Details: {details}")
 
     async def test_plan_system_basics(self):
-        """Create a test chatbot for widget settings testing"""
+        """Test basic plan system endpoints"""
+        print("\n🔍 Testing Plan System Basics...")
+        
+        # Test GET /api/plans/ - List all available plans
         try:
-            chatbot_data = {
-                "name": "Widget Settings Test Bot",
-                "model": "gpt-4o-mini",
-                "provider": "openai",
-                "temperature": 0.7,
-                "instructions": "You are a test chatbot for widget settings.",
-                "welcome_message": "Hello! I'm testing widget settings.",
-                # Default widget settings
-                "widget_position": "bottom-right",
-                "widget_theme": "light", 
-                "widget_size": "medium",
-                "auto_expand": False
-            }
-            
-            async with self.session.post(f"{API_BASE}/chatbots", json=chatbot_data) as response:
-                if response.status == 201:
-                    result = await response.json()
-                    chatbot_id = result["id"]
-                    self.log_test("Create test chatbot", True, f"Created chatbot with ID: {chatbot_id}")
-                    return chatbot_id
+            async with self.session.get(f"{API_BASE}/plans/") as response:
+                if response.status == 200:
+                    plans = await response.json()
+                    expected_plans = ["free", "starter", "professional", "enterprise"]
+                    plan_ids = [plan.get("id") for plan in plans]
+                    
+                    if all(plan_id in plan_ids for plan_id in expected_plans):
+                        self.log_test("GET /api/plans/ - List all plans", True, 
+                                    f"Found all expected plans: {plan_ids}")
+                    else:
+                        self.log_test("GET /api/plans/ - List all plans", False, 
+                                    f"Missing plans. Expected: {expected_plans}, Got: {plan_ids}")
                 else:
                     error_text = await response.text()
-                    self.log_test("Create test chatbot", False, f"Status: {response.status}, Error: {error_text}")
-                    return None
-                    
+                    self.log_test("GET /api/plans/ - List all plans", False, 
+                                f"Status: {response.status}, Error: {error_text}")
         except Exception as e:
-            self.log_test("Create test chatbot", False, f"Exception: {str(e)}")
-            return None
+            self.log_test("GET /api/plans/ - List all plans", False, f"Exception: {str(e)}")
+
+        # Test GET /api/plans/current - Get current subscription
+        try:
+            async with self.session.get(f"{API_BASE}/plans/current") as response:
+                if response.status == 200:
+                    current_sub = await response.json()
+                    if "subscription" in current_sub and "plan" in current_sub:
+                        plan_id = current_sub["plan"]["id"]
+                        self.log_test("GET /api/plans/current - Current subscription", True, 
+                                    f"Current plan: {plan_id}")
+                    else:
+                        self.log_test("GET /api/plans/current - Current subscription", False, 
+                                    f"Missing subscription or plan data: {current_sub}")
+                else:
+                    error_text = await response.text()
+                    self.log_test("GET /api/plans/current - Current subscription", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("GET /api/plans/current - Current subscription", False, f"Exception: {str(e)}")
+
+        # Test GET /api/plans/usage - Get usage statistics
+        try:
+            async with self.session.get(f"{API_BASE}/plans/usage") as response:
+                if response.status == 200:
+                    usage_stats = await response.json()
+                    required_fields = ["plan", "usage", "last_reset"]
+                    usage_fields = ["chatbots", "messages", "file_uploads", "website_sources", "text_sources"]
+                    
+                    if all(field in usage_stats for field in required_fields):
+                        if all(field in usage_stats["usage"] for field in usage_fields):
+                            self.log_test("GET /api/plans/usage - Usage statistics", True, 
+                                        f"All usage fields present: {list(usage_stats['usage'].keys())}")
+                        else:
+                            missing = [f for f in usage_fields if f not in usage_stats["usage"]]
+                            self.log_test("GET /api/plans/usage - Usage statistics", False, 
+                                        f"Missing usage fields: {missing}")
+                    else:
+                        missing = [f for f in required_fields if f not in usage_stats]
+                        self.log_test("GET /api/plans/usage - Usage statistics", False, 
+                                    f"Missing top-level fields: {missing}")
+                else:
+                    error_text = await response.text()
+                    self.log_test("GET /api/plans/usage - Usage statistics", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("GET /api/plans/usage - Usage statistics", False, f"Exception: {str(e)}")
             
     async def test_widget_position_updates(self, chatbot_id: str):
         """Test all widget position options"""
