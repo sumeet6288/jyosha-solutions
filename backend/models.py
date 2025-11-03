@@ -323,6 +323,7 @@ class Chatbot(BaseModel):
     max_tokens: int = 500
     system_message: str = "You are a helpful assistant."
     instructions: Optional[str] = None  # Alternative field name for system_message
+    status: str = "active"  # Chatbot status: active, inactive, paused
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     messages_count: int = 0
