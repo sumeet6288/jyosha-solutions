@@ -334,7 +334,7 @@ class SubscriptionTestSuite:
                 form_data.add_field('chatbot_id', chatbot_id)
                 form_data.add_field('file', file_content, filename=f'test_file_{i}.txt', content_type='text/plain')
                 
-                async with self.session.post(f"{API_BASE}/sources/upload", data=form_data) as response:
+                async with self.session.post(f"{API_BASE}/sources/chatbot/{chatbot_id}/file", data=form_data) as response:
                     if i <= 5:  # First 5 should succeed
                         if response.status == 201:
                             result = await response.json()
