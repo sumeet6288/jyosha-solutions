@@ -606,3 +606,29 @@ class IntegrationLogResponse(BaseModel):
     status: str
     message: Optional[str]
     timestamp: datetime
+
+
+# Plan Models
+class PlanLimits(BaseModel):
+    max_chatbots: int
+    max_messages_per_month: int
+    max_file_uploads: int
+    max_website_sources: int
+    max_text_sources: int
+
+
+class Plan(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    price: float
+    interval: Literal["monthly", "yearly"] = "monthly"
+    limits: PlanLimits
+    features: List[str] = []
+    is_popular: bool = False
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+
+class PlanUpgradeRequest(BaseModel):
+    plan_id: str
