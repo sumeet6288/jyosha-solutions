@@ -148,6 +148,12 @@ class PasswordReset(BaseModel):
     new_password: str
 
 
+class Token(BaseModel):
+    """JWT Token response"""
+    access_token: str
+    token_type: str = "bearer"
+
+
 # Login History Model
 class LoginHistory(BaseModel):
     model_config = ConfigDict(extra="ignore")
