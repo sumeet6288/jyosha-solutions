@@ -600,6 +600,39 @@ class RatingResponse(BaseModel):
     created_at: datetime
 
 
+# Public Chat Models
+class PublicChatbotInfo(BaseModel):
+    """Public chatbot information for public access"""
+    id: str
+    name: str
+    welcome_message: str
+    primary_color: Optional[str] = "#7c3aed"
+    secondary_color: Optional[str] = "#a78bfa"
+    logo_url: Optional[str] = None
+    avatar_url: Optional[str] = None
+    widget_theme: Optional[str] = "light"
+
+
+class PublicChatRequest(BaseModel):
+    """Request model for public chat"""
+    message: str
+    session_id: str
+
+
+class EmbedConfig(BaseModel):
+    """Embed configuration for chatbot widget"""
+    chatbot_id: str
+    theme: str = "light"
+    position: str = "bottom-right"
+    auto_expand: bool = False
+
+
+class EmbedCodeResponse(BaseModel):
+    """Response containing embed code"""
+    embed_code: str
+    config: EmbedConfig
+
+
 # Subscription/Plan Models
 class Subscription(BaseModel):
     model_config = ConfigDict(extra="ignore")
