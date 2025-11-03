@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Backend Testing Suite for Chatbot Builder - Widget Settings Focus
-Testing the Appearance tab Widget Settings functionality as requested.
+Backend Testing Suite for Subscription & Plan Enforcement System
+Comprehensive testing of subscription system, plan limits, and usage tracking.
 """
 
 import asyncio
@@ -15,7 +15,7 @@ from typing import Dict, Any, List
 BACKEND_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://quick-preview-47.preview.emergentagent.com')
 API_BASE = f"{BACKEND_URL}/api"
 
-class WidgetSettingsTestSuite:
+class SubscriptionTestSuite:
     def __init__(self):
         self.session = None
         self.test_chatbot_id = None
