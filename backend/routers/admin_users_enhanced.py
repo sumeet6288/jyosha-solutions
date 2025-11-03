@@ -78,9 +78,9 @@ async def advanced_user_search(
     page: int = Query(1, ge=1, description="Page number"),
     limit: int = Query(50, ge=1, le=200, description="Results per page")
 ):
-    \"\"\"
+    """
     Advanced user search with comprehensive filtering options
-    \"\"\"
+    """
     if db_instance is None:
         raise HTTPException(status_code=500, detail="Database not initialized")
     
