@@ -152,7 +152,7 @@ class SubscriptionTestSuite:
 
         # Test upgrade from Starter to Professional
         try:
-            upgrade_data = {"new_plan_id": "professional"}
+            upgrade_data = {"plan_id": "professional"}
             async with self.session.post(f"{API_BASE}/plans/upgrade", json=upgrade_data) as response:
                 if response.status == 200:
                     result = await response.json()
