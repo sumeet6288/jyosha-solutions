@@ -378,14 +378,10 @@ class SubscriptionTestSuite:
         
         for i, url in enumerate(websites, 1):
             try:
-                website_data = {
-                    "chatbot_id": chatbot_id,
-                    "type": "website",
-                    "name": f"Test Website {i}",
-                    "url": url
-                }
+                form_data = aiohttp.FormData()
+                form_data.add_field('url', url)
                 
-                async with self.session.post(f"{API_BASE}/sources/chatbot/{chatbot_id}/website", json=website_data) as response:
+                async with self.session.post(f"{API_BASE}/sources/chatbot/{chatbot_id}/website", data=form_data) as response:
                     if i <= 2:  # First 2 should succeed
                         if response.status == 201:
                             result = await response.json()
