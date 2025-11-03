@@ -116,8 +116,8 @@ class SubscriptionTestSuite:
                                 f"Status: {response.status}, Error: {error_text}")
         except Exception as e:
             self.log_test("GET /api/plans/usage - Usage statistics", False, f"Exception: {str(e)}")
-            
-    async def test_widget_position_updates(self, chatbot_id: str):
+
+    async def test_plan_upgrade_flow(self):
         """Test all widget position options"""
         positions = ["bottom-right", "bottom-left", "top-right", "top-left"]
         
