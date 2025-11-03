@@ -714,7 +714,7 @@ class SubscriptionTestSuite:
                 "url": "https://example.com"
             }
             
-            async with self.session.post(f"{API_BASE}/sources/website", json=website_data) as response:
+            async with self.session.post(f"{API_BASE}/sources/chatbot/{chatbot_id}/website", json=website_data) as response:
                 if response.status == 201:
                     result = await response.json()
                     self.test_source_ids.append(result["id"])
