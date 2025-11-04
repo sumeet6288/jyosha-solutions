@@ -42,14 +42,56 @@ const AddSourceModal = ({ isOpen, onClose, chatbotId, onSuccess, onUpgradeRequir
     }
     
     setLoading(true);
+    setUploadProgress(0);
+    setProcessingProgress(0);
+    
     try {
+      // Simulate upload progress
+      const uploadInterval = setInterval(() => {
+        setUploadProgress(prev => {
+          if (prev >= 90) {
+            clearInterval(uploadInterval);
+            return 90;
+          }
+          return prev + 10;
+        });
+      }, 200);
+      
       await sourceAPI.uploadFile(chatbotId, fileData);
+      
+      clearInterval(uploadInterval);
+      setUploadProgress(100);
+      
+      // Simulate processing progress
       toast({ title: 'Success', description: 'File uploaded successfully. Processing...' });
+      
+      const processingInterval = setInterval(() => {
+        setProcessingProgress(prev => {
+          if (prev >= 90) {
+            clearInterval(processingInterval);
+            return 90;
+          }
+          return prev + 10;
+        });
+      }, 300);
+      
+      // Wait a bit for processing simulation
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      clearInterval(processingInterval);
+      setProcessingProgress(100);
+      
+      // Small delay to show 100% completion
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
       setFileData(null);
+      setUploadProgress(0);
+      setProcessingProgress(0);
       onSuccess();
       onClose();
     } catch (error) {
       console.error('Error uploading file:', error);
+      setUploadProgress(0);
+      setProcessingProgress(0);
       
       // Check if it's a limit error
       if (error.response?.status === 403 && error.response?.data?.detail?.upgrade_required) {
