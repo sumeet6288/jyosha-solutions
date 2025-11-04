@@ -104,6 +104,7 @@ api_router.include_router(admin_users_enhanced.router)
 api_router.include_router(notifications.router)
 api_router.include_router(integrations.router)
 api_router.include_router(password_reset.router)
+api_router.include_router(telegram.router)
 
 # Include the router in the main app
 app.include_router(api_router)
