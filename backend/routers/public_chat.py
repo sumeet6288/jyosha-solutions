@@ -259,11 +259,13 @@ async def export_conversations(chatbot_id: str, format: str = "json"):
         
         conv_data = {
             "conversation_id": conv["id"],
-            "session_id": conv["session_id"],
             "user_name": conv.get("user_name"),
             "user_email": conv.get("user_email"),
-            "status": conv["status"],
+            "status": conv.get("status", "active"),
+            "rating": conv.get("rating"),
             "created_at": conv["created_at"].isoformat(),
+            "updated_at": conv.get("updated_at", conv["created_at"]).isoformat(),
+            "message_count": len(messages),
             "messages": [
                 {
                     "role": msg["role"],
