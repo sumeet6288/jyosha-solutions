@@ -132,9 +132,8 @@ async def process_telegram_message(
         
         # Generate AI response
         system_message = chatbot.get('system_message', 'You are a helpful AI assistant.')
-        if context:
-            system_message += f"\n\nKnowledge Base Context:\n{context}"
         
+        # Pass context to generate_response, it will handle adding to system message
         ai_response_tuple = await chat_service.generate_response(
             message=message_text,
             session_id=session_id,
