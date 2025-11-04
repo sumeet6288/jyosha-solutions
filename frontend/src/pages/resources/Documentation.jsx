@@ -158,7 +158,6 @@ const Documentation = () => {
                           <p className="text-sm text-gray-600 mb-2">{article.description}</p>
                           <span className="text-xs text-gray-500">{article.time}</span>
                           {!article.slug && <span className="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">Coming Soon</span>}
-                          {article.isExternal && article.slug && <ExternalLink className="inline w-3 h-3 ml-2 text-purple-600" />}
                         </div>
                         {article.slug && <ChevronRight className="w-5 h-5 text-purple-600 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />}
                       </div>
