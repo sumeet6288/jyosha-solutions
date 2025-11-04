@@ -272,6 +272,32 @@ const ChatbotIntegrations = ({ chatbot }) => {
     }
   };
 
+  const handleSetupTelegramWebhook = async (integrationId) => {
+    try {
+      setTesting(true);
+      const baseUrl = process.env.REACT_APP_BACKEND_URL || window.location.origin;
+      const response = await api.post(`/telegram/${chatbot.id}/setup-webhook`, {
+        base_url: baseUrl
+      });
+      
+      if (response.data.success) {
+        toast({
+          title: 'Webhook Configured',
+          description: 'Telegram webhook has been set up successfully. Your bot is ready to receive messages!'
+        });
+        fetchIntegrations();
+      }
+    } catch (error) {
+      toast({
+        title: 'Webhook Setup Failed',
+        description: error.response?.data?.detail || 'Failed to setup webhook',
+        variant: 'destructive'
+      });
+    } finally {
+      setTesting(false);
+    }
+  };
+
   const handleDeleteIntegration = async (integrationId, name) => {
     if (!window.confirm(`Are you sure you want to delete ${name} integration?`)) {
       return;
