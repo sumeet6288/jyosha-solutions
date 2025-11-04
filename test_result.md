@@ -511,6 +511,18 @@ frontend:
         agent: "main"
         comment: "✅ REMEMBER ME FEATURE FULLY IMPLEMENTED: Added complete functionality to 'Remember me' checkbox on sign-in page. Changes: 1) Added rememberMe state management with useState, 2) Created useEffect to load saved email from localStorage on component mount, 3) Implemented handleRememberMeChange function to handle checkbox changes and clear localStorage when unchecked, 4) Updated handleSubmit to save email to localStorage when remember me is checked during successful login, 5) Connected checkbox input with checked={rememberMe} and onChange={handleRememberMeChange}, 6) Added cursor-pointer class for better UX. Testing results: ✅ Checkbox can be checked/unchecked properly, ✅ Email saves to localStorage (key: botsmith_remember_email) on successful sign-in with checkbox checked, ✅ Email auto-fills on page reload when previously saved, ✅ Checkbox state persists correctly, ✅ Unchecking clears saved email from localStorage, ✅ Security: Only email is saved, never passwords. Feature is production-ready and fully functional."
 
+  - task: "Remove Welcome Message from Appearance Tab"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/AppearanceTab.jsx"
+    stuck_count: 0
+    priority: "low"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "User requested removal of Welcome Message component from Appearance tab in Chatbot Builder. Removed entire Welcome Message section (lines 302-316) which included heading, textarea input, and wrapper div. Also removed welcome_message from customization state initialization to keep code clean. Welcome Message still exists in Settings tab for basic configuration but is no longer in Appearance tab. Testing confirmed: ✅ Welcome Message section successfully removed from Appearance tab, ✅ No Welcome Message heading or input visible, ✅ Other appearance settings (colors, fonts, branding, widget settings) remain intact, ✅ Save functionality works correctly without welcome_message field."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
