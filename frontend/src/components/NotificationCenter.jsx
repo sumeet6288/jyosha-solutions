@@ -18,7 +18,7 @@ const NotificationCenter = ({ onClose }) => {
   const fetchNotifications = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/api/notifications/', {
+      const response = await api.get('/notifications/', {
         params: {
           limit: 50,
           unread_only: filter === 'unread'
