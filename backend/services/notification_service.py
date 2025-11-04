@@ -136,6 +136,12 @@ class NotificationService:
             "created_at", -1
         ).skip(skip).limit(limit).to_list(None)
         
+        # Convert MongoDB _id to id for each notification
+        for notif in notifications:
+            if "_id" in notif:
+                notif["id"] = str(notif["_id"])
+                del notif["_id"]
+        
         return notifications
     
     async def get_unread_count(self, user_id: str) -> int:
