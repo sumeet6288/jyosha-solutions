@@ -300,7 +300,7 @@ async def add_text_source(
             type="text",
             name=name,
             content=content,
-            status="processed"
+            status="completed"
         )
         
         await db_instance.sources.insert_one(source.model_dump())
