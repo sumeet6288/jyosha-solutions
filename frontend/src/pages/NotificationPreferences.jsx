@@ -87,7 +87,7 @@ const NotificationPreferences = () => {
   const savePreferences = async () => {
     try {
       setSaving(true);
-      await api.put('/api/notifications/preferences', preferences);
+      await api.put('/notifications/preferences', preferences);
       toast.success('Notification preferences saved successfully!');
     } catch (error) {
       console.error('Error saving preferences:', error);
