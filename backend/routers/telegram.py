@@ -118,7 +118,7 @@ async def process_telegram_message(
         context = ""
         if sources:
             from services.vector_store import VectorStore
-            vector_store = VectorStore(db)
+            vector_store = VectorStore()
             relevant_chunks = await vector_store.search(
                 chatbot_id=chatbot_id,
                 query=message_text,
