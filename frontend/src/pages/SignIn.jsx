@@ -232,7 +232,12 @@ const SignIn = () => {
                 {/* Remember me & Forgot password */}
                 <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2 xs:gap-4 px-1 animate-fade-in-scale stagger-4 text-xs">
                   <label className="flex items-center gap-1.5 cursor-pointer group/check font-body">
-                    <input type="checkbox" className="w-3.5 h-3.5 rounded border-2 border-purple-300 text-purple-600 focus:ring-purple-500 focus:ring-2 transition-all" />
+                    <input 
+                      type="checkbox" 
+                      checked={rememberMe}
+                      onChange={handleRememberMeChange}
+                      className="w-3.5 h-3.5 rounded border-2 border-purple-300 text-purple-600 focus:ring-purple-500 focus:ring-2 transition-all cursor-pointer" 
+                    />
                     <span className="text-gray-600 group-hover/check:text-purple-600 transition-colors whitespace-nowrap">Remember me</span>
                   </label>
                   <button type="button" className="text-purple-600 hover:text-pink-600 font-semibold transition-colors font-body hover:underline whitespace-nowrap">
