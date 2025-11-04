@@ -399,6 +399,7 @@ class ChatbotResponse(BaseModel):
     temperature: float
     max_tokens: int
     system_message: str
+    instructions: Optional[str] = None  # Alias for system_message
     status: str = "active"
     created_at: datetime
     updated_at: datetime
