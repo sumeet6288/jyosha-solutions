@@ -17,7 +17,11 @@ Welcome to the BotSmith documentation! This comprehensive guide will help you un
 
 ### For DevOps
 - **[Deployment Guide](DEPLOYMENT_GUIDE.md)** - Production deployment instructions
-- **[Security Guide](SECURITY.md)** - Security best practices and policies
+- **[🔒 Security Documentation](SECURITY_INDEX.md)** - Comprehensive security guide (4 articles)
+  - Authentication & Authorization
+  - Data Protection
+  - API Security
+  - Best Practices
 
 ---
 
