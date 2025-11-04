@@ -314,15 +314,15 @@ const Footer = ({ variant = 'landing' }) => {
 
           {/* Legal Links */}
           <div className="flex items-center space-x-6 text-sm">
-            <Link to="/resources" className="text-gray-400 hover:text-white transition-colors">
+            <Link to="/privacy-policy" className="text-gray-400 hover:text-white transition-colors">
               Privacy
             </Link>
             <span className="text-gray-600">•</span>
-            <Link to="/resources" className="text-gray-400 hover:text-white transition-colors">
+            <Link to="/terms-of-service" className="text-gray-400 hover:text-white transition-colors">
               Terms
             </Link>
             <span className="text-gray-600">•</span>
-            <Link to="/resources" className="text-gray-400 hover:text-white transition-colors">
+            <Link to="/cookie-policy" className="text-gray-400 hover:text-white transition-colors">
               Cookies
             </Link>
           </div>
