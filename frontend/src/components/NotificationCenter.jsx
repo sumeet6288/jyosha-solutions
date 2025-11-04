@@ -56,7 +56,7 @@ const NotificationCenter = ({ onClose }) => {
 
   const deleteNotification = async (notificationId) => {
     try {
-      await api.delete(`/api/notifications/${notificationId}`);
+      await api.delete(`/notifications/${notificationId}`);
       setNotifications(notifications.filter(n => n.id !== notificationId));
       fetchUnreadCount();
     } catch (error) {
