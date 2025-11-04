@@ -523,6 +523,18 @@ frontend:
         agent: "main"
         comment: "User requested removal of Welcome Message component from Appearance tab in Chatbot Builder. Removed entire Welcome Message section (lines 302-316) which included heading, textarea input, and wrapper div. Also removed welcome_message from customization state initialization to keep code clean. Welcome Message still exists in Settings tab for basic configuration but is no longer in Appearance tab. Testing confirmed: ✅ Welcome Message section successfully removed from Appearance tab, ✅ No Welcome Message heading or input visible, ✅ Other appearance settings (colors, fonts, branding, widget settings) remain intact, ✅ Save functionality works correctly without welcome_message field."
 
+  - task: "Source Processing Progress Bars"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/AddSourceModal.jsx, /app/frontend/src/pages/ChatbotBuilder.jsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "User requested percentage progress bars for source upload and processing to provide better visual feedback. Implemented comprehensive progress tracking system: 1) AddSourceModal - Added Progress component import, added uploadProgress and processingProgress state variables, 2) File Upload - Implemented two-stage progress: upload progress (0-100%) with purple bar during file upload, processing progress (0-100%) with green bar during file processing, simulated progress updates every 200-300ms, 3) Website URL - Added scraping progress (0-100%) with blue bar during website content extraction, simulated progress updates every 400ms, 4) Sources List - Added progress bar display for sources with 'processing' status, shows orange progress bar with percentage (defaults to 50% if not provided by backend), progress bar appears below source name and status badge, 5) UI Enhancements - Color-coded progress bars (purple for upload, green for processing, blue for scraping, orange for source processing), percentage display next to progress bars, smooth animations and transitions, disabled buttons during processing. Features: Real-time visual feedback during uploads, clear indication of processing stages, supports multiple file types (PDF, DOCX, TXT, XLSX, CSV up to 100MB), progress persists until completion, automatically clears progress after successful completion."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
