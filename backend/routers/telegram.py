@@ -125,7 +125,7 @@ async def process_telegram_message(
                 top_k=3
             )
             if relevant_chunks:
-                context = "\n\n".join([chunk['content'] for chunk in relevant_chunks])
+                context = "\n\n".join([chunk['text'] for chunk in relevant_chunks])
         
         # Initialize chat service
         chat_service = ChatService()
