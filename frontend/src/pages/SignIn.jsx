@@ -240,7 +240,11 @@ const SignIn = () => {
                     />
                     <span className="text-gray-600 group-hover/check:text-purple-600 transition-colors whitespace-nowrap">Remember me</span>
                   </label>
-                  <button type="button" className="text-purple-600 hover:text-pink-600 font-semibold transition-colors font-body hover:underline whitespace-nowrap">
+                  <button 
+                    type="button" 
+                    onClick={() => navigate('/forgot-password')}
+                    className="text-purple-600 hover:text-pink-600 font-semibold transition-colors font-body hover:underline whitespace-nowrap"
+                  >
                     Forgot password?
                   </button>
                 </div>
