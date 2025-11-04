@@ -138,14 +138,37 @@ const AddSourceModal = ({ isOpen, onClose, chatbotId, onSuccess, onUpgradeRequir
     }
     
     setLoading(true);
+    setProcessingProgress(0);
+    
     try {
+      // Simulate scraping progress
+      const scrapingInterval = setInterval(() => {
+        setProcessingProgress(prev => {
+          if (prev >= 90) {
+            clearInterval(scrapingInterval);
+            return 90;
+          }
+          return prev + 15;
+        });
+      }, 400);
+      
       await sourceAPI.addWebsite(chatbotId, urlData);
-      toast({ title: 'Success', description: 'Website URL added successfully. Scraping...' });
+      
+      clearInterval(scrapingInterval);
+      setProcessingProgress(100);
+      
+      toast({ title: 'Success', description: 'Website URL added successfully. Scraping completed!' });
+      
+      // Small delay to show 100% completion
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
       setUrlData('');
+      setProcessingProgress(0);
       onSuccess();
       onClose();
     } catch (error) {
       console.error('Error adding URL:', error);
+      setProcessingProgress(0);
       let errorMessage = 'Failed to add website';
       if (error.response?.data?.detail) {
         if (Array.isArray(error.response.data.detail)) {
