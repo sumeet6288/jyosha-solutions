@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bot, Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
-import api from '../services/api';
+import api from '../utils/api';
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
