@@ -411,7 +411,7 @@ const SignIn = () => {
               </p>
               <div className="flex items-center justify-center gap-12 mt-10 animate-fade-in-scale stagger-2">
                 <div className="text-center transform hover:scale-110 transition-transform duration-300">
-                  <div className="text-4xl font-black font-heading">9000+</div>
+                  <div className="text-4xl font-black font-heading">150+</div>
                   <div className="text-sm opacity-90 font-body">Happy Users</div>
                 </div>
                 <div className="w-px h-16 bg-white/40"></div>
