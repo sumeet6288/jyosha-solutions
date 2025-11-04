@@ -51,7 +51,7 @@ Explore our multi-layered API security approach including rate limiting, input v
 - API authentication strategies
 - Audit logging and monitoring
 
-⏱️ **15 min read** | 📊 **Coming Soon**: Security metrics dashboard
+⏱️ **15 min read**
 
 ---
 
