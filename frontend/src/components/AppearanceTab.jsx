@@ -10,7 +10,6 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
     accent_color: chatbot?.accent_color || '#ec4899',
     logo_url: chatbot?.logo_url || '',
     avatar_url: chatbot?.avatar_url || '',
-    welcome_message: chatbot?.welcome_message || 'Hello! How can I help you today?',
     widget_position: chatbot?.widget_position || 'bottom-right',
     widget_theme: chatbot?.widget_theme || 'light',
     font_family: chatbot?.font_family || 'Inter, system-ui, sans-serif',
