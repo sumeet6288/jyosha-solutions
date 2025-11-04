@@ -150,7 +150,16 @@ const Documentation = () => {
                     <div 
                       key={articleIndex} 
                       className="group p-4 bg-gradient-to-br from-gray-50 to-purple-50/50 rounded-xl border-2 border-transparent hover:border-purple-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
-                      onClick={() => article.slug && navigate(`/resources/articles/${article.slug}`)}
+                      onClick={() => {
+                        if (article.slug) {
+                          if (article.isExternal) {
+                            // Open GitHub docs in new tab
+                            window.open(`https://github.com/yourusername/botsmith/blob/main/docs/SECURITY.md#${article.slug}`, '_blank');
+                          } else {
+                            navigate(`/resources/articles/${article.slug}`);
+                          }
+                        }
+                      }}
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex-1">
@@ -158,6 +167,7 @@ const Documentation = () => {
                           <p className="text-sm text-gray-600 mb-2">{article.description}</p>
                           <span className="text-xs text-gray-500">{article.time}</span>
                           {!article.slug && <span className="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">Coming Soon</span>}
+                          {article.isExternal && article.slug && <ExternalLink className="inline w-3 h-3 ml-2 text-purple-600" />}
                         </div>
                         {article.slug && <ChevronRight className="w-5 h-5 text-purple-600 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />}
                       </div>
