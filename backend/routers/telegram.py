@@ -171,6 +171,12 @@ async def process_telegram_message(
             {"$inc": {"messages_count": 2}}
         )
         
+        # Update subscription usage (increment message count by 2 for user + assistant)
+        user_id = chatbot.get('user_id')
+        if user_id:
+            from services.plan_service import plan_service
+            await plan_service.increment_usage(user_id, "messages", 2)
+        
         # Send response back to Telegram
         result = await telegram_service.send_message(
             chat_id=chat_id,
