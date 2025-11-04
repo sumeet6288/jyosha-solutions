@@ -123,7 +123,7 @@ async def upload_file_source(
                     {"id": source.id},
                     {"$set": {
                         "content": content,
-                        "status": "processed"
+                        "status": "completed"
                     }}
                 )
                 
@@ -220,7 +220,7 @@ async def add_website_source(
                     {"id": source.id},
                     {"$set": {
                         "content": content,
-                        "status": "processed"
+                        "status": "completed"
                     }}
                 )
                 
