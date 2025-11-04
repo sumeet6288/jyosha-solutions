@@ -571,6 +571,18 @@ const ChatbotIntegrations = ({ chatbot }) => {
                         <RefreshCw className={`w-4 h-4 ${testing ? 'animate-spin' : ''}`} />
                       </Button>
 
+                      {definition.id === 'telegram' && (
+                        <Button
+                          variant="outline"
+                          onClick={() => handleSetupTelegramWebhook(integration.id)}
+                          disabled={testing}
+                          className="border-2 border-green-600 text-green-600 hover:bg-green-50"
+                          title="Setup Telegram Webhook"
+                        >
+                          <Zap className="w-4 h-4" />
+                        </Button>
+                      )}
+
                       <Button
                         variant="outline"
                         onClick={() => handleDeleteIntegration(integration.id, definition.name)}
