@@ -34,7 +34,7 @@ Understand how we protect your data at rest and in transit, comply with GDPR req
 - Secure file upload handling
 - Data retention and deletion policies
 
-⏱️ **10 min read** | 📊 **Coming Soon**: Compliance certificates
+⏱️ **10 min read**
 
 ---
 
