@@ -34,6 +34,16 @@ const UserProfileDropdown = ({ user, onLogout }) => {
     if (user) {
       fetchCurrentPlan();
     }
+
+    // Refresh plan when window gains focus (e.g., user returns from another tab/page)
+    const handleFocus = () => {
+      if (user) {
+        fetchCurrentPlan();
+      }
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
   }, [user]);
 
   const handleLogout = () => {
