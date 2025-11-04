@@ -748,6 +748,16 @@ class IntegrationLogResponse(BaseModel):
     timestamp: datetime
 
 
+
+# Telegram Models
+class TelegramWebhookSetup(BaseModel):
+    base_url: str  # Base URL of your application (e.g., https://yourdomain.com)
+
+class TelegramMessage(BaseModel):
+    chat_id: int
+    text: str
+    parse_mode: Optional[str] = None
+
 # Plan Models
 class PlanLimits(BaseModel):
     max_chatbots: int
