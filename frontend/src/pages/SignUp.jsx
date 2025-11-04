@@ -238,7 +238,9 @@ const SignUp = () => {
                   <div className={`relative mt-1.5 transition-all duration-500 ${focusedField === 'name' ? 'scale-[1.02] shadow-xl shadow-purple-500/20' : ''}`}>
                     <Input
                       id="name"
+                      name="name"
                       type="text"
+                      autoComplete="name"
                       placeholder="John Doe"
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
