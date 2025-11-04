@@ -69,7 +69,7 @@ Follow our curated security best practices for developers, administrators, and e
 - Compliance frameworks (GDPR, SOC 2, OWASP)
 - Pre-deployment security checklist
 
-⏱️ **8 min read** | ✅ **Includes**: Interactive checklist
+⏱️ **8 min read**
 
 ---
 
