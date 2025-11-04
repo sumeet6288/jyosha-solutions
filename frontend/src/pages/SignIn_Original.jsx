@@ -275,7 +275,7 @@ const SignIn = () => {
               </p>
               <div className="flex items-center justify-center gap-8 mt-8">
                 <div className="text-center">
-                  <div className="text-3xl font-bold">9000+</div>
+                  <div className="text-3xl font-bold">150+</div>
                   <div className="text-sm opacity-80">Happy Users</div>
                 </div>
                 <div className="w-px h-12 bg-white/30"></div>
