@@ -91,6 +91,7 @@ function AppContent() {
             <Route path="/resources/articles/sharing-deployment" element={<SharingDeployment />} />
             <Route path="/resources/articles/chatbot-management" element={<ChatbotManagement />} />
             <Route path="/resources/articles/account-settings-guide" element={<AccountSettingsGuide />} />
+            <Route path="/resources/articles/security-overview" element={<SecurityOverview />} />
             <Route path="/resources/api-reference" element={<APIReference />} />
             <Route path="/resources/help-center" element={<HelpCenter />} />
             <Route path="/resources/community" element={<Community />} />
