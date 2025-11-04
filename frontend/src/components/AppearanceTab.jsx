@@ -299,22 +299,6 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
         </div>
       </div>
 
-      {/* Welcome Message */}
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-        <div className="flex items-center space-x-2 mb-4">
-          <Type className="w-5 h-5 text-purple-600" />
-          <h3 className="text-lg font-semibold">Welcome Message</h3>
-        </div>
-        
-        <textarea
-          value={customization.welcome_message}
-          onChange={(e) => handleChange('welcome_message', e.target.value)}
-          rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-          placeholder="Enter welcome message..."
-        />
-      </div>
-
       {/* Widget Settings */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
         <div className="flex items-center space-x-2 mb-4">
