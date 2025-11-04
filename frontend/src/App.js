@@ -7,6 +7,8 @@ import { Toaster as HotToaster } from 'react-hot-toast';
 import LandingPage from './pages/LandingPage';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import Dashboard from './pages/Dashboard';
 import ChatbotBuilder from './pages/ChatbotBuilder';
 import Analytics from './pages/Analytics';
