@@ -180,11 +180,22 @@ class NotificationService:
     
     async def delete_notification(self, notification_id: str, user_id: str) -> bool:
         """Delete a notification"""
-        result = await self.notifications.delete_one({
-            "id": notification_id,
-            "user_id": user_id
-        })
-        return result.deleted_count > 0
+        from bson import ObjectId
+        
+        # Try deleting by _id (MongoDB's native field)
+        try:
+            result = await self.notifications.delete_one({
+                "_id": ObjectId(notification_id),
+                "user_id": user_id
+            })
+            return result.deleted_count > 0
+        except Exception:
+            # Fallback to id field if ObjectId conversion fails
+            result = await self.notifications.delete_one({
+                "id": notification_id,
+                "user_id": user_id
+            })
+            return result.deleted_count > 0
     
     async def get_user_preferences(self, user_id: str) -> Optional[Dict]:
         """Get notification preferences for a user"""
