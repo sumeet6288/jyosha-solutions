@@ -371,6 +371,7 @@ class ChatbotUpdate(BaseModel):
     temperature: Optional[float] = None
     max_tokens: Optional[int] = None
     system_message: Optional[str] = None
+    instructions: Optional[str] = None  # Alias for system_message
     status: Optional[str] = None
     public_access: Optional[bool] = None
     primary_color: Optional[str] = None
