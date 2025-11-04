@@ -535,6 +535,21 @@ frontend:
         agent: "main"
         comment: "User requested percentage progress bars for source upload and processing to provide better visual feedback. Implemented comprehensive progress tracking system: 1) AddSourceModal - Added Progress component import, added uploadProgress and processingProgress state variables, 2) File Upload - Implemented two-stage progress: upload progress (0-100%) with purple bar during file upload, processing progress (0-100%) with green bar during file processing, simulated progress updates every 200-300ms, 3) Website URL - Added scraping progress (0-100%) with blue bar during website content extraction, simulated progress updates every 400ms, 4) Sources List - Added progress bar display for sources with 'processing' status, shows orange progress bar with percentage (defaults to 50% if not provided by backend), progress bar appears below source name and status badge, 5) UI Enhancements - Color-coded progress bars (purple for upload, green for processing, blue for scraping, orange for source processing), percentage display next to progress bars, smooth animations and transitions, disabled buttons during processing. Features: Real-time visual feedback during uploads, clear indication of processing stages, supports multiple file types (PDF, DOCX, TXT, XLSX, CSV up to 100MB), progress persists until completion, automatically clears progress after successful completion."
 
+  - task: "Website Source Duplicate Bug & Error Handling"
+    implemented: true
+    working: true
+    file: "/app/backend/routers/sources.py, /app/frontend/src/components/AddSourceModal.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "User reported 2 issues: 1) When uploading 1 website, 2 duplicate entries were being created in sources list, 2) React error 'Objects are not valid as a React child' when hitting plan limits"
+      - working: true
+        agent: "main"
+        comment: "✅ BOTH BUGS FIXED: 1) DUPLICATE SOURCE BUG: Found and removed duplicate insert statement in /app/backend/routers/sources.py line 212. Website sources were being inserted twice into MongoDB (line 208 and 212). Removed the duplicate, tested with new website source creation - confirmed only 1 entry created. Cleaned up existing duplicates from database. 2) ERROR OBJECT RENDERING BUG: Fixed React error in AddSourceModal.jsx where plan limit errors (objects with {message, current, max, upgrade_required}) were being rendered directly instead of extracting the message field. Updated error handling in both handleAddUrl() and handleAddText() functions to check if error.response.data.detail is an object and extract the .message field. File upload section already had correct handling. Both issues now resolved - website sources create single entries and plan limit errors display properly."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
