@@ -55,12 +55,31 @@ const SignIn = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  // Handle remember me checkbox change
+  const handleRememberMeChange = (e) => {
+    const checked = e.target.checked;
+    setRememberMe(checked);
+    
+    if (!checked) {
+      // Clear saved email when unchecked
+      localStorage.removeItem('botsmith_remember_email');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     
     try {
       await login(formData.email, formData.password);
+      
+      // Save email to localStorage if remember me is checked
+      if (rememberMe) {
+        localStorage.setItem('botsmith_remember_email', formData.email);
+      } else {
+        localStorage.removeItem('botsmith_remember_email');
+      }
+      
       toast({
         title: 'Welcome back! 🎉',
         description: 'Successfully signed in'
