@@ -154,16 +154,32 @@ class NotificationService:
     
     async def mark_as_read(self, notification_id: str, user_id: str) -> bool:
         """Mark notification as read"""
-        result = await self.notifications.update_one(
-            {"id": notification_id, "user_id": user_id},
-            {
-                "$set": {
-                    "read": True,
-                    "read_at": datetime.now(timezone.utc)
+        from bson import ObjectId
+        
+        # Try updating by _id (MongoDB's native field)
+        try:
+            result = await self.notifications.update_one(
+                {"_id": ObjectId(notification_id), "user_id": user_id},
+                {
+                    "$set": {
+                        "read": True,
+                        "read_at": datetime.now(timezone.utc)
+                    }
                 }
-            }
-        )
-        return result.modified_count > 0
+            )
+            return result.modified_count > 0
+        except Exception:
+            # Fallback to id field if ObjectId conversion fails
+            result = await self.notifications.update_one(
+                {"id": notification_id, "user_id": user_id},
+                {
+                    "$set": {
+                        "read": True,
+                        "read_at": datetime.now(timezone.utc)
+                    }
+                }
+            )
+            return result.modified_count > 0
     
     async def mark_all_as_read(self, user_id: str) -> int:
         """Mark all notifications as read for a user"""
