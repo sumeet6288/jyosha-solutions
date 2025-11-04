@@ -453,12 +453,12 @@ const ChatbotBuilder = () => {
                           {source.type === 'website' && <Globe className="w-5 h-5 text-white" />}
                           {source.type === 'text' && <FileText className="w-5 h-5 text-white" />}
                         </div>
-                        <div>
+                        <div className="flex-1">
                           <p className="font-semibold text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300">{source.name}</p>
                           <div className="flex items-center gap-3 text-sm text-gray-600">
                             {source.size && <span>{source.size}</span>}
                             <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                              source.status === 'processed' ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-sm shadow-green-500/30' :
+                              source.status === 'processed' || source.status === 'completed' ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-sm shadow-green-500/30' :
                               source.status === 'processing' ? 'bg-gradient-to-r from-yellow-500 to-orange-600 text-white shadow-sm shadow-yellow-500/30' :
                               'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-sm shadow-red-500/30'
                             }`}>
@@ -466,6 +466,21 @@ const ChatbotBuilder = () => {
                             </span>
                             {source.added_at && <span>Added {new Date(source.added_at).toLocaleDateString()}</span>}
                           </div>
+                          {/* Processing Progress Bar */}
+                          {source.status === 'processing' && (
+                            <div className="mt-2 space-y-1">
+                              <div className="flex justify-between text-xs text-gray-500">
+                                <span>Processing source...</span>
+                                <span className="font-semibold text-orange-600">
+                                  {source.progress || 50}%
+                                </span>
+                              </div>
+                              <Progress 
+                                value={source.progress || 50} 
+                                className="h-2 bg-orange-100"
+                              />
+                            </div>
+                          )}
                         </div>
                       </div>
                       <Button
