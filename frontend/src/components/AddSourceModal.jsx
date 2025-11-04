@@ -210,6 +210,9 @@ const AddSourceModal = ({ isOpen, onClose, chatbotId, onSuccess, onUpgradeRequir
         // Handle both string and array formats from FastAPI
         if (Array.isArray(error.response.data.detail)) {
           errorMessage = error.response.data.detail.map(err => err.msg).join(', ');
+        } else if (typeof error.response.data.detail === 'object') {
+          // Handle object with message field (e.g., plan limit errors)
+          errorMessage = error.response.data.detail.message || JSON.stringify(error.response.data.detail);
         } else {
           errorMessage = error.response.data.detail;
         }
