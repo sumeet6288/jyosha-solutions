@@ -496,6 +496,21 @@ frontend:
         agent: "main"
         comment: "✅ WIDGET ERROR FIXED: Resolved 'Sorry, I encountered an error. Please try again.' issue in chat widget. Root cause: public_access field was defaulting to false in Chatbot model, preventing widget from working. Fixed by: 1) Updated Chatbot model in models.py to set public_access: bool = True as default (line 216), 2) Updated ChatbotResponse model to also default public_access to True (line 294), 3) Updated existing chatbot in database to have public_access=true, 4) Restarted backend to clear cache. Testing confirmed: Widget now works correctly - messages send successfully, AI responses received, public chat page fully functional. All new chatbots will now have public access enabled by default."
 
+  - task: "Remember Me Functionality on Sign-In Page"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/SignIn.jsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "main"
+        comment: "User reported 'Remember me' checkbox was not functional - it was just a visual element with no state management or functionality connected."
+      - working: true
+        agent: "main"
+        comment: "✅ REMEMBER ME FEATURE FULLY IMPLEMENTED: Added complete functionality to 'Remember me' checkbox on sign-in page. Changes: 1) Added rememberMe state management with useState, 2) Created useEffect to load saved email from localStorage on component mount, 3) Implemented handleRememberMeChange function to handle checkbox changes and clear localStorage when unchecked, 4) Updated handleSubmit to save email to localStorage when remember me is checked during successful login, 5) Connected checkbox input with checked={rememberMe} and onChange={handleRememberMeChange}, 6) Added cursor-pointer class for better UX. Testing results: ✅ Checkbox can be checked/unchecked properly, ✅ Email saves to localStorage (key: botsmith_remember_email) on successful sign-in with checkbox checked, ✅ Email auto-fills on page reload when previously saved, ✅ Checkbox state persists correctly, ✅ Unchecking clears saved email from localStorage, ✅ Security: Only email is saved, never passwords. Feature is production-ready and fully functional."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
