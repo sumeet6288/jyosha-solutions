@@ -76,6 +76,11 @@ async def get_chatbots(current_user: User = Depends(get_mock_user)):
             {"user_id": current_user.id}
         ).to_list(length=None)
         
+        # Ensure instructions field is populated from system_message if not present
+        for chatbot in chatbots:
+            if "instructions" not in chatbot or chatbot["instructions"] is None:
+                chatbot["instructions"] = chatbot.get("system_message", "You are a helpful assistant.")
+        
         return [ChatbotResponse(**chatbot) for chatbot in chatbots]
     except Exception as e:
         logger.error(f"Error fetching chatbots: {str(e)}")
