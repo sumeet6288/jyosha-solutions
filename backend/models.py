@@ -517,13 +517,13 @@ class Conversation(BaseModel):
 class ConversationResponse(BaseModel):
     id: str
     chatbot_id: str
-    user_name: Optional[str]
-    user_email: Optional[str]
-    status: str
-    rating: Optional[int]
+    user_name: Optional[str] = None
+    user_email: Optional[str] = None
+    status: str = "active"
+    rating: Optional[int] = None
     created_at: datetime
     updated_at: datetime
-    message_count: int
+    message_count: int = 0
 
 
 # Analytics Models
