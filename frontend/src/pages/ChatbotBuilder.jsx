@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Slider } from '../components/ui/slider';
 import { Plus, FileText, Globe, Trash2, Loader2, MessageSquare, ArrowLeft, Settings, Palette, BarChart3, User, Clock, ChevronDown, ChevronUp, TrendingUp, Zap, Link2, Copy, Check, ExternalLink, Download, Webhook, Code } from 'lucide-react';
+import { Progress } from '../components/ui/progress';
 import UserProfileDropdown from '../components/UserProfileDropdown';
 import AddSourceModal from '../components/AddSourceModal';
 import ChatPreviewModal from '../components/ChatPreviewModal';
