@@ -108,7 +108,7 @@ export const analyticsAPI = {
 export const plansAPI = {
   getAllPlans: () => api.get('/plans/'),
   getCurrentSubscription: () => api.get('/plans/current'),
-  upgradePlan: (planId) => api.post('/plans/upgrade', { new_plan_id: planId }),
+  upgradePlan: (planId) => api.post('/plans/upgrade', { plan_id: planId }),
   getUsageStats: () => api.get('/plans/usage'),
   checkLimit: (limitType) => api.get(`/plans/check-limit/${limitType}`),
 };
