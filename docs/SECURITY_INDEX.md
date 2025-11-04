@@ -18,7 +18,7 @@ Learn about our JWT-based authentication system, password security with bcrypt, 
 - Session management and token refresh
 - Login history and activity tracking
 
-⏱️ **12 min read** | 📊 **Coming Soon**: Interactive demos
+⏱️ **12 min read**
 
 ---
 
