@@ -715,11 +715,14 @@ class IntegrationResponse(BaseModel):
     id: str
     chatbot_id: str
     integration_type: str
-    credentials: Dict[str, str]  # Will be masked in API responses
     enabled: bool
-    connection_status: str
-    last_tested: Optional[datetime]
+    status: str
+    last_tested: Optional[datetime] = None
+    last_used: Optional[datetime] = None
+    error_message: Optional[str] = None
+    has_credentials: bool
     created_at: datetime
+    updated_at: datetime
 
 
 class TestConnectionRequest(BaseModel):
