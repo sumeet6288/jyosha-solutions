@@ -206,7 +206,9 @@ const SignIn = () => {
                   <div className={`relative mt-1.5 transition-all duration-500 ${focusedField === 'password' ? 'scale-[1.02] shadow-xl shadow-purple-500/20' : ''}`}>
                     <Input
                       id="password"
+                      name="password"
                       type={showPassword ? "text" : "password"}
+                      autoComplete="current-password"
                       placeholder="••••••••"
                       value={formData.password}
                       onChange={(e) => setFormData({...formData, password: e.target.value})}
