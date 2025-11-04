@@ -209,7 +209,6 @@ async def add_website_source(
         
         # Increment usage count
         await plan_service.increment_usage(current_user.id, "website_sources")
-        await db_instance.sources.insert_one(source.model_dump())
         
         # Scrape website in background
         async def scrape_website():
