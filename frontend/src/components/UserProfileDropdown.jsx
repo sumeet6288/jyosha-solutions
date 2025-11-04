@@ -74,7 +74,9 @@ const UserProfileDropdown = ({ user, onLogout }) => {
             </div>
             <div className="flex items-center gap-1.5">
               <div className="flex-1 bg-white/80 backdrop-blur-sm rounded px-2 py-1 border border-purple-200/50">
-                <p className="text-[10px] font-semibold text-purple-700">Free Plan</p>
+                <p className="text-[10px] font-semibold text-purple-700">
+                  {loading ? 'Loading...' : currentPlan}
+                </p>
               </div>
               <button 
                 onClick={() => navigate('/subscription')}
