@@ -5,6 +5,7 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Progress } from './ui/progress';
 import { Upload, Link2, FileText, Loader2 } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import { sourceAPI, plansAPI } from '../utils/api';
@@ -12,6 +13,8 @@ import { sourceAPI, plansAPI } from '../utils/api';
 const AddSourceModal = ({ isOpen, onClose, chatbotId, onSuccess, onUpgradeRequired }) => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [processingProgress, setProcessingProgress] = useState(0);
   const [fileData, setFileData] = useState(null);
   const [urlData, setUrlData] = useState('');
   const [textData, setTextData] = useState({ name: '', content: '' });
