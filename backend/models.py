@@ -692,9 +692,12 @@ class Integration(BaseModel):
     chatbot_id: str
     integration_type: Literal["slack", "telegram", "discord", "whatsapp", "webchat", "api", "twilio", "messenger"]
     credentials: Dict[str, str]  # Different for each integration type
-    enabled: bool = True
-    connection_status: Literal["connected", "error", "pending"] = "pending"
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+    enabled: bool = False
+    status: Literal["connected", "error", "pending"] = "pending"
     last_tested: Optional[datetime] = None
+    last_used: Optional[datetime] = None
+    error_message: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
