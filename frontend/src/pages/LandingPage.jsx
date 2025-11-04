@@ -827,7 +827,7 @@ const LandingPage = () => {
           style={{ transitionDelay: testimonialsVisible ? '500ms' : '0ms' }}
           >
             <div>
-              <div className="text-4xl font-bold text-transparent bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text mb-2">9000+</div>
+              <div className="text-4xl font-bold text-transparent bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text mb-2">150+</div>
               <div className="text-gray-600 font-medium">Happy Customers</div>
             </div>
             <div>
