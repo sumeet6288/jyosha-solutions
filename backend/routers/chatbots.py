@@ -166,6 +166,11 @@ async def update_chatbot(
         
         # Fetch updated chatbot
         updated_chatbot = await db_instance.chatbots.find_one({"id": chatbot_id})
+        
+        # Ensure instructions field is populated from system_message if not present
+        if "instructions" not in updated_chatbot or updated_chatbot["instructions"] is None:
+            updated_chatbot["instructions"] = updated_chatbot.get("system_message", "You are a helpful assistant.")
+        
         return ChatbotResponse(**updated_chatbot)
     except HTTPException:
         raise
