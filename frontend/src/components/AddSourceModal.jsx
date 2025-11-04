@@ -231,8 +231,31 @@ const AddSourceModal = ({ isOpen, onClose, chatbotId, onSuccess, onUpgradeRequir
                 <p className="text-sm text-gray-700 mt-4 font-medium">Selected: {fileData.name}</p>
               )}
             </div>
+            
+            {/* Upload Progress */}
+            {loading && uploadProgress > 0 && uploadProgress < 100 && (
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>Uploading file...</span>
+                  <span className="font-semibold text-purple-600">{uploadProgress}%</span>
+                </div>
+                <Progress value={uploadProgress} className="h-3 bg-purple-100" />
+              </div>
+            )}
+            
+            {/* Processing Progress */}
+            {loading && uploadProgress === 100 && processingProgress > 0 && (
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>Processing file...</span>
+                  <span className="font-semibold text-purple-600">{processingProgress}%</span>
+                </div>
+                <Progress value={processingProgress} className="h-3 bg-green-100" />
+              </div>
+            )}
+            
             <Button onClick={handleAddFile} className="w-full" disabled={!fileData || loading}>
-              {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Uploading...</> : 'Upload File'}
+              {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {uploadProgress < 100 ? 'Uploading...' : 'Processing...'}</> : 'Upload File'}
             </Button>
           </TabsContent>
 
