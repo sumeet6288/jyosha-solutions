@@ -284,17 +284,18 @@ async def export_conversations(chatbot_id: str, format: str = "json"):
         
         output = StringIO()
         writer = csv.writer(output)
-        writer.writerow(["Conversation ID", "Session ID", "User Name", "User Email", "Status", "Created At", "Role", "Message", "Timestamp"])
+        writer.writerow(["Conversation ID", "User Name", "User Email", "Status", "Rating", "Created At", "Updated At", "Role", "Message", "Timestamp"])
         
         for conv in export_data:
             for msg in conv["messages"]:
                 writer.writerow([
                     conv["conversation_id"],
-                    conv["session_id"],
                     conv["user_name"] or "",
                     conv["user_email"] or "",
                     conv["status"],
+                    conv["rating"] or "",
                     conv["created_at"],
+                    conv["updated_at"],
                     msg["role"],
                     msg["content"],
                     msg["timestamp"]
