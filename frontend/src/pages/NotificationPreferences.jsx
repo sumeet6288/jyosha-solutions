@@ -38,7 +38,7 @@ const NotificationPreferences = () => {
 
   const fetchPreferences = async () => {
     try {
-      const response = await api.get('/api/notifications/preferences');
+      const response = await api.get('/notifications/preferences');
       setPreferences(response.data);
     } catch (error) {
       console.error('Error fetching preferences:', error);
