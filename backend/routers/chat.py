@@ -208,6 +208,19 @@ async def get_conversations(chatbot_id: str):
             {"chatbot_id": chatbot_id}
         ).sort("updated_at", -1).to_list(length=100)
         
+        # Ensure all conversations have required fields with defaults
+        for conv in conversations:
+            if "message_count" not in conv:
+                conv["message_count"] = 0
+            if "rating" not in conv:
+                conv["rating"] = None
+            if "status" not in conv:
+                conv["status"] = "active"
+            if "user_name" not in conv:
+                conv["user_name"] = None
+            if "user_email" not in conv:
+                conv["user_email"] = None
+        
         return [ConversationResponse(**conv) for conv in conversations]
     except Exception as e:
         logger.error(f"Error fetching conversations: {str(e)}")
