@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MessageSquare, Settings, Users, LogOut, Bell, ChevronDown } from 'lucide-react';
 import {
@@ -9,9 +9,30 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import { plansAPI } from '../utils/api';
 
 const UserProfileDropdown = ({ user, onLogout }) => {
   const navigate = useNavigate();
+  const [currentPlan, setCurrentPlan] = useState('Free Plan');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCurrentPlan = async () => {
+      try {
+        const response = await plansAPI.getCurrentSubscription();
+        setCurrentPlan(response.data.plan_name || 'Free Plan');
+      } catch (error) {
+        console.error('Error fetching current plan:', error);
+        setCurrentPlan('Free Plan');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user) {
+      fetchCurrentPlan();
+    }
+  }, [user]);
 
   const handleLogout = () => {
     if (onLogout) {
