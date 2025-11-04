@@ -46,7 +46,7 @@ const NotificationCenter = ({ onClose }) => {
 
   const markAllAsRead = async () => {
     try {
-      await api.put('/api/notifications/read-all');
+      await api.put('/notifications/read-all');
       setNotifications(notifications.map(n => ({ ...n, read: true })));
       fetchUnreadCount();
     } catch (error) {
