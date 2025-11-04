@@ -702,6 +702,7 @@ class Integration(BaseModel):
 class IntegrationCreate(BaseModel):
     integration_type: Literal["slack", "telegram", "discord", "whatsapp", "webchat", "api", "twilio", "messenger"]
     credentials: Dict[str, str]
+    metadata: Optional[Dict[str, Any]] = None
 
 
 class IntegrationUpdate(BaseModel):
