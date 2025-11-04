@@ -487,7 +487,7 @@ const LandingPage = () => {
               {[1, 2, 3, 4, 5].map((_, i) => (
                 <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
               ))}
-              <span className="ml-2 text-gray-700 font-medium">4.9/5 from 9000+ customers</span>
+              <span className="ml-2 text-gray-700 font-medium">4.9/5 from 150+ customers</span>
             </div>
           </div>
         </div>
