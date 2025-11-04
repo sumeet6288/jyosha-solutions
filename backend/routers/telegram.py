@@ -135,7 +135,7 @@ async def process_telegram_message(
         if context:
             system_message += f"\n\nKnowledge Base Context:\n{context}"
         
-        ai_response = await chat_service.generate_response(
+        ai_response_tuple = await chat_service.generate_response(
             message=message_text,
             session_id=session_id,
             system_message=system_message,
@@ -143,6 +143,9 @@ async def process_telegram_message(
             provider=chatbot.get('provider', 'openai'),
             context=context
         )
+        
+        # Unpack the response tuple (message, citation_footer)
+        ai_response = ai_response_tuple[0] if isinstance(ai_response_tuple, tuple) else ai_response_tuple
         
         # Save assistant message
         assistant_message = {
