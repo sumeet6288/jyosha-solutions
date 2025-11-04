@@ -20,7 +20,9 @@ const UserProfileDropdown = ({ user, onLogout }) => {
     const fetchCurrentPlan = async () => {
       try {
         const response = await plansAPI.getCurrentSubscription();
-        setCurrentPlan(response.data.plan_name || 'Free Plan');
+        // Extract plan name from the response
+        const planName = response.data.plan?.name || response.data.plan_name || 'Free Plan';
+        setCurrentPlan(planName);
       } catch (error) {
         console.error('Error fetching current plan:', error);
         setCurrentPlan('Free Plan');
