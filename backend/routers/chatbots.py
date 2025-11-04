@@ -108,6 +108,10 @@ async def get_chatbot(
                 detail="Chatbot not found"
             )
         
+        # Ensure instructions field is populated from system_message if not present
+        if "instructions" not in chatbot or chatbot["instructions"] is None:
+            chatbot["instructions"] = chatbot.get("system_message", "You are a helpful assistant.")
+        
         return ChatbotResponse(**chatbot)
     except HTTPException:
         raise
