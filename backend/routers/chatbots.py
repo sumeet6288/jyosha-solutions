@@ -139,6 +139,10 @@ async def update_chatbot(
         # We need to keep False boolean values, so don't filter by "if v is not None"
         update_data = chatbot_data.model_dump(exclude_unset=True)
         
+        # Handle instructions field - map it to both instructions and system_message
+        if "instructions" in update_data and update_data["instructions"] is not None:
+            update_data["system_message"] = update_data["instructions"]
+        
         if update_data:
             update_data["updated_at"] = datetime.now(timezone.utc)
             
