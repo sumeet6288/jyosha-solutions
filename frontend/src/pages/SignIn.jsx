@@ -177,7 +177,9 @@ const SignIn = () => {
                   <div className={`relative mt-1.5 transition-all duration-500 ${focusedField === 'email' ? 'scale-[1.02] shadow-xl shadow-purple-500/20' : ''}`}>
                     <Input
                       id="email"
+                      name="email"
                       type="email"
+                      autoComplete="email"
                       placeholder="you@example.com"
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
