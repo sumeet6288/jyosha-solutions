@@ -295,8 +295,20 @@ const AddSourceModal = ({ isOpen, onClose, chatbotId, onSuccess, onUpgradeRequir
               </div>
               <p className="text-xs text-gray-500">We'll scrape and extract text content from this page</p>
             </div>
+            
+            {/* Scraping Progress */}
+            {loading && processingProgress > 0 && (
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>Scraping website...</span>
+                  <span className="font-semibold text-blue-600">{processingProgress}%</span>
+                </div>
+                <Progress value={processingProgress} className="h-3 bg-blue-100" />
+              </div>
+            )}
+            
             <Button onClick={handleAddUrl} className="w-full" disabled={!urlData || loading}>
-              {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Adding...</> : 'Add Website'}
+              {loading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Scraping...</> : 'Add Website'}
             </Button>
           </TabsContent>
 
