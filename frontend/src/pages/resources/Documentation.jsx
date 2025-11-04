@@ -36,10 +36,10 @@ const Documentation = () => {
       icon: <Shield className="w-5 h-5" />,
       gradient: 'from-red-500 to-rose-600',
       articles: [
-        { title: 'Authentication & Authorization', time: '12 min read', description: 'JWT tokens and user roles', slug: 'authentication-authorization', isExternal: true },
-        { title: 'Data Protection', time: '10 min read', description: 'Encryption and privacy', slug: 'data-protection', isExternal: true },
-        { title: 'API Security', time: '15 min read', description: 'Rate limiting and validation', slug: 'api-security', isExternal: true },
-        { title: 'Best Practices', time: '8 min read', description: 'Security guidelines', slug: 'best-practices', isExternal: true },
+        { title: 'Authentication & Authorization', time: '12 min read', description: 'JWT tokens and user roles', slug: 'security-overview' },
+        { title: 'Data Protection', time: '10 min read', description: 'Encryption and privacy', slug: 'security-overview' },
+        { title: 'API Security', time: '15 min read', description: 'Rate limiting and validation', slug: 'security-overview' },
+        { title: 'Best Practices', time: '8 min read', description: 'Security guidelines', slug: 'security-overview' },
       ]
     },
   ];
