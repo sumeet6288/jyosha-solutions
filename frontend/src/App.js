@@ -35,6 +35,7 @@ import AnalyticsInsights from './pages/resources/articles/AnalyticsInsights';
 import SharingDeployment from './pages/resources/articles/SharingDeployment';
 import ChatbotManagement from './pages/resources/articles/ChatbotManagement';
 import AccountSettingsGuide from './pages/resources/articles/AccountSettingsGuide';
+import SecurityOverview from './pages/resources/articles/SecurityOverview';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import CookiePolicy from './pages/CookiePolicy';
