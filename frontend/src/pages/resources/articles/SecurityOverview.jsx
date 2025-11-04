@@ -46,8 +46,10 @@ const SecurityOverview = () => {
   ];
 
   const handleArticleClick = (anchor) => {
-    // Navigate to the specific section in security docs
-    navigate(`/resources/security-docs#${anchor}`);
+    // Open GitHub security documentation in new tab
+    const baseUrl = 'https://raw.githubusercontent.com/yourusername/botsmith/main/docs/SECURITY.md';
+    // For now, just scroll to top of this page since we don't have individual article pages yet
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
