@@ -150,16 +150,7 @@ const Documentation = () => {
                     <div 
                       key={articleIndex} 
                       className="group p-4 bg-gradient-to-br from-gray-50 to-purple-50/50 rounded-xl border-2 border-transparent hover:border-purple-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
-                      onClick={() => {
-                        if (article.slug) {
-                          if (article.isExternal) {
-                            // Open GitHub docs in new tab
-                            window.open(`https://github.com/yourusername/botsmith/blob/main/docs/SECURITY.md#${article.slug}`, '_blank');
-                          } else {
-                            navigate(`/resources/articles/${article.slug}`);
-                          }
-                        }
-                      }}
+                      onClick={() => article.slug && navigate(`/resources/articles/${article.slug}`)}
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex-1">
