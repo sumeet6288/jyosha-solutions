@@ -283,7 +283,7 @@ const PublicChat = () => {
       )}
 
       {/* Input Area */}
-      <div className="border-t bg-white/80 backdrop-blur-sm p-4">
+      <div className="border-t bg-white/80 backdrop-blur-sm p-4 flex-shrink-0">
         <div className="max-w-4xl mx-auto">
           <form onSubmit={handleSendMessage} className="flex items-center space-x-2">
             <input
@@ -305,7 +305,7 @@ const PublicChat = () => {
           </form>
           
           {/* Branding Footer */}
-          <div className="mt-3 text-center">
+          <div className="mt-2 text-center">
             <a 
               href="https://botsmith.ai" 
               target="_blank" 
