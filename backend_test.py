@@ -394,86 +394,24 @@ class SlackIntegrationTestSuite:
             self.log_test("Integration activity logs", False, f"Exception: {str(e)}")
 
     async def cleanup_test_resources(self):
-        """Test plan upgrade functionality"""
-        print("\n🔄 Testing Plan Upgrade Flow...")
+        """Clean up test resources"""
+        print("\n🧹 Cleaning up test resources...")
         
-        # Get current plan first
-        current_plan = None
-        try:
-            async with self.session.get(f"{API_BASE}/plans/current") as response:
-                if response.status == 200:
-                    current_sub = await response.json()
-                    current_plan = current_sub["plan"]["id"]
-        except:
-            pass
-
-        # Test upgrade from Free to Starter
-        try:
-            upgrade_data = {"plan_id": "starter"}
-            async with self.session.post(f"{API_BASE}/plans/upgrade", json=upgrade_data) as response:
-                if response.status == 200:
-                    result = await response.json()
-                    if "subscription" in result and result["subscription"]["plan_id"] == "starter":
-                        self.log_test("Upgrade Free → Starter", True, 
-                                    f"Successfully upgraded to Starter plan")
-                    else:
-                        self.log_test("Upgrade Free → Starter", False, 
-                                    f"Plan not updated correctly: {result}")
-                else:
-                    error_text = await response.text()
-                    self.log_test("Upgrade Free → Starter", False, 
-                                f"Status: {response.status}, Error: {error_text}")
-        except Exception as e:
-            self.log_test("Upgrade Free → Starter", False, f"Exception: {str(e)}")
-
-        # Test upgrade from Starter to Professional
-        try:
-            upgrade_data = {"plan_id": "professional"}
-            async with self.session.post(f"{API_BASE}/plans/upgrade", json=upgrade_data) as response:
-                if response.status == 200:
-                    result = await response.json()
-                    if "subscription" in result and result["subscription"]["plan_id"] == "professional":
-                        self.log_test("Upgrade Starter → Professional", True, 
-                                    f"Successfully upgraded to Professional plan")
-                    else:
-                        self.log_test("Upgrade Starter → Professional", False, 
-                                    f"Plan not updated correctly: {result}")
-                else:
-                    error_text = await response.text()
-                    self.log_test("Upgrade Starter → Professional", False, 
-                                f"Status: {response.status}, Error: {error_text}")
-        except Exception as e:
-            self.log_test("Upgrade Starter → Professional", False, f"Exception: {str(e)}")
-
-        # Test upgrade from Professional to Enterprise
-        try:
-            upgrade_data = {"plan_id": "enterprise"}
-            async with self.session.post(f"{API_BASE}/plans/upgrade", json=upgrade_data) as response:
-                if response.status == 200:
-                    result = await response.json()
-                    if "subscription" in result and result["subscription"]["plan_id"] == "enterprise":
-                        self.log_test("Upgrade Professional → Enterprise", True, 
-                                    f"Successfully upgraded to Enterprise plan")
-                    else:
-                        self.log_test("Upgrade Professional → Enterprise", False, 
-                                    f"Plan not updated correctly: {result}")
-                else:
-                    error_text = await response.text()
-                    self.log_test("Upgrade Professional → Enterprise", False, 
-                                f"Status: {response.status}, Error: {error_text}")
-        except Exception as e:
-            self.log_test("Upgrade Professional → Enterprise", False, f"Exception: {str(e)}")
-
-        # Reset to Free plan for limit testing
-        try:
-            upgrade_data = {"plan_id": "free"}
-            async with self.session.post(f"{API_BASE}/plans/upgrade", json=upgrade_data) as response:
-                if response.status == 200:
-                    self.log_test("Reset to Free plan", True, "Reset to Free plan for limit testing")
-                else:
-                    self.log_test("Reset to Free plan", False, f"Failed to reset: {response.status}")
-        except Exception as e:
-            self.log_test("Reset to Free plan", False, f"Exception: {str(e)}")
+        # Delete test integration
+        if self.test_chatbot_id and self.test_integration_id:
+            try:
+                await self.session.delete(f"{API_BASE}/integrations/{self.test_chatbot_id}/{self.test_integration_id}")
+                self.log_test("Delete test integration", True, "Test integration deleted")
+            except:
+                pass
+        
+        # Delete test chatbot
+        if self.test_chatbot_id:
+            try:
+                await self.session.delete(f"{API_BASE}/chatbots/{self.test_chatbot_id}")
+                self.log_test("Delete test chatbot", True, "Test chatbot deleted")
+            except:
+                pass
 
     async def test_free_plan_limits(self):
         """Test FREE plan limits enforcement"""
