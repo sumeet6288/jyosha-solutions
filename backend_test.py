@@ -46,76 +46,352 @@ class SlackIntegrationTestSuite:
         if details:
             print(f"   Details: {details}")
 
-    async def test_plan_system_basics(self):
-        """Test basic plan system endpoints"""
-        print("\n🔍 Testing Plan System Basics...")
+    async def create_test_chatbot(self):
+        """Create a test chatbot for integration testing"""
+        print("\n🤖 Creating Test Chatbot...")
         
-        # Test GET /api/plans/ - List all available plans
+        chatbot_data = {
+            "name": "Slack Integration Test Bot",
+            "model": "gpt-4o-mini",
+            "provider": "openai",
+            "temperature": 0.7,
+            "instructions": "You are a test chatbot for Slack integration testing."
+        }
+        
         try:
-            async with self.session.get(f"{API_BASE}/plans/") as response:
-                if response.status == 200:
-                    plans = await response.json()
-                    expected_plans = ["free", "starter", "professional", "enterprise"]
-                    plan_ids = [plan.get("id") for plan in plans]
-                    
-                    if all(plan_id in plan_ids for plan_id in expected_plans):
-                        self.log_test("GET /api/plans/ - List all plans", True, 
-                                    f"Found all expected plans: {plan_ids}")
-                    else:
-                        self.log_test("GET /api/plans/ - List all plans", False, 
-                                    f"Missing plans. Expected: {expected_plans}, Got: {plan_ids}")
+            async with self.session.post(f"{API_BASE}/chatbots", json=chatbot_data) as response:
+                if response.status == 201:
+                    result = await response.json()
+                    self.test_chatbot_id = result["id"]
+                    self.log_test("Create test chatbot", True, f"Created chatbot: {self.test_chatbot_id}")
+                    return True
                 else:
                     error_text = await response.text()
-                    self.log_test("GET /api/plans/ - List all plans", False, 
-                                f"Status: {response.status}, Error: {error_text}")
+                    self.log_test("Create test chatbot", False, f"Status: {response.status}, Error: {error_text}")
+                    return False
         except Exception as e:
-            self.log_test("GET /api/plans/ - List all plans", False, f"Exception: {str(e)}")
+            self.log_test("Create test chatbot", False, f"Exception: {str(e)}")
+            return False
 
-        # Test GET /api/plans/current - Get current subscription
+    async def test_setup_slack_integration(self):
+        """Test setting up Slack integration with credentials"""
+        print("\n🔧 Testing Slack Integration Setup...")
+        
+        if not self.test_chatbot_id:
+            self.log_test("Setup Slack integration", False, "No test chatbot available")
+            return
+        
+        # Test POST /api/integrations/{chatbot_id} - Create Slack integration
+        integration_data = {
+            "integration_type": "slack",
+            "credentials": {
+                "bot_token": "xoxb-test-token-for-testing"
+            }
+        }
+        
         try:
-            async with self.session.get(f"{API_BASE}/plans/current") as response:
+            async with self.session.post(f"{API_BASE}/integrations/{self.test_chatbot_id}", json=integration_data) as response:
                 if response.status == 200:
-                    current_sub = await response.json()
-                    if "subscription" in current_sub and "plan" in current_sub:
-                        plan_id = current_sub["plan"]["id"]
-                        self.log_test("GET /api/plans/current - Current subscription", True, 
-                                    f"Current plan: {plan_id}")
+                    result = await response.json()
+                    self.test_integration_id = result["id"]
+                    self.log_test("Setup Slack integration", True, 
+                                f"Created Slack integration: {self.test_integration_id}")
+                    
+                    # Verify integration fields
+                    expected_fields = ["id", "chatbot_id", "integration_type", "enabled", "status", "has_credentials"]
+                    if all(field in result for field in expected_fields):
+                        self.log_test("Slack integration response format", True, 
+                                    f"All required fields present: {list(result.keys())}")
                     else:
-                        self.log_test("GET /api/plans/current - Current subscription", False, 
-                                    f"Missing subscription or plan data: {current_sub}")
+                        missing = [f for f in expected_fields if f not in result]
+                        self.log_test("Slack integration response format", False, 
+                                    f"Missing fields: {missing}")
+                    
+                    # Verify integration type and credentials
+                    if result.get("integration_type") == "slack" and result.get("has_credentials"):
+                        self.log_test("Slack integration data validation", True, 
+                                    f"Type: {result['integration_type']}, Has credentials: {result['has_credentials']}")
+                    else:
+                        self.log_test("Slack integration data validation", False, 
+                                    f"Invalid data - Type: {result.get('integration_type')}, Has credentials: {result.get('has_credentials')}")
                 else:
                     error_text = await response.text()
-                    self.log_test("GET /api/plans/current - Current subscription", False, 
+                    self.log_test("Setup Slack integration", False, 
                                 f"Status: {response.status}, Error: {error_text}")
         except Exception as e:
-            self.log_test("GET /api/plans/current - Current subscription", False, f"Exception: {str(e)}")
+            self.log_test("Setup Slack integration", False, f"Exception: {str(e)}")
 
-        # Test GET /api/plans/usage - Get usage statistics
+    async def test_slack_connection_test(self):
+        """Test Slack connection testing endpoint"""
+        print("\n🔗 Testing Slack Connection Test...")
+        
+        if not self.test_chatbot_id or not self.test_integration_id:
+            self.log_test("Test Slack connection", False, "No test integration available")
+            return
+        
+        # Test POST /api/integrations/{chatbot_id}/{integration_id}/test
         try:
-            async with self.session.get(f"{API_BASE}/plans/usage") as response:
+            async with self.session.post(f"{API_BASE}/integrations/{self.test_chatbot_id}/{self.test_integration_id}/test") as response:
                 if response.status == 200:
-                    usage_stats = await response.json()
-                    required_fields = ["plan", "usage", "last_reset"]
-                    usage_fields = ["chatbots", "messages", "file_uploads", "website_sources", "text_sources"]
+                    result = await response.json()
                     
-                    if all(field in usage_stats for field in required_fields):
-                        if all(field in usage_stats["usage"] for field in usage_fields):
-                            self.log_test("GET /api/plans/usage - Usage statistics", True, 
-                                        f"All usage fields present: {list(usage_stats['usage'].keys())}")
+                    # Check response format
+                    required_fields = ["success", "message"]
+                    if all(field in result for field in required_fields):
+                        # With test token, we expect failure but proper error format
+                        if not result["success"] and "error" in result["message"].lower():
+                            self.log_test("Slack connection test", True, 
+                                        f"Proper error response: {result['message']}")
+                        elif result["success"]:
+                            self.log_test("Slack connection test", True, 
+                                        f"Connection successful: {result['message']}")
                         else:
-                            missing = [f for f in usage_fields if f not in usage_stats["usage"]]
-                            self.log_test("GET /api/plans/usage - Usage statistics", False, 
-                                        f"Missing usage fields: {missing}")
+                            self.log_test("Slack connection test", False, 
+                                        f"Unexpected response format: {result}")
                     else:
-                        missing = [f for f in required_fields if f not in usage_stats]
-                        self.log_test("GET /api/plans/usage - Usage statistics", False, 
-                                    f"Missing top-level fields: {missing}")
+                        missing = [f for f in required_fields if f not in result]
+                        self.log_test("Slack connection test", False, 
+                                    f"Missing response fields: {missing}")
                 else:
                     error_text = await response.text()
-                    self.log_test("GET /api/plans/usage - Usage statistics", False, 
+                    self.log_test("Slack connection test", False, 
                                 f"Status: {response.status}, Error: {error_text}")
         except Exception as e:
-            self.log_test("GET /api/plans/usage - Usage statistics", False, f"Exception: {str(e)}")
+            self.log_test("Slack connection test", False, f"Exception: {str(e)}")
+
+    async def test_generate_webhook_url(self):
+        """Test generating Slack webhook URL"""
+        print("\n🔗 Testing Slack Webhook URL Generation...")
+        
+        if not self.test_chatbot_id:
+            self.log_test("Generate Slack webhook URL", False, "No test chatbot available")
+            return
+        
+        # Test POST /api/slack/{chatbot_id}/setup-webhook
+        webhook_data = {
+            "base_url": "https://dep-installer-25.preview.emergentagent.com"
+        }
+        
+        try:
+            async with self.session.post(f"{API_BASE}/slack/{self.test_chatbot_id}/setup-webhook", json=webhook_data) as response:
+                if response.status == 200:
+                    result = await response.json()
+                    
+                    # Check response format
+                    required_fields = ["success", "message", "webhook_url", "instructions"]
+                    if all(field in result for field in required_fields):
+                        webhook_url = result["webhook_url"]
+                        expected_url = f"{webhook_data['base_url']}/api/slack/webhook/{self.test_chatbot_id}"
+                        
+                        if webhook_url == expected_url:
+                            self.log_test("Generate Slack webhook URL", True, 
+                                        f"Correct webhook URL: {webhook_url}")
+                        else:
+                            self.log_test("Generate Slack webhook URL", False, 
+                                        f"Wrong URL. Expected: {expected_url}, Got: {webhook_url}")
+                        
+                        # Check instructions
+                        if isinstance(result["instructions"], list) and len(result["instructions"]) > 0:
+                            self.log_test("Slack webhook instructions", True, 
+                                        f"Instructions provided: {len(result['instructions'])} steps")
+                        else:
+                            self.log_test("Slack webhook instructions", False, 
+                                        f"No instructions provided: {result['instructions']}")
+                    else:
+                        missing = [f for f in required_fields if f not in result]
+                        self.log_test("Generate Slack webhook URL", False, 
+                                    f"Missing response fields: {missing}")
+                else:
+                    error_text = await response.text()
+                    self.log_test("Generate Slack webhook URL", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("Generate Slack webhook URL", False, f"Exception: {str(e)}")
+
+    async def test_get_webhook_info(self):
+        """Test getting Slack webhook information"""
+        print("\n📋 Testing Get Slack Webhook Info...")
+        
+        if not self.test_chatbot_id:
+            self.log_test("Get Slack webhook info", False, "No test chatbot available")
+            return
+        
+        # Test GET /api/slack/{chatbot_id}/webhook-info
+        try:
+            async with self.session.get(f"{API_BASE}/slack/{self.test_chatbot_id}/webhook-info") as response:
+                if response.status == 200:
+                    result = await response.json()
+                    
+                    # Check response format
+                    expected_fields = ["webhook_url", "webhook_configured", "instructions"]
+                    if all(field in result for field in expected_fields):
+                        self.log_test("Get Slack webhook info", True, 
+                                    f"Webhook configured: {result['webhook_configured']}, URL: {result.get('webhook_url', 'None')}")
+                        
+                        # Check instructions format
+                        if isinstance(result["instructions"], list) and len(result["instructions"]) >= 8:
+                            self.log_test("Slack webhook info instructions", True, 
+                                        f"Complete instructions: {len(result['instructions'])} steps")
+                        else:
+                            self.log_test("Slack webhook info instructions", False, 
+                                        f"Incomplete instructions: {len(result.get('instructions', []))} steps")
+                    else:
+                        missing = [f for f in expected_fields if f not in result]
+                        self.log_test("Get Slack webhook info", False, 
+                                    f"Missing response fields: {missing}")
+                else:
+                    error_text = await response.text()
+                    self.log_test("Get Slack webhook info", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("Get Slack webhook info", False, f"Exception: {str(e)}")
+
+    async def test_enable_disable_integration(self):
+        """Test enabling and disabling Slack integration"""
+        print("\n🔄 Testing Enable/Disable Slack Integration...")
+        
+        if not self.test_chatbot_id or not self.test_integration_id:
+            self.log_test("Enable/disable Slack integration", False, "No test integration available")
+            return
+        
+        # Test POST /api/integrations/{chatbot_id}/{integration_id}/toggle
+        try:
+            # First toggle (should enable)
+            async with self.session.post(f"{API_BASE}/integrations/{self.test_chatbot_id}/{self.test_integration_id}/toggle") as response:
+                if response.status == 200:
+                    result = await response.json()
+                    
+                    if "success" in result and "enabled" in result:
+                        enabled_status = result["enabled"]
+                        self.log_test("Enable Slack integration", True, 
+                                    f"Integration enabled: {enabled_status}")
+                        
+                        # Second toggle (should disable)
+                        async with self.session.post(f"{API_BASE}/integrations/{self.test_chatbot_id}/{self.test_integration_id}/toggle") as response2:
+                            if response2.status == 200:
+                                result2 = await response2.json()
+                                if result2.get("enabled") != enabled_status:
+                                    self.log_test("Disable Slack integration", True, 
+                                                f"Integration toggled: {enabled_status} → {result2['enabled']}")
+                                else:
+                                    self.log_test("Disable Slack integration", False, 
+                                                f"Toggle failed - status unchanged: {enabled_status}")
+                            else:
+                                error_text = await response2.text()
+                                self.log_test("Disable Slack integration", False, 
+                                            f"Status: {response2.status}, Error: {error_text}")
+                    else:
+                        self.log_test("Enable Slack integration", False, 
+                                    f"Missing fields in response: {result}")
+                else:
+                    error_text = await response.text()
+                    self.log_test("Enable Slack integration", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("Enable/disable Slack integration", False, f"Exception: {str(e)}")
+
+    async def test_webhook_event_reception(self):
+        """Test Slack webhook event reception (simulated)"""
+        print("\n📨 Testing Slack Webhook Event Reception...")
+        
+        if not self.test_chatbot_id:
+            self.log_test("Slack webhook event reception", False, "No test chatbot available")
+            return
+        
+        # Test URL verification challenge
+        challenge_data = {
+            "type": "url_verification",
+            "challenge": "test123"
+        }
+        
+        try:
+            async with self.session.post(f"{API_BASE}/slack/webhook/{self.test_chatbot_id}", json=challenge_data) as response:
+                if response.status == 200:
+                    result = await response.json()
+                    
+                    if "challenge" in result and result["challenge"] == "test123":
+                        self.log_test("Slack URL verification challenge", True, 
+                                    f"Challenge response correct: {result['challenge']}")
+                    else:
+                        self.log_test("Slack URL verification challenge", False, 
+                                    f"Wrong challenge response: {result}")
+                else:
+                    error_text = await response.text()
+                    self.log_test("Slack URL verification challenge", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("Slack URL verification challenge", False, f"Exception: {str(e)}")
+        
+        # Test message event (simulated)
+        message_event = {
+            "type": "event_callback",
+            "event": {
+                "type": "message",
+                "channel": "C1234567890",
+                "user": "U1234567890",
+                "text": "Hello test bot!",
+                "ts": "1234567890.123456"
+            }
+        }
+        
+        try:
+            async with self.session.post(f"{API_BASE}/slack/webhook/{self.test_chatbot_id}", json=message_event) as response:
+                if response.status == 200:
+                    result = await response.json()
+                    
+                    if result.get("ok"):
+                        self.log_test("Slack message event reception", True, 
+                                    "Message event processed successfully")
+                    else:
+                        self.log_test("Slack message event reception", False, 
+                                    f"Event processing failed: {result}")
+                else:
+                    error_text = await response.text()
+                    self.log_test("Slack message event reception", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("Slack message event reception", False, f"Exception: {str(e)}")
+
+    async def test_integration_logs(self):
+        """Test integration activity logs"""
+        print("\n📊 Testing Integration Activity Logs...")
+        
+        if not self.test_chatbot_id:
+            self.log_test("Integration activity logs", False, "No test chatbot available")
+            return
+        
+        # Test GET /api/integrations/{chatbot_id}/logs
+        try:
+            async with self.session.get(f"{API_BASE}/integrations/{self.test_chatbot_id}/logs") as response:
+                if response.status == 200:
+                    logs = await response.json()
+                    
+                    if isinstance(logs, list):
+                        if len(logs) > 0:
+                            # Check log entry format
+                            log_entry = logs[0]
+                            required_fields = ["chatbot_id", "integration_type", "event_type", "status", "message", "timestamp"]
+                            
+                            if all(field in log_entry for field in required_fields):
+                                slack_logs = [log for log in logs if log.get("integration_type") == "slack"]
+                                self.log_test("Integration activity logs", True, 
+                                            f"Found {len(logs)} total logs, {len(slack_logs)} Slack logs")
+                            else:
+                                missing = [f for f in required_fields if f not in log_entry]
+                                self.log_test("Integration activity logs", False, 
+                                            f"Missing log fields: {missing}")
+                        else:
+                            self.log_test("Integration activity logs", True, 
+                                        "No logs found (expected for new integration)")
+                    else:
+                        self.log_test("Integration activity logs", False, 
+                                    f"Expected list, got: {type(logs)}")
+                else:
+                    error_text = await response.text()
+                    self.log_test("Integration activity logs", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("Integration activity logs", False, f"Exception: {str(e)}")
 
     async def test_plan_upgrade_flow(self):
         """Test plan upgrade functionality"""
