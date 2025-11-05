@@ -179,7 +179,8 @@ class DiscordBotManager:
                 from services.chat_service import ChatService
                 chat_service = ChatService()
                 
-                ai_response = await chat_service.generate_response(
+                # ChatService.generate_response returns a tuple (response, citation_footer)
+                response_tuple = await chat_service.generate_response(
                     message=message_content,
                     session_id=session_id,
                     system_message=chatbot.get("instructions", "You are a helpful assistant."),
@@ -188,7 +189,12 @@ class DiscordBotManager:
                     context=context
                 )
                 
-                response_text = ai_response.get("response", "I apologize, but I couldn't generate a response.")
+                # Unpack the tuple
+                response_text, citation_footer = response_tuple
+                
+                # Append citation footer if available
+                if citation_footer:
+                    response_text += f"\n\n{citation_footer}"
                 
             except Exception as e:
                 logger.error(f"Error generating AI response: {str(e)}")
