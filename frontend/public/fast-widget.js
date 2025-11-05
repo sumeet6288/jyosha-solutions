@@ -346,6 +346,12 @@
         
         // Update all bot avatar colors
         updateBotAvatarColors();
+        
+        // Update branding color
+        const brandingBotSmith = brandingFooter.querySelector('span[style*="font-weight: 600"]');
+        if (brandingBotSmith) {
+          brandingBotSmith.style.color = currentTheme.primary;
+        }
       }
       
       // Update logo if available
