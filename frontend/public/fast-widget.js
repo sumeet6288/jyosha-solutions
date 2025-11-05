@@ -360,6 +360,51 @@
         }
       }
       
+      // Apply widget settings from chatbot configuration
+      if (chatbot.widget_position) {
+        const newPosition = positions[chatbot.widget_position] || positions['bottom-right'];
+        // Update container position
+        container.style.bottom = newPosition.bottom || 'auto';
+        container.style.top = newPosition.top || 'auto';
+        container.style.left = newPosition.left || 'auto';
+        container.style.right = newPosition.right || 'auto';
+        
+        // Update chat window position
+        const windowPosition = chatbot.widget_position.includes('bottom') ? 'bottom: 90px;' : 'top: 90px;';
+        const windowAlign = chatbot.widget_position.includes('right') ? 'right: 0;' : 'left: 0;';
+        const currentWindowStyle = chatWindow.style.cssText;
+        chatWindow.style.cssText = currentWindowStyle.replace(/bottom: \d+px;|top: \d+px;/, windowPosition).replace(/right: 0;|left: 0;/, windowAlign);
+      }
+      
+      // Apply widget size
+      if (chatbot.widget_size) {
+        const sizes = {
+          'small': { width: '360px', height: '550px' },
+          'medium': { width: '420px', height: '600px' },
+          'large': { width: '500px', height: '700px' }
+        };
+        const size = sizes[chatbot.widget_size] || sizes['medium'];
+        chatWindow.style.width = size.width;
+        chatWindow.style.height = size.height;
+      }
+      
+      // Apply widget theme (background color of messages area)
+      if (chatbot.widget_theme) {
+        const themeColors = {
+          'light': '#f9fafb',
+          'dark': '#1f2937',
+          'auto': window.matchMedia('(prefers-color-scheme: dark)').matches ? '#1f2937' : '#f9fafb'
+        };
+        messagesContainer.style.background = themeColors[chatbot.widget_theme] || themeColors['light'];
+      }
+      
+      // Auto-expand widget if enabled
+      if (chatbot.auto_expand && !isOpen) {
+        setTimeout(() => {
+          toggleChat();
+        }, 1000); // Open after 1 second
+      }
+      
       // Add welcome message
       if (chatbot.welcome_message) {
         addMessage('assistant', chatbot.welcome_message);
