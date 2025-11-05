@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import Dict, Any, List
 
 # Get backend URL from environment
-BACKEND_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://setup-view.preview.emergentagent.com')
+BACKEND_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://install-and-preview.preview.emergentagent.com')
 API_BASE = f"{BACKEND_URL}/api"
 
 class SlackIntegrationTestSuite:
@@ -197,7 +197,7 @@ class SlackIntegrationTestSuite:
         
         # Test POST /api/slack/{chatbot_id}/setup-webhook
         webhook_data = {
-            "base_url": "https://setup-view.preview.emergentagent.com"
+            "base_url": "https://install-and-preview.preview.emergentagent.com"
         }
         
         try:
