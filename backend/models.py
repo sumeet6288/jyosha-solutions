@@ -381,6 +381,8 @@ class ChatbotUpdate(BaseModel):
     welcome_message: Optional[str] = None
     logo_url: Optional[str] = None
     avatar_url: Optional[str] = None
+    font_family: Optional[str] = None
+    font_size: Optional[Literal["small", "medium", "large"]] = None
     widget_position: Optional[Literal["bottom-right", "bottom-left", "top-right", "top-left"]] = None
     widget_theme: Optional[Literal["light", "dark", "auto"]] = None
     widget_size: Optional[Literal["small", "medium", "large"]] = None
