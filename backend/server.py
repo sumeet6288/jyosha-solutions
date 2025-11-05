@@ -142,10 +142,22 @@ logger = logging.getLogger(__name__)
 
 @app.on_event("startup")
 async def startup_event():
-    """Initialize plans on startup"""
+    """Initialize plans and Discord bots on startup"""
     logger.info("Initializing plans...")
     await plan_service.initialize_plans()
     logger.info("Plans initialized successfully")
+    
+    # Start Discord bots for enabled integrations
+    try:
+        logger.info("Starting Discord bots...")
+        from services.discord_bot_manager import discord_bot_manager
+        result = await discord_bot_manager.restart_all_bots()
+        if result.get("success"):
+            logger.info(f"Discord bots started: {result.get('count', 0)} bots")
+        else:
+            logger.warning(f"Discord bot startup issue: {result.get('error')}")
+    except Exception as e:
+        logger.warning(f"Failed to start Discord bots: {str(e)}")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
