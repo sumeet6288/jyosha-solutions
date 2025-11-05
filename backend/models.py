@@ -335,6 +335,8 @@ class Chatbot(BaseModel):
     welcome_message: str = "Hi! I'm your AI assistant. How can I help you today?"
     logo_url: Optional[str] = None
     avatar_url: Optional[str] = None
+    font_family: str = "Inter, system-ui, sans-serif"
+    font_size: Literal["small", "medium", "large"] = "medium"
     
     # Widget Settings
     widget_position: Literal["bottom-right", "bottom-left", "top-right", "top-left"] = "bottom-right"
