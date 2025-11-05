@@ -443,49 +443,7 @@ class SlackIntegrationTestSuite:
         # Print summary
         self.print_test_summary()
 
-    async def cleanup_test_resources(self):
-        """Clean up test resources"""
-        print("\n🧹 Cleaning up test resources...")
-        
-        # Delete test chatbots
-        for chatbot_id in self.test_chatbot_ids:
-            try:
-                await self.session.delete(f"{API_BASE}/chatbots/{chatbot_id}")
-            except:
-                pass
-                
-        # Delete test sources
-        for source_id in self.test_source_ids:
-            try:
-                await self.session.delete(f"{API_BASE}/sources/{source_id}")
-            except:
-                pass
-
-    async def run_all_tests(self):
-        """Run all subscription system tests"""
-        print("🚀 Starting Comprehensive Subscription & Plan Enforcement Testing")
-        print(f"Backend URL: {API_BASE}")
-        print(f"Mock User: {self.mock_user_id}")
-        print("=" * 80)
-        
-        await self.setup_session()
-        
-        try:
-            # Run all test categories
-            await self.test_plan_system_basics()
-            await self.test_plan_upgrade_flow()
-            await self.test_free_plan_limits()
-            await self.test_starter_plan_features()
-            await self.test_usage_tracking_accuracy()
-            await self.test_limit_check_api()
-            await self.test_error_messages()
-            
-        finally:
-            await self.cleanup_test_resources()
-            await self.cleanup_session()
-            
-        # Print summary
-        self.print_test_summary()
+    # This method is already defined above - removing duplicate
         
     def print_test_summary(self):
         """Print comprehensive test results summary"""
