@@ -303,6 +303,19 @@ const PublicChat = () => {
               <Send className="w-5 h-5" />
             </button>
           </form>
+          
+          {/* Branding Footer */}
+          <div className="mt-3 text-center">
+            <a 
+              href="https://botsmith.ai" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-purple-600 transition-colors"
+            >
+              <span>Powered by</span>
+              <span className="font-semibold" style={{ color: chatbot.primary_color }}>BotSmith</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
