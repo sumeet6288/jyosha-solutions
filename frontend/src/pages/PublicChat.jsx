@@ -173,12 +173,12 @@ const PublicChat = () => {
       >
         <div className="max-w-4xl mx-auto flex items-center space-x-4">
           {chatbot.logo_url ? (
-            <img src={chatbot.logo_url} alt="Logo" className="h-10 w-auto" />
+            <img src={chatbot.logo_url} alt="Logo" className="h-10 w-10 rounded-full object-cover flex-shrink-0" />
           ) : (
-            <Bot className="w-8 h-8" />
+            <Bot className="w-8 h-8 flex-shrink-0" />
           )}
-          <div>
-            <h1 className="text-2xl font-bold">{chatbot.name}</h1>
+          <div className="flex-1 min-w-0">
+            <h1 className="text-2xl font-bold truncate">{chatbot.name}</h1>
             <p className="text-sm opacity-90">AI-Powered Assistant</p>
           </div>
         </div>
