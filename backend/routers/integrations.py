@@ -432,7 +432,15 @@ async def get_integration_logs(
             {"chatbot_id": chatbot_id}
         ).sort("timestamp", -1).limit(limit).to_list(limit)
         
-        return [IntegrationLogResponse(**log) for log in logs]
+        # Convert MongoDB documents to response model
+        response_logs = []
+        for log in logs:
+            # Map _id to id if needed
+            if "_id" in log and "id" not in log:
+                log["id"] = str(log["_id"])
+            response_logs.append(IntegrationLogResponse(**log))
+        
+        return response_logs
         
     except HTTPException:
         raise
