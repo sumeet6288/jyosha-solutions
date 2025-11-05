@@ -233,11 +233,11 @@ const PublicChat = () => {
                 }`}
                 style={
                   message.role === 'user'
-                    ? { backgroundColor: chatbot.primary_color }
-                    : {}
+                    ? { backgroundColor: chatbot.primary_color, ...fontStyles }
+                    : fontStyles
                 }
               >
-                <p className="whitespace-pre-wrap break-words text-sm">{message.content}</p>
+                <p className="whitespace-pre-wrap break-words">{message.content}</p>
               </div>
 
               {message.role === 'user' && (
