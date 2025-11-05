@@ -202,10 +202,30 @@
     </form>
   `;
 
+  // Branding footer
+  const brandingFooter = document.createElement('div');
+  brandingFooter.style.cssText = 'padding: 8px 16px; background: #f9fafb; text-align: center; border-top: 1px solid #f3f4f6;';
+  brandingFooter.innerHTML = `
+    <a href="https://botsmith.ai" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: #9ca3af; font-size: 10px; display: flex; align-items: center; justify-content: center; gap: 4px; transition: color 0.2s;">
+      <span>Powered by</span>
+      <span style="font-weight: 600; color: ${currentTheme.primary};">BotSmith</span>
+    </a>
+  `;
+  
+  // Add hover effect
+  const brandingLink = brandingFooter.querySelector('a');
+  brandingLink.addEventListener('mouseenter', () => {
+    brandingLink.style.color = currentTheme.primary;
+  });
+  brandingLink.addEventListener('mouseleave', () => {
+    brandingLink.style.color = '#9ca3af';
+  });
+
   // Assemble window
   chatWindow.appendChild(header);
   chatWindow.appendChild(messagesContainer);
   chatWindow.appendChild(inputArea);
+  chatWindow.appendChild(brandingFooter);
 
   // Assemble container
   container.appendChild(bubble);
