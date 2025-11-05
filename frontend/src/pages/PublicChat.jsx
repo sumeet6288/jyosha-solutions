@@ -154,13 +154,29 @@ const PublicChat = () => {
     );
   }
 
+  // Get font size in pixels
+  const getFontSize = (size) => {
+    switch(size) {
+      case 'small': return '14px';
+      case 'large': return '18px';
+      case 'medium':
+      default: return '16px';
+    }
+  };
+
+  const fontStyles = {
+    fontFamily: chatbot.font_family || 'Inter, system-ui, sans-serif',
+    fontSize: getFontSize(chatbot.font_size)
+  };
+
   return (
     <div 
       className="h-screen flex flex-col"
       style={{
         background: chatbot.widget_theme === 'dark' 
           ? 'linear-gradient(to bottom right, #1a1a2e, #16213e, #0f3460)'
-          : 'linear-gradient(to bottom right, #faf5ff, #fce7f3, #e0e7ff)'
+          : 'linear-gradient(to bottom right, #faf5ff, #fce7f3, #e0e7ff)',
+        ...fontStyles
       }}
     >
       {/* Header */}
