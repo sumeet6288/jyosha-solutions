@@ -106,6 +106,7 @@ api_router.include_router(integrations.router)
 api_router.include_router(password_reset.router)
 api_router.include_router(telegram.router)
 api_router.include_router(slack.router)
+api_router.include_router(discord.router)
 
 # Include the router in the main app
 app.include_router(api_router)
