@@ -156,7 +156,7 @@ const PublicChat = () => {
 
   return (
     <div 
-      className="min-h-screen flex flex-col"
+      className="h-screen flex flex-col"
       style={{
         background: chatbot.widget_theme === 'dark' 
           ? 'linear-gradient(to bottom right, #1a1a2e, #16213e, #0f3460)'
@@ -165,7 +165,7 @@ const PublicChat = () => {
     >
       {/* Header */}
       <div 
-        className="p-6 border-b shadow-md"
+        className="p-4 md:p-6 border-b shadow-md flex-shrink-0"
         style={{
           backgroundColor: chatbot.primary_color,
           color: 'white'
@@ -185,7 +185,7 @@ const PublicChat = () => {
       </div>
 
       {/* Messages Container */}
-      <div className="flex-1 overflow-y-auto p-4 md:p-6">
+      <div className="flex-1 overflow-y-auto p-4 md:p-6 min-h-0">
         <div className="max-w-4xl mx-auto space-y-4">
           {messages.map((message, index) => (
             <div
