@@ -256,15 +256,21 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
             {customization.logo_url && (
               <div className="mt-2 p-3 border border-gray-200 rounded-lg bg-gray-50">
                 <p className="text-xs text-gray-500 mb-2">Logo Preview:</p>
-                <img 
-                  src={customization.logo_url} 
-                  alt="Logo preview" 
-                  className="h-12 object-contain"
-                  onError={(e) => {
-                    e.target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="50"><rect width="100" height="50" fill="%23e5e7eb"/><text x="50" y="25" text-anchor="middle" fill="%236b7280" font-size="10">Invalid URL</text></svg>';
-                    e.target.classList.add('opacity-50');
-                  }}
-                />
+                <div className="flex items-center gap-3">
+                  <img 
+                    src={customization.logo_url} 
+                    alt="Logo preview" 
+                    className="h-12 object-contain max-w-[200px]"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      const errorMsg = e.target.parentElement.querySelector('.error-message');
+                      if (errorMsg) errorMsg.style.display = 'block';
+                    }}
+                  />
+                  <div className="error-message hidden text-xs text-amber-600 bg-amber-50 px-3 py-2 rounded border border-amber-200">
+                    ⚠️ Preview unavailable. Logo will display correctly in public chat if URL is valid.
+                  </div>
+                </div>
               </div>
             )}
           </div>
