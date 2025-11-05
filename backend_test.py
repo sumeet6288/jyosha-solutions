@@ -490,7 +490,7 @@ class SlackIntegrationTestSuite:
     def print_test_summary(self):
         """Print comprehensive test results summary"""
         print("\n" + "=" * 80)
-        print("📊 SUBSCRIPTION & PLAN ENFORCEMENT TEST SUMMARY")
+        print("📊 SLACK INTEGRATION TEST SUMMARY")
         print("=" * 80)
         
         passed = sum(1 for result in self.test_results if result["success"])
@@ -503,13 +503,13 @@ class SlackIntegrationTestSuite:
         
         # Categorize results
         categories = {
-            "Plan System Basics": ["GET /api/plans/", "GET /api/plans/current", "GET /api/plans/usage"],
-            "Plan Upgrades": ["Upgrade Free → Starter", "Upgrade Starter → Professional", "Upgrade Professional → Enterprise"],
-            "Free Plan Limits": ["Create 1st chatbot", "Create 2nd chatbot", "Upload file", "Add website", "Add text source"],
-            "Starter Plan Features": ["Starter chatbot", "Starter message limit", "Starter file upload limit"],
-            "Usage Tracking": ["usage tracking", "deletion usage tracking"],
-            "Limit Checks": ["Check limit:"],
-            "Error Messages": ["Error message"]
+            "Setup & Configuration": ["Create test chatbot", "Setup Slack integration", "Slack integration response format", "Slack integration data validation"],
+            "Connection Testing": ["Test Slack connection", "Slack connection test"],
+            "Webhook Management": ["Generate Slack webhook URL", "Slack webhook instructions", "Get Slack webhook info", "Slack webhook info instructions"],
+            "Integration Control": ["Enable Slack integration", "Disable Slack integration"],
+            "Event Processing": ["Slack URL verification challenge", "Slack message event reception"],
+            "Activity Logging": ["Integration activity logs"],
+            "Cleanup": ["Delete test integration", "Delete test chatbot"]
         }
         
         for category, keywords in categories.items():
@@ -524,17 +524,17 @@ class SlackIntegrationTestSuite:
                     for test in failed_tests:
                         print(f"   ❌ {test['test']}: {test['details']}")
         
-        # Show critical subscription functionality status
-        print(f"\n🎯 CRITICAL SUBSCRIPTION FUNCTIONALITY:")
+        # Show critical Slack integration functionality status
+        print(f"\n🎯 CRITICAL SLACK INTEGRATION FUNCTIONALITY:")
         
         critical_tests = [
-            ("Plan listing", "GET /api/plans/"),
-            ("Current subscription", "GET /api/plans/current"),
-            ("Usage statistics", "GET /api/plans/usage"),
-            ("Plan upgrades", "Upgrade Free → Starter"),
-            ("Free plan limits", "Create 2nd chatbot (should fail)"),
-            ("Usage tracking", "usage tracking"),
-            ("Limit enforcement", "should fail")
+            ("Integration Setup", "Setup Slack integration"),
+            ("Connection Testing", "Test Slack connection"),
+            ("Webhook URL Generation", "Generate Slack webhook URL"),
+            ("Webhook Info Retrieval", "Get Slack webhook info"),
+            ("Enable/Disable Toggle", "Enable Slack integration"),
+            ("Event Reception", "Slack URL verification challenge"),
+            ("Activity Logging", "Integration activity logs")
         ]
         
         all_critical_passed = True
@@ -551,13 +551,21 @@ class SlackIntegrationTestSuite:
                 all_critical_passed = False
         
         if all_critical_passed:
-            print(f"\n🎉 ALL CRITICAL SUBSCRIPTION FEATURES WORKING!")
+            print(f"\n🎉 ALL CRITICAL SLACK INTEGRATION FEATURES WORKING!")
         else:
-            print(f"\n⚠️  SOME CRITICAL SUBSCRIPTION FEATURES NEED ATTENTION")
+            print(f"\n⚠️  SOME CRITICAL SLACK INTEGRATION FEATURES NEED ATTENTION")
+        
+        # Show detailed failed tests
+        failed_tests = [r for r in self.test_results if not r["success"]]
+        if failed_tests:
+            print(f"\n❌ FAILED TESTS DETAILS:")
+            for test in failed_tests:
+                print(f"   • {test['test']}")
+                print(f"     Details: {test['details']}")
 
 async def main():
     """Main test execution"""
-    test_suite = SubscriptionTestSuite()
+    test_suite = SlackIntegrationTestSuite()
     await test_suite.run_all_tests()
 
 if __name__ == "__main__":
