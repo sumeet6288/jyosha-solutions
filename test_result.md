@@ -550,6 +550,21 @@ frontend:
         agent: "main"
         comment: "✅ BOTH BUGS FIXED: 1) DUPLICATE SOURCE BUG: Found and removed duplicate insert statement in /app/backend/routers/sources.py line 212. Website sources were being inserted twice into MongoDB (line 208 and 212). Removed the duplicate, tested with new website source creation - confirmed only 1 entry created. Cleaned up existing duplicates from database. 2) ERROR OBJECT RENDERING BUG: Fixed React error in AddSourceModal.jsx where plan limit errors (objects with {message, current, max, upgrade_required}) were being rendered directly instead of extracting the message field. Updated error handling in both handleAddUrl() and handleAddText() functions to check if error.response.data.detail is an object and extract the .message field. File upload section already had correct handling. Both issues now resolved - website sources create single entries and plan limit errors display properly."
 
+  - task: "Branding Card in Appearance Section - Fully Functional"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/components/AppearanceTab.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "user"
+        comment: "User asked to verify if branding card in appearance section is working or not"
+      - working: true
+        agent: "main"
+        comment: "✅ BRANDING FULLY FUNCTIONAL: Verified complete branding functionality end-to-end. Testing confirmed: 1) BACKEND: logo_url and avatar_url fields properly supported in Chatbot model and saved to MongoDB, 2) FRONTEND APPEARANCE TAB: Both logo and avatar URL input fields working with live preview sections, 3) PUBLIC CHAT: Logo displays in purple header, avatar displays in chat messages with custom colors applied correctly, 4) API ENDPOINTS: Both /api/chatbots/{id} and /api/public/chatbot/{id} return branding fields correctly. IMPROVEMENTS ADDED: Enhanced user experience with blue info banner explaining branding purpose ('Add your company logo and bot avatar to personalize the chat experience'), improved error handling for preview images (shows helpful message 'Preview unavailable. Logo/Avatar will display correctly in public chat if URL is valid' instead of confusing 'Invalid URL'). Branding saves successfully and displays correctly in public chat widget. Feature is production-ready."
+
 metadata:
   created_by: "main_agent"
   version: "1.0"
