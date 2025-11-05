@@ -46,6 +46,34 @@ class SlackIntegrationTestSuite:
         if details:
             print(f"   Details: {details}")
 
+    async def setup_test_environment(self):
+        """Setup test environment by upgrading plan and cleaning up existing resources"""
+        print("\n🔧 Setting up test environment...")
+        
+        # First, upgrade to Professional plan to avoid limits
+        try:
+            upgrade_data = {"plan_id": "professional"}
+            async with self.session.post(f"{API_BASE}/plans/upgrade", json=upgrade_data) as response:
+                if response.status == 200:
+                    self.log_test("Upgrade to Professional plan", True, "Upgraded to Professional plan for testing")
+                else:
+                    self.log_test("Upgrade to Professional plan", False, f"Failed to upgrade: {response.status}")
+        except Exception as e:
+            self.log_test("Upgrade to Professional plan", False, f"Exception: {str(e)}")
+        
+        # Clean up any existing chatbots
+        try:
+            async with self.session.get(f"{API_BASE}/chatbots") as response:
+                if response.status == 200:
+                    chatbots = await response.json()
+                    for chatbot in chatbots:
+                        try:
+                            await self.session.delete(f"{API_BASE}/chatbots/{chatbot['id']}")
+                        except:
+                            pass
+        except:
+            pass
+
     async def create_test_chatbot(self):
         """Create a test chatbot for integration testing"""
         print("\n🤖 Creating Test Chatbot...")
