@@ -330,9 +330,13 @@
       
       // Update logo if available
       if (chatbot.logo_url) {
-        const logoContainer = header.querySelector('div > div:first-child');
+        // Find the logo container more specifically - it's the first div inside the flex container
+        const flexContainer = header.querySelector('div[style*="display: flex"]');
+        const logoContainer = flexContainer?.querySelector('div');
         if (logoContainer) {
-          logoContainer.innerHTML = `<img src="${chatbot.logo_url}" alt="Logo" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;">`;
+          // Update logo while maintaining container styles to prevent layout issues
+          logoContainer.style.cssText = 'width: 44px; height: 44px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden;';
+          logoContainer.innerHTML = `<img src="${chatbot.logo_url}" alt="Logo" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
         }
       }
       
