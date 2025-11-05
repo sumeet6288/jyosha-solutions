@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Backend Testing Suite for Subscription & Plan Enforcement System
-Comprehensive testing of subscription system, plan limits, and usage tracking.
+Backend Testing Suite for Slack Integration APIs
+Comprehensive testing of Slack integration following the same pattern as Telegram integration.
 """
 
 import asyncio
@@ -15,7 +15,7 @@ from typing import Dict, Any, List
 BACKEND_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://dep-installer-25.preview.emergentagent.com')
 API_BASE = f"{BACKEND_URL}/api"
 
-class SubscriptionTestSuite:
+class SlackIntegrationTestSuite:
     def __init__(self):
         self.session = None
         self.test_results = []
