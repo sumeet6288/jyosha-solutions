@@ -506,4 +506,7 @@
     toggle: toggleChat,
     isOpen: () => isOpen
   };
+  
+  // Load chatbot configuration immediately to apply widget settings
+  loadChatbot();
 })();
