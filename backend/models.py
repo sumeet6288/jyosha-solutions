@@ -778,6 +778,15 @@ class TelegramMessage(BaseModel):
     text: str
     parse_mode: Optional[str] = None
 
+
+# Slack Models
+class SlackWebhookSetup(BaseModel):
+    base_url: str  # Base URL of your application (e.g., https://yourdomain.com)
+
+class SlackMessage(BaseModel):
+    channel: str  # Channel ID or DM ID
+    text: str
+
 # Plan Models
 class PlanLimits(BaseModel):
     max_chatbots: int
