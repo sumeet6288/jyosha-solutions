@@ -628,6 +628,18 @@ const ChatbotIntegrations = ({ chatbot }) => {
                 </div>
               )}
 
+              {definition.id === 'discord' && isConfigured && (
+                <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <p className="text-xs text-blue-700 flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <span>
+                      <strong>Important:</strong> Enable "MESSAGE CONTENT INTENT" in Discord Developer Portal → Your App → Bot → Privileged Gateway Intents. 
+                      Then click the ⚡ Start Bot button below.
+                    </span>
+                  </p>
+                </div>
+              )}
+
               <div className="space-y-3">
                 {isConfigured && (
                   <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
