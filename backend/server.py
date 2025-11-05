@@ -161,6 +161,14 @@ async def startup_event():
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
+    # Stop all Discord bots
+    try:
+        from services.discord_bot_manager import discord_bot_manager
+        for chatbot_id in list(discord_bot_manager.bots.keys()):
+            await discord_bot_manager.stop_bot(chatbot_id)
+    except Exception as e:
+        logger.warning(f"Error stopping Discord bots: {str(e)}")
+    
     client.close()
 
 
