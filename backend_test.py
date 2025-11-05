@@ -393,7 +393,7 @@ class SlackIntegrationTestSuite:
         except Exception as e:
             self.log_test("Integration activity logs", False, f"Exception: {str(e)}")
 
-    async def test_plan_upgrade_flow(self):
+    async def cleanup_test_resources(self):
         """Test plan upgrade functionality"""
         print("\n🔄 Testing Plan Upgrade Flow...")
         
