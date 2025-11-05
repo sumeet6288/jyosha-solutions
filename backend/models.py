@@ -787,6 +787,14 @@ class SlackMessage(BaseModel):
     channel: str  # Channel ID or DM ID
     text: str
 
+
+class DiscordWebhookSetup(BaseModel):
+    base_url: str  # Base URL of your application (e.g., https://yourdomain.com)
+
+class DiscordMessage(BaseModel):
+    channel_id: str  # Discord channel ID
+    content: str
+
 # Plan Models
 class PlanLimits(BaseModel):
     max_chatbots: int
