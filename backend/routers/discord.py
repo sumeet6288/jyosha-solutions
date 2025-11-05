@@ -1,29 +1,27 @@
 from fastapi import APIRouter, HTTPException, BackgroundTasks, Request
-from motor.motor_asyncio import AsyncIOMotorDatabase
+from motor.motor_asyncio import AsyncIOMotorClient
 from datetime import datetime
 import logging
 import uuid
+import os
 from typing import Dict, Any
 
 from services.discord_service import DiscordService
 from services.chat_service import ChatService
-from services.plan_service import PlanService
 from models import DiscordWebhookSetup
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/discord", tags=["discord"])
-db = None
-chat_service = None
-plan_service = None
 
+# MongoDB connection
+MONGO_URL = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
+DB_NAME = os.environ.get('DB_NAME', 'chatbase_db')
+client = AsyncIOMotorClient(MONGO_URL)
+db = client[DB_NAME]
 
-def init_router(database: AsyncIOMotorDatabase, cs: ChatService, ps: PlanService):
-    """Initialize router with database and services"""
-    global db, chat_service, plan_service
-    db = database
-    chat_service = cs
-    plan_service = ps
+# Chat service
+chat_service = ChatService()
 
 
 # Store active Discord services per chatbot
