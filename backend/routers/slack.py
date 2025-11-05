@@ -229,17 +229,18 @@ async def slack_webhook(
 ):
     """Receive webhook events from Slack"""
     try:
-        # Get integration
-        integration = await get_integration_by_chatbot(chatbot_id)
-        if not integration:
-            raise HTTPException(status_code=404, detail="Integration not found")
-        
-        # Parse event
+        # Parse event first
         event_data = await request.json()
         
         # Handle URL verification challenge (Slack's initial webhook setup)
+        # This needs to work even if integration is not enabled yet
         if event_data.get("type") == "url_verification":
             return {"challenge": event_data.get("challenge")}
+        
+        # For actual events, check if integration exists and is enabled
+        integration = await get_integration_by_chatbot(chatbot_id)
+        if not integration:
+            raise HTTPException(status_code=404, detail="Integration not found or not enabled")
         
         # Handle event callback
         if event_data.get("type") == "event_callback":
