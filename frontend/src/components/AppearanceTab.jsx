@@ -241,6 +241,12 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
           <h3 className="text-lg font-semibold">Branding</h3>
         </div>
         
+        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+          <p className="text-xs text-blue-800">
+            💡 Add your company logo and bot avatar to personalize the chat experience. These will appear in the public chat header and messages.
+          </p>
+        </div>
+        
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
