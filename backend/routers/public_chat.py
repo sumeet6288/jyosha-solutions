@@ -52,6 +52,8 @@ async def get_public_chatbot(chatbot_id: str):
         secondary_color=chatbot.get("secondary_color", "#a78bfa"),
         logo_url=chatbot.get("logo_url"),
         avatar_url=chatbot.get("avatar_url"),
+        font_family=chatbot.get("font_family", "Inter, system-ui, sans-serif"),
+        font_size=chatbot.get("font_size", "medium"),
         widget_theme=chatbot.get("widget_theme", "light"),
         widget_position=chatbot.get("widget_position", "bottom-right"),
         widget_size=chatbot.get("widget_size", "medium"),
