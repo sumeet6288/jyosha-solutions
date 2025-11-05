@@ -369,17 +369,31 @@
       // Apply widget settings from chatbot configuration
       if (chatbot.widget_position) {
         const newPosition = positions[chatbot.widget_position] || positions['bottom-right'];
+        // Reset all positions first, then set the appropriate ones
+        container.style.bottom = '';
+        container.style.top = '';
+        container.style.left = '';
+        container.style.right = '';
+        
         // Update container position
-        container.style.bottom = newPosition.bottom || 'auto';
-        container.style.top = newPosition.top || 'auto';
-        container.style.left = newPosition.left || 'auto';
-        container.style.right = newPosition.right || 'auto';
+        if (newPosition.bottom) container.style.bottom = newPosition.bottom;
+        if (newPosition.top) container.style.top = newPosition.top;
+        if (newPosition.left) container.style.left = newPosition.left;
+        if (newPosition.right) container.style.right = newPosition.right;
         
         // Update chat window position
         const windowPosition = chatbot.widget_position.includes('bottom') ? 'bottom: 90px;' : 'top: 90px;';
         const windowAlign = chatbot.widget_position.includes('right') ? 'right: 0;' : 'left: 0;';
-        const currentWindowStyle = chatWindow.style.cssText;
-        chatWindow.style.cssText = currentWindowStyle.replace(/bottom: \d+px;|top: \d+px;/, windowPosition).replace(/right: 0;|left: 0;/, windowAlign);
+        
+        // Rebuild window style with new position
+        chatWindow.style.cssText = `
+          position: fixed; ${windowPosition} ${windowAlign}
+          width: ${chatWindow.style.width || '420px'}; height: ${chatWindow.style.height || '600px'}; 
+          max-width: calc(100vw - 40px); max-height: calc(100vh - 120px);
+          background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+          display: ${chatWindow.style.display || 'none'}; flex-direction: column; overflow: hidden; 
+          animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        `;
       }
       
       // Apply widget size
