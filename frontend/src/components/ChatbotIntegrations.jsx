@@ -338,6 +338,56 @@ const ChatbotIntegrations = ({ chatbot }) => {
     }
   };
 
+
+  const handleStartDiscordBot = async (integrationId) => {
+    try {
+      setTesting(true);
+      const response = await api.post(`/discord/${chatbot.id}/start-bot`);
+      
+      if (response.data.success) {
+        toast({
+          title: 'Discord Bot Started',
+          description: 'Your Discord bot is now online and listening for messages!',
+        });
+        
+        fetchIntegrations();
+      }
+    } catch (error) {
+      toast({
+        title: 'Failed to Start Bot',
+        description: error.response?.data?.detail || 'Failed to start Discord bot',
+        variant: 'destructive'
+      });
+    } finally {
+      setTesting(false);
+    }
+  };
+
+  const handleStopDiscordBot = async (integrationId) => {
+    try {
+      setTesting(true);
+      const response = await api.post(`/discord/${chatbot.id}/stop-bot`);
+      
+      if (response.data.success) {
+        toast({
+          title: 'Discord Bot Stopped',
+          description: 'Your Discord bot has been stopped.',
+        });
+        
+        fetchIntegrations();
+      }
+    } catch (error) {
+      toast({
+        title: 'Failed to Stop Bot',
+        description: error.response?.data?.detail || 'Failed to stop Discord bot',
+        variant: 'destructive'
+      });
+    } finally {
+      setTesting(false);
+    }
+  };
+
+
   const handleDeleteIntegration = async (integrationId, name) => {
     if (!window.confirm(`Are you sure you want to delete ${name} integration?`)) {
       return;
