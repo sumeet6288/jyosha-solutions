@@ -8,6 +8,7 @@ from typing import Dict, Any
 
 from services.discord_service import DiscordService
 from services.chat_service import ChatService
+from services.discord_bot_manager import discord_bot_manager
 from models import DiscordWebhookSetup
 
 logger = logging.getLogger(__name__)
