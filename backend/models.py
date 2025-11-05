@@ -414,6 +414,8 @@ class ChatbotResponse(BaseModel):
     welcome_message: str = "Hi! I'm your AI assistant. How can I help you today?"
     logo_url: Optional[str] = None
     avatar_url: Optional[str] = None
+    font_family: str = "Inter, system-ui, sans-serif"
+    font_size: str = "medium"
     widget_position: str = "bottom-right"
     widget_theme: str = "auto"
     widget_size: str = "medium"
