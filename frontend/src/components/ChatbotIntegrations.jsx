@@ -685,6 +685,18 @@ const ChatbotIntegrations = ({ chatbot }) => {
                         </Button>
                       )}
 
+                      {definition.id === 'discord' && (
+                        <Button
+                          variant="outline"
+                          onClick={() => handleStartDiscordBot(integration.id)}
+                          disabled={testing}
+                          className="border-2 border-green-600 text-green-600 hover:bg-green-50"
+                          title="Start Discord Bot (Required for Messages)"
+                        >
+                          <Zap className="w-4 h-4" />
+                        </Button>
+                      )}
+
                       <Button
                         variant="outline"
                         onClick={() => handleDeleteIntegration(integration.id, definition.name)}
