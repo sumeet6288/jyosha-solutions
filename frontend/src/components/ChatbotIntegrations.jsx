@@ -623,6 +623,18 @@ const ChatbotIntegrations = ({ chatbot }) => {
                         </Button>
                       )}
 
+                      {definition.id === 'slack' && (
+                        <Button
+                          variant="outline"
+                          onClick={() => handleSetupSlackWebhook(integration.id)}
+                          disabled={testing}
+                          className="border-2 border-green-600 text-green-600 hover:bg-green-50"
+                          title="Setup Slack Webhook"
+                        >
+                          <Zap className="w-4 h-4" />
+                        </Button>
+                      )}
+
                       <Button
                         variant="outline"
                         onClick={() => handleDeleteIntegration(integration.id, definition.name)}
