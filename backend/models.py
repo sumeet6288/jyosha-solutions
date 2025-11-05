@@ -623,6 +623,9 @@ class PublicChatbotInfo(BaseModel):
     logo_url: Optional[str] = None
     avatar_url: Optional[str] = None
     widget_theme: Optional[str] = "light"
+    widget_position: Optional[str] = "bottom-right"
+    widget_size: Optional[str] = "medium"
+    auto_expand: Optional[bool] = False
 
 
 class PublicChatRequest(BaseModel):
