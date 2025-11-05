@@ -452,3 +452,162 @@ async def send_discord_test_message(
     except Exception as e:
         logger.error(f"Error sending Discord test message: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+
+@router.post("/{chatbot_id}/start-bot")
+async def start_discord_bot(chatbot_id: str):
+    """Start Discord bot for real-time message handling"""
+    try:
+        # Get integration
+        integration = await db.integrations.find_one({
+            "chatbot_id": chatbot_id,
+            "integration_type": "discord"
+        })
+        
+        if not integration:
+            raise HTTPException(status_code=404, detail="Discord integration not found")
+        
+        if not integration.get("enabled"):
+            raise HTTPException(status_code=400, detail="Discord integration is not enabled")
+        
+        bot_token = integration['credentials'].get('bot_token')
+        if not bot_token:
+            raise HTTPException(status_code=400, detail="Bot token not configured")
+        
+        # Start the bot
+        result = await discord_bot_manager.start_bot(chatbot_id, bot_token)
+        
+        if result["success"]:
+            # Update integration status
+            await db.integrations.update_one(
+                {"id": integration['id']},
+                {
+                    "$set": {
+                        "bot_status": "running",
+                        "updated_at": datetime.now()
+                    }
+                }
+            )
+            
+            # Log activity
+            await db.integration_logs.insert_one({
+                "id": str(uuid.uuid4()),
+                "integration_id": integration["id"],
+                "event_type": "bot_started",
+                "status": "success",
+                "message": "Discord bot started successfully",
+                "timestamp": datetime.now()
+            })
+            
+            return {
+                "success": True,
+                "message": "Discord bot started successfully. Your bot is now listening for messages!",
+                "chatbot_id": chatbot_id
+            }
+        else:
+            raise HTTPException(status_code=500, detail=result.get("error", "Failed to start bot"))
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error starting Discord bot: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/{chatbot_id}/stop-bot")
+async def stop_discord_bot(chatbot_id: str):
+    """Stop Discord bot"""
+    try:
+        # Get integration
+        integration = await db.integrations.find_one({
+            "chatbot_id": chatbot_id,
+            "integration_type": "discord"
+        })
+        
+        if not integration:
+            raise HTTPException(status_code=404, detail="Discord integration not found")
+        
+        # Stop the bot
+        result = await discord_bot_manager.stop_bot(chatbot_id)
+        
+        if result["success"]:
+            # Update integration status
+            await db.integrations.update_one(
+                {"id": integration['id']},
+                {
+                    "$set": {
+                        "bot_status": "stopped",
+                        "updated_at": datetime.now()
+                    }
+                }
+            )
+            
+            # Log activity
+            await db.integration_logs.insert_one({
+                "id": str(uuid.uuid4()),
+                "integration_id": integration["id"],
+                "event_type": "bot_stopped",
+                "status": "success",
+                "message": "Discord bot stopped",
+                "timestamp": datetime.now()
+            })
+            
+            return {
+                "success": True,
+                "message": "Discord bot stopped successfully",
+                "chatbot_id": chatbot_id
+            }
+        else:
+            raise HTTPException(status_code=500, detail=result.get("error", "Failed to stop bot"))
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error stopping Discord bot: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/{chatbot_id}/bot-status")
+async def get_discord_bot_status(chatbot_id: str):
+    """Get Discord bot status"""
+    try:
+        integration = await db.integrations.find_one({
+            "chatbot_id": chatbot_id,
+            "integration_type": "discord"
+        })
+        
+        if not integration:
+            raise HTTPException(status_code=404, detail="Discord integration not found")
+        
+        # Check if bot is actually running
+        is_running = chatbot_id in discord_bot_manager.bots
+        bot_status = integration.get("bot_status", "stopped")
+        
+        # Update status if mismatch
+        if is_running and bot_status != "running":
+            await db.integrations.update_one(
+                {"id": integration['id']},
+                {"$set": {"bot_status": "running"}}
+            )
+            bot_status = "running"
+        elif not is_running and bot_status == "running":
+            await db.integrations.update_one(
+                {"id": integration['id']},
+                {"$set": {"bot_status": "stopped"}}
+            )
+            bot_status = "stopped"
+        
+        return {
+            "success": True,
+            "chatbot_id": chatbot_id,
+            "bot_status": bot_status,
+            "is_running": is_running,
+            "enabled": integration.get("enabled", False)
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting Discord bot status: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
