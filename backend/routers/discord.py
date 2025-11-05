@@ -180,6 +180,7 @@ async def process_discord_message(
         
         # Update subscription usage (2 messages: user + assistant)
         try:
+            from services.plan_service import plan_service
             await plan_service.increment_usage(chatbot["user_id"], "messages", 2)
         except Exception as e:
             logger.warning(f"Failed to update subscription usage: {str(e)}")
