@@ -451,7 +451,10 @@ class SlackIntegrationTestSuite:
         await self.setup_session()
         
         try:
-            # Create test chatbot first
+            # Setup test environment first
+            await self.setup_test_environment()
+            
+            # Create test chatbot
             if await self.create_test_chatbot():
                 # Run all Slack integration tests
                 await self.test_setup_slack_integration()
