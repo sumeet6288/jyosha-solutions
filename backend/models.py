@@ -628,6 +628,8 @@ class PublicChatbotInfo(BaseModel):
     secondary_color: Optional[str] = "#a78bfa"
     logo_url: Optional[str] = None
     avatar_url: Optional[str] = None
+    font_family: Optional[str] = "Inter, system-ui, sans-serif"
+    font_size: Optional[str] = "medium"
     widget_theme: Optional[str] = "light"
     widget_position: Optional[str] = "bottom-right"
     widget_size: Optional[str] = "medium"
