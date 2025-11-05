@@ -448,6 +448,18 @@ frontend:
         agent: "testing"
         comment: "✅ BACKEND TESTED: All 6 integration management API endpoints working perfectly (21/21 tests passed - 100% success rate). Created/updated integrations for all 8 types (Slack, Telegram, Discord, WhatsApp, WebChat, API, Twilio, Messenger). Real API connection testing working for Slack, Telegram, and Discord with proper error handling. Toggle operations functional with proper state updates. Activity logs tracking all events (configured, enabled, disabled, tested) with timestamps. Bulk operations and cleanup working correctly. Fixed database config (chatbase_db) and router prefix (/integrations). Ready for frontend testing."
 
+  - task: "Slack Integration - Full Message Handling"
+    implemented: true
+    working: true
+    file: "/app/backend/routers/slack.py, /app/backend/services/slack_service.py, /app/frontend/src/components/ChatbotIntegrations.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented complete Slack integration with message handling similar to Telegram. Created SlackService (/app/backend/services/slack_service.py) with methods: send_message (send to channels/DMs with thread support), auth_test (verify bot token), get_user_info (fetch user details), set_webhook (return setup instructions), get_bot_info (bot details). Created Slack router (/app/backend/routers/slack.py) with 6 endpoints: POST /api/slack/webhook/{chatbot_id} (receive Slack events, handle url_verification challenge, process messages with background tasks, ignore bot messages to prevent loops), POST /api/slack/{chatbot_id}/setup-webhook (generate webhook URL and return setup instructions), GET /api/slack/{chatbot_id}/webhook-info (get webhook configuration and instructions), DELETE /api/slack/{chatbot_id}/webhook (remove webhook config), POST /api/slack/{chatbot_id}/send-test-message (test message sending). Message processing: Receives messages from Slack channels/DMs via Events API webhook, generates session_id from channel and user_id, creates/updates conversations in MongoDB, fetches knowledge base context using vector store, generates AI responses using ChatService with multi-provider support (OpenAI/Claude/Gemini), sends responses back to Slack with thread support, updates subscription usage (messages_this_month), logs all integration events. Frontend: Added handleSetupSlackWebhook function that calls setup endpoint and displays instructions, added Slack webhook setup button (green with Zap icon) next to test/delete buttons when Slack integration is configured, webhook URL logged to console with detailed setup steps. Setup process: User adds Slack bot token in UI, clicks webhook setup button (⚡), gets webhook URL and instructions, manually configures Events API in Slack App settings (https://api.slack.com/apps), subscribes to bot events (message.channels, message.im, message.groups), bot receives messages and responds with AI in real-time. All Slack models (SlackWebhookSetup, SlackMessage) added to models.py. Slack router registered in server.py. Pattern follows working Telegram integration exactly."
+
   - task: "Subscription & Plan Enforcement System"
     implemented: true
     working: true
