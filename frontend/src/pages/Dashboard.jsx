@@ -251,7 +251,7 @@ const Dashboard = () => {
         )}
 
         {/* Stats Cards - Matching uploaded UI design - Reduced to 80% */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
           {/* Create Agent Card - FIRST POSITION */}
           <div 
             onClick={handleCreateChatbot}
@@ -289,6 +289,18 @@ const Dashboard = () => {
             </div>
             <p className="text-4xl font-bold text-purple-600 mb-1 transition-all duration-300">{analytics?.total_chatbots || 0}</p>
             <p className="text-gray-600 text-sm font-medium">Total Chatbots</p>
+          </div>
+
+          {/* Leads Card */}
+          <div 
+            onClick={() => navigate('/leads')}
+            className="bg-white rounded-xl p-4 shadow-md hover:shadow-2xl transition-all duration-500 ease-out border border-gray-100 animate-fade-in-up animation-delay-400 hover-lift card-glow cursor-pointer group"
+          >
+            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-b from-orange-400 to-amber-600 mb-3 shadow-md transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
+              <FileText className="w-6 h-6 text-white" />
+            </div>
+            <p className="text-4xl font-bold text-orange-600 mb-1 transition-all duration-300">{analytics?.total_leads || 0}</p>
+            <p className="text-gray-600 text-sm font-medium">Leads</p>
           </div>
         </div>
 
