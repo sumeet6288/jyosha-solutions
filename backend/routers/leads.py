@@ -3,7 +3,8 @@ from typing import List, Optional
 from datetime import datetime, timezone
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
-from models import Lead, LeadResponse
+import uuid
+from models import Lead, LeadResponse, LeadCreate
 from auth import get_current_user
 
 router = APIRouter()
