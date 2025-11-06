@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { FileText, Search, Filter, ArrowLeft } from 'lucide-react';
+import { FileText, Search, Filter, ArrowLeft, Trash2 } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import UserProfileDropdown from '../components/UserProfileDropdown';
 import ResponsiveNav from '../components/ResponsiveNav';
@@ -12,7 +12,65 @@ const Leads = () => {
   const { toast } = useToast();
   const { user, logout } = useAuth();
   const [leads, setLeads] = useState([]);
+  const [leadsData, setLeadsData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
+
+  useEffect(() => {
+    fetchLeads();
+  }, []);
+
+  const fetchLeads = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${backendUrl}/api/leads/leads`, {
+        credentials: 'include'
+      });
+      const data = await response.json();
+      setLeads(data.leads || []);
+      setLeadsData(data);
+    } catch (error) {
+      console.error('Error fetching leads:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load leads',
+        variant: 'destructive'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteLead = async (leadId) => {
+    if (!window.confirm('Are you sure you want to delete this lead?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${backendUrl}/api/leads/leads/${leadId}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        toast({
+          title: 'Success',
+          description: 'Lead deleted successfully'
+        });
+        fetchLeads();
+      } else {
+        throw new Error('Failed to delete lead');
+      }
+    } catch (error) {
+      console.error('Error deleting lead:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to delete lead',
+        variant: 'destructive'
+      });
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -22,6 +80,17 @@ const Leads = () => {
     });
     navigate('/signin');
   };
+
+  const filteredLeads = leads.filter(lead => {
+    if (!searchQuery) return true;
+    const search = searchQuery.toLowerCase();
+    return (
+      lead.name?.toLowerCase().includes(search) ||
+      lead.email?.toLowerCase().includes(search) ||
+      lead.phone?.toLowerCase().includes(search) ||
+      lead.company?.toLowerCase().includes(search)
+    );
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50 relative overflow-hidden">
