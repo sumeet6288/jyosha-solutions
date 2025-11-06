@@ -200,43 +200,98 @@ class LeadsManagementTestSuite:
         except Exception as e:
             self.log_test("Verify Starter plan active", False, f"Exception: {str(e)}")
 
-    async def test_slack_connection_test(self):
-        """Test Slack connection testing endpoint"""
-        print("\n🔗 Testing Slack Connection Test...")
+    async def test_starter_plan_100_leads_limit(self):
+        """Test Starter Plan User - 100 Leads Limit"""
+        print("\n📊 Testing Starter Plan 100 Leads Limit...")
         
-        if not self.test_chatbot_id or not self.test_integration_id:
-            self.log_test("Test Slack connection", False, "No test integration available")
-            return
-        
-        # Test POST /api/integrations/{chatbot_id}/{integration_id}/test
+        # Test GET /api/leads/leads - Should return max_leads=100, plan_name="Starter"
         try:
-            async with self.session.post(f"{API_BASE}/integrations/{self.test_chatbot_id}/{self.test_integration_id}/test") as response:
+            async with self.session.get(f"{API_BASE}/leads/leads") as response:
                 if response.status == 200:
                     result = await response.json()
                     
-                    # Check response format
-                    required_fields = ["success", "message"]
-                    if all(field in result for field in required_fields):
-                        # With test token, we expect failure but proper error format
-                        if not result["success"] and "error" in result["message"].lower():
-                            self.log_test("Slack connection test", True, 
-                                        f"Proper error response: {result['message']}")
-                        elif result["success"]:
-                            self.log_test("Slack connection test", True, 
-                                        f"Connection successful: {result['message']}")
-                        else:
-                            self.log_test("Slack connection test", False, 
-                                        f"Unexpected response format: {result}")
+                    max_leads = result.get("max_leads", -1)
+                    plan_name = result.get("plan_name", "")
+                    
+                    if max_leads == 100 and plan_name == "Starter":
+                        self.log_test("Starter plan limits check", True, 
+                                    f"Correct limits: max_leads={max_leads}, plan={plan_name}")
                     else:
-                        missing = [f for f in required_fields if f not in result]
-                        self.log_test("Slack connection test", False, 
-                                    f"Missing response fields: {missing}")
+                        self.log_test("Starter plan limits check", False, 
+                                    f"Wrong limits: max_leads={max_leads}, plan={plan_name}")
                 else:
                     error_text = await response.text()
-                    self.log_test("Slack connection test", False, 
+                    self.log_test("Starter plan limits check", False, 
                                 f"Status: {response.status}, Error: {error_text}")
         except Exception as e:
-            self.log_test("Slack connection test", False, f"Exception: {str(e)}")
+            self.log_test("Starter plan limits check", False, f"Exception: {str(e)}")
+        
+        # Test POST /api/leads/leads - Create a new lead successfully
+        lead_data = {
+            "name": "John Smith",
+            "email": "john.smith@techcorp.com",
+            "phone": "+1-555-0123",
+            "company": "TechCorp Solutions",
+            "status": "active",
+            "notes": "Interested in enterprise chatbot solution"
+        }
+        
+        try:
+            async with self.session.post(f"{API_BASE}/leads/leads", json=lead_data) as response:
+                if response.status == 200:
+                    result = await response.json()
+                    
+                    if result.get("success") and "lead" in result:
+                        lead = result["lead"]
+                        lead_id = lead.get("id")
+                        self.created_leads.append(lead_id)
+                        
+                        # Verify all fields were saved properly
+                        fields_correct = (
+                            lead.get("name") == lead_data["name"] and
+                            lead.get("email") == lead_data["email"] and
+                            lead.get("phone") == lead_data["phone"] and
+                            lead.get("company") == lead_data["company"] and
+                            lead.get("status") == lead_data["status"] and
+                            lead.get("notes") == lead_data["notes"]
+                        )
+                        
+                        if fields_correct:
+                            self.log_test("Create lead successfully", True, 
+                                        f"Lead created with ID: {lead_id}")
+                        else:
+                            self.log_test("Create lead successfully", False, 
+                                        f"Lead fields not saved correctly: {lead}")
+                    else:
+                        self.log_test("Create lead successfully", False, 
+                                    f"Unexpected response: {result}")
+                else:
+                    error_text = await response.text()
+                    self.log_test("Create lead successfully", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("Create lead successfully", False, f"Exception: {str(e)}")
+        
+        # Verify lead count increments correctly
+        try:
+            async with self.session.get(f"{API_BASE}/leads/leads") as response:
+                if response.status == 200:
+                    result = await response.json()
+                    total = result.get("total", 0)
+                    leads = result.get("leads", [])
+                    
+                    if total == 1 and len(leads) == 1:
+                        self.log_test("Lead count increment verification", True, 
+                                    f"Count correctly shows {total} lead")
+                    else:
+                        self.log_test("Lead count increment verification", False, 
+                                    f"Count mismatch: total={total}, leads_length={len(leads)}")
+                else:
+                    error_text = await response.text()
+                    self.log_test("Lead count increment verification", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("Lead count increment verification", False, f"Exception: {str(e)}")
 
     async def test_generate_webhook_url(self):
         """Test generating Slack webhook URL"""
