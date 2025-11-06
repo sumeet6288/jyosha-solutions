@@ -309,6 +309,45 @@ class ImpersonationRequest(BaseModel):
     reason: str
 
 
+# Lead Models
+class Lead(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str  # User who owns this lead
+    name: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    company: Optional[str] = None
+    status: str = "active"  # active, contacted, converted, inactive
+    notes: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    metadata: Optional[Dict[str, Any]] = {}
+
+
+class LeadCreate(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    company: Optional[str] = None
+    status: Optional[str] = "active"
+    notes: Optional[str] = None
+
+
+class LeadResponse(BaseModel):
+    id: str
+    user_id: str
+    name: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    company: Optional[str] = None
+    status: str
+    notes: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
+
+
 # Chatbot Models
 class Chatbot(BaseModel):
     model_config = ConfigDict(extra="ignore")
