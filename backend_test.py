@@ -46,28 +46,29 @@ class LeadsManagementTestSuite:
             print(f"   Details: {details}")
 
     async def setup_test_environment(self):
-        """Setup test environment by upgrading plan and cleaning up existing resources"""
+        """Setup test environment by resetting to Free plan and cleaning up existing leads"""
         print("\n🔧 Setting up test environment...")
         
-        # First, upgrade to Professional plan to avoid limits
+        # First, reset to Free plan to test limits
         try:
-            upgrade_data = {"plan_id": "professional"}
+            upgrade_data = {"plan_id": "free"}
             async with self.session.post(f"{API_BASE}/plans/upgrade", json=upgrade_data) as response:
                 if response.status == 200:
-                    self.log_test("Upgrade to Professional plan", True, "Upgraded to Professional plan for testing")
+                    self.log_test("Reset to Free plan", True, "Reset to Free plan for testing")
                 else:
-                    self.log_test("Upgrade to Professional plan", False, f"Failed to upgrade: {response.status}")
+                    self.log_test("Reset to Free plan", False, f"Failed to reset: {response.status}")
         except Exception as e:
-            self.log_test("Upgrade to Professional plan", False, f"Exception: {str(e)}")
+            self.log_test("Reset to Free plan", False, f"Exception: {str(e)}")
         
-        # Clean up any existing chatbots
+        # Clean up any existing leads
         try:
-            async with self.session.get(f"{API_BASE}/chatbots") as response:
+            async with self.session.get(f"{API_BASE}/leads/leads") as response:
                 if response.status == 200:
-                    chatbots = await response.json()
-                    for chatbot in chatbots:
+                    result = await response.json()
+                    leads = result.get("leads", [])
+                    for lead in leads:
                         try:
-                            await self.session.delete(f"{API_BASE}/chatbots/{chatbot['id']}")
+                            await self.session.delete(f"{API_BASE}/leads/leads/{lead['id']}")
                         except:
                             pass
         except:
