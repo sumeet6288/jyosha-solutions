@@ -640,46 +640,77 @@ class LeadsManagementTestSuite:
         except Exception as e:
             self.log_test("Verify deletion and count decrement", False, f"Exception: {str(e)}")
 
-    async def test_integration_logs(self):
-        """Test integration activity logs"""
-        print("\n📊 Testing Integration Activity Logs...")
+    async def test_lead_statistics_endpoint(self):
+        """Test GET /api/leads/stats - Check lead statistics endpoint"""
+        print("\n📊 Testing Lead Statistics Endpoint...")
         
-        if not self.test_chatbot_id:
-            self.log_test("Integration activity logs", False, "No test chatbot available")
-            return
-        
-        # Test GET /api/integrations/{chatbot_id}/logs
         try:
-            async with self.session.get(f"{API_BASE}/integrations/{self.test_chatbot_id}/logs") as response:
+            async with self.session.get(f"{API_BASE}/leads/stats") as response:
                 if response.status == 200:
-                    logs = await response.json()
+                    result = await response.json()
                     
-                    if isinstance(logs, list):
-                        if len(logs) > 0:
-                            # Check log entry format
-                            log_entry = logs[0]
-                            required_fields = ["chatbot_id", "integration_type", "event_type", "status", "message", "timestamp"]
-                            
-                            if all(field in log_entry for field in required_fields):
-                                slack_logs = [log for log in logs if log.get("integration_type") == "slack"]
-                                self.log_test("Integration activity logs", True, 
-                                            f"Found {len(logs)} total logs, {len(slack_logs)} Slack logs")
-                            else:
-                                missing = [f for f in required_fields if f not in log_entry]
-                                self.log_test("Integration activity logs", False, 
-                                            f"Missing log fields: {missing}")
+                    # Check required fields
+                    required_fields = ["total_leads", "active_leads", "contacted_leads", "converted_leads", 
+                                     "max_leads", "remaining_leads", "plan_name"]
+                    
+                    if all(field in result for field in required_fields):
+                        total_leads = result["total_leads"]
+                        active_leads = result["active_leads"]
+                        contacted_leads = result["contacted_leads"]
+                        converted_leads = result["converted_leads"]
+                        max_leads = result["max_leads"]
+                        plan_name = result["plan_name"]
+                        
+                        # Verify statistics make sense
+                        stats_valid = (
+                            total_leads == active_leads + contacted_leads + converted_leads and
+                            max_leads == 500 and  # Professional plan
+                            plan_name == "Professional" and
+                            total_leads >= 0 and active_leads >= 0 and contacted_leads >= 0 and converted_leads >= 0
+                        )
+                        
+                        if stats_valid:
+                            self.log_test("Lead statistics endpoint", True, 
+                                        f"Stats: total={total_leads}, active={active_leads}, contacted={contacted_leads}, converted={converted_leads}, plan={plan_name}")
                         else:
-                            self.log_test("Integration activity logs", True, 
-                                        "No logs found (expected for new integration)")
+                            self.log_test("Lead statistics endpoint", False, 
+                                        f"Invalid stats: total={total_leads}, breakdown={active_leads + contacted_leads + converted_leads}, max={max_leads}, plan={plan_name}")
                     else:
-                        self.log_test("Integration activity logs", False, 
-                                    f"Expected list, got: {type(logs)}")
+                        missing = [f for f in required_fields if f not in result]
+                        self.log_test("Lead statistics endpoint", False, 
+                                    f"Missing fields: {missing}")
                 else:
                     error_text = await response.text()
-                    self.log_test("Integration activity logs", False, 
+                    self.log_test("Lead statistics endpoint", False, 
                                 f"Status: {response.status}, Error: {error_text}")
         except Exception as e:
-            self.log_test("Integration activity logs", False, f"Exception: {str(e)}")
+            self.log_test("Lead statistics endpoint", False, f"Exception: {str(e)}")
+        
+        # Test search and filter by verifying different statuses exist
+        try:
+            async with self.session.get(f"{API_BASE}/leads/leads") as response:
+                if response.status == 200:
+                    result = await response.json()
+                    leads = result.get("leads", [])
+                    
+                    # Check that we have leads with different statuses
+                    statuses = [lead.get("status") for lead in leads]
+                    unique_statuses = set(statuses)
+                    
+                    expected_statuses = {"active", "contacted", "converted"}
+                    if expected_statuses.issubset(unique_statuses):
+                        self.log_test("Verify different lead statuses", True, 
+                                    f"All expected statuses found: {list(unique_statuses)}")
+                    else:
+                        missing_statuses = expected_statuses - unique_statuses
+                        self.log_test("Verify different lead statuses", False, 
+                                    f"Missing statuses: {missing_statuses}, found: {list(unique_statuses)}")
+                else:
+                    error_text = await response.text()
+                    self.log_test("Verify different lead statuses", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("Verify different lead statuses", False, f"Exception: {str(e)}")
 
     async def cleanup_test_resources(self):
         """Clean up test resources"""
