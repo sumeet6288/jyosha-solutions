@@ -293,54 +293,102 @@ class LeadsManagementTestSuite:
         except Exception as e:
             self.log_test("Lead count increment verification", False, f"Exception: {str(e)}")
 
-    async def test_generate_webhook_url(self):
-        """Test generating Slack webhook URL"""
-        print("\n🔗 Testing Slack Webhook URL Generation...")
+    async def test_create_multiple_leads(self):
+        """Test creating 5 more leads (total 6)"""
+        print("\n📝 Testing Create Multiple Leads...")
         
-        if not self.test_chatbot_id:
-            self.log_test("Generate Slack webhook URL", False, "No test chatbot available")
-            return
+        # Create 5 more leads with different statuses
+        leads_data = [
+            {
+                "name": "Sarah Johnson",
+                "email": "sarah.johnson@innovate.com",
+                "company": "Innovate Inc",
+                "status": "contacted",
+                "notes": "Follow up scheduled for next week"
+            },
+            {
+                "name": "Mike Chen",
+                "email": "mike.chen@startup.io",
+                "company": "Startup.io",
+                "status": "active",
+                "notes": "Interested in AI chatbot for customer support"
+            },
+            {
+                "name": "Emily Rodriguez",
+                "email": "emily@consulting.com",
+                "company": "Rodriguez Consulting",
+                "status": "converted",
+                "notes": "Signed up for Professional plan"
+            },
+            {
+                "name": "David Kim",
+                "email": "david.kim@enterprise.com",
+                "company": "Enterprise Corp",
+                "status": "active",
+                "notes": "Evaluating multiple chatbot solutions"
+            },
+            {
+                "name": "Lisa Wang",
+                "email": "lisa.wang@growth.co",
+                "company": "Growth Co",
+                "status": "contacted",
+                "notes": "Requested demo for team of 50+"
+            }
+        ]
         
-        # Test POST /api/slack/{chatbot_id}/setup-webhook
-        webhook_data = {
-            "base_url": "https://dep-install-demo.preview.emergentagent.com"
-        }
+        for i, lead_data in enumerate(leads_data, 2):  # Start from 2 since we already have 1 lead
+            try:
+                async with self.session.post(f"{API_BASE}/leads/leads", json=lead_data) as response:
+                    if response.status == 200:
+                        result = await response.json()
+                        
+                        if result.get("success") and "lead" in result:
+                            lead = result["lead"]
+                            lead_id = lead.get("id")
+                            self.created_leads.append(lead_id)
+                            
+                            self.log_test(f"Create lead {i} ({lead_data['name']})", True, 
+                                        f"Lead created with status: {lead_data['status']}")
+                        else:
+                            self.log_test(f"Create lead {i} ({lead_data['name']})", False, 
+                                        f"Unexpected response: {result}")
+                    else:
+                        error_text = await response.text()
+                        self.log_test(f"Create lead {i} ({lead_data['name']})", False, 
+                                    f"Status: {response.status}, Error: {error_text}")
+            except Exception as e:
+                self.log_test(f"Create lead {i} ({lead_data['name']})", False, f"Exception: {str(e)}")
         
+        # Verify all 6 leads appear in GET /api/leads/leads
         try:
-            async with self.session.post(f"{API_BASE}/slack/{self.test_chatbot_id}/setup-webhook", json=webhook_data) as response:
+            async with self.session.get(f"{API_BASE}/leads/leads") as response:
                 if response.status == 200:
                     result = await response.json()
+                    total = result.get("total", 0)
+                    leads = result.get("leads", [])
                     
-                    # Check response format
-                    required_fields = ["success", "message", "webhook_url", "instructions"]
-                    if all(field in result for field in required_fields):
-                        webhook_url = result["webhook_url"]
-                        expected_url = f"{webhook_data['base_url']}/api/slack/webhook/{self.test_chatbot_id}"
+                    if total == 6 and len(leads) == 6:
+                        # Verify different statuses are present
+                        statuses = [lead.get("status") for lead in leads]
+                        unique_statuses = set(statuses)
                         
-                        if webhook_url == expected_url:
-                            self.log_test("Generate Slack webhook URL", True, 
-                                        f"Correct webhook URL: {webhook_url}")
+                        expected_statuses = {"active", "contacted", "converted"}
+                        if expected_statuses.issubset(unique_statuses):
+                            self.log_test("Verify all 6 leads with statuses", True, 
+                                        f"All leads present with statuses: {list(unique_statuses)}")
                         else:
-                            self.log_test("Generate Slack webhook URL", False, 
-                                        f"Wrong URL. Expected: {expected_url}, Got: {webhook_url}")
-                        
-                        # Check instructions
-                        if isinstance(result["instructions"], list) and len(result["instructions"]) > 0:
-                            self.log_test("Slack webhook instructions", True, 
-                                        f"Instructions provided: {len(result['instructions'])} steps")
-                        else:
-                            self.log_test("Slack webhook instructions", False, 
-                                        f"No instructions provided: {result['instructions']}")
+                            missing_statuses = expected_statuses - unique_statuses
+                            self.log_test("Verify all 6 leads with statuses", False, 
+                                        f"Missing statuses: {missing_statuses}")
                     else:
-                        missing = [f for f in required_fields if f not in result]
-                        self.log_test("Generate Slack webhook URL", False, 
-                                    f"Missing response fields: {missing}")
+                        self.log_test("Verify all 6 leads with statuses", False, 
+                                    f"Expected 6 leads, got total={total}, leads_length={len(leads)}")
                 else:
                     error_text = await response.text()
-                    self.log_test("Generate Slack webhook URL", False, 
+                    self.log_test("Verify all 6 leads with statuses", False, 
                                 f"Status: {response.status}, Error: {error_text}")
         except Exception as e:
-            self.log_test("Generate Slack webhook URL", False, f"Exception: {str(e)}")
+            self.log_test("Verify all 6 leads with statuses", False, f"Exception: {str(e)}")
 
     async def test_get_webhook_info(self):
         """Test getting Slack webhook information"""
