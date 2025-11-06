@@ -835,7 +835,7 @@ class LeadsManagementTestSuite:
 
 async def main():
     """Main test execution"""
-    test_suite = SlackIntegrationTestSuite()
+    test_suite = LeadsManagementTestSuite()
     await test_suite.run_all_tests()
 
 if __name__ == "__main__":
