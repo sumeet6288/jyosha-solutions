@@ -16,7 +16,7 @@ The Discord integration has been successfully implemented and tested. All core f
 
 ### ✅ 2. Webhook Functionality
 - **Webhook URL Generation**: Working perfectly
-  - URL: `https://dep-preview.preview.emergentagent.com/api/discord/webhook/{chatbot_id}`
+  - URL: `https://dep-install-demo.preview.emergentagent.com/api/discord/webhook/{chatbot_id}`
 - **Ping Verification**: Working (Discord type 1 ping)
 - **Webhook Configuration**: Stored in database
 - **Webhook Info Retrieval**: Working

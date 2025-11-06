@@ -48,7 +48,7 @@ This guide will help you connect your BotSmith chatbot to Discord, allowing your
 ## Part 2: Configure BotSmith Chatbot
 
 ### Step 6: Access Your Chatbot
-1. Go to your BotSmith dashboard: **https://dep-preview.preview.emergentagent.com**
+1. Go to your BotSmith dashboard: **https://dep-install-demo.preview.emergentagent.com**
 2. Click on the chatbot you want to connect to Discord
 3. Navigate to the **"Integrations"** tab
 
