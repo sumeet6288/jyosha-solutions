@@ -42,11 +42,17 @@ async def get_dashboard_analytics(current_user: User = Depends(get_mock_user)):
             {"chatbot_id": {"$in": chatbot_ids}}
         )
         
+        # Count total leads
+        total_leads = await db_instance.leads.count_documents(
+            {"user_id": current_user.id}
+        )
+        
         return DashboardAnalytics(
             total_conversations=total_conversations,
             total_messages=total_messages,
             active_chatbots=active_chatbots,
-            total_chatbots=len(chatbots)
+            total_chatbots=len(chatbots),
+            total_leads=total_leads
         )
     except Exception as e:
         logger.error(f"Error fetching dashboard analytics: {str(e)}")
