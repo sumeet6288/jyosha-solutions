@@ -727,8 +727,8 @@ class LeadsManagementTestSuite:
         self.created_leads.clear()
 
     async def run_all_tests(self):
-        """Run all Slack integration tests"""
-        print("🚀 Starting Comprehensive Slack Integration Testing")
+        """Run all Leads Management tests"""
+        print("🚀 Starting Comprehensive Leads Management Testing")
         print(f"Backend URL: {API_BASE}")
         print(f"Mock User: {self.mock_user_id}")
         print("=" * 80)
@@ -739,18 +739,15 @@ class LeadsManagementTestSuite:
             # Setup test environment first
             await self.setup_test_environment()
             
-            # Create test chatbot
-            if await self.create_test_chatbot():
-                # Run all Slack integration tests
-                await self.test_setup_slack_integration()
-                await self.test_slack_connection_test()
-                await self.test_generate_webhook_url()
-                await self.test_get_webhook_info()
-                await self.test_enable_disable_integration()
-                await self.test_webhook_event_reception()
-                await self.test_integration_logs()
-            else:
-                self.log_test("Slack Integration Testing", False, "Failed to create test chatbot - cannot proceed")
+            # Run all leads management tests in sequence
+            await self.test_free_plan_access_denied()
+            await self.test_upgrade_to_starter_plan()
+            await self.test_starter_plan_100_leads_limit()
+            await self.test_create_multiple_leads()
+            await self.test_upgrade_to_professional_plan()
+            await self.test_professional_plan_500_leads_limit()
+            await self.test_lead_management_operations()
+            await self.test_lead_statistics_endpoint()
             
         finally:
             await self.cleanup_test_resources()
