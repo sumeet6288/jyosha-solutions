@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Backend Testing Suite for Slack Integration APIs
-Comprehensive testing of Slack integration following the same pattern as Telegram integration.
+Backend Testing Suite for Leads Management System
+Comprehensive testing of leads management with plan-based access control.
 """
 
 import asyncio
@@ -15,7 +15,7 @@ from typing import Dict, Any, List
 BACKEND_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://dep-install-demo.preview.emergentagent.com')
 API_BASE = f"{BACKEND_URL}/api"
 
-class SlackIntegrationTestSuite:
+class LeadsManagementTestSuite:
     def __init__(self):
         self.session = None
         self.test_results = []
