@@ -139,53 +139,66 @@ class LeadsManagementTestSuite:
         except Exception as e:
             self.log_test("Free plan create lead blocked", False, f"Exception: {str(e)}")
 
-    async def test_setup_slack_integration(self):
-        """Test setting up Slack integration with credentials"""
-        print("\n🔧 Testing Slack Integration Setup...")
+    async def test_upgrade_to_starter_plan(self):
+        """Test upgrading user to Starter plan"""
+        print("\n⬆️ Testing Upgrade to Starter Plan...")
         
-        if not self.test_chatbot_id:
-            self.log_test("Setup Slack integration", False, "No test chatbot available")
-            return
-        
-        # Test POST /api/integrations/{chatbot_id} - Create Slack integration
-        integration_data = {
-            "integration_type": "slack",
-            "credentials": {
-                "bot_token": "xoxb-test-token-for-testing"
-            }
-        }
+        # Test PUT /api/plans/upgrade with plan_id="starter"
+        upgrade_data = {"plan_id": "starter"}
         
         try:
-            async with self.session.post(f"{API_BASE}/integrations/{self.test_chatbot_id}", json=integration_data) as response:
+            async with self.session.post(f"{API_BASE}/plans/upgrade", json=upgrade_data) as response:
                 if response.status == 200:
                     result = await response.json()
-                    self.test_integration_id = result["id"]
-                    self.log_test("Setup Slack integration", True, 
-                                f"Created Slack integration: {self.test_integration_id}")
                     
-                    # Verify integration fields
-                    expected_fields = ["id", "chatbot_id", "integration_type", "enabled", "status", "has_credentials"]
-                    if all(field in result for field in expected_fields):
-                        self.log_test("Slack integration response format", True, 
-                                    f"All required fields present: {list(result.keys())}")
+                    # Verify upgrade success
+                    if "message" in result and "subscription" in result:
+                        message = result["message"]
+                        subscription = result["subscription"]
+                        
+                        if "starter" in message.lower():
+                            self.log_test("Upgrade to Starter plan", True, 
+                                        f"Successfully upgraded: {message}")
+                            
+                            # Verify subscription details
+                            if subscription.get("plan_name") == "Starter":
+                                self.log_test("Starter plan subscription verification", True, 
+                                            f"Plan name correct: {subscription['plan_name']}")
+                            else:
+                                self.log_test("Starter plan subscription verification", False, 
+                                            f"Wrong plan name: {subscription.get('plan_name')}")
+                        else:
+                            self.log_test("Upgrade to Starter plan", False, 
+                                        f"Unexpected message: {message}")
                     else:
-                        missing = [f for f in expected_fields if f not in result]
-                        self.log_test("Slack integration response format", False, 
-                                    f"Missing fields: {missing}")
-                    
-                    # Verify integration type and credentials
-                    if result.get("integration_type") == "slack" and result.get("has_credentials"):
-                        self.log_test("Slack integration data validation", True, 
-                                    f"Type: {result['integration_type']}, Has credentials: {result['has_credentials']}")
-                    else:
-                        self.log_test("Slack integration data validation", False, 
-                                    f"Invalid data - Type: {result.get('integration_type')}, Has credentials: {result.get('has_credentials')}")
+                        self.log_test("Upgrade to Starter plan", False, 
+                                    f"Missing fields in response: {result}")
                 else:
                     error_text = await response.text()
-                    self.log_test("Setup Slack integration", False, 
+                    self.log_test("Upgrade to Starter plan", False, 
                                 f"Status: {response.status}, Error: {error_text}")
         except Exception as e:
-            self.log_test("Setup Slack integration", False, f"Exception: {str(e)}")
+            self.log_test("Upgrade to Starter plan", False, f"Exception: {str(e)}")
+        
+        # Verify plan change was successful by checking current subscription
+        try:
+            async with self.session.get(f"{API_BASE}/plans/current") as response:
+                if response.status == 200:
+                    result = await response.json()
+                    plan = result.get("plan", {})
+                    
+                    if plan.get("name") == "Starter":
+                        self.log_test("Verify Starter plan active", True, 
+                                    f"Current plan: {plan['name']}")
+                    else:
+                        self.log_test("Verify Starter plan active", False, 
+                                    f"Expected Starter, got: {plan.get('name')}")
+                else:
+                    error_text = await response.text()
+                    self.log_test("Verify Starter plan active", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("Verify Starter plan active", False, f"Exception: {str(e)}")
 
     async def test_slack_connection_test(self):
         """Test Slack connection testing endpoint"""
