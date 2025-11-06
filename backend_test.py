@@ -716,21 +716,15 @@ class LeadsManagementTestSuite:
         """Clean up test resources"""
         print("\n🧹 Cleaning up test resources...")
         
-        # Delete test integration
-        if self.test_chatbot_id and self.test_integration_id:
+        # Delete remaining test leads
+        for lead_id in self.created_leads:
             try:
-                await self.session.delete(f"{API_BASE}/integrations/{self.test_chatbot_id}/{self.test_integration_id}")
-                self.log_test("Delete test integration", True, "Test integration deleted")
+                await self.session.delete(f"{API_BASE}/leads/leads/{lead_id}")
+                self.log_test(f"Delete test lead {lead_id}", True, "Test lead deleted")
             except:
                 pass
         
-        # Delete test chatbot
-        if self.test_chatbot_id:
-            try:
-                await self.session.delete(f"{API_BASE}/chatbots/{self.test_chatbot_id}")
-                self.log_test("Delete test chatbot", True, "Test chatbot deleted")
-            except:
-                pass
+        self.created_leads.clear()
 
     async def run_all_tests(self):
         """Run all Slack integration tests"""
