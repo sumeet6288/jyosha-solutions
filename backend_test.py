@@ -451,49 +451,87 @@ class LeadsManagementTestSuite:
         except Exception as e:
             self.log_test("Verify Professional plan active", False, f"Exception: {str(e)}")
 
-    async def test_enable_disable_integration(self):
-        """Test enabling and disabling Slack integration"""
-        print("\n🔄 Testing Enable/Disable Slack Integration...")
+    async def test_professional_plan_500_leads_limit(self):
+        """Test Professional Plan User - 500 Leads Limit"""
+        print("\n📊 Testing Professional Plan 500 Leads Limit...")
         
-        if not self.test_chatbot_id or not self.test_integration_id:
-            self.log_test("Enable/disable Slack integration", False, "No test integration available")
-            return
-        
-        # Test POST /api/integrations/{chatbot_id}/{integration_id}/toggle
+        # Test GET /api/leads/leads - Should return max_leads=500, plan_name="Professional"
         try:
-            # First toggle (should enable)
-            async with self.session.post(f"{API_BASE}/integrations/{self.test_chatbot_id}/{self.test_integration_id}/toggle") as response:
+            async with self.session.get(f"{API_BASE}/leads/leads") as response:
                 if response.status == 200:
                     result = await response.json()
                     
-                    if "success" in result and "enabled" in result:
-                        enabled_status = result["enabled"]
-                        self.log_test("Enable Slack integration", True, 
-                                    f"Integration enabled: {enabled_status}")
-                        
-                        # Second toggle (should disable)
-                        async with self.session.post(f"{API_BASE}/integrations/{self.test_chatbot_id}/{self.test_integration_id}/toggle") as response2:
-                            if response2.status == 200:
-                                result2 = await response2.json()
-                                if result2.get("enabled") != enabled_status:
-                                    self.log_test("Disable Slack integration", True, 
-                                                f"Integration toggled: {enabled_status} → {result2['enabled']}")
-                                else:
-                                    self.log_test("Disable Slack integration", False, 
-                                                f"Toggle failed - status unchanged: {enabled_status}")
-                            else:
-                                error_text = await response2.text()
-                                self.log_test("Disable Slack integration", False, 
-                                            f"Status: {response2.status}, Error: {error_text}")
+                    max_leads = result.get("max_leads", -1)
+                    plan_name = result.get("plan_name", "")
+                    total = result.get("total", 0)
+                    
+                    if max_leads == 500 and plan_name == "Professional":
+                        self.log_test("Professional plan limits check", True, 
+                                    f"Correct limits: max_leads={max_leads}, plan={plan_name}, current={total}")
                     else:
-                        self.log_test("Enable Slack integration", False, 
-                                    f"Missing fields in response: {result}")
+                        self.log_test("Professional plan limits check", False, 
+                                    f"Wrong limits: max_leads={max_leads}, plan={plan_name}")
                 else:
                     error_text = await response.text()
-                    self.log_test("Enable Slack integration", False, 
+                    self.log_test("Professional plan limits check", False, 
                                 f"Status: {response.status}, Error: {error_text}")
         except Exception as e:
-            self.log_test("Enable/disable Slack integration", False, f"Exception: {str(e)}")
+            self.log_test("Professional plan limits check", False, f"Exception: {str(e)}")
+        
+        # Test POST /api/leads/leads - Create new lead successfully
+        lead_data = {
+            "name": "Alex Thompson",
+            "email": "alex.thompson@bigcorp.com",
+            "company": "BigCorp Industries",
+            "status": "active",
+            "notes": "Enterprise client interested in custom integration"
+        }
+        
+        try:
+            async with self.session.post(f"{API_BASE}/leads/leads", json=lead_data) as response:
+                if response.status == 200:
+                    result = await response.json()
+                    
+                    if result.get("success") and "lead" in result:
+                        lead = result["lead"]
+                        lead_id = lead.get("id")
+                        self.created_leads.append(lead_id)
+                        
+                        self.log_test("Create lead on Professional plan", True, 
+                                    f"Lead created successfully with ID: {lead_id}")
+                    else:
+                        self.log_test("Create lead on Professional plan", False, 
+                                    f"Unexpected response: {result}")
+                else:
+                    error_text = await response.text()
+                    self.log_test("Create lead on Professional plan", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("Create lead on Professional plan", False, f"Exception: {str(e)}")
+        
+        # Verify lead count reflects Professional plan limits
+        try:
+            async with self.session.get(f"{API_BASE}/leads/leads") as response:
+                if response.status == 200:
+                    result = await response.json()
+                    total = result.get("total", 0)
+                    remaining = result.get("remaining", 0)
+                    
+                    expected_total = 7  # 6 from previous tests + 1 new
+                    expected_remaining = 500 - expected_total
+                    
+                    if total == expected_total and remaining == expected_remaining:
+                        self.log_test("Professional plan count verification", True, 
+                                    f"Correct counts: total={total}, remaining={remaining}")
+                    else:
+                        self.log_test("Professional plan count verification", False, 
+                                    f"Count mismatch: total={total} (expected {expected_total}), remaining={remaining} (expected {expected_remaining})")
+                else:
+                    error_text = await response.text()
+                    self.log_test("Professional plan count verification", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("Professional plan count verification", False, f"Exception: {str(e)}")
 
     async def test_webhook_event_reception(self):
         """Test Slack webhook event reception (simulated)"""
