@@ -15,8 +15,6 @@ MONGO_URL = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
 client = AsyncIOMotorClient(MONGO_URL)
 db = client.chatbase_db
 
-plan_service = PlanService(db)
-
 
 @router.get("/leads")
 async def get_all_leads():
