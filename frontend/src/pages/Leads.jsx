@@ -49,32 +49,14 @@ const Leads = () => {
             </Button>
           </div>
           
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-2 flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-400 to-amber-600 flex items-center justify-center shadow-lg">
-                  <FileText className="w-6 h-6 text-white" />
-                </div>
-                Leads Management
-              </h1>
-              <p className="text-lg text-gray-600">Manage your leads for paid users</p>
-            </div>
-            
-            <div className="flex gap-3">
-              <Button
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white flex items-center gap-2 shadow-md"
-              >
-                <Upload className="w-4 h-4" />
-                Upload Leads
-              </Button>
-              <Button
-                variant="outline"
-                className="flex items-center gap-2"
-              >
-                <Download className="w-4 h-4" />
-                Export
-              </Button>
-            </div>
+          <div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2 flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-400 to-amber-600 flex items-center justify-center shadow-lg">
+                <FileText className="w-6 h-6 text-white" />
+              </div>
+              Leads Management
+            </h1>
+            <p className="text-lg text-gray-600">Manage your leads for paid users</p>
           </div>
         </div>
 
