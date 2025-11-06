@@ -3,10 +3,10 @@ from typing import List, Optional
 from datetime import datetime, timezone
 import csv
 import io
+import uuid
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 from models import Lead, LeadCreate, LeadResponse
-from services.plan_service import PlanService
 
 router = APIRouter()
 
