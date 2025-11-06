@@ -18,6 +18,7 @@ import UserSegmentation from '../../components/admin/UserSegmentation';
 import EmailCampaignBuilder from '../../components/admin/EmailCampaignBuilder';
 import LifecycleManagement from '../../components/admin/LifecycleManagement';
 import ImpersonationPanel from '../../components/admin/ImpersonationPanel';
+import LeadsManagement from '../../components/admin/LeadsManagement';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
