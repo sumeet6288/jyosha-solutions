@@ -30,7 +30,7 @@ async def get_my_leads(current_user: dict = Depends(get_current_user)):
         plan_limits = {
             'Free': 0,
             'Starter': 100,
-            'Professional': 1000,
+            'Professional': 500,
             'Enterprise': 10000
         }
         
@@ -67,7 +67,7 @@ async def get_lead_stats(current_user: dict = Depends(get_current_user)):
         plan_limits = {
             'Free': 0,
             'Starter': 100,
-            'Professional': 1000,
+            'Professional': 500,
             'Enterprise': 10000
         }
         
