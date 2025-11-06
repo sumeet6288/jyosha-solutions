@@ -577,6 +577,7 @@ class AnalyticsResponse(BaseModel):
     total_messages: int
     active_chatbots: int
     total_chatbots: int
+    total_leads: int = 0
 
 
 # Alias for compatibility
