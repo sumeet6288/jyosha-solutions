@@ -14,6 +14,7 @@ import ChatbotBuilder from './pages/ChatbotBuilder';
 import Analytics from './pages/Analytics';
 import AccountSettings from './pages/AccountSettings';
 import Subscription from './pages/Subscription';
+import Leads from './pages/Leads';
 import NotificationPreferences from './pages/NotificationPreferences';
 import EmbedChat from './pages/EmbedChat';
 import ChatPage from './pages/ChatPage';
