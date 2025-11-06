@@ -74,32 +74,70 @@ class LeadsManagementTestSuite:
         except:
             pass
 
-    async def create_test_chatbot(self):
-        """Create a test chatbot for integration testing"""
-        print("\n🤖 Creating Test Chatbot...")
+    async def test_free_plan_access_denied(self):
+        """Test Free Plan User - Access Denied"""
+        print("\n🚫 Testing Free Plan Access Denied...")
         
-        chatbot_data = {
-            "name": "Slack Integration Test Bot",
-            "model": "gpt-4o-mini",
-            "provider": "openai",
-            "temperature": 0.7,
-            "instructions": "You are a test chatbot for Slack integration testing."
+        # Test GET /api/leads/leads - Should return 0 max_leads and "Free" plan
+        try:
+            async with self.session.get(f"{API_BASE}/leads/leads") as response:
+                if response.status == 200:
+                    result = await response.json()
+                    
+                    # Verify response structure
+                    expected_fields = ["leads", "total", "max_leads", "remaining", "plan_name"]
+                    if all(field in result for field in expected_fields):
+                        max_leads = result.get("max_leads", -1)
+                        plan_name = result.get("plan_name", "")
+                        
+                        if max_leads == 0 and plan_name == "Free":
+                            self.log_test("Free plan leads limit check", True, 
+                                        f"Correct limits: max_leads={max_leads}, plan={plan_name}")
+                        else:
+                            self.log_test("Free plan leads limit check", False, 
+                                        f"Wrong limits: max_leads={max_leads}, plan={plan_name}")
+                    else:
+                        missing = [f for f in expected_fields if f not in result]
+                        self.log_test("Free plan leads limit check", False, 
+                                    f"Missing fields: {missing}")
+                else:
+                    error_text = await response.text()
+                    self.log_test("Free plan leads limit check", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("Free plan leads limit check", False, f"Exception: {str(e)}")
+        
+        # Test POST /api/leads/leads - Should fail with 403 error
+        lead_data = {
+            "name": "Test Lead",
+            "email": "test@example.com",
+            "company": "Test Company",
+            "status": "active"
         }
         
         try:
-            async with self.session.post(f"{API_BASE}/chatbots", json=chatbot_data) as response:
-                if response.status == 201:
+            async with self.session.post(f"{API_BASE}/leads/leads", json=lead_data) as response:
+                if response.status == 403:
                     result = await response.json()
-                    self.test_chatbot_id = result["id"]
-                    self.log_test("Create test chatbot", True, f"Created chatbot: {self.test_chatbot_id}")
-                    return True
+                    detail = result.get("detail", {})
+                    
+                    if isinstance(detail, dict) and "message" in detail:
+                        message = detail["message"]
+                        if "limit of 0" in message.lower():
+                            self.log_test("Free plan create lead blocked", True, 
+                                        f"Correctly blocked: {message}")
+                        else:
+                            self.log_test("Free plan create lead blocked", False, 
+                                        f"Wrong error message: {message}")
+                    else:
+                        self.log_test("Free plan create lead blocked", False, 
+                                    f"Unexpected error format: {result}")
                 else:
                     error_text = await response.text()
-                    self.log_test("Create test chatbot", False, f"Status: {response.status}, Error: {error_text}")
-                    return False
+                    self.log_test("Free plan create lead blocked", False, 
+                                f"Expected 403, got {response.status}: {error_text}")
         except Exception as e:
-            self.log_test("Create test chatbot", False, f"Exception: {str(e)}")
-            return False
+            self.log_test("Free plan create lead blocked", False, f"Exception: {str(e)}")
 
     async def test_setup_slack_integration(self):
         """Test setting up Slack integration with credentials"""
