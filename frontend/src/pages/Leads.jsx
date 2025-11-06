@@ -137,15 +137,19 @@ const Leads = () => {
               <p className="text-sm text-gray-600">Based on your current plan</p>
             </div>
             <div className="text-right">
-              <p className="text-3xl font-bold text-purple-600">0 / 100</p>
-              <p className="text-sm text-gray-600">Starter Plan</p>
+              <p className="text-3xl font-bold text-purple-600">
+                {leadsData.total || 0} / {leadsData.max_leads || 0}
+              </p>
+              <p className="text-sm text-gray-600">{leadsData.plan_name || 'Free'} Plan</p>
             </div>
           </div>
           <div className="mt-4">
             <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
               <div 
                 className="h-2 bg-gradient-to-r from-orange-400 to-amber-600 rounded-full transition-all duration-500"
-                style={{ width: '0%' }}
+                style={{ 
+                  width: `${leadsData.max_leads > 0 ? ((leadsData.total || 0) / leadsData.max_leads) * 100 : 0}%` 
+                }}
               />
             </div>
           </div>
