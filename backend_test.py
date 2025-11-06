@@ -761,7 +761,7 @@ class LeadsManagementTestSuite:
     def print_test_summary(self):
         """Print comprehensive test results summary"""
         print("\n" + "=" * 80)
-        print("📊 SLACK INTEGRATION TEST SUMMARY")
+        print("📊 LEADS MANAGEMENT TEST SUMMARY")
         print("=" * 80)
         
         passed = sum(1 for result in self.test_results if result["success"])
@@ -774,13 +774,11 @@ class LeadsManagementTestSuite:
         
         # Categorize results
         categories = {
-            "Setup & Configuration": ["Create test chatbot", "Setup Slack integration", "Slack integration response format", "Slack integration data validation"],
-            "Connection Testing": ["Test Slack connection", "Slack connection test"],
-            "Webhook Management": ["Generate Slack webhook URL", "Slack webhook instructions", "Get Slack webhook info", "Slack webhook info instructions"],
-            "Integration Control": ["Enable Slack integration", "Disable Slack integration"],
-            "Event Processing": ["Slack URL verification challenge", "Slack message event reception"],
-            "Activity Logging": ["Integration activity logs"],
-            "Cleanup": ["Delete test integration", "Delete test chatbot"]
+            "Plan Setup & Limits": ["Free plan", "Starter plan", "Professional plan", "limits check", "Reset to Free", "Upgrade to"],
+            "Lead Creation": ["Create lead", "Create multiple", "blocked"],
+            "Lead Management": ["Update lead", "Delete lead", "count", "verification"],
+            "Statistics & Analytics": ["statistics", "stats", "statuses"],
+            "Cleanup": ["Delete test lead"]
         }
         
         for category, keywords in categories.items():
@@ -795,17 +793,18 @@ class LeadsManagementTestSuite:
                     for test in failed_tests:
                         print(f"   ❌ {test['test']}: {test['details']}")
         
-        # Show critical Slack integration functionality status
-        print(f"\n🎯 CRITICAL SLACK INTEGRATION FUNCTIONALITY:")
+        # Show critical leads management functionality status
+        print(f"\n🎯 CRITICAL LEADS MANAGEMENT FUNCTIONALITY:")
         
         critical_tests = [
-            ("Integration Setup", "Setup Slack integration"),
-            ("Connection Testing", "Test Slack connection"),
-            ("Webhook URL Generation", "Generate Slack webhook URL"),
-            ("Webhook Info Retrieval", "Get Slack webhook info"),
-            ("Enable/Disable Toggle", "Enable Slack integration"),
-            ("Event Reception", "Slack URL verification challenge"),
-            ("Activity Logging", "Integration activity logs")
+            ("Free Plan Access Control", "Free plan"),
+            ("Plan Upgrades", "Upgrade to"),
+            ("Starter Plan Limits", "Starter plan"),
+            ("Professional Plan Limits", "Professional plan"),
+            ("Lead Creation", "Create lead"),
+            ("Lead Updates", "Update lead"),
+            ("Lead Deletion", "Delete lead"),
+            ("Statistics Endpoint", "statistics")
         ]
         
         all_critical_passed = True
@@ -822,9 +821,9 @@ class LeadsManagementTestSuite:
                 all_critical_passed = False
         
         if all_critical_passed:
-            print(f"\n🎉 ALL CRITICAL SLACK INTEGRATION FEATURES WORKING!")
+            print(f"\n🎉 ALL CRITICAL LEADS MANAGEMENT FEATURES WORKING!")
         else:
-            print(f"\n⚠️  SOME CRITICAL SLACK INTEGRATION FEATURES NEED ATTENTION")
+            print(f"\n⚠️  SOME CRITICAL LEADS MANAGEMENT FEATURES NEED ATTENTION")
         
         # Show detailed failed tests
         failed_tests = [r for r in self.test_results if not r["success"]]
