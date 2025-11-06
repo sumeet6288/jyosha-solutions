@@ -390,43 +390,66 @@ class LeadsManagementTestSuite:
         except Exception as e:
             self.log_test("Verify all 6 leads with statuses", False, f"Exception: {str(e)}")
 
-    async def test_get_webhook_info(self):
-        """Test getting Slack webhook information"""
-        print("\n📋 Testing Get Slack Webhook Info...")
+    async def test_upgrade_to_professional_plan(self):
+        """Test upgrading to Professional plan"""
+        print("\n⬆️ Testing Upgrade to Professional Plan...")
         
-        if not self.test_chatbot_id:
-            self.log_test("Get Slack webhook info", False, "No test chatbot available")
-            return
+        # Test PUT /api/plans/upgrade with plan_id="professional"
+        upgrade_data = {"plan_id": "professional"}
         
-        # Test GET /api/slack/{chatbot_id}/webhook-info
         try:
-            async with self.session.get(f"{API_BASE}/slack/{self.test_chatbot_id}/webhook-info") as response:
+            async with self.session.post(f"{API_BASE}/plans/upgrade", json=upgrade_data) as response:
                 if response.status == 200:
                     result = await response.json()
                     
-                    # Check response format
-                    expected_fields = ["webhook_url", "webhook_configured", "instructions"]
-                    if all(field in result for field in expected_fields):
-                        self.log_test("Get Slack webhook info", True, 
-                                    f"Webhook configured: {result['webhook_configured']}, URL: {result.get('webhook_url', 'None')}")
+                    # Verify upgrade success
+                    if "message" in result and "subscription" in result:
+                        message = result["message"]
+                        subscription = result["subscription"]
                         
-                        # Check instructions format
-                        if isinstance(result["instructions"], list) and len(result["instructions"]) >= 8:
-                            self.log_test("Slack webhook info instructions", True, 
-                                        f"Complete instructions: {len(result['instructions'])} steps")
+                        if "professional" in message.lower():
+                            self.log_test("Upgrade to Professional plan", True, 
+                                        f"Successfully upgraded: {message}")
+                            
+                            # Verify subscription details
+                            if subscription.get("plan_name") == "Professional":
+                                self.log_test("Professional plan subscription verification", True, 
+                                            f"Plan name correct: {subscription['plan_name']}")
+                            else:
+                                self.log_test("Professional plan subscription verification", False, 
+                                            f"Wrong plan name: {subscription.get('plan_name')}")
                         else:
-                            self.log_test("Slack webhook info instructions", False, 
-                                        f"Incomplete instructions: {len(result.get('instructions', []))} steps")
+                            self.log_test("Upgrade to Professional plan", False, 
+                                        f"Unexpected message: {message}")
                     else:
-                        missing = [f for f in expected_fields if f not in result]
-                        self.log_test("Get Slack webhook info", False, 
-                                    f"Missing response fields: {missing}")
+                        self.log_test("Upgrade to Professional plan", False, 
+                                    f"Missing fields in response: {result}")
                 else:
                     error_text = await response.text()
-                    self.log_test("Get Slack webhook info", False, 
+                    self.log_test("Upgrade to Professional plan", False, 
                                 f"Status: {response.status}, Error: {error_text}")
         except Exception as e:
-            self.log_test("Get Slack webhook info", False, f"Exception: {str(e)}")
+            self.log_test("Upgrade to Professional plan", False, f"Exception: {str(e)}")
+        
+        # Verify plan change was successful
+        try:
+            async with self.session.get(f"{API_BASE}/plans/current") as response:
+                if response.status == 200:
+                    result = await response.json()
+                    plan = result.get("plan", {})
+                    
+                    if plan.get("name") == "Professional":
+                        self.log_test("Verify Professional plan active", True, 
+                                    f"Current plan: {plan['name']}")
+                    else:
+                        self.log_test("Verify Professional plan active", False, 
+                                    f"Expected Professional, got: {plan.get('name')}")
+                else:
+                    error_text = await response.text()
+                    self.log_test("Verify Professional plan active", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("Verify Professional plan active", False, f"Exception: {str(e)}")
 
     async def test_enable_disable_integration(self):
         """Test enabling and disabling Slack integration"""
