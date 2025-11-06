@@ -194,31 +194,51 @@ const Leads = () => {
                 </tr>
               </thead>
               <tbody>
-                {leads.length === 0 ? (
+                {loading ? (
+                  <tr>
+                    <td colSpan="7" className="px-6 py-12 text-center text-gray-500">
+                      Loading leads...
+                    </td>
+                  </tr>
+                ) : filteredLeads.length === 0 ? (
                   <tr>
                     <td colSpan="7" className="px-6 py-12 text-center">
                       <div className="flex flex-col items-center justify-center text-gray-500">
                         <FileText className="w-16 h-16 text-gray-300 mb-4" />
                         <p className="text-lg font-semibold mb-2">No Leads Yet</p>
-                        <p className="text-sm">Upload leads to get started</p>
+                        <p className="text-sm">Contact admin to upload leads for you</p>
                       </div>
                     </td>
                   </tr>
                 ) : (
-                  leads.map((lead, index) => (
-                    <tr key={index} className="border-t border-gray-100 hover:bg-purple-50 transition-colors">
-                      <td className="px-6 py-4 text-sm text-gray-900">{lead.name}</td>
-                      <td className="px-6 py-4 text-sm text-gray-600">{lead.email}</td>
-                      <td className="px-6 py-4 text-sm text-gray-600">{lead.phone}</td>
-                      <td className="px-6 py-4 text-sm text-gray-600">{lead.company}</td>
+                  filteredLeads.map((lead) => (
+                    <tr key={lead.id} className="border-t border-gray-100 hover:bg-purple-50 transition-colors">
+                      <td className="px-6 py-4 text-sm font-medium text-gray-900">{lead.name || 'N/A'}</td>
+                      <td className="px-6 py-4 text-sm text-gray-600">{lead.email || 'N/A'}</td>
+                      <td className="px-6 py-4 text-sm text-gray-600">{lead.phone || 'N/A'}</td>
+                      <td className="px-6 py-4 text-sm text-gray-600">{lead.company || 'N/A'}</td>
                       <td className="px-6 py-4">
-                        <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                          {lead.status}
+                        <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                          lead.status === 'active' ? 'bg-green-100 text-green-800' :
+                          lead.status === 'contacted' ? 'bg-blue-100 text-blue-800' :
+                          lead.status === 'converted' ? 'bg-purple-100 text-purple-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {lead.status || 'active'}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">{lead.date}</td>
+                      <td className="px-6 py-4 text-sm text-gray-600">
+                        {lead.created_at ? new Date(lead.created_at).toLocaleDateString() : 'N/A'}
+                      </td>
                       <td className="px-6 py-4">
-                        <Button size="sm" variant="outline">View</Button>
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => handleDeleteLead(lead.id)}
+                          className="text-red-600 hover:bg-red-50"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
                       </td>
                     </tr>
                   ))
