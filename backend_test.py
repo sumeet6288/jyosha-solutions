@@ -20,8 +20,7 @@ class LeadsManagementTestSuite:
         self.session = None
         self.test_results = []
         self.mock_user_id = "demo-user-123"
-        self.test_chatbot_id = None
-        self.test_integration_id = None
+        self.created_leads = []  # Track created leads for cleanup
         
     async def setup_session(self):
         """Setup HTTP session"""
