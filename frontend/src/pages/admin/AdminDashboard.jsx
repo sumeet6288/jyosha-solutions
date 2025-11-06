@@ -366,6 +366,10 @@ const AdminDashboard = () => {
             <ActivityLogs backendUrl={backendUrl} />
           </TabsContent>
 
+          <TabsContent value="leads">
+            <LeadsManagement />
+          </TabsContent>
+
           <TabsContent value="contact-sales">
             <ContactSalesManagement backendUrl={backendUrl} />
           </TabsContent>
