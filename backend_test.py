@@ -533,67 +533,112 @@ class LeadsManagementTestSuite:
         except Exception as e:
             self.log_test("Professional plan count verification", False, f"Exception: {str(e)}")
 
-    async def test_webhook_event_reception(self):
-        """Test Slack webhook event reception (simulated)"""
-        print("\n📨 Testing Slack Webhook Event Reception...")
+    async def test_lead_management_operations(self):
+        """Test Lead Management Operations - Update and Delete"""
+        print("\n🔧 Testing Lead Management Operations...")
         
-        if not self.test_chatbot_id:
-            self.log_test("Slack webhook event reception", False, "No test chatbot available")
+        if not self.created_leads:
+            self.log_test("Lead management operations", False, "No leads available for testing")
             return
         
-        # Test URL verification challenge
-        challenge_data = {
-            "type": "url_verification",
-            "challenge": "test123"
+        # Get the first lead for testing
+        test_lead_id = self.created_leads[0]
+        
+        # Test PUT /api/leads/leads/{lead_id} - Update a lead's information
+        update_data = {
+            "name": "John Smith (Updated)",
+            "email": "john.smith.updated@techcorp.com",
+            "phone": "+1-555-0124",
+            "company": "TechCorp Solutions Inc",
+            "status": "contacted",
+            "notes": "Updated: Follow-up call completed, very interested"
         }
         
         try:
-            async with self.session.post(f"{API_BASE}/slack/webhook/{self.test_chatbot_id}", json=challenge_data) as response:
+            async with self.session.put(f"{API_BASE}/leads/leads/{test_lead_id}", json=update_data) as response:
                 if response.status == 200:
                     result = await response.json()
                     
-                    if "challenge" in result and result["challenge"] == "test123":
-                        self.log_test("Slack URL verification challenge", True, 
-                                    f"Challenge response correct: {result['challenge']}")
+                    if result.get("success") and "lead" in result:
+                        updated_lead = result["lead"]
+                        
+                        # Verify update was successful
+                        fields_updated = (
+                            updated_lead.get("name") == update_data["name"] and
+                            updated_lead.get("email") == update_data["email"] and
+                            updated_lead.get("phone") == update_data["phone"] and
+                            updated_lead.get("company") == update_data["company"] and
+                            updated_lead.get("status") == update_data["status"] and
+                            updated_lead.get("notes") == update_data["notes"]
+                        )
+                        
+                        if fields_updated:
+                            self.log_test("Update lead information", True, 
+                                        f"Lead updated successfully: {updated_lead['name']}")
+                        else:
+                            self.log_test("Update lead information", False, 
+                                        f"Lead fields not updated correctly: {updated_lead}")
                     else:
-                        self.log_test("Slack URL verification challenge", False, 
-                                    f"Wrong challenge response: {result}")
+                        self.log_test("Update lead information", False, 
+                                    f"Unexpected response: {result}")
                 else:
                     error_text = await response.text()
-                    self.log_test("Slack URL verification challenge", False, 
+                    self.log_test("Update lead information", False, 
                                 f"Status: {response.status}, Error: {error_text}")
         except Exception as e:
-            self.log_test("Slack URL verification challenge", False, f"Exception: {str(e)}")
+            self.log_test("Update lead information", False, f"Exception: {str(e)}")
         
-        # Test message event (simulated)
-        message_event = {
-            "type": "event_callback",
-            "event": {
-                "type": "message",
-                "channel": "C1234567890",
-                "user": "U1234567890",
-                "text": "Hello test bot!",
-                "ts": "1234567890.123456"
-            }
-        }
+        # Test DELETE /api/leads/leads/{lead_id} - Delete a lead
+        delete_lead_id = self.created_leads[-1]  # Delete the last created lead
         
         try:
-            async with self.session.post(f"{API_BASE}/slack/webhook/{self.test_chatbot_id}", json=message_event) as response:
+            async with self.session.delete(f"{API_BASE}/leads/leads/{delete_lead_id}") as response:
                 if response.status == 200:
                     result = await response.json()
                     
-                    if result.get("ok"):
-                        self.log_test("Slack message event reception", True, 
-                                    "Message event processed successfully")
+                    if result.get("success"):
+                        self.log_test("Delete lead", True, 
+                                    f"Lead deleted successfully: {result.get('message')}")
+                        
+                        # Remove from our tracking list
+                        self.created_leads.remove(delete_lead_id)
                     else:
-                        self.log_test("Slack message event reception", False, 
-                                    f"Event processing failed: {result}")
+                        self.log_test("Delete lead", False, 
+                                    f"Delete failed: {result}")
                 else:
                     error_text = await response.text()
-                    self.log_test("Slack message event reception", False, 
+                    self.log_test("Delete lead", False, 
                                 f"Status: {response.status}, Error: {error_text}")
         except Exception as e:
-            self.log_test("Slack message event reception", False, f"Exception: {str(e)}")
+            self.log_test("Delete lead", False, f"Exception: {str(e)}")
+        
+        # Verify deletion and count decrements
+        try:
+            async with self.session.get(f"{API_BASE}/leads/leads") as response:
+                if response.status == 200:
+                    result = await response.json()
+                    total = result.get("total", 0)
+                    leads = result.get("leads", [])
+                    
+                    expected_total = 6  # 7 - 1 deleted
+                    if total == expected_total and len(leads) == expected_total:
+                        # Verify deleted lead is not in the list
+                        lead_ids = [lead.get("id") for lead in leads]
+                        if delete_lead_id not in lead_ids:
+                            self.log_test("Verify deletion and count decrement", True, 
+                                        f"Count correctly decremented to {total}, deleted lead not found")
+                        else:
+                            self.log_test("Verify deletion and count decrement", False, 
+                                        f"Deleted lead still appears in list")
+                    else:
+                        self.log_test("Verify deletion and count decrement", False, 
+                                    f"Count mismatch: total={total} (expected {expected_total}), leads_length={len(leads)}")
+                else:
+                    error_text = await response.text()
+                    self.log_test("Verify deletion and count decrement", False, 
+                                f"Status: {response.status}, Error: {error_text}")
+        except Exception as e:
+            self.log_test("Verify deletion and count decrement", False, f"Exception: {str(e)}")
 
     async def test_integration_logs(self):
         """Test integration activity logs"""
