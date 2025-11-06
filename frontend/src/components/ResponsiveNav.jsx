@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, CreditCard } from 'lucide-react';
+import { Menu, X, CreditCard, FileText } from 'lucide-react';
 import UserProfileDropdown from './UserProfileDropdown';
 import NotificationBell from './NotificationBell';
 
@@ -15,6 +15,7 @@ const ResponsiveNav = ({ user, onLogout }) => {
     { path: '/dashboard', label: 'Chatbots' },
     { path: '/analytics', label: 'Analytics' },
     { path: '/subscription', label: 'Subscription', icon: CreditCard },
+    { path: '/leads', label: 'Leads', icon: FileText },
   ];
 
   return (
