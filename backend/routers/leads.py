@@ -87,6 +87,99 @@ async def get_lead_stats(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.post("/leads")
+async def create_lead(lead_data: LeadCreate, current_user: dict = Depends(get_current_user)):
+    """Create a new lead for the current user"""
+    try:
+        user_id = current_user.get('id')
+        
+        # Get user's plan info
+        user = await db.users.find_one({"id": user_id})
+        subscription = user.get('subscription', {}) if user else {}
+        plan_name = subscription.get('plan_name', 'Free')
+        
+        plan_limits = {
+            'Free': 0,
+            'Starter': 100,
+            'Professional': 500,
+            'Enterprise': 10000
+        }
+        
+        max_leads = plan_limits.get(plan_name, 0)
+        current_count = await db.leads.count_documents({"user_id": user_id})
+        
+        # Check if user has reached their limit
+        if current_count >= max_leads:
+            raise HTTPException(
+                status_code=403,
+                detail={
+                    "message": f"You have reached your lead limit of {max_leads}. Upgrade your plan to add more leads.",
+                    "current": current_count,
+                    "max": max_leads,
+                    "plan": plan_name
+                }
+            )
+        
+        # Create new lead
+        lead = {
+            "id": str(uuid.uuid4()),
+            "user_id": user_id,
+            "name": lead_data.name or "",
+            "email": lead_data.email or "",
+            "phone": lead_data.phone or "",
+            "company": lead_data.company or "",
+            "status": lead_data.status or "active",
+            "notes": lead_data.notes or "",
+            "created_at": datetime.now(timezone.utc),
+            "updated_at": datetime.now(timezone.utc),
+            "metadata": {}
+        }
+        
+        await db.leads.insert_one(lead)
+        
+        return {
+            "success": True,
+            "lead": lead,
+            "message": "Lead created successfully"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.put("/leads/{lead_id}")
+async def update_lead(lead_id: str, lead_data: LeadCreate, current_user: dict = Depends(get_current_user)):
+    """Update a specific lead (user can only update their own leads)"""
+    try:
+        user_id = current_user.get('id')
+        
+        # Check if lead belongs to user
+        lead = await db.leads.find_one({"id": lead_id, "user_id": user_id})
+        if not lead:
+            raise HTTPException(status_code=404, detail="Lead not found or access denied")
+        
+        update_data = lead_data.dict(exclude_unset=True)
+        update_data["updated_at"] = datetime.now(timezone.utc)
+        
+        result = await db.leads.update_one(
+            {"id": lead_id, "user_id": user_id},
+            {"$set": update_data}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Lead not found")
+        
+        updated_lead = await db.leads.find_one({"id": lead_id})
+        return {"success": True, "lead": updated_lead, "message": "Lead updated successfully"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.delete("/leads/{lead_id}")
 async def delete_lead(lead_id: str, current_user: dict = Depends(get_current_user)):
     """Delete a specific lead (user can only delete their own leads)"""
