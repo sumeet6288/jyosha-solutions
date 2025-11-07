@@ -132,62 +132,40 @@ const AdminDashboard = () => {
         </nav>
 
         <div className="p-8">
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
-            <Users className="w-8 h-8 text-blue-600 mb-3" />
-            <p className="text-3xl font-bold">
-              {loading ? '...' : stats.totalUsers.toLocaleString()}
-            </p>
-            <p className="text-gray-600 text-sm mt-1">Total Users</p>
+          {/* Stats Overview */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
+              <Users className="w-8 h-8 text-blue-600 mb-3" />
+              <p className="text-3xl font-bold">
+                {loading ? '...' : stats.totalUsers.toLocaleString()}
+              </p>
+              <p className="text-gray-600 text-sm mt-1">Total Users</p>
+            </div>
+            <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
+              <Bot className="w-8 h-8 text-green-600 mb-3" />
+              <p className="text-3xl font-bold">
+                {loading ? '...' : stats.activeChatbots.toLocaleString()}
+              </p>
+              <p className="text-gray-600 text-sm mt-1">Active Chatbots</p>
+            </div>
+            <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
+              <BarChart3 className="w-8 h-8 text-purple-600 mb-3" />
+              <p className="text-3xl font-bold">
+                {loading ? '...' : stats.totalMessages.toLocaleString()}
+              </p>
+              <p className="text-gray-600 text-sm mt-1">Total Messages</p>
+            </div>
+            <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
+              <Database className="w-8 h-8 text-orange-600 mb-3" />
+              <p className="text-3xl font-bold">
+                {loading ? '...' : stats.activeIntegrations.toLocaleString()}
+              </p>
+              <p className="text-gray-600 text-sm mt-1">Integrations</p>
+            </div>
           </div>
-          <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
-            <Bot className="w-8 h-8 text-green-600 mb-3" />
-            <p className="text-3xl font-bold">
-              {loading ? '...' : stats.activeChatbots.toLocaleString()}
-            </p>
-            <p className="text-gray-600 text-sm mt-1">Active Chatbots</p>
-          </div>
-          <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
-            <BarChart3 className="w-8 h-8 text-purple-600 mb-3" />
-            <p className="text-3xl font-bold">
-              {loading ? '...' : stats.totalMessages.toLocaleString()}
-            </p>
-            <p className="text-gray-600 text-sm mt-1">Total Messages</p>
-          </div>
-          <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
-            <Database className="w-8 h-8 text-orange-600 mb-3" />
-            <p className="text-3xl font-bold">
-              {loading ? '...' : stats.activeIntegrations.toLocaleString()}
-            </p>
-            <p className="text-gray-600 text-sm mt-1">Integrations</p>
-          </div>
-        </div>
 
-        {/* Main Content */}
-        <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="mb-6 flex-wrap">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="advanced-search">🔍 Advanced Search</TabsTrigger>
-            <TabsTrigger value="segmentation">🎯 Segmentation</TabsTrigger>
-            <TabsTrigger value="email-campaigns">✉️ Email Campaigns</TabsTrigger>
-            <TabsTrigger value="lifecycle">📊 Lifecycle</TabsTrigger>
-            <TabsTrigger value="impersonation">👤 Impersonation</TabsTrigger>
-            <TabsTrigger value="revenue">Revenue</TabsTrigger>
-            <TabsTrigger value="users">Users</TabsTrigger>
-            <TabsTrigger value="chatbots">Chatbots</TabsTrigger>
-            <TabsTrigger value="conversations">Conversations</TabsTrigger>
-            <TabsTrigger value="sources">Sources</TabsTrigger>
-            <TabsTrigger value="monitoring">Monitoring</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="logs">Activity Logs</TabsTrigger>
-            <TabsTrigger value="leads">Leads</TabsTrigger>
-            <TabsTrigger value="contact-sales">Contact Sales</TabsTrigger>
-            <TabsTrigger value="moderation">Moderation</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview">
+          {/* Main Content */}
+          {activeTab === 'overview' && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Quick Stats */}
               <div className="bg-white rounded-xl border border-gray-200 p-6">
