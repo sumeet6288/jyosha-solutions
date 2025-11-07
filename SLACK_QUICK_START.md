@@ -30,7 +30,7 @@
 ### Part B: BotSmith Configuration (2 minutes)
 
 - [ ] **4. Open BotSmith Dashboard**
-  - URL: https://setup-viewer-3.preview.emergentagent.com
+  - URL: https://depstream.preview.emergentagent.com
 
 - [ ] **5. Configure Slack Integration**
   - Go to: Dashboard → Your Chatbot → Integrations
