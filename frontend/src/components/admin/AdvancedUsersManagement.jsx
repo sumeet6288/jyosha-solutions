@@ -28,6 +28,7 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
   // Modal States
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showUltimateEditModal, setShowUltimateEditModal] = useState(false);
   const [showActivityModal, setShowActivityModal] = useState(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
   const [showLoginHistoryModal, setShowLoginHistoryModal] = useState(false);
