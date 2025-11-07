@@ -682,9 +682,12 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-2">
-                        <div className="relative">
+                        <div className="relative dropdown-container">
                           <button 
-                            onClick={() => setOpenDropdownId(openDropdownId === user.user_id ? null : user.user_id)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setOpenDropdownId(openDropdownId === user.user_id ? null : user.user_id);
+                            }}
                             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                           >
                             <MoreVertical className="w-4 h-4 text-gray-600" />
