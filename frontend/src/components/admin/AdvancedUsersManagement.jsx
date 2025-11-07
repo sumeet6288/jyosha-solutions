@@ -100,6 +100,17 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
     fetchStatistics();
   }, [sortBy, sortOrder, filterStatus, filterRole]);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (openDropdownId && !event.target.closest('.relative')) {
+        setOpenDropdownId(null);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [openDropdownId]);
+
   const fetchUsers = async () => {
     try {
       setLoading(true);
