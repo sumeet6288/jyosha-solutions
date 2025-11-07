@@ -57,7 +57,7 @@ const AdminSidebar = ({ activeTab, onTabChange, isCollapsed, setIsCollapsed }) =
       </div>
 
       {/* Navigation Items */}
-      <div className="flex-1 overflow-y-auto py-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+      <div className="flex-1 overflow-y-auto py-4 custom-scrollbar">
         <nav className="space-y-1 px-2">
           {navigationItems.map((item) => {
             const Icon = item.icon;
