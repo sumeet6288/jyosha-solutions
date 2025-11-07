@@ -97,6 +97,165 @@ const TechManagement = ({ backendUrl }) => {
     }
   };
 
+  const createApiKey = async () => {
+    try {
+      const response = await axios.post(`${backendUrl}/api/tech/api-keys`, {
+        name: newKeyName,
+        description: newKeyDescription,
+        expires_in_days: newKeyExpiry ? parseInt(newKeyExpiry) : null
+      });
+      
+      setNewlyCreatedKey(response.data);
+      await fetchApiKeys();
+      setShowNewKeyModal(false);
+      setNewKeyName('');
+      setNewKeyDescription('');
+      setNewKeyExpiry('');
+    } catch (error) {
+      console.error('Error creating API key:', error);
+      alert('Failed to create API key');
+    }
+  };
+
+  const deleteApiKey = async (keyId) => {
+    if (!window.confirm('Are you sure you want to delete this API key? This action cannot be undone.')) {
+      return;
+    }
+    
+    try {
+      await axios.delete(`${backendUrl}/api/tech/api-keys/${keyId}`);
+      await fetchApiKeys();
+    } catch (error) {
+      console.error('Error deleting API key:', error);
+      alert('Failed to delete API key');
+    }
+  };
+
+  const regenerateApiKey = async (keyId) => {
+    if (!window.confirm('Are you sure you want to regenerate this API key? The old key will stop working immediately.')) {
+      return;
+    }
+    
+    try {
+      const response = await axios.post(`${backendUrl}/api/tech/api-keys/${keyId}/regenerate`);
+      setNewlyCreatedKey(response.data);
+      await fetchApiKeys();
+    } catch (error) {
+      console.error('Error regenerating API key:', error);
+      alert('Failed to regenerate API key');
+    }
+  };
+
+  const createWebhook = async () => {
+    try {
+      await axios.post(`${backendUrl}/api/tech/webhooks`, {
+        url: newWebhookUrl,
+        events: newWebhookEvents,
+        description: newWebhookDescription
+      });
+      
+      await fetchWebhooks();
+      setShowNewWebhookModal(false);
+      setNewWebhookUrl('');
+      setNewWebhookEvents([]);
+      setNewWebhookDescription('');
+    } catch (error) {
+      console.error('Error creating webhook:', error);
+      alert('Failed to create webhook');
+    }
+  };
+
+  const deleteWebhook = async (webhookId) => {
+    if (!window.confirm('Are you sure you want to delete this webhook?')) {
+      return;
+    }
+    
+    try {
+      await axios.delete(`${backendUrl}/api/tech/webhooks/${webhookId}`);
+      await fetchWebhooks();
+    } catch (error) {
+      console.error('Error deleting webhook:', error);
+      alert('Failed to delete webhook');
+    }
+  };
+
+  const testWebhook = async (webhookId) => {
+    try {
+      const response = await axios.post(`${backendUrl}/api/tech/webhooks/${webhookId}/test`);
+      alert(response.data.message);
+      await fetchWebhooks();
+    } catch (error) {
+      console.error('Error testing webhook:', error);
+      alert('Failed to test webhook');
+    }
+  };
+
+  const toggleWebhookStatus = async (webhookId, currentStatus) => {
+    try {
+      const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+      await axios.put(`${backendUrl}/api/tech/webhooks/${webhookId}`, {
+        status: newStatus
+      });
+      await fetchWebhooks();
+    } catch (error) {
+      console.error('Error updating webhook:', error);
+      alert('Failed to update webhook status');
+    }
+  };
+
+  const exportSystemLogs = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/tech/system-logs/export`);
+      const dataStr = JSON.stringify(response.data.logs, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `system-logs-${new Date().toISOString()}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error exporting logs:', error);
+      alert('Failed to export logs');
+    }
+  };
+
+  const resolveError = async (errorId) => {
+    try {
+      await axios.put(`${backendUrl}/api/tech/errors/${errorId}`, {
+        resolved: true
+      });
+      await fetchErrors();
+    } catch (error) {
+      console.error('Error resolving error:', error);
+      alert('Failed to resolve error');
+    }
+  };
+
+  const deleteError = async (errorId) => {
+    try {
+      await axios.delete(`${backendUrl}/api/tech/errors/${errorId}`);
+      await fetchErrors();
+    } catch (error) {
+      console.error('Error deleting error:', error);
+      alert('Failed to delete error');
+    }
+  };
+
+  const clearAllErrors = async () => {
+    if (!window.confirm('Are you sure you want to clear all resolved errors?')) {
+      return;
+    }
+    
+    try {
+      await axios.delete(`${backendUrl}/api/tech/errors?resolved_only=true`);
+      await fetchErrors();
+    } catch (error) {
+      console.error('Error clearing errors:', error);
+      alert('Failed to clear errors');
+    }
+  };
+
   const toggleKeyVisibility = (keyId) => {
     setVisibleKeys(prev => ({
       ...prev,
@@ -106,10 +265,14 @@ const TechManagement = ({ backendUrl }) => {
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
-    // TODO: Show toast notification
+    setCopiedKey(text);
+    setTimeout(() => setCopiedKey(null), 2000);
   };
 
   const maskApiKey = (key) => {
+    if (!key || key === '•'.repeat(40)) {
+      return '•'.repeat(40);
+    }
     const visible = key.substring(0, 12);
     const masked = '•'.repeat(20);
     return visible + masked;
@@ -122,6 +285,14 @@ const TechManagement = ({ backendUrl }) => {
       case 'info': return 'text-blue-600 bg-blue-50';
       default: return 'text-gray-600 bg-gray-50';
     }
+  };
+
+  const toggleEventSelection = (event) => {
+    setNewWebhookEvents(prev => 
+      prev.includes(event) 
+        ? prev.filter(e => e !== event)
+        : [...prev, event]
+    );
   };
 
   return (
