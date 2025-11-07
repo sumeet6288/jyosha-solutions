@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
-import { Users, Bot, BarChart3, Settings, Activity, Database, Shield, LogOut, MessageSquare, FileText, AlertTriangle, HardDrive, DollarSign, TrendingUp, Mail, Zap, Search, Target, UserCheck } from 'lucide-react';
+import { Users, Bot, BarChart3, Database, LogOut, FileText, AlertTriangle, Shield } from 'lucide-react';
+import AdminSidebar from '../../components/admin/AdminSidebar';
 import UsersManagement from '../../components/admin/UsersManagement';
 import EnhancedUsersManagement from '../../components/admin/EnhancedUsersManagement';
 import ChatbotsManagement from '../../components/admin/ChatbotsManagement';
@@ -23,6 +23,7 @@ import LeadsManagement from '../../components/admin/LeadsManagement';
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [activeTab, setActiveTab] = useState('overview');
   const [stats, setStats] = useState({
     totalUsers: 0,
     activeChatbots: 0,
