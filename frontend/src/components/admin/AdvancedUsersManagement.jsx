@@ -9,6 +9,7 @@ import {
   Bell, ShieldAlert, ShieldCheck, Database, TrendingDown, PieChart
 } from 'lucide-react';
 import { Button } from '../ui/button';
+import UltimateEditUserModal from './UltimateEditUserModal';
 
 const AdvancedUsersManagement = ({ backendUrl }) => {
   // State Management
