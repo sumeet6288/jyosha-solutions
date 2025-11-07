@@ -7,8 +7,7 @@ import {
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
-const AdminSidebar = ({ activeTab, onTabChange }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+const AdminSidebar = ({ activeTab, onTabChange, isCollapsed, setIsCollapsed }) => {
 
   const navigationItems = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
