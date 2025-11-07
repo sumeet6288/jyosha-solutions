@@ -671,11 +671,14 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-2">
-                        <div className="relative group">
-                          <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                        <div className="relative">
+                          <button 
+                            onClick={() => setOpenDropdownId(openDropdownId === user.user_id ? null : user.user_id)}
+                            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                          >
                             <MoreVertical className="w-4 h-4 text-gray-600" />
                           </button>
-                          <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50 hidden group-hover:block">
+                          <div className={`absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50 ${openDropdownId === user.user_id ? 'block' : 'hidden'}`}>
                             <button
                               onClick={() => {
                                 setViewingUser(user);
