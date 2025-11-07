@@ -998,6 +998,173 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
         </div>
       )}
 
+      {/* Edit User Modal */}
+      {showEditModal && viewingUser && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900">Edit User</h2>
+              <button onClick={() => {
+                setShowEditModal(false);
+                setViewingUser(null);
+              }} className="p-2 hover:bg-gray-100 rounded-lg">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <form onSubmit={async (e) => {
+              e.preventDefault();
+              try {
+                const response = await fetch(`${backendUrl}/api/admin/users/${viewingUser.user_id}/update`, {
+                  method: 'PUT',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    name: viewingUser.name,
+                    email: viewingUser.email,
+                    role: viewingUser.role,
+                    status: viewingUser.status,
+                    phone: viewingUser.phone || '',
+                    company: viewingUser.company || '',
+                    job_title: viewingUser.job_title || '',
+                    address: viewingUser.address || '',
+                    bio: viewingUser.bio || '',
+                    avatar_url: viewingUser.avatar_url || '',
+                    tags: viewingUser.tags || [],
+                    admin_notes: viewingUser.admin_notes || ''
+                  })
+                });
+                const data = await response.json();
+                if (data.success) {
+                  alert('User updated successfully!');
+                  setShowEditModal(false);
+                  setViewingUser(null);
+                  fetchUsers();
+                  fetchStatistics();
+                } else {
+                  alert(data.detail || 'Failed to update user');
+                }
+              } catch (error) {
+                alert('Error updating user');
+                console.error(error);
+              }
+            }} className="p-6 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={viewingUser.name || ''}
+                    onChange={(e) => setViewingUser({...viewingUser, name: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                  <input
+                    type="email"
+                    required
+                    value={viewingUser.email || ''}
+                    onChange={(e) => setViewingUser({...viewingUser, email: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                  <select
+                    value={viewingUser.role || 'user'}
+                    onChange={(e) => setViewingUser({...viewingUser, role: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                  >
+                    <option value="user">User</option>
+                    <option value="moderator">Moderator</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                  <select
+                    value={viewingUser.status || 'active'}
+                    onChange={(e) => setViewingUser({...viewingUser, status: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                  >
+                    <option value="active">Active</option>
+                    <option value="suspended">Suspended</option>
+                    <option value="banned">Banned</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                  <input
+                    type="tel"
+                    value={viewingUser.phone || ''}
+                    onChange={(e) => setViewingUser({...viewingUser, phone: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Company</label>
+                  <input
+                    type="text"
+                    value={viewingUser.company || ''}
+                    onChange={(e) => setViewingUser({...viewingUser, company: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Job Title</label>
+                <input
+                  type="text"
+                  value={viewingUser.job_title || ''}
+                  onChange={(e) => setViewingUser({...viewingUser, job_title: e.target.value})}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Bio</label>
+                <textarea
+                  value={viewingUser.bio || ''}
+                  onChange={(e) => setViewingUser({...viewingUser, bio: e.target.value})}
+                  rows={3}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Admin Notes</label>
+                <textarea
+                  value={viewingUser.admin_notes || ''}
+                  onChange={(e) => setViewingUser({...viewingUser, admin_notes: e.target.value})}
+                  rows={3}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <Button type="submit" className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+                  <Save className="w-4 h-4 mr-2" />
+                  Save Changes
+                </Button>
+                <Button type="button" variant="outline" onClick={() => {
+                  setShowEditModal(false);
+                  setViewingUser(null);
+                }}>
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Suspend User Modal */}
       {showSuspendModal && viewingUser && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
