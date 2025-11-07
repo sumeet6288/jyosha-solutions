@@ -1550,18 +1550,16 @@ async def get_users_enhanced(
                 "admin_notes": user.get('admin_notes')
             })
         
-        # Sort users - handle both string and datetime types for date fields
+        # Sort users - use string comparison for date fields to avoid datetime issues
         if sortBy == "created_at" or sortBy == "last_login":
             def sort_key(x):
                 val = x.get(sortBy)
                 if val is None:
-                    return datetime.min if sortOrder == 'desc' else datetime.max
+                    return '' if sortOrder == 'asc' else 'Z' * 30  # Sort None to end
                 if isinstance(val, str):
-                    try:
-                        return datetime.fromisoformat(val.replace('Z', '+00:00'))
-                    except:
-                        return datetime.min if sortOrder == 'desc' else datetime.max
-                return val
+                    return val
+                # Convert datetime to ISO string
+                return val.isoformat() if hasattr(val, 'isoformat') else str(val)
             users_data.sort(key=sort_key, reverse=(sortOrder == 'desc'))
         elif sortBy in ["messages_count", "chatbots_count", "login_count"]:
             users_data.sort(key=lambda x: x.get(sortBy, 0), reverse=(sortOrder == 'desc'))
