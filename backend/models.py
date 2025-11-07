@@ -938,6 +938,21 @@ class DiscordMessage(BaseModel):
     channel_id: str  # Discord channel ID
     content: str
 
+
+# MS Teams Models
+class MSTeamsWebhookSetup(BaseModel):
+    chatbot_id: str
+    webhook_url: str
+    status: Literal["pending", "active", "error"] = "pending"
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class MSTeamsMessage(BaseModel):
+    conversation_id: str  # MS Teams conversation ID
+    text: str
+    service_url: Optional[str] = None  # Service URL for sending messages
+
+
 # Plan Models
 class PlanLimits(BaseModel):
     max_chatbots: int
