@@ -1552,7 +1552,8 @@ async def get_users_enhanced(
         
         # Sort users
         if sortBy == "created_at":
-            users_data.sort(key=lambda x: x.get(sortBy, ''), reverse=(sortOrder == 'desc'))
+            # Use datetime.min for None values so they sort to the end
+            users_data.sort(key=lambda x: x.get(sortBy) or datetime.min, reverse=(sortOrder == 'desc'))
         elif sortBy in ["messages_count", "chatbots_count", "login_count"]:
             users_data.sort(key=lambda x: x.get(sortBy, 0), reverse=(sortOrder == 'desc'))
         
