@@ -103,7 +103,7 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (openDropdownId && !event.target.closest('.relative')) {
+      if (openDropdownId && !event.target.closest('.dropdown-container')) {
         setOpenDropdownId(null);
       }
     };
