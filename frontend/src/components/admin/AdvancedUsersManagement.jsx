@@ -147,10 +147,10 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
       
       const data = await response.json();
       if (data.success) {
-        alert('User created successfully!');
+        alert(`User created successfully with ${createForm.plan_id.toUpperCase()} plan!`);
         setShowCreateModal(false);
         setCreateForm({
-          name: '', email: '', password: '', role: 'user', status: 'active',
+          name: '', email: '', password: '', role: 'user', status: 'active', plan_id: 'free',
           phone: '', company: '', job_title: '', address: '', bio: '', avatar_url: '',
           tags: '', admin_notes: ''
         });
