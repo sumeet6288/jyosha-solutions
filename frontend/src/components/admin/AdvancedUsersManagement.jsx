@@ -54,6 +54,7 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
     password: '',
     role: 'user',
     status: 'active',
+    plan_id: 'free',
     phone: '',
     company: '',
     job_title: '',
