@@ -46,7 +46,7 @@ This guide will help you connect your BotSmith chatbot to Slack, allowing your b
 ## Part 3: Configure BotSmith Chatbot
 
 ### Step 5: Access Your Chatbot
-1. Go to your BotSmith dashboard: **https://install-preview-9.preview.emergentagent.com**
+1. Go to your BotSmith dashboard: **https://quick-preview-51.preview.emergentagent.com**
 2. Click on the chatbot you want to connect to Slack
 3. Navigate to the **"Integrations"** tab
 
@@ -62,7 +62,7 @@ This guide will help you connect your BotSmith chatbot to Slack, allowing your b
 ### Step 7: Get Webhook URL
 1. After saving, click the **"⚡ Setup Webhook"** button (lightning bolt icon)
 2. Copy the webhook URL that appears
-   - It will look like: `https://install-preview-9.preview.emergentagent.com/api/slack/webhook/[your-chatbot-id]`
+   - It will look like: `https://quick-preview-51.preview.emergentagent.com/api/slack/webhook/[your-chatbot-id]`
 3. Keep this URL handy for the next steps
 
 ---
@@ -156,7 +156,7 @@ This means the bot token is invalid or expired:
 ### Webhook URL verification fails?
 
 1. Make sure your BotSmith app is running
-2. Check that the URL is exactly: `https://install-preview-9.preview.emergentagent.com/api/slack/webhook/[chatbot-id]`
+2. Check that the URL is exactly: `https://quick-preview-51.preview.emergentagent.com/api/slack/webhook/[chatbot-id]`
 3. Try clicking "Retry" in Slack Event Subscriptions
 4. Check backend logs for errors
 
