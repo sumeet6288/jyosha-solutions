@@ -33,7 +33,7 @@
 ### Part B: BotSmith Configuration (2 minutes)
 
 - [ ] **5. Open BotSmith Dashboard**
-  - URL: https://dep-install-demo.preview.emergentagent.com
+  - URL: https://dep-express.preview.emergentagent.com
 
 - [ ] **6. Configure Discord Integration**
   - Go to: Dashboard → Your Chatbot → Integrations
@@ -133,7 +133,7 @@ BotSmith → Chatbot → Integrations → Discord → View Logs
 ## 📍 Key URLs
 
 1. **Discord Developer Portal**: https://discord.com/developers/applications
-2. **BotSmith Dashboard**: https://dep-install-demo.preview.emergentagent.com
+2. **BotSmith Dashboard**: https://dep-express.preview.emergentagent.com
 3. **Webhook URL**: Generated automatically in BotSmith
 
 ---
