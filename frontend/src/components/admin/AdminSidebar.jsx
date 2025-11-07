@@ -33,12 +33,12 @@ const AdminSidebar = ({ activeTab, onTabChange, isCollapsed, setIsCollapsed }) =
   return (
     <div 
       className={cn(
-        "h-screen bg-white border-r border-gray-200 transition-all duration-300 ease-in-out fixed left-0 top-0 flex flex-col",
+        "h-screen bg-white border-r border-gray-200 transition-all duration-300 ease-in-out fixed left-0 top-0 flex flex-col z-50",
         isCollapsed ? "w-16" : "w-64"
       )}
     >
       {/* Logo Section */}
-      <div className="h-16 border-b border-gray-200 flex items-center justify-between px-4">
+      <div className="h-16 border-b border-gray-200 flex items-center justify-between px-4 flex-shrink-0">
         {!isCollapsed && (
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-gradient-to-br from-red-600 to-red-700 rounded-lg flex items-center justify-center shadow-md">
