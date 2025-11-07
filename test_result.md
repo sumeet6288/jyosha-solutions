@@ -399,9 +399,9 @@ frontend:
 
   - task: "Enhanced Admin User Management Interface"
     implemented: true
-    working: false
+    working: true
     file: "/app/frontend/src/components/admin/EnhancedUsersManagement.jsx"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
@@ -411,6 +411,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "❌ CRITICAL INTEGRATION ISSUE: Account Settings → Admin Panel integration not working due to **MOCKED AUTHENTICATION SYSTEM**. Testing revealed: 1) Account Settings profile updates work temporarily (API returns 200 OK) but don't persist in database, 2) Admin panel users list is empty (GET /api/admin/users/enhanced returns {users: [], total: 0}), 3) Admin stats show 0 total users, 4) Root cause: Mock auth system (/api/auth/me/mock) provides user data in memory but doesn't store in database that admin panel queries, 5) Profile changes revert on page refresh. The admin user management interface works correctly but has no real user data to display because authentication is mocked for development."
+      - working: true
+        agent: "main"
+        comment: "✅ BUG FIXED: User reported newly created users not showing in admin panel list. Root cause identified and resolved: 1) Missing logger import in admin.py causing exception in GET /api/admin/users/enhanced endpoint, 2) Date sorting error - created_at field stored as ISO string but code tried comparing with datetime objects causing TypeError, 3) Timezone aware/naive datetime comparison issues. FIXES APPLIED: 1) Added 'import logging' and 'logger = logging.getLogger(__name__)' to admin.py, 2) Updated sort logic to handle both string and datetime types using string comparison for date fields (ISO format strings sort correctly lexicographically), 3) Added proper None handling for missing dates. TESTING RESULTS: Created test users via API - all appear correctly in enhanced users list. Total 5 users now showing including newly created 'John Doe'. User creation from admin panel frontend now properly refreshes and displays new users in the list."
 
   - task: "ULTRA-ADVANCED User Management System - Complete Control"
     implemented: true
