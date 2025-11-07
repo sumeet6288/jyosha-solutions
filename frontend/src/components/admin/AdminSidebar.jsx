@@ -3,7 +3,7 @@ import {
   Users, Bot, BarChart3, Settings, Activity, Database, 
   Shield, MessageSquare, FileText, DollarSign, TrendingUp, 
   Mail, Search, Target, UserCheck, ChevronLeft, ChevronRight,
-  LayoutDashboard, Contact, Flag, Zap
+  LayoutDashboard, Contact, Flag, Zap, Code
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
@@ -27,6 +27,7 @@ const AdminSidebar = ({ activeTab, onTabChange, isCollapsed, setIsCollapsed }) =
     { id: 'leads', label: 'Leads', icon: Contact },
     { id: 'contact-sales', label: 'Contact Sales', icon: Zap },
     { id: 'moderation', label: 'Moderation', icon: Shield },
+    { id: 'tech', label: 'Tech', icon: Code },
     { id: 'settings', label: 'Settings', icon: Settings }
   ];
 
