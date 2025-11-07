@@ -110,10 +110,18 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
-      <AdminSidebar activeTab={activeTab} onTabChange={setActiveTab} />
+      <AdminSidebar 
+        activeTab={activeTab} 
+        onTabChange={setActiveTab}
+        isCollapsed={sidebarCollapsed}
+        setIsCollapsed={setSidebarCollapsed}
+      />
 
       {/* Main Content Area */}
-      <div className="flex-1 ml-64 transition-all duration-300">
+      <div 
+        className="flex-1 transition-all duration-300"
+        style={{ marginLeft: sidebarCollapsed ? '64px' : '256px' }}
+      >
         {/* Header */}
         <nav className="bg-white border-b border-gray-200">
           <div className="px-6 py-4 flex items-center justify-between">
