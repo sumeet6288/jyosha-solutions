@@ -875,6 +875,26 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
                 </div>
               </div>
 
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Subscription Plan *
+                  <span className="text-xs text-gray-500 ml-2">(Choose the plan for this user)</span>
+                </label>
+                <select
+                  value={createForm.plan_id}
+                  onChange={(e) => setCreateForm({...createForm, plan_id: e.target.value})}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 bg-gradient-to-r from-purple-50 to-pink-50"
+                >
+                  <option value="free">🆓 Free Plan - 1 chatbot, 100 messages/month</option>
+                  <option value="starter">🚀 Starter Plan - 5 chatbots, 10,000 messages/month ($150/mo)</option>
+                  <option value="professional">💼 Professional Plan - 25 chatbots, 100,000 messages/month ($499/mo)</option>
+                  <option value="enterprise">🏢 Enterprise Plan - Unlimited everything (Custom pricing)</option>
+                </select>
+                <p className="text-xs text-gray-500 mt-1">
+                  💡 You can change the plan later from the user's subscription settings
+                </p>
+              </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
