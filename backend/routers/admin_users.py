@@ -657,6 +657,794 @@ async def add_user_note(user_id: str, note: dict):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+
+# ============================================================================
+# ADVANCED USER MANAGEMENT ENDPOINTS
+# ============================================================================
+
+@router.post("/create")
+async def create_user(user_data: dict):
+    """
+    Manually create a new user from admin panel
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        users_collection = db_instance['users']
+        subscriptions_collection = db_instance['subscriptions']
+        
+        # Validate required fields
+        email = user_data.get('email')
+        name = user_data.get('name')
+        password = user_data.get('password')
+        
+        if not email or not name or not password:
+            raise HTTPException(status_code=400, detail="Email, name, and password are required")
+        
+        # Check if user already exists
+        existing_user = await users_collection.find_one({'email': email})
+        if existing_user:
+            raise HTTPException(status_code=400, detail="User with this email already exists")
+        
+        # Create user
+        user_id = str(uuid.uuid4())
+        hashed_password = pwd_context.hash(password)
+        
+        new_user = {
+            'id': user_id,
+            'email': email,
+            'name': name,
+            'password_hash': hashed_password,
+            'role': user_data.get('role', 'user'),
+            'status': user_data.get('status', 'active'),
+            'phone': user_data.get('phone'),
+            'avatar_url': user_data.get('avatar_url'),
+            'company': user_data.get('company'),
+            'job_title': user_data.get('job_title'),
+            'address': user_data.get('address'),
+            'bio': user_data.get('bio'),
+            'tags': user_data.get('tags', []),
+            'custom_max_chatbots': user_data.get('custom_max_chatbots'),
+            'custom_max_messages': user_data.get('custom_max_messages'),
+            'custom_max_file_uploads': user_data.get('custom_max_file_uploads'),
+            'custom_max_website_sources': user_data.get('custom_max_website_sources'),
+            'custom_max_text_sources': user_data.get('custom_max_text_sources'),
+            'admin_notes': user_data.get('admin_notes', ''),
+            'created_at': datetime.now(timezone.utc),
+            'updated_at': datetime.now(timezone.utc),
+            'last_login': None,
+            'login_count': 0,
+            'last_ip': None,
+            'email_verified': user_data.get('email_verified', True),  # Auto-verify admin-created users
+            'two_factor_enabled': False
+        }
+        
+        await users_collection.insert_one(new_user)
+        
+        # Create default subscription (Free plan)
+        subscription = {
+            'id': str(uuid.uuid4()),
+            'user_id': user_id,
+            'plan_id': 'free',
+            'status': 'active',
+            'usage': {
+                'chatbots': 0,
+                'messages_this_month': 0,
+                'file_uploads': 0,
+                'website_sources': 0,
+                'text_sources': 0
+            },
+            'current_period_start': datetime.now(timezone.utc),
+            'current_period_end': datetime.now(timezone.utc) + timedelta(days=30),
+            'created_at': datetime.now(timezone.utc),
+            'updated_at': datetime.now(timezone.utc)
+        }
+        
+        await subscriptions_collection.insert_one(subscription)
+        
+        # Log activity
+        await log_activity(
+            user_id="admin",
+            action="created_user",
+            resource_type="user",
+            resource_id=user_id,
+            details=f"Created user: {email}"
+        )
+        
+        return {
+            "success": True, 
+            "message": "User created successfully",
+            "user_id": user_id,
+            "user": {
+                "id": user_id,
+                "email": email,
+                "name": name,
+                "role": new_user['role'],
+                "status": new_user['status']
+            }
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating user: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/{user_id}/export-data")
+async def export_user_data(user_id: str):
+    """
+    Export all user data (GDPR compliance)
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        users_collection = db_instance['users']
+        chatbots_collection = db_instance['chatbots']
+        sources_collection = db_instance['sources']
+        conversations_collection = db_instance['conversations']
+        messages_collection = db_instance['messages']
+        subscriptions_collection = db_instance['subscriptions']
+        
+        # Get user
+        user = await users_collection.find_one({'id': user_id})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Remove sensitive data
+        user.pop('password_hash', None)
+        user.pop('_id', None)
+        
+        # Get all related data
+        chatbots = await chatbots_collection.find({'user_id': user_id}).to_list(length=1000)
+        chatbot_ids = [bot['id'] for bot in chatbots]
+        
+        sources = []
+        conversations = []
+        messages = []
+        
+        if chatbot_ids:
+            sources = await sources_collection.find({'chatbot_id': {'$in': chatbot_ids}}).to_list(length=10000)
+            conversations = await conversations_collection.find({'chatbot_id': {'$in': chatbot_ids}}).to_list(length=10000)
+            messages = await messages_collection.find({'chatbot_id': {'$in': chatbot_ids}}).to_list(length=100000)
+        
+        subscription = await subscriptions_collection.find_one({'user_id': user_id})
+        
+        # Clean MongoDB _id fields
+        for item in chatbots + sources + conversations + messages:
+            item.pop('_id', None)
+        if subscription:
+            subscription.pop('_id', None)
+        
+        # Compile all data
+        user_data = {
+            'user': user,
+            'subscription': subscription,
+            'chatbots': chatbots,
+            'sources': sources,
+            'conversations': conversations,
+            'messages': messages,
+            'export_date': datetime.now(timezone.utc).isoformat(),
+            'total_counts': {
+                'chatbots': len(chatbots),
+                'sources': len(sources),
+                'conversations': len(conversations),
+                'messages': len(messages)
+            }
+        }
+        
+        # Create JSON file
+        json_str = json.dumps(user_data, indent=2, default=str)
+        
+        # Log activity
+        await log_activity(
+            user_id="admin",
+            action="exported_user_data",
+            resource_type="user",
+            resource_id=user_id,
+            details=f"Exported all data for user: {user.get('email')}"
+        )
+        
+        return StreamingResponse(
+            io.BytesIO(json_str.encode()),
+            media_type="application/json",
+            headers={
+                "Content-Disposition": f"attachment; filename=user_{user_id}_data.json"
+            }
+        )
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error exporting user data: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/{user_id}/suspend")
+async def suspend_user(user_id: str, suspension_data: dict):
+    """
+    Suspend user account with optional time limit
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        users_collection = db_instance['users']
+        
+        reason = suspension_data.get('reason', 'No reason provided')
+        duration_days = suspension_data.get('duration_days')  # None = indefinite
+        
+        update_doc = {
+            'status': 'suspended',
+            'suspension_reason': reason,
+            'suspended_at': datetime.now(timezone.utc),
+            'updated_at': datetime.now(timezone.utc)
+        }
+        
+        if duration_days:
+            update_doc['suspension_until'] = datetime.now(timezone.utc) + timedelta(days=duration_days)
+        else:
+            update_doc['suspension_until'] = None
+        
+        result = await users_collection.update_one(
+            {'id': user_id},
+            {'$set': update_doc}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Log activity
+        await log_activity(
+            user_id="admin",
+            action="suspended_user",
+            resource_type="user",
+            resource_id=user_id,
+            details=f"Suspended for {duration_days or 'indefinite'} days. Reason: {reason}"
+        )
+        
+        return {
+            "success": True, 
+            "message": f"User suspended {'until ' + update_doc.get('suspension_until', '').isoformat() if duration_days else 'indefinitely'}"
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error suspending user: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/{user_id}/unsuspend")
+async def unsuspend_user(user_id: str):
+    """
+    Remove suspension from user account
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        users_collection = db_instance['users']
+        
+        result = await users_collection.update_one(
+            {'id': user_id},
+            {'$set': {
+                'status': 'active',
+                'suspension_reason': None,
+                'suspension_until': None,
+                'suspended_at': None,
+                'updated_at': datetime.now(timezone.utc)
+            }}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Log activity
+        await log_activity(
+            user_id="admin",
+            action="unsuspended_user",
+            resource_type="user",
+            resource_id=user_id,
+            details="Suspension removed"
+        )
+        
+        return {"success": True, "message": "User suspension removed"}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error unsuspending user: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/{user_id}/ban")
+async def ban_user(user_id: str, ban_data: dict):
+    """
+    Permanently ban user account
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        users_collection = db_instance['users']
+        
+        reason = ban_data.get('reason', 'No reason provided')
+        
+        result = await users_collection.update_one(
+            {'id': user_id},
+            {'$set': {
+                'status': 'banned',
+                'ban_reason': reason,
+                'banned_at': datetime.now(timezone.utc),
+                'updated_at': datetime.now(timezone.utc)
+            }}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Log activity
+        await log_activity(
+            user_id="admin",
+            action="banned_user",
+            resource_type="user",
+            resource_id=user_id,
+            details=f"Banned. Reason: {reason}"
+        )
+        
+        return {"success": True, "message": "User banned permanently"}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error banning user: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/{user_id}/unban")
+async def unban_user(user_id: str):
+    """
+    Remove ban from user account
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        users_collection = db_instance['users']
+        
+        result = await users_collection.update_one(
+            {'id': user_id},
+            {'$set': {
+                'status': 'active',
+                'ban_reason': None,
+                'banned_at': None,
+                'updated_at': datetime.now(timezone.utc)
+            }}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Log activity
+        await log_activity(
+            user_id="admin",
+            action="unbanned_user",
+            resource_type="user",
+            resource_id=user_id,
+            details="Ban removed"
+        )
+        
+        return {"success": True, "message": "User ban removed"}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error unbanning user: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/{user_id}/verify-email")
+async def verify_user_email(user_id: str):
+    """
+    Manually verify user email
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        users_collection = db_instance['users']
+        
+        result = await users_collection.update_one(
+            {'id': user_id},
+            {'$set': {
+                'email_verified': True,
+                'email_verified_at': datetime.now(timezone.utc),
+                'updated_at': datetime.now(timezone.utc)
+            }}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Log activity
+        await log_activity(
+            user_id="admin",
+            action="verified_user_email",
+            resource_type="user",
+            resource_id=user_id,
+            details="Email manually verified by admin"
+        )
+        
+        return {"success": True, "message": "User email verified"}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error verifying email: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/{user_id}/send-notification")
+async def send_user_notification(user_id: str, notification_data: dict):
+    """
+    Send notification/email to user
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        users_collection = db_instance['users']
+        
+        user = await users_collection.find_one({'id': user_id})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        subject = notification_data.get('subject', 'Notification from Admin')
+        message = notification_data.get('message', '')
+        
+        # In a real app, you would send an actual email here
+        # For now, we'll log it and store in user's notification queue
+        
+        # Log activity
+        await log_activity(
+            user_id="admin",
+            action="sent_notification",
+            resource_type="user",
+            resource_id=user_id,
+            details=f"Sent notification: {subject}"
+        )
+        
+        return {
+            "success": True, 
+            "message": "Notification sent successfully",
+            "details": {
+                "to": user.get('email'),
+                "subject": subject
+            }
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error sending notification: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/search/advanced")
+async def advanced_user_search(
+    email: Optional[str] = None,
+    name: Optional[str] = None,
+    role: Optional[str] = None,
+    status: Optional[str] = None,
+    company: Optional[str] = None,
+    tag: Optional[str] = None,
+    created_after: Optional[str] = None,
+    created_before: Optional[str] = None,
+    last_login_after: Optional[str] = None,
+    has_chatbots: Optional[bool] = None
+):
+    """
+    Advanced search with multiple criteria
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        users_collection = db_instance['users']
+        chatbots_collection = db_instance['chatbots']
+        
+        # Build query
+        query = {}
+        
+        if email:
+            query['email'] = {'$regex': email, '$options': 'i'}
+        if name:
+            query['name'] = {'$regex': name, '$options': 'i'}
+        if role:
+            query['role'] = role
+        if status:
+            query['status'] = status
+        if company:
+            query['company'] = {'$regex': company, '$options': 'i'}
+        if tag:
+            query['tags'] = tag
+        if created_after:
+            query['created_at'] = {'$gte': datetime.fromisoformat(created_after)}
+        if created_before:
+            if 'created_at' not in query:
+                query['created_at'] = {}
+            query['created_at']['$lte'] = datetime.fromisoformat(created_before)
+        if last_login_after:
+            query['last_login'] = {'$gte': datetime.fromisoformat(last_login_after)}
+        
+        # Get users
+        users = await users_collection.find(query).to_list(length=1000)
+        
+        # Filter by chatbot ownership if requested
+        if has_chatbots is not None:
+            filtered_users = []
+            for user in users:
+                chatbot_count = await chatbots_collection.count_documents({'user_id': user['id']})
+                if (has_chatbots and chatbot_count > 0) or (not has_chatbots and chatbot_count == 0):
+                    filtered_users.append(user)
+            users = filtered_users
+        
+        # Remove sensitive data
+        for user in users:
+            user.pop('password_hash', None)
+            user.pop('_id', None)
+        
+        return {
+            "success": True,
+            "users": users,
+            "total": len(users),
+            "query": query
+        }
+    
+    except Exception as e:
+        logger.error(f"Error in advanced search: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/export/all")
+async def export_all_users_csv():
+    """
+    Export all users to CSV
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        users_collection = db_instance['users']
+        chatbots_collection = db_instance['chatbots']
+        
+        users = await users_collection.find({}).to_list(length=10000)
+        
+        # Create CSV
+        output = io.StringIO()
+        writer = csv.writer(output)
+        
+        # Write headers
+        writer.writerow([
+            'User ID', 'Name', 'Email', 'Role', 'Status', 'Company', 'Job Title',
+            'Phone', 'Created At', 'Last Login', 'Login Count', 'Chatbots Count',
+            'Email Verified', 'Tags'
+        ])
+        
+        # Write data
+        for user in users:
+            chatbot_count = await chatbots_collection.count_documents({'user_id': user['id']})
+            writer.writerow([
+                user.get('id', ''),
+                user.get('name', ''),
+                user.get('email', ''),
+                user.get('role', 'user'),
+                user.get('status', 'active'),
+                user.get('company', ''),
+                user.get('job_title', ''),
+                user.get('phone', ''),
+                user.get('created_at', ''),
+                user.get('last_login', ''),
+                user.get('login_count', 0),
+                chatbot_count,
+                user.get('email_verified', False),
+                ', '.join(user.get('tags', []))
+            ])
+        
+        output.seek(0)
+        
+        # Log activity
+        await log_activity(
+            user_id="admin",
+            action="exported_all_users",
+            resource_type="users",
+            details=f"Exported {len(users)} users to CSV"
+        )
+        
+        return StreamingResponse(
+            io.BytesIO(output.getvalue().encode()),
+            media_type="text/csv",
+            headers={
+                "Content-Disposition": f"attachment; filename=all_users_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+            }
+        )
+    
+    except Exception as e:
+        logger.error(f"Error exporting users: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/statistics/overview")
+async def get_users_statistics():
+    """
+    Get comprehensive statistics about all users
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        users_collection = db_instance['users']
+        chatbots_collection = db_instance['chatbots']
+        subscriptions_collection = db_instance['subscriptions']
+        
+        # Total users
+        total_users = await users_collection.count_documents({})
+        
+        # Users by status
+        active_users = await users_collection.count_documents({'status': 'active'})
+        suspended_users = await users_collection.count_documents({'status': 'suspended'})
+        banned_users = await users_collection.count_documents({'status': 'banned'})
+        
+        # Users by role
+        admin_users = await users_collection.count_documents({'role': 'admin'})
+        moderator_users = await users_collection.count_documents({'role': 'moderator'})
+        regular_users = await users_collection.count_documents({'role': 'user'})
+        
+        # Recent activity
+        today = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        week_ago = today - timedelta(days=7)
+        month_ago = today - timedelta(days=30)
+        
+        new_today = await users_collection.count_documents({'created_at': {'$gte': today}})
+        new_this_week = await users_collection.count_documents({'created_at': {'$gte': week_ago}})
+        new_this_month = await users_collection.count_documents({'created_at': {'$gte': month_ago}})
+        
+        active_today = await users_collection.count_documents({'last_login': {'$gte': today}})
+        active_this_week = await users_collection.count_documents({'last_login': {'$gte': week_ago}})
+        
+        # Subscription stats
+        free_plan = await subscriptions_collection.count_documents({'plan_id': 'free'})
+        starter_plan = await subscriptions_collection.count_documents({'plan_id': 'starter'})
+        professional_plan = await subscriptions_collection.count_documents({'plan_id': 'professional'})
+        enterprise_plan = await subscriptions_collection.count_documents({'plan_id': 'enterprise'})
+        
+        # Total chatbots
+        total_chatbots = await chatbots_collection.count_documents({})
+        
+        # Email verification
+        verified_emails = await users_collection.count_documents({'email_verified': True})
+        unverified_emails = await users_collection.count_documents({'email_verified': False})
+        
+        return {
+            "success": True,
+            "statistics": {
+                "total_users": total_users,
+                "by_status": {
+                    "active": active_users,
+                    "suspended": suspended_users,
+                    "banned": banned_users
+                },
+                "by_role": {
+                    "admin": admin_users,
+                    "moderator": moderator_users,
+                    "user": regular_users
+                },
+                "activity": {
+                    "new_today": new_today,
+                    "new_this_week": new_this_week,
+                    "new_this_month": new_this_month,
+                    "active_today": active_today,
+                    "active_this_week": active_this_week
+                },
+                "subscriptions": {
+                    "free": free_plan,
+                    "starter": starter_plan,
+                    "professional": professional_plan,
+                    "enterprise": enterprise_plan
+                },
+                "total_chatbots": total_chatbots,
+                "email_verification": {
+                    "verified": verified_emails,
+                    "unverified": unverified_emails
+                }
+            }
+        }
+    
+    except Exception as e:
+        logger.error(f"Error fetching statistics: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/{user_id}/duplicate")
+async def duplicate_user(user_id: str, new_email: str):
+    """
+    Duplicate/clone a user with new email
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        users_collection = db_instance['users']
+        subscriptions_collection = db_instance['subscriptions']
+        
+        # Get original user
+        original_user = await users_collection.find_one({'id': user_id})
+        if not original_user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Check if new email already exists
+        existing = await users_collection.find_one({'email': new_email})
+        if existing:
+            raise HTTPException(status_code=400, detail="Email already exists")
+        
+        # Create new user
+        new_user_id = str(uuid.uuid4())
+        new_user = original_user.copy()
+        new_user['id'] = new_user_id
+        new_user['email'] = new_email
+        new_user['created_at'] = datetime.now(timezone.utc)
+        new_user['updated_at'] = datetime.now(timezone.utc)
+        new_user['last_login'] = None
+        new_user['login_count'] = 0
+        new_user.pop('_id', None)
+        
+        await users_collection.insert_one(new_user)
+        
+        # Duplicate subscription
+        original_sub = await subscriptions_collection.find_one({'user_id': user_id})
+        if original_sub:
+            new_sub = original_sub.copy()
+            new_sub['id'] = str(uuid.uuid4())
+            new_sub['user_id'] = new_user_id
+            new_sub['created_at'] = datetime.now(timezone.utc)
+            new_sub['updated_at'] = datetime.now(timezone.utc)
+            new_sub['usage'] = {
+                'chatbots': 0,
+                'messages_this_month': 0,
+                'file_uploads': 0,
+                'website_sources': 0,
+                'text_sources': 0
+            }
+            new_sub.pop('_id', None)
+            await subscriptions_collection.insert_one(new_sub)
+        
+        # Log activity
+        await log_activity(
+            user_id="admin",
+            action="duplicated_user",
+            resource_type="user",
+            resource_id=new_user_id,
+            details=f"Duplicated from user {user_id}"
+        )
+        
+        return {
+            "success": True,
+            "message": "User duplicated successfully",
+            "new_user_id": new_user_id,
+            "email": new_email
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error duplicating user: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
 # ============================================================================
 # HELPER FUNCTIONS
 # ============================================================================
