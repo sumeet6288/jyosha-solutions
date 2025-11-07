@@ -704,8 +704,20 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
                               className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2"
                             >
                               <Edit className="w-4 h-4" />
-                              Edit User
+                              Edit User (Basic)
                             </button>
+                            <button
+                              onClick={() => {
+                                setViewingUser(user);
+                                setShowUltimateEditModal(true);
+                                setOpenDropdownId(null);
+                              }}
+                              className="w-full px-4 py-2 text-left text-sm hover:bg-purple-50 flex items-center gap-2 text-purple-700 font-medium border-l-2 border-purple-500"
+                            >
+                              <Settings className="w-4 h-4" />
+                              Ultimate Edit ✨
+                            </button>
+                            <div className="border-t border-gray-200 my-2"></div>
                             <button
                               onClick={() => {
                                 handleExportUserData(user.user_id);
