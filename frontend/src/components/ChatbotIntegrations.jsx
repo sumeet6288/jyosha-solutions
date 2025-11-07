@@ -920,20 +920,31 @@ const ChatbotIntegrations = ({ chatbot }) => {
           </div>
 
           <div className="flex gap-3">
-            <Button
-              variant="outline"
-              onClick={() => setShowSetupModal(false)}
-              className="flex-1"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSaveIntegration}
-              disabled={saving}
-              className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
-            >
-              {saving ? 'Saving...' : 'Save Integration'}
-            </Button>
+            {activeIntegration?.isAPIIntegration ? (
+              <Button
+                onClick={() => setShowSetupModal(false)}
+                className="flex-1 bg-gradient-to-r from-orange-600 to-yellow-600 hover:from-orange-700 hover:to-yellow-700 text-white"
+              >
+                Close
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowSetupModal(false)}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleSaveIntegration}
+                  disabled={saving}
+                  className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+                >
+                  {saving ? 'Saving...' : 'Save Integration'}
+                </Button>
+              </>
+            )}
           </div>
         </DialogContent>
       </Dialog>
