@@ -547,7 +547,7 @@ try:
         timeout=10
     )
     
-    if response.status_code == 200:
+    if response.status_code in [200, 204]:
         log_test("Cleanup: Delete test chatbot", True, "Test chatbot deleted")
     else:
         log_test("Cleanup: Delete test chatbot", False, f"Status: {response.status_code}")
