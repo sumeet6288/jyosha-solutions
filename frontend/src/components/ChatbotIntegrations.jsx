@@ -94,6 +94,18 @@ const ChatbotIntegrations = ({ chatbot }) => {
       ]
     },
     {
+      id: 'msteams',
+      name: 'Microsoft Teams',
+      description: 'Deploy chatbot to Microsoft Teams',
+      icon: <MessageCircle className="w-6 h-6" />,
+      gradient: 'from-purple-600 to-blue-600',
+      fields: [
+        { name: 'app_id', label: 'Bot App ID', type: 'text', required: true },
+        { name: 'app_password', label: 'App Password', type: 'password', required: true },
+        { name: 'tenant_id', label: 'Tenant ID', type: 'text', required: false }
+      ]
+    },
+    {
       id: 'api',
       name: 'REST API',
       description: 'Integrate via REST API for custom applications',
