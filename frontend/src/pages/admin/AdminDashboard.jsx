@@ -5,6 +5,7 @@ import { Users, Bot, BarChart3, Database, LogOut, FileText, AlertTriangle, Shiel
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import UsersManagement from '../../components/admin/UsersManagement';
 import EnhancedUsersManagement from '../../components/admin/EnhancedUsersManagement';
+import AdvancedUsersManagement from '../../components/admin/AdvancedUsersManagement';
 import ChatbotsManagement from '../../components/admin/ChatbotsManagement';
 import ConversationsManagement from '../../components/admin/ConversationsManagement';
 import SystemMonitoring from '../../components/admin/SystemMonitoring';
