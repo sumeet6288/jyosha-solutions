@@ -728,6 +728,7 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
                                   onClick={() => {
                                     setViewingUser(user);
                                     setShowSuspendModal(true);
+                                    setOpenDropdownId(null);
                                   }}
                                   className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 text-yellow-600"
                                 >
@@ -738,6 +739,7 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
                                   onClick={() => {
                                     setViewingUser(user);
                                     setShowBanModal(true);
+                                    setOpenDropdownId(null);
                                   }}
                                   className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 text-red-600"
                                 >
@@ -748,7 +750,10 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
                             )}
                             {user.status === 'suspended' && (
                               <button
-                                onClick={() => handleUnsuspendUser(user.user_id)}
+                                onClick={() => {
+                                  handleUnsuspendUser(user.user_id);
+                                  setOpenDropdownId(null);
+                                }}
                                 className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 text-green-600"
                               >
                                 <ShieldCheck className="w-4 h-4" />
@@ -757,7 +762,10 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
                             )}
                             {user.status === 'banned' && (
                               <button
-                                onClick={() => handleUnbanUser(user.user_id)}
+                                onClick={() => {
+                                  handleUnbanUser(user.user_id);
+                                  setOpenDropdownId(null);
+                                }}
                                 className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 text-green-600"
                               >
                                 <CheckCircle2 className="w-4 h-4" />
@@ -765,14 +773,20 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
                               </button>
                             )}
                             <button
-                              onClick={() => handleVerifyEmail(user.user_id)}
+                              onClick={() => {
+                                handleVerifyEmail(user.user_id);
+                                setOpenDropdownId(null);
+                              }}
                               className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2"
                             >
                               <CheckCircle className="w-4 h-4" />
                               Verify Email
                             </button>
                             <button
-                              onClick={() => handleDuplicateUser(user.user_id)}
+                              onClick={() => {
+                                handleDuplicateUser(user.user_id);
+                                setOpenDropdownId(null);
+                              }}
                               className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2"
                             >
                               <Copy className="w-4 h-4" />
@@ -780,7 +794,10 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
                             </button>
                             <div className="border-t border-gray-200 my-2"></div>
                             <button
-                              onClick={() => handleDeleteUser(user.user_id)}
+                              onClick={() => {
+                                handleDeleteUser(user.user_id);
+                                setOpenDropdownId(null);
+                              }}
                               className="w-full px-4 py-2 text-left text-sm hover:bg-red-50 flex items-center gap-2 text-red-600"
                             >
                               <Trash2 className="w-4 h-4" />
