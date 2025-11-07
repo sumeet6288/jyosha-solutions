@@ -1562,6 +1562,22 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
           </div>
         </div>
       )}
+
+      {/* Ultimate Edit User Modal */}
+      {showUltimateEditModal && viewingUser && (
+        <UltimateEditUserModal
+          user={viewingUser}
+          backendUrl={backendUrl}
+          onClose={() => {
+            setShowUltimateEditModal(false);
+            setViewingUser(null);
+          }}
+          onSave={() => {
+            fetchUsers();
+            fetchStatistics();
+          }}
+        />
+      )}
     </div>
   );
 };
