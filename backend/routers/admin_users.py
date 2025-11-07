@@ -1475,3 +1475,206 @@ async def log_activity(user_id: str, action: str, resource_type: str = None,
     except Exception as e:
         logger.error(f"Error logging activity: {str(e)}")
         # Don't raise exception, just log it
+
+
+
+# ============================================================================
+# ULTIMATE USER UPDATE ENDPOINT
+# ============================================================================
+
+@router.put("/{user_id}/ultimate-update")
+async def ultimate_update_user(user_id: str, update_data: Dict[str, Any]):
+    """
+    Ultimate user update endpoint with comprehensive field support
+    Supports all advanced customization features including:
+    - Permissions, security settings, custom limits
+    - Feature flags, API rate limits, branding
+    - Notifications, metadata, tracking settings
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        users_collection = db_instance['users']
+        
+        # Find user
+        user = await users_collection.find_one({"id": user_id})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Prepare update document
+        update_doc = {
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        # Basic Info
+        if "name" in update_data:
+            update_doc["name"] = update_data["name"]
+        if "email" in update_data:
+            # Check if email already exists
+            existing = await users_collection.find_one({"email": update_data["email"], "id": {"$ne": user_id}})
+            if existing:
+                raise HTTPException(status_code=400, detail="Email already in use")
+            update_doc["email"] = update_data["email"]
+        if "phone" in update_data:
+            update_doc["phone"] = update_data["phone"]
+        if "address" in update_data:
+            update_doc["address"] = update_data["address"]
+        if "bio" in update_data:
+            update_doc["bio"] = update_data["bio"]
+        if "avatar_url" in update_data:
+            update_doc["avatar_url"] = update_data["avatar_url"]
+        if "company" in update_data:
+            update_doc["company"] = update_data["company"]
+        if "job_title" in update_data:
+            update_doc["job_title"] = update_data["job_title"]
+        
+        # Role & Permissions
+        if "role" in update_data:
+            update_doc["role"] = update_data["role"]
+        if "permissions" in update_data:
+            update_doc["permissions"] = update_data["permissions"]
+        
+        # Account Status & Security
+        if "status" in update_data:
+            update_doc["status"] = update_data["status"]
+        if "suspension_reason" in update_data:
+            update_doc["suspension_reason"] = update_data["suspension_reason"]
+        if "email_verified" in update_data:
+            update_doc["email_verified"] = update_data["email_verified"]
+        if "two_factor_enabled" in update_data:
+            update_doc["two_factor_enabled"] = update_data["two_factor_enabled"]
+        if "force_password_change" in update_data:
+            update_doc["force_password_change"] = update_data["force_password_change"]
+        if "allowed_ips" in update_data:
+            update_doc["allowed_ips"] = update_data["allowed_ips"]
+        if "blocked_ips" in update_data:
+            update_doc["blocked_ips"] = update_data["blocked_ips"]
+        if "max_sessions" in update_data:
+            update_doc["max_sessions"] = update_data["max_sessions"]
+        if "session_timeout" in update_data:
+            update_doc["session_timeout"] = update_data["session_timeout"]
+        
+        # Subscription & Billing
+        if "plan_id" in update_data:
+            update_doc["plan_id"] = update_data["plan_id"]
+        if "stripe_customer_id" in update_data:
+            update_doc["stripe_customer_id"] = update_data["stripe_customer_id"]
+        if "billing_email" in update_data:
+            update_doc["billing_email"] = update_data["billing_email"]
+        if "payment_method" in update_data:
+            update_doc["payment_method"] = update_data["payment_method"]
+        if "trial_ends_at" in update_data:
+            update_doc["trial_ends_at"] = update_data["trial_ends_at"]
+        if "subscription_ends_at" in update_data:
+            update_doc["subscription_ends_at"] = update_data["subscription_ends_at"]
+        if "lifetime_access" in update_data:
+            update_doc["lifetime_access"] = update_data["lifetime_access"]
+        if "discount_code" in update_data:
+            update_doc["discount_code"] = update_data["discount_code"]
+        if "custom_pricing" in update_data:
+            update_doc["custom_pricing"] = update_data["custom_pricing"]
+        
+        # Custom Limits & Features
+        if "custom_limits" in update_data:
+            update_doc["custom_limits"] = update_data["custom_limits"]
+        if "feature_flags" in update_data:
+            update_doc["feature_flags"] = update_data["feature_flags"]
+        if "api_rate_limits" in update_data:
+            update_doc["api_rate_limits"] = update_data["api_rate_limits"]
+        
+        # Profile & Appearance
+        if "timezone" in update_data:
+            update_doc["timezone"] = update_data["timezone"]
+        if "language" in update_data:
+            update_doc["language"] = update_data["language"]
+        if "theme" in update_data:
+            update_doc["theme"] = update_data["theme"]
+        if "custom_css" in update_data:
+            update_doc["custom_css"] = update_data["custom_css"]
+        if "branding" in update_data:
+            update_doc["branding"] = update_data["branding"]
+        
+        # Notifications & Preferences
+        if "email_notifications" in update_data:
+            update_doc["email_notifications"] = update_data["email_notifications"]
+        if "marketing_emails" in update_data:
+            update_doc["marketing_emails"] = update_data["marketing_emails"]
+        if "notification_preferences" in update_data:
+            update_doc["notification_preferences"] = update_data["notification_preferences"]
+        
+        # Metadata & Custom Fields
+        if "tags" in update_data:
+            update_doc["tags"] = update_data["tags"]
+        if "segments" in update_data:
+            update_doc["segments"] = update_data["segments"]
+        if "custom_fields" in update_data:
+            update_doc["custom_fields"] = update_data["custom_fields"]
+        if "admin_notes" in update_data:
+            update_doc["admin_notes"] = update_data["admin_notes"]
+        if "internal_notes" in update_data:
+            update_doc["internal_notes"] = update_data["internal_notes"]
+        
+        # Activity & Tracking
+        if "tracking_enabled" in update_data:
+            update_doc["tracking_enabled"] = update_data["tracking_enabled"]
+        if "analytics_enabled" in update_data:
+            update_doc["analytics_enabled"] = update_data["analytics_enabled"]
+        if "onboarding_completed" in update_data:
+            update_doc["onboarding_completed"] = update_data["onboarding_completed"]
+        if "onboarding_step" in update_data:
+            update_doc["onboarding_step"] = update_data["onboarding_step"]
+        
+        # API & Integrations
+        if "api_key" in update_data:
+            update_doc["api_key"] = update_data["api_key"]
+        if "webhook_url" in update_data:
+            update_doc["webhook_url"] = update_data["webhook_url"]
+        if "webhook_events" in update_data:
+            update_doc["webhook_events"] = update_data["webhook_events"]
+        if "oauth_tokens" in update_data:
+            update_doc["oauth_tokens"] = update_data["oauth_tokens"]
+        if "integration_preferences" in update_data:
+            update_doc["integration_preferences"] = update_data["integration_preferences"]
+        
+        # Update user in database
+        result = await users_collection.update_one(
+            {"id": user_id},
+            {"$set": update_doc}
+        )
+        
+        if result.modified_count > 0 or result.matched_count > 0:
+            # Log activity
+            await log_activity(
+                user_id=user_id,
+                action="updated_user_ultimate",
+                resource_type="user",
+                resource_id=user_id,
+                details=f"Ultimate update with {len(update_doc)} fields modified",
+                ip_address="admin"
+            )
+            
+            # Get updated user
+            updated_user = await users_collection.find_one({"id": user_id})
+            
+            return {
+                "success": True,
+                "message": "User updated successfully with all advanced settings",
+                "user": {
+                    "id": updated_user.get("id"),
+                    "name": updated_user.get("name"),
+                    "email": updated_user.get("email"),
+                    "role": updated_user.get("role"),
+                    "status": updated_user.get("status"),
+                    "updated_fields": len(update_doc)
+                }
+            }
+        else:
+            raise HTTPException(status_code=404, detail="User not found or no changes made")
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in ultimate user update: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error updating user: {str(e)}")
+
