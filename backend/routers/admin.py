@@ -10,9 +10,11 @@ from fastapi.responses import StreamingResponse
 import psutil
 import os
 from uuid import uuid4
+import logging
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 db_instance = None
+logger = logging.getLogger(__name__)
 
 def init_router(db: AsyncIOMotorDatabase):
     """Initialize router with database instance"""
