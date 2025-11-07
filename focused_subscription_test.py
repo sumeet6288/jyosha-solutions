@@ -11,7 +11,7 @@ import os
 from datetime import datetime
 
 # Get backend URL from environment
-BACKEND_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://depstream.preview.emergentagent.com')
+BACKEND_URL = os.getenv('REACT_APP_BACKEND_URL', 'https://quick-preview-50.preview.emergentagent.com')
 API_BASE = f"{BACKEND_URL}/api"
 
 class FocusedSubscriptionTest:
