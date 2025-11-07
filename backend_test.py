@@ -86,7 +86,7 @@ try:
         timeout=10
     )
     
-    if response.status_code == 200:
+    if response.status_code in [200, 201]:
         chatbot_data = response.json()
         chatbot_id = chatbot_data.get("id")
         log_test("Setup: Create test chatbot", True, f"Chatbot ID: {chatbot_id}")
