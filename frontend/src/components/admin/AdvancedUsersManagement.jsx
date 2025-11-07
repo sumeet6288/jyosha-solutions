@@ -37,6 +37,7 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [showAdvancedSearchModal, setShowAdvancedSearchModal] = useState(false);
   const [showStatisticsModal, setShowStatisticsModal] = useState(false);
+  const [openDropdownId, setOpenDropdownId] = useState(null);
   
   // Data States
   const [editingUser, setEditingUser] = useState(null);
