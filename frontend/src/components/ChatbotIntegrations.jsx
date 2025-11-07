@@ -739,37 +739,183 @@ const ChatbotIntegrations = ({ chatbot }) => {
           </DialogHeader>
 
           <div className="space-y-4 py-4">
-            {activeIntegration?.fields.map((field) => (
-              <div key={field.name} className="space-y-2">
-                <Label htmlFor={field.name}>
-                  {field.label} {field.required && <span className="text-red-500">*</span>}
-                </Label>
-                <div className="relative">
-                  <Input
-                    id={field.name}
-                    type={showCredentials[field.name] ? 'text' : field.type}
-                    value={credentials[field.name] || ''}
-                    onChange={(e) => setCredentials({...credentials, [field.name]: e.target.value})}
-                    placeholder={`Enter ${field.label.toLowerCase()}`}
-                    className="pr-10"
-                  />
-                  {field.type === 'password' && (
-                    <button
-                      type="button"
-                      onClick={() => setShowCredentials({...showCredentials, [field.name]: !showCredentials[field.name]})}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            {activeIntegration?.isAPIIntegration ? (
+              <div className="space-y-4">
+                <div className="bg-gradient-to-r from-orange-50 to-yellow-50 border-2 border-orange-200 rounded-lg p-4">
+                  <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-orange-600" />
+                    REST API Integration
+                  </h4>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Use these endpoints to integrate your chatbot into custom applications via REST API.
+                  </p>
+                </div>
+
+                {/* Base URL */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold text-gray-700">Base URL</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      value={process.env.REACT_APP_BACKEND_URL || window.location.origin}
+                      readOnly
+                      className="font-mono text-xs bg-gray-50"
+                    />
+                    <Button
+                      onClick={() => {
+                        navigator.clipboard.writeText(process.env.REACT_APP_BACKEND_URL || window.location.origin);
+                        toast({ title: 'Copied!', description: 'Base URL copied to clipboard' });
+                      }}
+                      variant="outline"
+                      size="sm"
                     >
-                      {showCredentials[field.name] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                  )}
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Chatbot ID */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold text-gray-700">Chatbot ID</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      value={chatbot.id}
+                      readOnly
+                      className="font-mono text-xs bg-gray-50"
+                    />
+                    <Button
+                      onClick={() => {
+                        navigator.clipboard.writeText(chatbot.id);
+                        toast({ title: 'Copied!', description: 'Chatbot ID copied to clipboard' });
+                      }}
+                      variant="outline"
+                      size="sm"
+                    >
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+
+                {/* API Endpoints */}
+                <div className="space-y-3 mt-4">
+                  <h4 className="font-semibold text-gray-900 text-sm">Available Endpoints</h4>
+                  
+                  {/* Send Message Endpoint */}
+                  <div className="bg-white border-2 border-gray-200 rounded-lg p-3 space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-mono font-bold rounded">POST</span>
+                      <code className="text-xs text-gray-700 font-mono">/api/public/chat/{'{chatbot_id}'}</code>
+                    </div>
+                    <p className="text-xs text-gray-600">Send a message and get AI response</p>
+                    <div className="bg-gray-50 rounded p-2 text-xs font-mono">
+                      <div className="text-gray-500">// Request Body</div>
+                      <div className="text-gray-700">{`{`}</div>
+                      <div className="text-gray-700 pl-4">"message": "Your message here",</div>
+                      <div className="text-gray-700 pl-4">"session_id": "unique-session-id",</div>
+                      <div className="text-gray-700 pl-4">"user_name": "Optional User Name"</div>
+                      <div className="text-gray-700">{`}`}</div>
+                    </div>
+                  </div>
+
+                  {/* Get Chatbot Info */}
+                  <div className="bg-white border-2 border-gray-200 rounded-lg p-3 space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-mono font-bold rounded">GET</span>
+                      <code className="text-xs text-gray-700 font-mono">/api/public/chatbot/{'{chatbot_id}'}</code>
+                    </div>
+                    <p className="text-xs text-gray-600">Get chatbot configuration and settings</p>
+                  </div>
+
+                  {/* Example cURL */}
+                  <div className="bg-gray-900 rounded-lg p-3 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-white text-xs font-semibold">Example cURL Request</span>
+                      <Button
+                        onClick={() => {
+                          const curlCommand = `curl -X POST "${process.env.REACT_APP_BACKEND_URL || window.location.origin}/api/public/chat/${chatbot.id}" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "message": "Hello, how can you help me?",
+    "session_id": "test-session-123",
+    "user_name": "Test User"
+  }'`;
+                          navigator.clipboard.writeText(curlCommand);
+                          toast({ title: 'Copied!', description: 'cURL command copied to clipboard' });
+                        }}
+                        variant="ghost"
+                        size="sm"
+                        className="text-white hover:bg-gray-800"
+                      >
+                        <Copy className="w-3 h-3" />
+                      </Button>
+                    </div>
+                    <pre className="text-xs text-green-400 overflow-x-auto">
+{`curl -X POST "${process.env.REACT_APP_BACKEND_URL || window.location.origin}/api/public/chat/${chatbot.id}" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "message": "Hello!",
+    "session_id": "session-123"
+  }'`}
+                    </pre>
+                  </div>
+                </div>
+
+                {/* Documentation Link */}
+                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <div className="flex-1">
+                      <p className="text-xs text-blue-800 font-semibold mb-1">Full API Documentation</p>
+                      <p className="text-xs text-blue-700 mb-2">
+                        For complete API documentation including all endpoints, authentication, and examples:
+                      </p>
+                      <Button
+                        onClick={() => window.open(`${process.env.REACT_APP_BACKEND_URL || window.location.origin}/docs`, '_blank')}
+                        variant="outline"
+                        size="sm"
+                        className="text-xs border-blue-600 text-blue-600 hover:bg-blue-100"
+                      >
+                        <ExternalLink className="w-3 h-3 mr-1" />
+                        Open API Docs
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            ))}
+            ) : (
+              <>
+                {activeIntegration?.fields.map((field) => (
+                  <div key={field.name} className="space-y-2">
+                    <Label htmlFor={field.name}>
+                      {field.label} {field.required && <span className="text-red-500">*</span>}
+                    </Label>
+                    <div className="relative">
+                      <Input
+                        id={field.name}
+                        type={showCredentials[field.name] ? 'text' : field.type}
+                        value={credentials[field.name] || ''}
+                        onChange={(e) => setCredentials({...credentials, [field.name]: e.target.value})}
+                        placeholder={`Enter ${field.label.toLowerCase()}`}
+                        className="pr-10"
+                      />
+                      {field.type === 'password' && (
+                        <button
+                          type="button"
+                          onClick={() => setShowCredentials({...showCredentials, [field.name]: !showCredentials[field.name]})}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        >
+                          {showCredentials[field.name] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
 
-            {activeIntegration?.fields.length === 0 && (
-              <p className="text-sm text-gray-600 text-center py-4">
-                This integration doesn't require any credentials. Click save to activate.
-              </p>
+                {activeIntegration?.fields.length === 0 && !activeIntegration?.isAPIIntegration && (
+                  <p className="text-sm text-gray-600 text-center py-4">
+                    This integration doesn't require any credentials. Click save to activate.
+                  </p>
+                )}
+              </>
             )}
           </div>
 
