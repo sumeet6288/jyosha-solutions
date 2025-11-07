@@ -17,7 +17,7 @@ The Slack integration is working correctly. All core functionality has been test
 - **URL Verification Challenge**: Working perfectly
   - Slack sends a challenge, our system responds correctly
 - **Webhook URL Generation**: Working
-  - URL: `https://dep-express.preview.emergentagent.com/api/slack/webhook/{chatbot_id}`
+  - URL: `https://setup-viewer-3.preview.emergentagent.com/api/slack/webhook/{chatbot_id}`
 - **Message Reception**: Working
   - Webhook receives messages from Slack
   - Processes them in background tasks
@@ -102,7 +102,7 @@ This confirms the entire pipeline works, only the final step (sending to Slack) 
 4. **Configure Event Subscriptions**
    - In Slack App settings, go to "Event Subscriptions"
    - Enable Events
-   - Set Request URL: `https://dep-express.preview.emergentagent.com/api/slack/webhook/{your-chatbot-id}`
+   - Set Request URL: `https://setup-viewer-3.preview.emergentagent.com/api/slack/webhook/{your-chatbot-id}`
    - Subscribe to bot events:
      - `message.channels`
      - `message.im`
