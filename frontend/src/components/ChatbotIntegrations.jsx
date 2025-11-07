@@ -730,11 +730,23 @@ const ChatbotIntegrations = ({ chatbot }) => {
 
       {/* Setup Modal */}
       <Dialog open={showSetupModal} onOpenChange={setShowSetupModal}>
-        <DialogContent className="max-w-md max-h-[80vh] overflow-y-auto">
+        <DialogContent className={`${activeIntegration?.isAPIIntegration ? 'max-w-3xl' : 'max-w-md'} max-h-[80vh] overflow-y-auto`}>
           <DialogHeader>
-            <DialogTitle>Setup {activeIntegration?.name}</DialogTitle>
+            <DialogTitle>
+              {activeIntegration?.isAPIIntegration ? (
+                <span className="flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-orange-600" />
+                  {activeIntegration?.name} Documentation
+                </span>
+              ) : (
+                `Setup ${activeIntegration?.name}`
+              )}
+            </DialogTitle>
             <DialogDescription>
-              Enter your {activeIntegration?.name} credentials to connect this integration
+              {activeIntegration?.isAPIIntegration 
+                ? 'Use these API endpoints to integrate your chatbot programmatically'
+                : `Enter your ${activeIntegration?.name} credentials to connect this integration`
+              }
             </DialogDescription>
           </DialogHeader>
 
