@@ -141,40 +141,42 @@ const AdminDashboard = () => {
         </nav>
 
         <div className="p-8">
-          {/* Stats Overview */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
-              <Users className="w-8 h-8 text-blue-600 mb-3" />
-              <p className="text-3xl font-bold">
-                {loading ? '...' : stats.totalUsers.toLocaleString()}
-              </p>
-              <p className="text-gray-600 text-sm mt-1">Total Users</p>
-            </div>
-            <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
-              <Bot className="w-8 h-8 text-green-600 mb-3" />
-              <p className="text-3xl font-bold">
-                {loading ? '...' : stats.activeChatbots.toLocaleString()}
-              </p>
-              <p className="text-gray-600 text-sm mt-1">Active Chatbots</p>
-            </div>
-            <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
-              <BarChart3 className="w-8 h-8 text-purple-600 mb-3" />
-              <p className="text-3xl font-bold">
-                {loading ? '...' : stats.totalMessages.toLocaleString()}
-              </p>
-              <p className="text-gray-600 text-sm mt-1">Total Messages</p>
-            </div>
-            <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
-              <Database className="w-8 h-8 text-orange-600 mb-3" />
-              <p className="text-3xl font-bold">
-                {loading ? '...' : stats.activeIntegrations.toLocaleString()}
-              </p>
-              <p className="text-gray-600 text-sm mt-1">Integrations</p>
-            </div>
-          </div>
-
           {/* Main Content */}
           {activeTab === 'overview' && (
+            <>
+              {/* Stats Overview - Only on Overview Tab */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
+                  <Users className="w-8 h-8 text-blue-600 mb-3" />
+                  <p className="text-3xl font-bold">
+                    {loading ? '...' : stats.totalUsers.toLocaleString()}
+                  </p>
+                  <p className="text-gray-600 text-sm mt-1">Total Users</p>
+                </div>
+                <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
+                  <Bot className="w-8 h-8 text-green-600 mb-3" />
+                  <p className="text-3xl font-bold">
+                    {loading ? '...' : stats.activeChatbots.toLocaleString()}
+                  </p>
+                  <p className="text-gray-600 text-sm mt-1">Active Chatbots</p>
+                </div>
+                <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
+                  <BarChart3 className="w-8 h-8 text-purple-600 mb-3" />
+                  <p className="text-3xl font-bold">
+                    {loading ? '...' : stats.totalMessages.toLocaleString()}
+                  </p>
+                  <p className="text-gray-600 text-sm mt-1">Total Messages</p>
+                </div>
+                <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
+                  <Database className="w-8 h-8 text-orange-600 mb-3" />
+                  <p className="text-3xl font-bold">
+                    {loading ? '...' : stats.activeIntegrations.toLocaleString()}
+                  </p>
+                  <p className="text-gray-600 text-sm mt-1">Integrations</p>
+                </div>
+              </div>
+
+              {/* Overview Content */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Quick Stats */}
               <div className="bg-white rounded-xl border border-gray-200 p-6">
