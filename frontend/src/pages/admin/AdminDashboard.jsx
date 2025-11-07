@@ -247,6 +247,7 @@ const AdminDashboard = () => {
                 )}
               </div>
             </div>
+            </>
           )}
 
           {activeTab === 'advanced-search' && (
