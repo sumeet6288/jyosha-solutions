@@ -722,11 +722,12 @@ async def create_user(user_data: dict):
         
         await users_collection.insert_one(new_user)
         
-        # Create default subscription (Free plan)
+        # Create subscription with selected plan (default: Free)
+        plan_id = user_data.get('plan_id', 'free')
         subscription = {
             'id': str(uuid.uuid4()),
             'user_id': user_id,
-            'plan_id': 'free',
+            'plan_id': plan_id,
             'status': 'active',
             'usage': {
                 'chatbots': 0,
