@@ -94,16 +94,6 @@ const ChatbotIntegrations = ({ chatbot }) => {
       ]
     },
     {
-      id: 'webchat',
-      name: 'Web Chat Widget',
-      description: 'Embed chat widget on any website',
-      icon: <Globe className="w-6 h-6" />,
-      gradient: 'from-cyan-500 to-cyan-600',
-      fields: [
-        { name: 'domain', label: 'Allowed Domain', type: 'text', required: false }
-      ]
-    },
-    {
       id: 'api',
       name: 'REST API',
       description: 'Integrate via REST API for custom applications',
