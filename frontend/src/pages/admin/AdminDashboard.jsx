@@ -400,12 +400,12 @@ const AdminDashboard = () => {
                 </div>
               )}
             </div>
-          </TabsContent>
+          )}
 
-          <TabsContent value="settings">
+          {activeTab === 'settings' && (
             <SystemSettings backendUrl={backendUrl} />
-          </TabsContent>
-        </Tabs>
+          )}
+        </div>
       </div>
     </div>
   );
