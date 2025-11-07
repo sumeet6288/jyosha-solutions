@@ -73,6 +73,109 @@ class User(BaseModel):
     marketing_emails: bool = True
     timezone: Optional[str] = None
     language: Optional[str] = "en"
+    
+    # Advanced Features & Permissions (Ultimate Edition)
+    permissions: Dict[str, bool] = {
+        "canCreateChatbots": True,
+        "canDeleteChatbots": True,
+        "canViewAnalytics": True,
+        "canExportData": True,
+        "canManageIntegrations": True,
+        "canAccessAPI": True,
+        "canUploadFiles": True,
+        "canScrapeWebsites": True,
+        "canUseAdvancedFeatures": False,
+        "canInviteTeamMembers": False,
+        "canManageBilling": False,
+    }
+    
+    # Security Settings
+    email_verified: bool = False
+    two_factor_enabled: bool = False
+    password_expires_at: Optional[datetime] = None
+    force_password_change: bool = False
+    allowed_ips: List[str] = []
+    blocked_ips: List[str] = []
+    max_sessions: int = 5
+    session_timeout: int = 3600  # seconds
+    
+    # Subscription & Billing (Extended)
+    plan_id: str = "free"
+    stripe_customer_id: Optional[str] = None
+    billing_email: Optional[str] = None
+    payment_method: Optional[str] = None
+    trial_ends_at: Optional[datetime] = None
+    subscription_ends_at: Optional[datetime] = None
+    lifetime_access: bool = False
+    discount_code: Optional[str] = None
+    custom_pricing: Optional[float] = None
+    
+    # Custom Limits (Override Plan Limits)
+    custom_limits: Dict[str, Optional[int]] = {
+        "max_chatbots": None,
+        "max_messages_per_month": None,
+        "max_file_uploads": None,
+        "max_website_sources": None,
+        "max_text_sources": None,
+        "max_storage_mb": None,
+        "max_ai_models": None,
+        "max_integrations": None,
+    }
+    
+    # Feature Flags
+    feature_flags: Dict[str, bool] = {
+        "betaFeatures": False,
+        "advancedAnalytics": False,
+        "customBranding": False,
+        "apiAccess": False,
+        "prioritySupport": False,
+        "customDomain": False,
+        "whiteLabel": False,
+        "ssoEnabled": False,
+    }
+    
+    # API Rate Limits
+    api_rate_limits: Dict[str, int] = {
+        "requests_per_minute": 60,
+        "requests_per_hour": 1000,
+        "requests_per_day": 10000,
+        "burst_limit": 100,
+    }
+    
+    # Appearance & Branding
+    theme: Literal["light", "dark", "auto"] = "light"
+    custom_css: Optional[str] = None
+    branding: Dict[str, str] = {
+        "logo_url": "",
+        "favicon_url": "",
+        "primary_color": "#7c3aed",
+        "secondary_color": "#ec4899",
+        "font_family": "Inter",
+    }
+    
+    # Notification Preferences
+    notification_preferences: Dict[str, bool] = {
+        "newChatbotCreated": True,
+        "limitReached": True,
+        "weeklyReport": True,
+        "monthlyReport": True,
+        "securityAlerts": True,
+        "systemUpdates": True,
+        "promotionalOffers": False,
+    }
+    
+    # Tracking & Analytics
+    tracking_enabled: bool = True
+    analytics_enabled: bool = True
+    last_activity_at: Optional[datetime] = None
+    onboarding_step: int = 0
+    
+    # API & Integrations
+    api_key: Optional[str] = None
+    webhook_url: Optional[str] = None
+    webhook_events: List[str] = []
+    oauth_tokens: Dict[str, Any] = {}
+    integration_preferences: Dict[str, Any] = {}
 
 
 class UserCreate(BaseModel):
