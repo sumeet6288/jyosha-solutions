@@ -418,6 +418,10 @@ const AdminDashboard = () => {
           {activeTab === 'settings' && (
             <SystemSettings backendUrl={backendUrl} />
           )}
+
+          {activeTab === 'tech' && (
+            <TechManagement backendUrl={backendUrl} />
+          )}
         </div>
       </div>
     </div>
