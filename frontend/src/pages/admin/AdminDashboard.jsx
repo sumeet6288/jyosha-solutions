@@ -331,29 +331,29 @@ const AdminDashboard = () => {
                 </div>
               )}
             </div>
-          </TabsContent>
+          )}
 
-          <TabsContent value="monitoring">
+          {activeTab === 'monitoring' && (
             <SystemMonitoring backendUrl={backendUrl} />
-          </TabsContent>
+          )}
 
-          <TabsContent value="analytics">
+          {activeTab === 'analytics' && (
             <AdvancedAnalytics backendUrl={backendUrl} />
-          </TabsContent>
+          )}
 
-          <TabsContent value="logs">
+          {activeTab === 'logs' && (
             <ActivityLogs backendUrl={backendUrl} />
-          </TabsContent>
+          )}
 
-          <TabsContent value="leads">
+          {activeTab === 'leads' && (
             <LeadsManagement />
-          </TabsContent>
+          )}
 
-          <TabsContent value="contact-sales">
+          {activeTab === 'contact-sales' && (
             <ContactSalesManagement backendUrl={backendUrl} />
-          </TabsContent>
+          )}
 
-          <TabsContent value="moderation">
+          {activeTab === 'moderation' && (
             <div className="bg-white rounded-xl border border-gray-200 p-8">
               <h2 className="text-2xl font-bold mb-6">Content Moderation</h2>
               {flaggedContent.length === 0 ? (
