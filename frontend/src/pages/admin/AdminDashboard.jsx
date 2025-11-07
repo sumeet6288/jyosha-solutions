@@ -24,6 +24,7 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [stats, setStats] = useState({
     totalUsers: 0,
     activeChatbots: 0,
