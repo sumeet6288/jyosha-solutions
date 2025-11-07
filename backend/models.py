@@ -859,7 +859,7 @@ class Integration(BaseModel):
 
 
 class IntegrationCreate(BaseModel):
-    integration_type: Literal["slack", "telegram", "discord", "whatsapp", "webchat", "api", "twilio", "messenger"]
+    integration_type: Literal["slack", "telegram", "discord", "whatsapp", "webchat", "api", "twilio", "messenger", "msteams"]
     credentials: Dict[str, str]
     metadata: Optional[Dict[str, Any]] = None
 
