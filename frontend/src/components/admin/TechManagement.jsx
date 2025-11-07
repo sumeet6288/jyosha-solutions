@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Key, Webhook, FileText, AlertTriangle, Copy, Eye, EyeOff, Plus, Trash2, RefreshCw, Download } from 'lucide-react';
+import { Key, Webhook, FileText, AlertTriangle, Copy, Eye, EyeOff, Plus, Trash2, RefreshCw, Download, Check, X } from 'lucide-react';
 import { Button } from '../ui/button';
+import axios from 'axios';
 
 const TechManagement = ({ backendUrl }) => {
   const [apiKeys, setApiKeys] = useState([]);
@@ -10,86 +11,91 @@ const TechManagement = ({ backendUrl }) => {
   const [showNewKeyModal, setShowNewKeyModal] = useState(false);
   const [showNewWebhookModal, setShowNewWebhookModal] = useState(false);
   const [visibleKeys, setVisibleKeys] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [newKeyName, setNewKeyName] = useState('');
+  const [newKeyDescription, setNewKeyDescription] = useState('');
+  const [newKeyExpiry, setNewKeyExpiry] = useState('');
+  const [newWebhookUrl, setNewWebhookUrl] = useState('');
+  const [newWebhookEvents, setNewWebhookEvents] = useState([]);
+  const [newWebhookDescription, setNewWebhookDescription] = useState('');
+  const [techStats, setTechStats] = useState(null);
+  const [copiedKey, setCopiedKey] = useState(null);
+  const [newlyCreatedKey, setNewlyCreatedKey] = useState(null);
 
-  // Mock data - replace with actual API calls
+  const availableEvents = [
+    'user.created', 'user.updated', 'user.deleted',
+    'chatbot.created', 'chatbot.updated', 'chatbot.deleted',
+    'conversation.started', 'conversation.completed',
+    'message.sent', 'message.received',
+    'source.uploaded', 'source.processed',
+    'error.occurred'
+  ];
+
   useEffect(() => {
-    // Fetch API keys
-    setApiKeys([
-      {
-        id: '1',
-        name: 'Production API Key',
-        key: 'pk_live_51234567890abcdef',
-        created_at: new Date().toISOString(),
-        last_used: new Date().toISOString(),
-        usage_count: 1234
-      },
-      {
-        id: '2',
-        name: 'Development API Key',
-        key: 'pk_test_98765432109fedcba',
-        created_at: new Date().toISOString(),
-        last_used: new Date().toISOString(),
-        usage_count: 567
-      }
-    ]);
-
-    // Fetch webhooks
-    setWebhooks([
-      {
-        id: '1',
-        url: 'https://api.example.com/webhook',
-        events: ['user.created', 'chatbot.updated'],
-        status: 'active',
-        created_at: new Date().toISOString(),
-        success_rate: 99.8
-      }
-    ]);
-
-    // Fetch system logs
-    setSystemLogs([
-      {
-        id: '1',
-        timestamp: new Date().toISOString(),
-        level: 'info',
-        message: 'User authentication successful',
-        user: 'admin@botsmith.com'
-      },
-      {
-        id: '2',
-        timestamp: new Date(Date.now() - 60000).toISOString(),
-        level: 'warning',
-        message: 'High memory usage detected',
-        details: 'Memory: 85%'
-      },
-      {
-        id: '3',
-        timestamp: new Date(Date.now() - 120000).toISOString(),
-        level: 'info',
-        message: 'New chatbot created',
-        user: 'demo-user-123'
-      }
-    ]);
-
-    // Fetch errors
-    setErrors([
-      {
-        id: '1',
-        timestamp: new Date().toISOString(),
-        type: 'API Error',
-        message: 'Failed to connect to OpenAI API',
-        stack: 'Error: Connection timeout at line 245',
-        count: 3
-      },
-      {
-        id: '2',
-        timestamp: new Date(Date.now() - 300000).toISOString(),
-        type: 'Database Error',
-        message: 'MongoDB connection failed',
-        stack: 'MongoError: Connection refused at line 89',
-        count: 1
-      }
-    ]);
+    fetchAllData();
   }, [backendUrl]);
+
+  const fetchAllData = async () => {
+    setLoading(true);
+    try {
+      await Promise.all([
+        fetchApiKeys(),
+        fetchWebhooks(),
+        fetchSystemLogs(),
+        fetchErrors(),
+        fetchTechStats()
+      ]);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchApiKeys = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/tech/api-keys`);
+      setApiKeys(response.data);
+    } catch (error) {
+      console.error('Error fetching API keys:', error);
+    }
+  };
+
+  const fetchWebhooks = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/tech/webhooks`);
+      setWebhooks(response.data);
+    } catch (error) {
+      console.error('Error fetching webhooks:', error);
+    }
+  };
+
+  const fetchSystemLogs = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/tech/system-logs?limit=50`);
+      setSystemLogs(response.data);
+    } catch (error) {
+      console.error('Error fetching system logs:', error);
+    }
+  };
+
+  const fetchErrors = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/tech/errors?resolved=false&limit=50`);
+      setErrors(response.data);
+    } catch (error) {
+      console.error('Error fetching errors:', error);
+    }
+  };
+
+  const fetchTechStats = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/tech/tech-stats`);
+      setTechStats(response.data);
+    } catch (error) {
+      console.error('Error fetching tech stats:', error);
+    }
+  };
 
   const toggleKeyVisibility = (keyId) => {
     setVisibleKeys(prev => ({
