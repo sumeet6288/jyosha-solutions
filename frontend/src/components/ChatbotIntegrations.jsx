@@ -111,7 +111,8 @@ const ChatbotIntegrations = ({ chatbot }) => {
       description: 'Integrate via REST API for custom applications',
       icon: <Zap className="w-6 h-6" />,
       gradient: 'from-orange-500 to-orange-600',
-      fields: []
+      fields: [],
+      isAPIIntegration: true
     },
     {
       id: 'twilio',
