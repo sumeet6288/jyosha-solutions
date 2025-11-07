@@ -694,6 +694,7 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
                               onClick={() => {
                                 setViewingUser(user);
                                 setShowEditModal(true);
+                                setOpenDropdownId(null);
                               }}
                               className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2"
                             >
@@ -701,7 +702,10 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
                               Edit User
                             </button>
                             <button
-                              onClick={() => handleExportUserData(user.user_id)}
+                              onClick={() => {
+                                handleExportUserData(user.user_id);
+                                setOpenDropdownId(null);
+                              }}
                               className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2"
                             >
                               <FileDown className="w-4 h-4" />
@@ -711,6 +715,7 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
                               onClick={() => {
                                 setViewingUser(user);
                                 setShowNotificationModal(true);
+                                setOpenDropdownId(null);
                               }}
                               className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2"
                             >
