@@ -124,6 +124,20 @@ async def test_integration_connection(integration_type: str, credentials: dict) 
                 return {"success": False, "message": "Missing page access token"}
             return {"success": True, "message": "Messenger credentials validated"}
         
+        elif integration_type == "msteams":
+            # Test MS Teams Bot credentials
+            if not credentials.get("app_id") or not credentials.get("app_password"):
+                return {"success": False, "message": "Missing App ID or App Password"}
+            
+            # Import and validate credentials
+            from services.msteams_service import MSTeamsService
+            teams_service = MSTeamsService(
+                credentials.get("app_id"),
+                credentials.get("app_password")
+            )
+            result = await teams_service.validate_credentials()
+            return result
+        
         else:
             return {"success": False, "message": "Unknown integration type"}
             
