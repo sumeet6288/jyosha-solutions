@@ -277,7 +277,7 @@ const AdminDashboard = () => {
           )}
 
           {activeTab === 'users' && (
-            <EnhancedUsersManagement backendUrl={backendUrl} />
+            <AdvancedUsersManagement backendUrl={backendUrl} />
           )}
 
           {activeTab === 'chatbots' && (
