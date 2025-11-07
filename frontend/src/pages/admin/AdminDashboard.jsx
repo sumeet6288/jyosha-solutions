@@ -236,45 +236,45 @@ const AdminDashboard = () => {
                 )}
               </div>
             </div>
-          </TabsContent>
+          )}
 
-          <TabsContent value="advanced-search">
+          {activeTab === 'advanced-search' && (
             <AdvancedUserSearch backendUrl={backendUrl} />
-          </TabsContent>
+          )}
 
-          <TabsContent value="segmentation">
+          {activeTab === 'segmentation' && (
             <UserSegmentation backendUrl={backendUrl} />
-          </TabsContent>
+          )}
 
-          <TabsContent value="email-campaigns">
+          {activeTab === 'email-campaigns' && (
             <EmailCampaignBuilder backendUrl={backendUrl} />
-          </TabsContent>
+          )}
 
-          <TabsContent value="lifecycle">
+          {activeTab === 'lifecycle' && (
             <LifecycleManagement backendUrl={backendUrl} />
-          </TabsContent>
+          )}
 
-          <TabsContent value="impersonation">
+          {activeTab === 'impersonation' && (
             <ImpersonationPanel backendUrl={backendUrl} />
-          </TabsContent>
+          )}
 
-          <TabsContent value="revenue">
+          {activeTab === 'revenue' && (
             <RevenueDashboard backendUrl={backendUrl} />
-          </TabsContent>
+          )}
 
-          <TabsContent value="users">
+          {activeTab === 'users' && (
             <EnhancedUsersManagement backendUrl={backendUrl} />
-          </TabsContent>
+          )}
 
-          <TabsContent value="chatbots">
+          {activeTab === 'chatbots' && (
             <ChatbotsManagement backendUrl={backendUrl} />
-          </TabsContent>
+          )}
 
-          <TabsContent value="conversations">
+          {activeTab === 'conversations' && (
             <ConversationsManagement backendUrl={backendUrl} />
-          </TabsContent>
+          )}
 
-          <TabsContent value="sources">
+          {activeTab === 'sources' && (
             <div className="bg-white rounded-xl border border-gray-200 p-8">
               <h2 className="text-2xl font-bold mb-6">Sources Management</h2>
               {sources.length === 0 ? (
