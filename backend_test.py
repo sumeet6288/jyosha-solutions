@@ -149,57 +149,50 @@ except Exception as e:
     exit(1)
 
 # ============================================================================
-# TEST 3: Update admin user via PUT /api/admin/users/admin-001/ultimate-update
+# TEST 3: Verify initial subscription is created with Free plan
 # ============================================================================
-print("\n[TEST 3] Updating admin user via ultimate-update endpoint...")
+print("\n[TEST 3] Verifying initial subscription creation...")
 try:
-    headers = {"Authorization": f"Bearer {admin_token}"}
-    update_payload = {
-        "company": "Test Corp Inc",
-        "job_title": "Senior Developer", 
-        "bio": "This is a test bio from ultimate edit",
-        "timezone": "America/Los_Angeles",
-        "tags": ["test-tag-1", "test-tag-2"],
-        "custom_limits": {
-            "max_chatbots": 50,
-            "max_messages_per_month": 500000
+    # Login as the test user to check their subscription
+    login_response = requests.post(
+        f"{BACKEND_URL}/auth/login",
+        json={
+            "email": test_user_email,
+            "password": "testpass123"
         },
-        "feature_flags": {
-            "betaFeatures": True,
-            "advancedAnalytics": True
-        }
-    }
-    
-    response = requests.put(
-        f"{BACKEND_URL}/admin/users/{ADMIN_USER_ID}/ultimate-update",
-        headers=headers,
-        json=update_payload,
         timeout=10
     )
     
-    if response.status_code == 200:
-        update_result = response.json()
+    if login_response.status_code == 200:
+        user_token = login_response.json().get("access_token")
+        user_headers = {"Authorization": f"Bearer {user_token}"}
         
-        # Verify update was successful
-        checks = []
-        checks.append(("Success flag", update_result.get("success") == True))
-        checks.append(("Has message", update_result.get("message") is not None))
-        checks.append(("User data returned", update_result.get("user") is not None))
-        checks.append(("Updated fields count", update_result.get("user", {}).get("updated_fields", 0) > 0))
+        # Check current subscription
+        current_response = requests.get(
+            f"{BACKEND_URL}/plans/current",
+            headers=user_headers,
+            timeout=10
+        )
         
-        all_passed = all(check[1] for check in checks)
-        details = f"Success: {update_result.get('success')}, Updated fields: {update_result.get('user', {}).get('updated_fields')}"
-        log_test("Ultimate update admin user", all_passed, details)
-        
-        print(f"   Update response: {update_result.get('message')}")
+        if current_response.status_code == 200:
+            current_data = current_response.json()
+            subscription = current_data.get("subscription", {})
+            plan = current_data.get("plan", {})
+            
+            checks = []
+            checks.append(("Has subscription", subscription is not None))
+            checks.append(("Plan ID is free", subscription.get("plan_id") == "free"))
+            checks.append(("Plan name is Free", plan.get("name") == "Free"))
+            
+            all_passed = all(check[1] for check in checks)
+            details = f"Subscription plan_id: {subscription.get('plan_id')}, Plan name: {plan.get('name')}"
+            log_test("Initial subscription verification", all_passed, details)
+        else:
+            log_test("Initial subscription verification", False, f"Status: {current_response.status_code}")
     else:
-        log_test("Ultimate update admin user", False, f"Status: {response.status_code}, Response: {response.text}")
-        print("Cannot proceed without successful update. Exiting...")
-        exit(1)
+        log_test("Initial subscription verification", False, f"User login failed: {login_response.status_code}")
 except Exception as e:
-    log_test("Ultimate update admin user", False, f"Exception: {str(e)}")
-    print("Cannot proceed without successful update. Exiting...")
-    exit(1)
+    log_test("Initial subscription verification", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 4: Verify the update was successful in the database (direct check)
