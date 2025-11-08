@@ -447,7 +447,7 @@ Shows 6 comprehensive sections:
 - Click "Users" in admin sidebar
 
 ### 3. Direct URL
-- Navigate to: `https://deps-viewer.preview.emergentagent.com/admin`
+- Navigate to: `https://setup-display.preview.emergentagent.com/admin`
 - Click "Users" in sidebar
 - Component loads with user data
 
@@ -512,7 +512,7 @@ Shows 6 comprehensive sections:
 
 ---
 
-**Test URL**: https://deps-viewer.preview.emergentagent.com/admin
+**Test URL**: https://setup-display.preview.emergentagent.com/admin
 **Test Path**: Admin Panel → Users Tab
 **Current Users**: 2 active users in database
 **Last Verified**: November 8, 2025

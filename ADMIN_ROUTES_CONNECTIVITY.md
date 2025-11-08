@@ -17,7 +17,7 @@
 - **Status**: ✅ **CONNECTED**
 
 ### 3. Direct URL Access
-- **URL**: `https://deps-viewer.preview.emergentagent.com/admin`
+- **URL**: `https://setup-display.preview.emergentagent.com/admin`
 - **Status**: ✅ **ACCESSIBLE**
 
 ---
@@ -343,4 +343,4 @@ curl http://localhost:8001/api/admin/users
 
 **Generated**: November 8, 2025
 **Status**: All admin routes verified and connected
-**Access URL**: https://deps-viewer.preview.emergentagent.com/admin
+**Access URL**: https://setup-display.preview.emergentagent.com/admin
