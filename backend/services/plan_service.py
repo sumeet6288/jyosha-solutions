@@ -9,8 +9,9 @@ class PlanService:
     
     def __init__(self):
         mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
+        db_name = os.environ.get('DB_NAME', 'chatbase_db')
         self.client = AsyncIOMotorClient(mongo_url)
-        self.db = self.client.botsmith
+        self.db = self.client[db_name]
         self.plans_collection = self.db.plans
         self.subscriptions_collection = self.db.subscriptions
         self.users_collection = self.db.users
