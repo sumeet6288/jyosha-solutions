@@ -106,45 +106,47 @@ except Exception as e:
     exit(1)
 
 # ============================================================================
-# TEST 2: Create MS Teams Integration
+# TEST 2: Get admin user's current data via GET /api/auth/me
 # ============================================================================
-print("\n[TEST 2] Creating MS Teams integration...")
+print("\n[TEST 2] Getting admin user's current data...")
 try:
-    response = requests.post(
-        f"{BACKEND_URL}/integrations/{chatbot_id}",
-        json={
-            "integration_type": "msteams",
-            "credentials": {
-                "app_id": "test-app-id-12345",
-                "app_password": "test-app-password-67890"
-            },
-            "metadata": {
-                "description": "Test MS Teams integration"
-            }
-        },
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    response = requests.get(
+        f"{BACKEND_URL}/auth/me",
+        headers=headers,
         timeout=10
     )
     
     if response.status_code == 200:
-        integration_data = response.json()
-        integration_id = integration_data.get("id")
+        original_user_data = response.json()
         
-        # Verify response structure
+        # Verify we got the admin user
         checks = []
-        checks.append(("Has ID", integration_data.get("id") is not None))
-        checks.append(("Correct chatbot_id", integration_data.get("chatbot_id") == chatbot_id))
-        checks.append(("Correct type", integration_data.get("integration_type") == "msteams"))
-        checks.append(("Has credentials flag", integration_data.get("has_credentials") == True))
-        checks.append(("Status is pending", integration_data.get("status") == "pending"))
-        checks.append(("Enabled is False", integration_data.get("enabled") == False))
+        checks.append(("Correct user ID", original_user_data.get("id") == ADMIN_USER_ID))
+        checks.append(("Correct email", original_user_data.get("email") == ADMIN_EMAIL))
+        checks.append(("Has name", original_user_data.get("name") is not None))
+        checks.append(("Is admin role", original_user_data.get("role") == "admin"))
         
         all_passed = all(check[1] for check in checks)
-        details = f"Integration ID: {integration_id}, Checks: {checks}"
-        log_test("Create MS Teams Integration", all_passed, details)
+        details = f"User ID: {original_user_data.get('id')}, Email: {original_user_data.get('email')}, Role: {original_user_data.get('role')}"
+        log_test("Get admin user current data", all_passed, details)
+        
+        # Store original values for comparison
+        print(f"   Original company: {original_user_data.get('company')}")
+        print(f"   Original job_title: {original_user_data.get('job_title')}")
+        print(f"   Original bio: {original_user_data.get('bio')}")
+        print(f"   Original timezone: {original_user_data.get('timezone')}")
+        print(f"   Original tags: {original_user_data.get('tags')}")
+        print(f"   Original custom_limits: {original_user_data.get('custom_limits')}")
+        print(f"   Original feature_flags: {original_user_data.get('feature_flags')}")
     else:
-        log_test("Create MS Teams Integration", False, f"Status: {response.status_code}, Response: {response.text}")
+        log_test("Get admin user current data", False, f"Status: {response.status_code}, Response: {response.text}")
+        print("Cannot proceed without original user data. Exiting...")
+        exit(1)
 except Exception as e:
-    log_test("Create MS Teams Integration", False, f"Exception: {str(e)}")
+    log_test("Get admin user current data", False, f"Exception: {str(e)}")
+    print("Cannot proceed without original user data. Exiting...")
+    exit(1)
 
 # ============================================================================
 # TEST 3: Verify integration was created (GET integrations)
