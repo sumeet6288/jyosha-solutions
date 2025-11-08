@@ -1647,11 +1647,38 @@ async def ultimate_update_user(user_id: str, update_data: Dict[str, Any]):
             # CRITICAL FIX: Update subscription plan_id if changed
             if "plan_id" in update_data:
                 subscriptions_collection = db_instance['subscriptions']
-                await subscriptions_collection.update_one(
-                    {"user_id": user_id},
-                    {"$set": {"plan_id": update_data["plan_id"], "updated_at": datetime.now(timezone.utc)}}
-                )
-                logger.info(f"Updated subscription plan_id to {update_data['plan_id']} for user {user_id}")
+                # Check if subscription exists
+                existing_sub = await subscriptions_collection.find_one({"user_id": user_id})
+                if existing_sub:
+                    # Update existing subscription
+                    await subscriptions_collection.update_one(
+                        {"user_id": user_id},
+                        {"$set": {"plan_id": update_data["plan_id"], "updated_at": datetime.now(timezone.utc)}}
+                    )
+                    logger.info(f"Updated subscription plan_id to {update_data['plan_id']} for user {user_id}")
+                else:
+                    # Create new subscription
+                    from datetime import datetime as dt
+                    new_subscription = {
+                        "user_id": user_id,
+                        "plan_id": update_data["plan_id"],
+                        "status": "active",
+                        "started_at": dt.utcnow(),
+                        "expires_at": None,
+                        "auto_renew": True,
+                        "usage": {
+                            "chatbots_count": 0,
+                            "messages_this_month": 0,
+                            "file_uploads_count": 0,
+                            "website_sources_count": 0,
+                            "text_sources_count": 0,
+                            "last_reset": dt.utcnow()
+                        },
+                        "created_at": dt.utcnow(),
+                        "updated_at": dt.utcnow()
+                    }
+                    await subscriptions_collection.insert_one(new_subscription)
+                    logger.info(f"Created new subscription with plan_id {update_data['plan_id']} for user {user_id}")
             
             # Log activity
             await log_activity(
