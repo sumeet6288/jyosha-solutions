@@ -1,6 +1,9 @@
 """
-CRITICAL TESTING: Ultimate Edit Admin Panel → Dashboard Data Reflection
-Tests the complete flow of data synchronization between admin panel ultimate edit and user dashboard.
+CRITICAL TESTING: Admin Panel Plan Change Flow → User Dashboard Reflection
+Tests the complete flow of admin changing user plans and verifying it reflects on user dashboard.
+
+This test specifically addresses the bug where admin panel plan changes weren't reflecting 
+on user dashboard because admin panel updated users.plan_id but dashboard reads from subscriptions.plan_id.
 """
 import requests
 import json
@@ -11,7 +14,6 @@ from datetime import datetime
 BACKEND_URL = "https://app-integration-14.preview.emergentagent.com/api"
 ADMIN_EMAIL = "admin@botsmith.com"
 ADMIN_PASSWORD = "admin123"
-ADMIN_USER_ID = "admin-001"
 
 # Test results tracking
 test_results = {
