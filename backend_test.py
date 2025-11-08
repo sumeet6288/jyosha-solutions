@@ -45,7 +45,7 @@ def log_test(test_name, passed, details=""):
 def print_summary():
     """Print test summary"""
     print("\n" + "="*80)
-    print("ULTIMATE EDIT ADMIN PANEL → DASHBOARD DATA REFLECTION TEST SUMMARY")
+    print("ADMIN PANEL PLAN CHANGE FLOW → USER DASHBOARD REFLECTION TEST SUMMARY")
     print("="*80)
     print(f"Total Tests: {test_results['total']}")
     print(f"Passed: {test_results['passed']} ✅")
