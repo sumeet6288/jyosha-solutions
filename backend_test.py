@@ -74,33 +74,35 @@ print(f"Test Time: {datetime.now().isoformat()}")
 print("="*80 + "\n")
 
 # ============================================================================
-# TEST 1: Create a test chatbot first
+# TEST 1: Login as admin user
 # ============================================================================
-print("\n[SETUP] Creating test chatbot...")
+print("\n[TEST 1] Login as admin user...")
 try:
     response = requests.post(
-        f"{BACKEND_URL}/chatbots",
+        f"{BACKEND_URL}/auth/login",
         json={
-            "name": "MS Teams Test Bot",
-            "description": "Test chatbot for MS Teams integration testing",
-            "model": "gpt-4o-mini",
-            "provider": "openai",
-            "system_message": "You are a helpful MS Teams assistant."
+            "email": ADMIN_EMAIL,
+            "password": ADMIN_PASSWORD
         },
         timeout=10
     )
     
-    if response.status_code in [200, 201]:
-        chatbot_data = response.json()
-        chatbot_id = chatbot_data.get("id")
-        log_test("Setup: Create test chatbot", True, f"Chatbot ID: {chatbot_id}")
+    if response.status_code == 200:
+        token_data = response.json()
+        admin_token = token_data.get("access_token")
+        if admin_token:
+            log_test("Admin login", True, f"Successfully logged in as admin")
+        else:
+            log_test("Admin login", False, "No access token received")
+            print("Cannot proceed without admin token. Exiting...")
+            exit(1)
     else:
-        log_test("Setup: Create test chatbot", False, f"Status: {response.status_code}, Response: {response.text}")
-        print("Cannot proceed without chatbot. Exiting...")
+        log_test("Admin login", False, f"Status: {response.status_code}, Response: {response.text}")
+        print("Cannot proceed without admin token. Exiting...")
         exit(1)
 except Exception as e:
-    log_test("Setup: Create test chatbot", False, f"Exception: {str(e)}")
-    print("Cannot proceed without chatbot. Exiting...")
+    log_test("Admin login", False, f"Exception: {str(e)}")
+    print("Cannot proceed without admin token. Exiting...")
     exit(1)
 
 # ============================================================================
