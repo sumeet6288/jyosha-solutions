@@ -151,6 +151,18 @@ const UserProfileDropdown = ({ user, onLogout }) => {
           </div>
         </DropdownMenuItem>
         
+        <DropdownMenuItem 
+          onClick={() => navigate('/admin')} 
+          className="cursor-pointer rounded px-2 py-1.5 hover:bg-gradient-to-r hover:from-red-50 hover:to-orange-50 transition-all duration-200 group mb-0.5"
+        >
+          <div className="flex items-center gap-2 w-full">
+            <div className="w-6 h-6 rounded bg-red-100 group-hover:bg-red-200 flex items-center justify-center transition-colors">
+              <Shield className="h-3 w-3 text-red-600" />
+            </div>
+            <span className="text-xs font-medium text-gray-700 group-hover:text-red-700 transition-colors">Admin Panel</span>
+          </div>
+        </DropdownMenuItem>
+        
         <DropdownMenuSeparator className="my-1 bg-gray-100" />
         
         <DropdownMenuItem 
