@@ -1644,6 +1644,15 @@ async def ultimate_update_user(user_id: str, update_data: Dict[str, Any]):
         )
         
         if result.modified_count > 0 or result.matched_count > 0:
+            # CRITICAL FIX: Update subscription plan_id if changed
+            if "plan_id" in update_data:
+                subscriptions_collection = db_instance['subscriptions']
+                await subscriptions_collection.update_one(
+                    {"user_id": user_id},
+                    {"$set": {"plan_id": update_data["plan_id"], "updated_at": datetime.now(timezone.utc)}}
+                )
+                logger.info(f"Updated subscription plan_id to {update_data['plan_id']} for user {user_id}")
+            
             # Log activity
             await log_activity(
                 user_id=user_id,
