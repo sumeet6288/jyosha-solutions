@@ -149,27 +149,57 @@ except Exception as e:
     exit(1)
 
 # ============================================================================
-# TEST 3: Verify integration was created (GET integrations)
+# TEST 3: Update admin user via PUT /api/admin/users/admin-001/ultimate-update
 # ============================================================================
-print("\n[TEST 3] Verifying integration in list...")
+print("\n[TEST 3] Updating admin user via ultimate-update endpoint...")
 try:
-    response = requests.get(
-        f"{BACKEND_URL}/integrations/{chatbot_id}",
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    update_payload = {
+        "company": "Test Corp Inc",
+        "job_title": "Senior Developer", 
+        "bio": "This is a test bio from ultimate edit",
+        "timezone": "America/Los_Angeles",
+        "tags": ["test-tag-1", "test-tag-2"],
+        "custom_limits": {
+            "max_chatbots": 50,
+            "max_messages_per_month": 500000
+        },
+        "feature_flags": {
+            "betaFeatures": True,
+            "advancedAnalytics": True
+        }
+    }
+    
+    response = requests.put(
+        f"{BACKEND_URL}/admin/users/{ADMIN_USER_ID}/ultimate-update",
+        headers=headers,
+        json=update_payload,
         timeout=10
     )
     
     if response.status_code == 200:
-        integrations = response.json()
-        msteams_integration = next((i for i in integrations if i.get("integration_type") == "msteams"), None)
+        update_result = response.json()
         
-        if msteams_integration:
-            log_test("Get integrations list", True, f"Found MS Teams integration: {msteams_integration.get('id')}")
-        else:
-            log_test("Get integrations list", False, "MS Teams integration not found in list")
+        # Verify update was successful
+        checks = []
+        checks.append(("Success flag", update_result.get("success") == True))
+        checks.append(("Has message", update_result.get("message") is not None))
+        checks.append(("User data returned", update_result.get("user") is not None))
+        checks.append(("Updated fields count", update_result.get("user", {}).get("updated_fields", 0) > 0))
+        
+        all_passed = all(check[1] for check in checks)
+        details = f"Success: {update_result.get('success')}, Updated fields: {update_result.get('user', {}).get('updated_fields')}"
+        log_test("Ultimate update admin user", all_passed, details)
+        
+        print(f"   Update response: {update_result.get('message')}")
     else:
-        log_test("Get integrations list", False, f"Status: {response.status_code}, Response: {response.text}")
+        log_test("Ultimate update admin user", False, f"Status: {response.status_code}, Response: {response.text}")
+        print("Cannot proceed without successful update. Exiting...")
+        exit(1)
 except Exception as e:
-    log_test("Get integrations list", False, f"Exception: {str(e)}")
+    log_test("Ultimate update admin user", False, f"Exception: {str(e)}")
+    print("Cannot proceed without successful update. Exiting...")
+    exit(1)
 
 # ============================================================================
 # TEST 4: Test MS Teams Connection (with mock credentials)
