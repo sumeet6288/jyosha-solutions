@@ -165,7 +165,7 @@ function AppContent() {
             <Route path="/embed/:id" element={<EmbedChat />} />
             <Route path="/chat/:id" element={<ChatPage />} />
             <Route path="/public-chat/:chatbotId" element={<PublicChat />} />
-            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </NotificationProvider>
