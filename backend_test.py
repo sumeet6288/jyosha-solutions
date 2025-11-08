@@ -258,34 +258,79 @@ except Exception as e:
     log_test("Verify update in database", False, f"Exception: {str(e)}")
 
 # ============================================================================
-# TEST 5: Setup MS Teams Webhook
+# TEST 5: Get updated user data via GET /api/auth/me (final verification)
 # ============================================================================
-print("\n[TEST 5] Setting up MS Teams webhook...")
+print("\n[TEST 5] Final verification - Get updated user data via /api/auth/me...")
 try:
-    response = requests.post(
-        f"{BACKEND_URL}/msteams/{chatbot_id}/setup-webhook",
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    response = requests.get(
+        f"{BACKEND_URL}/auth/me",
+        headers=headers,
         timeout=10
     )
     
     if response.status_code == 200:
-        webhook_data = response.json()
-        webhook_url = webhook_data.get("webhook_url")
-        instructions = webhook_data.get("instructions")
-        status = webhook_data.get("status")
+        final_user_data = response.json()
         
-        checks = []
-        checks.append(("Has webhook_url", webhook_url is not None))
-        checks.append(("Webhook URL format", webhook_url and "/api/msteams/webhook/" in webhook_url))
-        checks.append(("Has instructions", instructions is not None and len(instructions) > 0))
-        checks.append(("Status is configured", status == "configured"))
+        # Compare with original data to ensure changes persisted
+        changes_detected = []
         
-        all_passed = all(check[1] for check in checks)
-        details = f"Webhook URL: {webhook_url}, Status: {status}"
-        log_test("Setup MS Teams webhook", all_passed, details)
+        # Check each field that should have changed
+        if final_user_data.get("company") != original_user_data.get("company"):
+            changes_detected.append(f"company: {original_user_data.get('company')} → {final_user_data.get('company')}")
+        
+        if final_user_data.get("job_title") != original_user_data.get("job_title"):
+            changes_detected.append(f"job_title: {original_user_data.get('job_title')} → {final_user_data.get('job_title')}")
+        
+        if final_user_data.get("bio") != original_user_data.get("bio"):
+            changes_detected.append(f"bio: {original_user_data.get('bio')} → {final_user_data.get('bio')}")
+        
+        if final_user_data.get("timezone") != original_user_data.get("timezone"):
+            changes_detected.append(f"timezone: {original_user_data.get('timezone')} → {final_user_data.get('timezone')}")
+        
+        if final_user_data.get("tags") != original_user_data.get("tags"):
+            changes_detected.append(f"tags: {original_user_data.get('tags')} → {final_user_data.get('tags')}")
+        
+        if final_user_data.get("custom_limits") != original_user_data.get("custom_limits"):
+            changes_detected.append(f"custom_limits: {original_user_data.get('custom_limits')} → {final_user_data.get('custom_limits')}")
+        
+        if final_user_data.get("feature_flags") != original_user_data.get("feature_flags"):
+            changes_detected.append(f"feature_flags: {original_user_data.get('feature_flags')} → {final_user_data.get('feature_flags')}")
+        
+        # Verify expected values are present
+        expected_checks = []
+        expected_checks.append(("Company is Test Corp Inc", final_user_data.get("company") == "Test Corp Inc"))
+        expected_checks.append(("Job title is Senior Developer", final_user_data.get("job_title") == "Senior Developer"))
+        expected_checks.append(("Bio contains test text", final_user_data.get("bio") == "This is a test bio from ultimate edit"))
+        expected_checks.append(("Timezone is America/Los_Angeles", final_user_data.get("timezone") == "America/Los_Angeles"))
+        expected_checks.append(("Tags contain test tags", final_user_data.get("tags") == ["test-tag-1", "test-tag-2"]))
+        
+        custom_limits = final_user_data.get("custom_limits", {})
+        expected_checks.append(("Custom limits max_chatbots is 50", custom_limits.get("max_chatbots") == 50))
+        expected_checks.append(("Custom limits max_messages_per_month is 500000", custom_limits.get("max_messages_per_month") == 500000))
+        
+        feature_flags = final_user_data.get("feature_flags", {})
+        expected_checks.append(("Feature flags betaFeatures is True", feature_flags.get("betaFeatures") == True))
+        expected_checks.append(("Feature flags advancedAnalytics is True", feature_flags.get("advancedAnalytics") == True))
+        
+        all_expected_passed = all(check[1] for check in expected_checks)
+        failed_expected = [check[0] for check in expected_checks if not check[1]]
+        
+        if all_expected_passed and len(changes_detected) > 0:
+            details = f"✅ ALL EXPECTED FIELDS UPDATED. Changes: {len(changes_detected)} fields"
+            log_test("Final verification - Data persistence", True, details)
+        else:
+            details = f"❌ Issues detected. Expected checks failed: {failed_expected}, Changes detected: {len(changes_detected)}"
+            log_test("Final verification - Data persistence", False, details)
+        
+        print(f"   Changes detected: {len(changes_detected)}")
+        for change in changes_detected:
+            print(f"     - {change}")
+            
     else:
-        log_test("Setup MS Teams webhook", False, f"Status: {response.status_code}, Response: {response.text}")
+        log_test("Final verification - Data persistence", False, f"Status: {response.status_code}, Response: {response.text}")
 except Exception as e:
-    log_test("Setup MS Teams webhook", False, f"Exception: {str(e)}")
+    log_test("Final verification - Data persistence", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 6: Get MS Teams Webhook Info
