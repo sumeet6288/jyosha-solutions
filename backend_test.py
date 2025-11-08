@@ -1,6 +1,6 @@
 """
-Comprehensive Backend Testing for MS Teams Integration APIs
-Tests all MS Teams integration endpoints with mock authentication
+CRITICAL TESTING: Ultimate Edit Admin Panel → Dashboard Data Reflection
+Tests the complete flow of data synchronization between admin panel ultimate edit and user dashboard.
 """
 import requests
 import json
@@ -9,7 +9,9 @@ from datetime import datetime
 
 # Configuration
 BACKEND_URL = "https://ready-dep-setup.preview.emergentagent.com/api"
-MOCK_USER_ID = "demo-user-123"
+ADMIN_EMAIL = "admin@botsmith.com"
+ADMIN_PASSWORD = "admin123"
+ADMIN_USER_ID = "admin-001"
 
 # Test results tracking
 test_results = {
