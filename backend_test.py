@@ -8,7 +8,7 @@ import uuid
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://quick-preview-51.preview.emergentagent.com/api"
+BACKEND_URL = "https://deps-viewer.preview.emergentagent.com/api"
 MOCK_USER_ID = "demo-user-123"
 
 # Test results tracking
