@@ -43,7 +43,7 @@ def log_test(test_name, passed, details=""):
 def print_summary():
     """Print test summary"""
     print("\n" + "="*80)
-    print("MS TEAMS INTEGRATION TEST SUMMARY")
+    print("ULTIMATE EDIT ADMIN PANEL → DASHBOARD DATA REFLECTION TEST SUMMARY")
     print("="*80)
     print(f"Total Tests: {test_results['total']}")
     print(f"Passed: {test_results['passed']} ✅")
@@ -60,14 +60,16 @@ def print_summary():
                     print(f"    {test['details']}")
 
 # Global variables for test data
-chatbot_id = None
-integration_id = None
+admin_token = None
+original_user_data = None
+updated_user_data = None
 
 print("="*80)
-print("STARTING MS TEAMS INTEGRATION API TESTS")
+print("CRITICAL TESTING: Ultimate Edit Admin Panel → Dashboard Data Reflection")
 print("="*80)
 print(f"Backend URL: {BACKEND_URL}")
-print(f"Mock User ID: {MOCK_USER_ID}")
+print(f"Admin Email: {ADMIN_EMAIL}")
+print(f"Admin User ID: {ADMIN_USER_ID}")
 print(f"Test Time: {datetime.now().isoformat()}")
 print("="*80 + "\n")
 
