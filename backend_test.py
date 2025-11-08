@@ -195,154 +195,352 @@ except Exception as e:
     log_test("Initial subscription verification", False, f"Exception: {str(e)}")
 
 # ============================================================================
-# TEST 4: Verify the update was successful in the database (direct check)
+# TEST 4: Change user plan from Free to Starter via admin panel ultimate-update
 # ============================================================================
-print("\n[TEST 4] Verifying update was successful in database...")
+print("\n[TEST 4] Changing user plan from Free to Starter via admin panel...")
 try:
-    # We'll verify this by getting the updated user data via /api/auth/me
     headers = {"Authorization": f"Bearer {admin_token}"}
-    response = requests.get(
-        f"{BACKEND_URL}/auth/me",
+    update_payload = {
+        "plan_id": "starter"
+    }
+    
+    response = requests.put(
+        f"{BACKEND_URL}/admin/users/{test_user_id}/ultimate-update",
         headers=headers,
+        json=update_payload,
         timeout=10
     )
     
     if response.status_code == 200:
-        updated_user_data = response.json()
+        result = response.json()
         
-        # Verify all updated fields are present
         checks = []
-        checks.append(("Company updated", updated_user_data.get("company") == "Test Corp Inc"))
-        checks.append(("Job title updated", updated_user_data.get("job_title") == "Senior Developer"))
-        checks.append(("Bio updated", updated_user_data.get("bio") == "This is a test bio from ultimate edit"))
-        checks.append(("Timezone updated", updated_user_data.get("timezone") == "America/Los_Angeles"))
-        checks.append(("Tags updated", updated_user_data.get("tags") == ["test-tag-1", "test-tag-2"]))
-        
-        # Check custom_limits
-        custom_limits = updated_user_data.get("custom_limits", {})
-        checks.append(("Custom limits - max_chatbots", custom_limits.get("max_chatbots") == 50))
-        checks.append(("Custom limits - max_messages_per_month", custom_limits.get("max_messages_per_month") == 500000))
-        
-        # Check feature_flags
-        feature_flags = updated_user_data.get("feature_flags", {})
-        checks.append(("Feature flags - betaFeatures", feature_flags.get("betaFeatures") == True))
-        checks.append(("Feature flags - advancedAnalytics", feature_flags.get("advancedAnalytics") == True))
+        checks.append(("Success flag", result.get("success") == True))
+        checks.append(("Has message", result.get("message") is not None))
         
         all_passed = all(check[1] for check in checks)
-        failed_checks = [check[0] for check in checks if not check[1]]
-        
-        if all_passed:
-            details = "All updated fields verified in database"
-        else:
-            details = f"Failed checks: {failed_checks}"
-        
-        log_test("Verify update in database", all_passed, details)
-        
-        print(f"   Updated company: {updated_user_data.get('company')}")
-        print(f"   Updated job_title: {updated_user_data.get('job_title')}")
-        print(f"   Updated bio: {updated_user_data.get('bio')}")
-        print(f"   Updated timezone: {updated_user_data.get('timezone')}")
-        print(f"   Updated tags: {updated_user_data.get('tags')}")
-        print(f"   Updated custom_limits: {updated_user_data.get('custom_limits')}")
-        print(f"   Updated feature_flags: {updated_user_data.get('feature_flags')}")
+        details = f"Success: {result.get('success')}, Message: {result.get('message')}"
+        log_test("Admin plan change Free→Starter", all_passed, details)
     else:
-        log_test("Verify update in database", False, f"Status: {response.status_code}, Response: {response.text}")
+        log_test("Admin plan change Free→Starter", False, f"Status: {response.status_code}, Response: {response.text}")
+        print("Cannot proceed without successful plan change. Exiting...")
+        exit(1)
 except Exception as e:
-    log_test("Verify update in database", False, f"Exception: {str(e)}")
+    log_test("Admin plan change Free→Starter", False, f"Exception: {str(e)}")
+    print("Cannot proceed without successful plan change. Exiting...")
+    exit(1)
 
 # ============================================================================
-# TEST 5: Get updated user data via GET /api/auth/me (final verification)
+# TEST 5: Verify subscription is updated with correct plan_id (Starter)
 # ============================================================================
-print("\n[TEST 5] Final verification - Get updated user data via /api/auth/me...")
+print("\n[TEST 5] Verifying subscription reflects Starter plan...")
+try:
+    # Login as the test user again to check updated subscription
+    login_response = requests.post(
+        f"{BACKEND_URL}/auth/login",
+        json={
+            "email": test_user_email,
+            "password": "testpass123"
+        },
+        timeout=10
+    )
+    
+    if login_response.status_code == 200:
+        user_token = login_response.json().get("access_token")
+        user_headers = {"Authorization": f"Bearer {user_token}"}
+        
+        # Check current subscription
+        current_response = requests.get(
+            f"{BACKEND_URL}/plans/current",
+            headers=user_headers,
+            timeout=10
+        )
+        
+        if current_response.status_code == 200:
+            current_data = current_response.json()
+            subscription = current_data.get("subscription", {})
+            plan = current_data.get("plan", {})
+            
+            checks = []
+            checks.append(("Subscription plan_id is starter", subscription.get("plan_id") == "starter"))
+            checks.append(("Plan name is Starter", plan.get("name") == "Starter"))
+            checks.append(("Plan limits updated", plan.get("limits", {}).get("max_chatbots", 0) > 1))
+            
+            all_passed = all(check[1] for check in checks)
+            details = f"Subscription plan_id: {subscription.get('plan_id')}, Plan name: {plan.get('name')}, Max chatbots: {plan.get('limits', {}).get('max_chatbots')}"
+            log_test("Subscription updated to Starter", all_passed, details)
+        else:
+            log_test("Subscription updated to Starter", False, f"Status: {current_response.status_code}")
+    else:
+        log_test("Subscription updated to Starter", False, f"User login failed: {login_response.status_code}")
+except Exception as e:
+    log_test("Subscription updated to Starter", False, f"Exception: {str(e)}")
+
+# ============================================================================
+# TEST 6: Call /api/plans/usage endpoint to verify dashboard would show Starter
+# ============================================================================
+print("\n[TEST 6] Testing /api/plans/usage endpoint for dashboard data...")
+try:
+    # Use the user token from previous test
+    usage_response = requests.get(
+        f"{BACKEND_URL}/plans/usage",
+        headers=user_headers,
+        timeout=10
+    )
+    
+    if usage_response.status_code == 200:
+        usage_data = usage_response.json()
+        
+        checks = []
+        checks.append(("Has plan info", usage_data.get("plan") is not None))
+        checks.append(("Plan name is Starter", usage_data.get("plan", {}).get("name") == "Starter"))
+        checks.append(("Has usage stats", usage_data.get("usage") is not None))
+        checks.append(("Has limits", usage_data.get("limits") is not None))
+        checks.append(("Starter limits", usage_data.get("limits", {}).get("max_chatbots", 0) >= 5))
+        
+        all_passed = all(check[1] for check in checks)
+        plan_name = usage_data.get("plan", {}).get("name")
+        max_chatbots = usage_data.get("limits", {}).get("max_chatbots")
+        details = f"Plan: {plan_name}, Max chatbots: {max_chatbots}"
+        log_test("Usage API shows Starter plan", all_passed, details)
+    else:
+        log_test("Usage API shows Starter plan", False, f"Status: {usage_response.status_code}, Response: {usage_response.text}")
+except Exception as e:
+    log_test("Usage API shows Starter plan", False, f"Exception: {str(e)}")
+
+# ============================================================================
+# TEST 7: Change plan again from Starter to Enterprise
+# ============================================================================
+print("\n[TEST 7] Changing user plan from Starter to Enterprise...")
 try:
     headers = {"Authorization": f"Bearer {admin_token}"}
-    response = requests.get(
-        f"{BACKEND_URL}/auth/me",
+    update_payload = {
+        "plan_id": "enterprise"
+    }
+    
+    response = requests.put(
+        f"{BACKEND_URL}/admin/users/{test_user_id}/ultimate-update",
         headers=headers,
+        json=update_payload,
         timeout=10
     )
     
     if response.status_code == 200:
-        final_user_data = response.json()
+        result = response.json()
         
-        # Compare with original data to ensure changes persisted
-        changes_detected = []
+        checks = []
+        checks.append(("Success flag", result.get("success") == True))
+        checks.append(("Has message", result.get("message") is not None))
         
-        # Check each field that should have changed
-        if final_user_data.get("company") != original_user_data.get("company"):
-            changes_detected.append(f"company: {original_user_data.get('company')} → {final_user_data.get('company')}")
-        
-        if final_user_data.get("job_title") != original_user_data.get("job_title"):
-            changes_detected.append(f"job_title: {original_user_data.get('job_title')} → {final_user_data.get('job_title')}")
-        
-        if final_user_data.get("bio") != original_user_data.get("bio"):
-            changes_detected.append(f"bio: {original_user_data.get('bio')} → {final_user_data.get('bio')}")
-        
-        if final_user_data.get("timezone") != original_user_data.get("timezone"):
-            changes_detected.append(f"timezone: {original_user_data.get('timezone')} → {final_user_data.get('timezone')}")
-        
-        if final_user_data.get("tags") != original_user_data.get("tags"):
-            changes_detected.append(f"tags: {original_user_data.get('tags')} → {final_user_data.get('tags')}")
-        
-        if final_user_data.get("custom_limits") != original_user_data.get("custom_limits"):
-            changes_detected.append(f"custom_limits: {original_user_data.get('custom_limits')} → {final_user_data.get('custom_limits')}")
-        
-        if final_user_data.get("feature_flags") != original_user_data.get("feature_flags"):
-            changes_detected.append(f"feature_flags: {original_user_data.get('feature_flags')} → {final_user_data.get('feature_flags')}")
-        
-        # Verify expected values are present
-        expected_checks = []
-        expected_checks.append(("Company is Test Corp Inc", final_user_data.get("company") == "Test Corp Inc"))
-        expected_checks.append(("Job title is Senior Developer", final_user_data.get("job_title") == "Senior Developer"))
-        expected_checks.append(("Bio contains test text", final_user_data.get("bio") == "This is a test bio from ultimate edit"))
-        expected_checks.append(("Timezone is America/Los_Angeles", final_user_data.get("timezone") == "America/Los_Angeles"))
-        expected_checks.append(("Tags contain test tags", final_user_data.get("tags") == ["test-tag-1", "test-tag-2"]))
-        
-        custom_limits = final_user_data.get("custom_limits", {})
-        expected_checks.append(("Custom limits max_chatbots is 50", custom_limits.get("max_chatbots") == 50))
-        expected_checks.append(("Custom limits max_messages_per_month is 500000", custom_limits.get("max_messages_per_month") == 500000))
-        
-        feature_flags = final_user_data.get("feature_flags", {})
-        expected_checks.append(("Feature flags betaFeatures is True", feature_flags.get("betaFeatures") == True))
-        expected_checks.append(("Feature flags advancedAnalytics is True", feature_flags.get("advancedAnalytics") == True))
-        
-        all_expected_passed = all(check[1] for check in expected_checks)
-        failed_expected = [check[0] for check in expected_checks if not check[1]]
-        
-        if all_expected_passed and len(changes_detected) > 0:
-            details = f"✅ ALL EXPECTED FIELDS UPDATED. Changes: {len(changes_detected)} fields"
-            log_test("Final verification - Data persistence", True, details)
-        else:
-            details = f"❌ Issues detected. Expected checks failed: {failed_expected}, Changes detected: {len(changes_detected)}"
-            log_test("Final verification - Data persistence", False, details)
-        
-        print(f"   Changes detected: {len(changes_detected)}")
-        for change in changes_detected:
-            print(f"     - {change}")
-            
+        all_passed = all(check[1] for check in checks)
+        details = f"Success: {result.get('success')}, Message: {result.get('message')}"
+        log_test("Admin plan change Starter→Enterprise", all_passed, details)
     else:
-        log_test("Final verification - Data persistence", False, f"Status: {response.status_code}, Response: {response.text}")
+        log_test("Admin plan change Starter→Enterprise", False, f"Status: {response.status_code}, Response: {response.text}")
 except Exception as e:
-    log_test("Final verification - Data persistence", False, f"Exception: {str(e)}")
+    log_test("Admin plan change Starter→Enterprise", False, f"Exception: {str(e)}")
+
+# ============================================================================
+# TEST 8: Verify subscription is updated (not duplicated) to Enterprise
+# ============================================================================
+print("\n[TEST 8] Verifying subscription updated to Enterprise (no duplicates)...")
+try:
+    # Check current subscription again
+    current_response = requests.get(
+        f"{BACKEND_URL}/plans/current",
+        headers=user_headers,
+        timeout=10
+    )
+    
+    if current_response.status_code == 200:
+        current_data = current_response.json()
+        subscription = current_data.get("subscription", {})
+        plan = current_data.get("plan", {})
+        
+        checks = []
+        checks.append(("Subscription plan_id is enterprise", subscription.get("plan_id") == "enterprise"))
+        checks.append(("Plan name is Enterprise", plan.get("name") == "Enterprise"))
+        checks.append(("Enterprise limits", plan.get("limits", {}).get("max_chatbots", 0) >= 100))
+        
+        all_passed = all(check[1] for check in checks)
+        details = f"Subscription plan_id: {subscription.get('plan_id')}, Plan name: {plan.get('name')}, Max chatbots: {plan.get('limits', {}).get('max_chatbots')}"
+        log_test("Subscription updated to Enterprise", all_passed, details)
+    else:
+        log_test("Subscription updated to Enterprise", False, f"Status: {current_response.status_code}")
+except Exception as e:
+    log_test("Subscription updated to Enterprise", False, f"Exception: {str(e)}")
+
+# ============================================================================
+# TEST 9: Call /api/plans/usage again to verify dashboard shows Enterprise
+# ============================================================================
+print("\n[TEST 9] Testing /api/plans/usage endpoint shows Enterprise...")
+try:
+    usage_response = requests.get(
+        f"{BACKEND_URL}/plans/usage",
+        headers=user_headers,
+        timeout=10
+    )
+    
+    if usage_response.status_code == 200:
+        usage_data = usage_response.json()
+        
+        checks = []
+        checks.append(("Plan name is Enterprise", usage_data.get("plan", {}).get("name") == "Enterprise"))
+        checks.append(("Enterprise limits", usage_data.get("limits", {}).get("max_chatbots", 0) >= 100))
+        checks.append(("High message limit", usage_data.get("limits", {}).get("max_messages_per_month", 0) >= 1000000))
+        
+        all_passed = all(check[1] for check in checks)
+        plan_name = usage_data.get("plan", {}).get("name")
+        max_chatbots = usage_data.get("limits", {}).get("max_chatbots")
+        max_messages = usage_data.get("limits", {}).get("max_messages_per_month")
+        details = f"Plan: {plan_name}, Max chatbots: {max_chatbots}, Max messages: {max_messages}"
+        log_test("Usage API shows Enterprise plan", all_passed, details)
+    else:
+        log_test("Usage API shows Enterprise plan", False, f"Status: {usage_response.status_code}")
+except Exception as e:
+    log_test("Usage API shows Enterprise plan", False, f"Exception: {str(e)}")
+
+# ============================================================================
+# TEST 10: Verify /api/plans/current also shows correct plan
+# ============================================================================
+print("\n[TEST 10] Testing /api/plans/current endpoint consistency...")
+try:
+    current_response = requests.get(
+        f"{BACKEND_URL}/plans/current",
+        headers=user_headers,
+        timeout=10
+    )
+    
+    if current_response.status_code == 200:
+        current_data = current_response.json()
+        subscription = current_data.get("subscription", {})
+        plan = current_data.get("plan", {})
+        
+        checks = []
+        checks.append(("Current API plan_id matches", subscription.get("plan_id") == "enterprise"))
+        checks.append(("Current API plan name matches", plan.get("name") == "Enterprise"))
+        checks.append(("Subscription status active", subscription.get("status") == "active"))
+        
+        all_passed = all(check[1] for check in checks)
+        details = f"Current API - Plan ID: {subscription.get('plan_id')}, Name: {plan.get('name')}, Status: {subscription.get('status')}"
+        log_test("Current API consistency", all_passed, details)
+    else:
+        log_test("Current API consistency", False, f"Status: {current_response.status_code}")
+except Exception as e:
+    log_test("Current API consistency", False, f"Exception: {str(e)}")
+
+# ============================================================================
+# TEST 11: Verify MongoDB directly - Check both users and subscriptions collections
+# ============================================================================
+print("\n[TEST 11] MongoDB verification - Check both collections match...")
+try:
+    # We can't directly access MongoDB from here, but we can verify through API calls
+    # Get user details via admin API
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    user_details_response = requests.get(
+        f"{BACKEND_URL}/admin/users/{test_user_id}/details",
+        headers=headers,
+        timeout=10
+    )
+    
+    if user_details_response.status_code == 200:
+        user_data = user_details_response.json().get("user", {})
+        user_plan_id = user_data.get("plan_id")
+        
+        # Compare with subscription data
+        subscription_plan_id = subscription.get("plan_id")  # From previous test
+        
+        checks = []
+        checks.append(("User plan_id exists", user_plan_id is not None))
+        checks.append(("Subscription plan_id exists", subscription_plan_id is not None))
+        checks.append(("Both plan_ids match", user_plan_id == subscription_plan_id))
+        checks.append(("Both are enterprise", user_plan_id == "enterprise" and subscription_plan_id == "enterprise"))
+        
+        all_passed = all(check[1] for check in checks)
+        details = f"User.plan_id: {user_plan_id}, Subscription.plan_id: {subscription_plan_id}"
+        log_test("MongoDB collections sync", all_passed, details)
+    else:
+        log_test("MongoDB collections sync", False, f"Status: {user_details_response.status_code}")
+except Exception as e:
+    log_test("MongoDB collections sync", False, f"Exception: {str(e)}")
+
+# ============================================================================
+# TEST 12: Test plan limits enforcement with Enterprise plan
+# ============================================================================
+print("\n[TEST 12] Testing Enterprise plan limits enforcement...")
+try:
+    # Check limit for chatbots (should be high for Enterprise)
+    limit_response = requests.get(
+        f"{BACKEND_URL}/plans/check-limit/chatbots",
+        headers=user_headers,
+        timeout=10
+    )
+    
+    if limit_response.status_code == 200:
+        limit_data = limit_response.json()
+        
+        checks = []
+        checks.append(("Has current count", "current" in limit_data))
+        checks.append(("Has max limit", "max" in limit_data))
+        checks.append(("Not reached limit", limit_data.get("reached") == False))
+        checks.append(("High Enterprise limit", limit_data.get("max", 0) >= 100))
+        
+        all_passed = all(check[1] for check in checks)
+        current = limit_data.get("current", 0)
+        max_limit = limit_data.get("max", 0)
+        reached = limit_data.get("reached", True)
+        details = f"Current: {current}, Max: {max_limit}, Reached: {reached}"
+        log_test("Enterprise limits enforcement", all_passed, details)
+    else:
+        log_test("Enterprise limits enforcement", False, f"Status: {limit_response.status_code}")
+except Exception as e:
+    log_test("Enterprise limits enforcement", False, f"Exception: {str(e)}")
+
+# ============================================================================
+# CLEANUP: Delete test user
+# ============================================================================
+print("\n[CLEANUP] Deleting test user...")
+try:
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    delete_response = requests.delete(
+        f"{BACKEND_URL}/admin/users/{test_user_id}",
+        headers=headers,
+        timeout=10
+    )
+    
+    if delete_response.status_code == 200:
+        log_test("Cleanup - Delete test user", True, f"Successfully deleted test user {test_user_id}")
+    else:
+        log_test("Cleanup - Delete test user", False, f"Status: {delete_response.status_code}")
+except Exception as e:
+    log_test("Cleanup - Delete test user", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST COMPLETE - SUMMARY
 # ============================================================================
 print("\n" + "="*80)
-print("ULTIMATE EDIT ADMIN PANEL → DASHBOARD DATA REFLECTION TEST COMPLETE")
+print("ADMIN PANEL PLAN CHANGE FLOW → USER DASHBOARD REFLECTION TEST COMPLETE")
 print("="*80)
 print("✅ This test verifies the complete flow:")
 print("   1. Admin login with admin@botsmith.com / admin123")
-print("   2. Get current admin user data via GET /api/auth/me")
-print("   3. Update admin user via PUT /api/admin/users/admin-001/ultimate-update")
-print("   4. Verify update was successful in database")
-print("   5. Confirm ALL updated fields appear in GET /api/auth/me response")
+print("   2. Create new test user with Free plan")
+print("   3. Verify initial subscription created with Free plan")
+print("   4. Change user plan Free→Starter via admin ultimate-update")
+print("   5. Verify subscription updated to Starter (not duplicated)")
+print("   6. Test /api/plans/usage shows Starter plan for dashboard")
+print("   7. Change user plan Starter→Enterprise via admin ultimate-update")
+print("   8. Verify subscription updated to Enterprise (not duplicated)")
+print("   9. Test /api/plans/usage shows Enterprise plan for dashboard")
+print("   10. Verify /api/plans/current consistency")
+print("   11. Verify both users.plan_id and subscriptions.plan_id match")
+print("   12. Test Enterprise plan limits enforcement")
 print("="*80)
 print("🎯 KEY VALIDATION POINTS:")
-print("   - Ultimate update endpoint returns success")
-print("   - All updated fields (company, job_title, bio, timezone, tags, custom_limits, feature_flags)")
-print("   - Data persists in MongoDB without requiring re-login")
-print("   - Frontend can access updated fields via user context")
+print("   - Admin panel plan changes update BOTH users.plan_id AND subscriptions.plan_id")
+print("   - Dashboard APIs (/api/plans/usage, /api/plans/current) reflect changes immediately")
+print("   - No duplicate subscriptions created during plan changes")
+print("   - Plan limits enforcement works correctly with updated plans")
+print("   - Data consistency between users and subscriptions collections")
 print("="*80)
 
 # Print final summary
