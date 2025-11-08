@@ -107,46 +107,45 @@ except Exception as e:
     exit(1)
 
 # ============================================================================
-# TEST 2: Get admin user's current data via GET /api/auth/me
+# TEST 2: Create a new test user (to get fresh user without subscription)
 # ============================================================================
-print("\n[TEST 2] Getting admin user's current data...")
+print("\n[TEST 2] Creating a new test user...")
 try:
     headers = {"Authorization": f"Bearer {admin_token}"}
-    response = requests.get(
-        f"{BACKEND_URL}/auth/me",
+    test_user_email = f"testuser_{uuid.uuid4().hex[:8]}@example.com"
+    
+    user_data = {
+        "name": "Test User Plan Change",
+        "email": test_user_email,
+        "password": "testpass123",
+        "role": "user",
+        "status": "active",
+        "plan_id": "free"  # Start with Free plan
+    }
+    
+    response = requests.post(
+        f"{BACKEND_URL}/admin/users/create",
         headers=headers,
+        json=user_data,
         timeout=10
     )
     
     if response.status_code == 200:
-        original_user_data = response.json()
-        
-        # Verify we got the admin user
-        checks = []
-        checks.append(("Correct user ID", original_user_data.get("id") == ADMIN_USER_ID))
-        checks.append(("Correct email", original_user_data.get("email") == ADMIN_EMAIL))
-        checks.append(("Has name", original_user_data.get("name") is not None))
-        checks.append(("Is admin role", original_user_data.get("role") == "admin"))
-        
-        all_passed = all(check[1] for check in checks)
-        details = f"User ID: {original_user_data.get('id')}, Email: {original_user_data.get('email')}, Role: {original_user_data.get('role')}"
-        log_test("Get admin user current data", all_passed, details)
-        
-        # Store original values for comparison
-        print(f"   Original company: {original_user_data.get('company')}")
-        print(f"   Original job_title: {original_user_data.get('job_title')}")
-        print(f"   Original bio: {original_user_data.get('bio')}")
-        print(f"   Original timezone: {original_user_data.get('timezone')}")
-        print(f"   Original tags: {original_user_data.get('tags')}")
-        print(f"   Original custom_limits: {original_user_data.get('custom_limits')}")
-        print(f"   Original feature_flags: {original_user_data.get('feature_flags')}")
+        result = response.json()
+        test_user_id = result.get("user_id")
+        if test_user_id:
+            log_test("Create test user", True, f"Created user {test_user_email} with ID {test_user_id}")
+        else:
+            log_test("Create test user", False, "No user_id returned")
+            print("Cannot proceed without test user. Exiting...")
+            exit(1)
     else:
-        log_test("Get admin user current data", False, f"Status: {response.status_code}, Response: {response.text}")
-        print("Cannot proceed without original user data. Exiting...")
+        log_test("Create test user", False, f"Status: {response.status_code}, Response: {response.text}")
+        print("Cannot proceed without test user. Exiting...")
         exit(1)
 except Exception as e:
-    log_test("Get admin user current data", False, f"Exception: {str(e)}")
-    print("Cannot proceed without original user data. Exiting...")
+    log_test("Create test user", False, f"Exception: {str(e)}")
+    print("Cannot proceed without test user. Exiting...")
     exit(1)
 
 # ============================================================================
