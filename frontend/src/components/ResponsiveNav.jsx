@@ -11,12 +11,17 @@ const ResponsiveNav = ({ user, onLogout }) => {
 
   const isActive = (path) => location.pathname === path;
 
-  const navItems = [
+  // Base navigation items for all users
+  const baseNavItems = [
     { path: '/dashboard', label: 'Chatbots' },
     { path: '/analytics', label: 'Analytics' },
     { path: '/subscription', label: 'Subscription', icon: CreditCard },
-    { path: '/admin', label: 'Admin Panel', icon: Shield },
   ];
+
+  // Add admin panel only for admin users
+  const navItems = user?.role === 'admin' 
+    ? [...baseNavItems, { path: '/admin', label: 'Admin Panel', icon: Shield }]
+    : baseNavItems;
 
   return (
     <nav className="bg-white/80 backdrop-blur-lg border-b border-gray-200/50 sticky top-0 z-50 shadow-sm">
