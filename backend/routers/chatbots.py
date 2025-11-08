@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from models import (
     Chatbot, ChatbotCreate, ChatbotUpdate, ChatbotResponse
 )
-from auth import get_current_user, get_mock_user, User
+from auth import get_current_user, get_current_user, User
 from services.plan_service import plan_service
 from services.cache_service import cache_service
 import logging
@@ -25,7 +25,7 @@ def init_router(db: AsyncIOMotorDatabase):
 @router.post("", response_model=ChatbotResponse, status_code=status.HTTP_201_CREATED)
 async def create_chatbot(
     chatbot_data: ChatbotCreate,
-    current_user: User = Depends(get_mock_user)
+    current_user: User = Depends(get_current_user)
 ):
     """Create a new chatbot"""
     try:
@@ -69,7 +69,7 @@ async def create_chatbot(
 
 
 @router.get("", response_model=List[ChatbotResponse])
-async def get_chatbots(current_user: User = Depends(get_mock_user)):
+async def get_chatbots(current_user: User = Depends(get_current_user)):
     """Get all chatbots for the current user"""
     try:
         chatbots = await db_instance.chatbots.find(
@@ -93,7 +93,7 @@ async def get_chatbots(current_user: User = Depends(get_mock_user)):
 @router.get("/{chatbot_id}", response_model=ChatbotResponse)
 async def get_chatbot(
     chatbot_id: str,
-    current_user: User = Depends(get_mock_user)
+    current_user: User = Depends(get_current_user)
 ):
     """Get a specific chatbot"""
     try:
@@ -127,7 +127,7 @@ async def get_chatbot(
 async def update_chatbot(
     chatbot_id: str,
     chatbot_data: ChatbotUpdate,
-    current_user: User = Depends(get_mock_user)
+    current_user: User = Depends(get_current_user)
 ):
     """Update a chatbot"""
     try:
@@ -185,7 +185,7 @@ async def update_chatbot(
 @router.patch("/{chatbot_id}/toggle", response_model=ChatbotResponse)
 async def toggle_chatbot(
     chatbot_id: str,
-    current_user: User = Depends(get_mock_user)
+    current_user: User = Depends(get_current_user)
 ):
     """Toggle chatbot active/inactive status"""
     try:
@@ -225,7 +225,7 @@ async def toggle_chatbot(
 @router.delete("/{chatbot_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_chatbot(
     chatbot_id: str,
-    current_user: User = Depends(get_mock_user)
+    current_user: User = Depends(get_current_user)
 ):
     """Delete a chatbot"""
     try:

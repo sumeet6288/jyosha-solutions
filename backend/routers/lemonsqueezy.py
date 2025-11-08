@@ -11,7 +11,7 @@ import json
 import logging
 from datetime import datetime
 
-from auth import get_current_user, get_mock_user
+from auth import get_current_user, get_current_user
 from models import User
 
 router = APIRouter()
@@ -189,7 +189,7 @@ async def process_webhook_event(event_data: Dict[str, Any]):
 @router.post("/checkout/create", response_model=CheckoutResponse)
 async def create_checkout(
     request: CheckoutRequest,
-    current_user: User = Depends(get_mock_user)
+    current_user: User = Depends(get_current_user)
 ):
     """Create a Lemon Squeezy checkout session"""
     try:
@@ -329,7 +329,7 @@ async def handle_webhook(
 
 @router.get("/subscription/status")
 async def get_subscription_status(
-    current_user: User = Depends(get_mock_user)
+    current_user: User = Depends(get_current_user)
 ):
     """Get current user's subscription status"""
     try:
@@ -403,7 +403,7 @@ async def get_plans():
 
 @router.post("/subscription/sync")
 async def sync_subscription(
-    current_user: User = Depends(get_mock_user)
+    current_user: User = Depends(get_current_user)
 ):
     """
     Manually sync subscription from Lemon Squeezy after successful payment.

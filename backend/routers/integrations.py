@@ -7,7 +7,7 @@ from models import (
     Integration, IntegrationCreate, IntegrationUpdate, IntegrationResponse,
     IntegrationLog, IntegrationLogResponse, TestConnectionRequest
 )
-from auth import get_current_user, get_mock_user
+from auth import get_current_user, get_current_user
 import httpx
 
 router = APIRouter(prefix="/integrations", tags=["integrations"])
@@ -146,7 +146,7 @@ async def test_integration_connection(integration_type: str, credentials: dict) 
 
 
 @router.get("/{chatbot_id}", response_model=List[IntegrationResponse])
-async def get_integrations(chatbot_id: str, current_user: dict = Depends(get_mock_user)):
+async def get_integrations(chatbot_id: str, current_user: dict = Depends(get_current_user)):
     """Get all integrations for a chatbot"""
     try:
         # Verify chatbot belongs to user
@@ -186,7 +186,7 @@ async def get_integrations(chatbot_id: str, current_user: dict = Depends(get_moc
 async def create_or_update_integration(
     chatbot_id: str,
     integration_data: IntegrationCreate,
-    current_user: dict = Depends(get_mock_user)
+    current_user: dict = Depends(get_current_user)
 ):
     """Create or update an integration"""
     try:
@@ -277,7 +277,7 @@ async def create_or_update_integration(
 async def toggle_integration(
     chatbot_id: str,
     integration_id: str,
-    current_user: dict = Depends(get_mock_user)
+    current_user: dict = Depends(get_current_user)
 ):
     """Enable or disable an integration"""
     try:
@@ -325,7 +325,7 @@ async def toggle_integration(
 async def test_integration(
     chatbot_id: str,
     integration_id: str,
-    current_user: dict = Depends(get_mock_user)
+    current_user: dict = Depends(get_current_user)
 ):
     """Test an integration connection"""
     try:
@@ -389,7 +389,7 @@ async def test_integration(
 async def delete_integration(
     chatbot_id: str,
     integration_id: str,
-    current_user: dict = Depends(get_mock_user)
+    current_user: dict = Depends(get_current_user)
 ):
     """Delete an integration"""
     try:
@@ -432,7 +432,7 @@ async def delete_integration(
 async def get_integration_logs(
     chatbot_id: str,
     limit: int = 50,
-    current_user: dict = Depends(get_mock_user)
+    current_user: dict = Depends(get_current_user)
 ):
     """Get integration activity logs"""
     try:

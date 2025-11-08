@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from models import UserCreate, UserLogin, UserResponse, Token, User
-from auth import get_password_hash, verify_password, create_access_token, get_current_user_email, get_mock_user
+from auth import get_password_hash, verify_password, create_access_token, get_current_user_email, get_current_user
 from datetime import datetime, timezone
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
@@ -115,9 +115,9 @@ async def get_current_user(email: str = Depends(get_current_user_email)):
 
 
 @router.get("/me/mock", response_model=UserResponse)
-async def get_mock_user_endpoint():
+async def get_current_user_endpoint():
     """Get mock user for development (bypasses authentication)."""
-    user = await get_mock_user()
+    user = await get_current_user()
     
     return UserResponse(
         id=user.id,

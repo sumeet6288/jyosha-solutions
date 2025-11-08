@@ -13,7 +13,7 @@ from models import MSTeamsMessage, MSTeamsWebhookSetup
 from services.msteams_service import MSTeamsService
 from services.chat_service import ChatService
 from services.vector_store import VectorStore
-from auth import get_mock_user
+from auth import get_current_user
 
 router = APIRouter(prefix="/msteams", tags=["msteams"])
 logger = logging.getLogger(__name__)
@@ -248,7 +248,7 @@ async def msteams_webhook(
 @router.post("/{chatbot_id}/setup-webhook")
 async def setup_msteams_webhook(
     chatbot_id: str,
-    current_user: dict = Depends(get_mock_user)
+    current_user: dict = Depends(get_current_user)
 ):
     """
     Generate MS Teams webhook URL and return setup instructions
@@ -318,7 +318,7 @@ Note: Make sure your Bot App ID and App Password are correctly configured in the
 @router.get("/{chatbot_id}/webhook-info")
 async def get_msteams_webhook_info(
     chatbot_id: str,
-    current_user: dict = Depends(get_mock_user)
+    current_user: dict = Depends(get_current_user)
 ):
     """Get MS Teams webhook configuration and setup status"""
     try:
@@ -352,7 +352,7 @@ async def get_msteams_webhook_info(
 @router.delete("/{chatbot_id}/webhook")
 async def delete_msteams_webhook(
     chatbot_id: str,
-    current_user: dict = Depends(get_mock_user)
+    current_user: dict = Depends(get_current_user)
 ):
     """Remove MS Teams webhook configuration"""
     try:
@@ -377,7 +377,7 @@ async def send_test_message(
     chatbot_id: str,
     service_url: str,
     conversation_id: str,
-    current_user: dict = Depends(get_mock_user)
+    current_user: dict = Depends(get_current_user)
 ):
     """Send a test message to MS Teams (for testing purposes)"""
     try:

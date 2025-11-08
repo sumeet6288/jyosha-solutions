@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from models import DashboardAnalytics, ChatbotAnalytics
-from auth import get_current_user, get_mock_user, User
+from auth import get_current_user, get_current_user, User
 from datetime import datetime, timedelta, date
 from collections import defaultdict
 import logging
@@ -19,7 +19,7 @@ def init_router(db: AsyncIOMotorDatabase):
 
 
 @router.get("/dashboard", response_model=DashboardAnalytics)
-async def get_dashboard_analytics(current_user: User = Depends(get_mock_user)):
+async def get_dashboard_analytics(current_user: User = Depends(get_current_user)):
     """Get dashboard analytics for the current user"""
     try:
         # Get all user's chatbots
@@ -66,7 +66,7 @@ async def get_dashboard_analytics(current_user: User = Depends(get_mock_user)):
 async def get_chatbot_analytics(
     chatbot_id: str,
     days: int = 30,
-    current_user: User = Depends(get_mock_user)
+    current_user: User = Depends(get_current_user)
 ):
     """Get analytics for a specific chatbot"""
     try:

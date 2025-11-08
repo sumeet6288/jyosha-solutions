@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from models import UserResponse, UserUpdate, PasswordChange, User
-from auth import get_mock_user, verify_password, get_password_hash
+from auth import get_current_user, verify_password, get_password_hash
 from datetime import datetime, timezone
 
 router = APIRouter(prefix="/user", tags=["User Management"])
@@ -15,7 +15,7 @@ def init_router(db):
 
 
 @router.get("/profile", response_model=UserResponse)
-async def get_profile(current_user: User = Depends(get_mock_user)):
+async def get_profile(current_user: User = Depends(get_current_user)):
     """Get current user profile information."""
     return UserResponse(
         id=current_user.id,
@@ -31,7 +31,7 @@ async def get_profile(current_user: User = Depends(get_mock_user)):
 
 
 @router.put("/profile", response_model=UserResponse)
-async def update_profile(user_update: UserUpdate, current_user: User = Depends(get_mock_user)):
+async def update_profile(user_update: UserUpdate, current_user: User = Depends(get_current_user)):
     """Update user profile information."""
     email = current_user.email
     
@@ -96,7 +96,7 @@ async def update_profile(user_update: UserUpdate, current_user: User = Depends(g
 
 
 @router.put("/password")
-async def change_password(password_data: PasswordChange, current_user: User = Depends(get_mock_user)):
+async def change_password(password_data: PasswordChange, current_user: User = Depends(get_current_user)):
     """Change user password."""
     email = current_user.email
     
@@ -131,7 +131,7 @@ async def change_password(password_data: PasswordChange, current_user: User = De
 
 
 @router.delete("/account")
-async def delete_account(current_user: User = Depends(get_mock_user)):
+async def delete_account(current_user: User = Depends(get_current_user)):
     """Delete user account and all associated data."""
     email = current_user.email
     user_id = current_user.id
