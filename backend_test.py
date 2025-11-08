@@ -63,15 +63,14 @@ def print_summary():
 
 # Global variables for test data
 admin_token = None
-original_user_data = None
-updated_user_data = None
+test_user_id = None
+test_user_email = None
 
 print("="*80)
-print("CRITICAL TESTING: Ultimate Edit Admin Panel → Dashboard Data Reflection")
+print("CRITICAL TESTING: Admin Panel Plan Change Flow → User Dashboard Reflection")
 print("="*80)
 print(f"Backend URL: {BACKEND_URL}")
 print(f"Admin Email: {ADMIN_EMAIL}")
-print(f"Admin User ID: {ADMIN_USER_ID}")
 print(f"Test Time: {datetime.now().isoformat()}")
 print("="*80 + "\n")
 
