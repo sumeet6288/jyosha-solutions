@@ -4,77 +4,138 @@ import { authAPI } from '../utils/api';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  // Mock user for development - bypass authentication
-  const [user, setUser] = useState({
-    id: 'demo-user-123',
-    name: 'User demo-use',
-    email: 'demo-user-123@botsmith.com',
-    created_at: new Date().toISOString(),
-    role: 'user',
-    status: 'active',
-    phone: null,
-    avatar_url: null,
-    last_login: null
-  });
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Set mock token for API calls
-    localStorage.setItem('botsmith_token', 'mock-token-for-development');
-    localStorage.setItem('botsmith_user', JSON.stringify(user));
-    
-    // Fetch current user data from API to get latest changes
-    fetchCurrentUser();
+    // Check if user is already logged in
+    const token = localStorage.getItem('botsmith_token');
+    if (token && token !== 'mock-token-for-development') {
+      fetchCurrentUser();
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   const fetchCurrentUser = async () => {
     try {
-      // Try to fetch real user data from API using mock endpoint
+      setLoading(true);
       const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
-      const response = await fetch(`${backendUrl}/api/auth/me/mock`);
+      const token = localStorage.getItem('botsmith_token');
+      
+      if (!token || token === 'mock-token-for-development') {
+        setUser(null);
+        setLoading(false);
+        return null;
+      }
+      
+      const response = await fetch(`${backendUrl}/api/auth/me`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
         localStorage.setItem('botsmith_user', JSON.stringify(userData));
+        setLoading(false);
         return userData;
       } else {
-        // If API call fails, return current user
-        return user;
+        // Token is invalid, clear it
+        localStorage.removeItem('botsmith_token');
+        localStorage.removeItem('botsmith_user');
+        setUser(null);
+        setLoading(false);
+        return null;
       }
     } catch (error) {
       console.error('Error fetching user:', error);
-      // Return current user if API fails
-      return user;
+      localStorage.removeItem('botsmith_token');
+      localStorage.removeItem('botsmith_user');
+      setUser(null);
+      setLoading(false);
+      return null;
     }
   };
 
   const login = async (email, password) => {
-    // Mock login
-    await fetchCurrentUser(); // Fetch user data after login
-    return { data: { access_token: 'mock-token' } };
+    try {
+      setLoading(true);
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
+      const response = await fetch(`${backendUrl}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || 'Login failed');
+      }
+
+      const data = await response.json();
+      localStorage.setItem('botsmith_token', data.access_token);
+      
+      // Fetch user data
+      await fetchCurrentUser();
+      setLoading(false);
+      return { data };
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
   };
 
   const register = async (name, email, password) => {
-    // Mock registration
-    await fetchCurrentUser(); // Fetch user data after registration
-    return { data: { id: 'mock-user-123', name, email } };
+    try {
+      setLoading(true);
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
+      const response = await fetch(`${backendUrl}/api/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email, password })
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || 'Registration failed');
+      }
+
+      const data = await response.json();
+      setLoading(false);
+      return { data };
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
   };
 
   const logout = async () => {
-    // Mock logout
-    console.log('Logout called');
-    // Reset to default mock user
-    const defaultUser = {
-      id: 'demo-user-123',
-      name: 'User demo-use',
-      email: 'demo-user-123@botsmith.com',
-      created_at: new Date().toISOString(),
-      role: 'user',
-      status: 'active'
-    };
-    setUser(defaultUser);
-    localStorage.setItem('botsmith_user', JSON.stringify(defaultUser));
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
+      const token = localStorage.getItem('botsmith_token');
+      
+      if (token) {
+        await fetch(`${backendUrl}/api/auth/logout`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      // Clear local storage and state
+      localStorage.removeItem('botsmith_token');
+      localStorage.removeItem('botsmith_user');
+      setUser(null);
+    }
   };
 
   const updateUser = (updatedUser) => {
