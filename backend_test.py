@@ -202,32 +202,60 @@ except Exception as e:
     exit(1)
 
 # ============================================================================
-# TEST 4: Test MS Teams Connection (with mock credentials)
+# TEST 4: Verify the update was successful in the database (direct check)
 # ============================================================================
-print("\n[TEST 4] Testing MS Teams connection...")
+print("\n[TEST 4] Verifying update was successful in database...")
 try:
-    response = requests.post(
-        f"{BACKEND_URL}/integrations/{chatbot_id}/{integration_id}/test",
-        timeout=15
+    # We'll verify this by getting the updated user data via /api/auth/me
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    response = requests.get(
+        f"{BACKEND_URL}/auth/me",
+        headers=headers,
+        timeout=10
     )
     
     if response.status_code == 200:
-        test_result = response.json()
-        # With mock credentials, we expect it to fail validation but return proper error
-        success = test_result.get("success")
-        message = test_result.get("message", "")
+        updated_user_data = response.json()
         
-        # We expect failure with mock credentials, but proper error handling
-        if not success and ("Invalid" in message or "credentials" in message.lower() or "Authentication failed" in message):
-            log_test("Test MS Teams connection", True, f"Properly handled invalid credentials: {message}")
-        elif success:
-            log_test("Test MS Teams connection", False, "Unexpectedly succeeded with mock credentials")
+        # Verify all updated fields are present
+        checks = []
+        checks.append(("Company updated", updated_user_data.get("company") == "Test Corp Inc"))
+        checks.append(("Job title updated", updated_user_data.get("job_title") == "Senior Developer"))
+        checks.append(("Bio updated", updated_user_data.get("bio") == "This is a test bio from ultimate edit"))
+        checks.append(("Timezone updated", updated_user_data.get("timezone") == "America/Los_Angeles"))
+        checks.append(("Tags updated", updated_user_data.get("tags") == ["test-tag-1", "test-tag-2"]))
+        
+        # Check custom_limits
+        custom_limits = updated_user_data.get("custom_limits", {})
+        checks.append(("Custom limits - max_chatbots", custom_limits.get("max_chatbots") == 50))
+        checks.append(("Custom limits - max_messages_per_month", custom_limits.get("max_messages_per_month") == 500000))
+        
+        # Check feature_flags
+        feature_flags = updated_user_data.get("feature_flags", {})
+        checks.append(("Feature flags - betaFeatures", feature_flags.get("betaFeatures") == True))
+        checks.append(("Feature flags - advancedAnalytics", feature_flags.get("advancedAnalytics") == True))
+        
+        all_passed = all(check[1] for check in checks)
+        failed_checks = [check[0] for check in checks if not check[1]]
+        
+        if all_passed:
+            details = "All updated fields verified in database"
         else:
-            log_test("Test MS Teams connection", True, f"Connection test returned: {message}")
+            details = f"Failed checks: {failed_checks}"
+        
+        log_test("Verify update in database", all_passed, details)
+        
+        print(f"   Updated company: {updated_user_data.get('company')}")
+        print(f"   Updated job_title: {updated_user_data.get('job_title')}")
+        print(f"   Updated bio: {updated_user_data.get('bio')}")
+        print(f"   Updated timezone: {updated_user_data.get('timezone')}")
+        print(f"   Updated tags: {updated_user_data.get('tags')}")
+        print(f"   Updated custom_limits: {updated_user_data.get('custom_limits')}")
+        print(f"   Updated feature_flags: {updated_user_data.get('feature_flags')}")
     else:
-        log_test("Test MS Teams connection", False, f"Status: {response.status_code}, Response: {response.text}")
+        log_test("Verify update in database", False, f"Status: {response.status_code}, Response: {response.text}")
 except Exception as e:
-    log_test("Test MS Teams connection", False, f"Exception: {str(e)}")
+    log_test("Verify update in database", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 5: Setup MS Teams Webhook
