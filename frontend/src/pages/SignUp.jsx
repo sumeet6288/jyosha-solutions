@@ -87,13 +87,16 @@ const SignUp = () => {
       await register(formData.name, formData.email, formData.password);
       toast({
         title: 'Account created! 🎉',
-        description: 'Welcome to BotSmith'
+        description: 'Welcome to BotSmith. Please sign in with your credentials.'
       });
-      navigate('/dashboard');
+      // Redirect to sign in after successful registration
+      navigate('/signin');
     } catch (error) {
+      console.error('Registration error:', error);
+      const errorMessage = error.message || error.response?.data?.detail || 'Failed to create account';
       toast({
         title: 'Error',
-        description: error.response?.data?.detail || 'Failed to create account',
+        description: errorMessage,
         variant: 'destructive'
       });
     } finally {
