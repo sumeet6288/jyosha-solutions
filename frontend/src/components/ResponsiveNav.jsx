@@ -15,6 +15,7 @@ const ResponsiveNav = ({ user, onLogout }) => {
     { path: '/dashboard', label: 'Chatbots' },
     { path: '/analytics', label: 'Analytics' },
     { path: '/subscription', label: 'Subscription', icon: CreditCard },
+    { path: '/admin', label: 'Admin Panel', icon: Shield },
   ];
 
   return (
