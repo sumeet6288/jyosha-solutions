@@ -199,6 +199,37 @@ class UserResponse(BaseModel):
     phone: Optional[str] = None
     avatar_url: Optional[str] = None
     last_login: Optional[datetime] = None
+    
+    # Profile Information
+    company: Optional[str] = None
+    job_title: Optional[str] = None
+    bio: Optional[str] = None
+    address: Optional[str] = None
+    
+    # Subscription & Plan
+    plan_id: Optional[str] = "free"
+    subscription_status: Optional[str] = None
+    trial_ends_at: Optional[datetime] = None
+    subscription_ends_at: Optional[datetime] = None
+    lifetime_access: bool = False
+    
+    # Custom Limits (if set by admin)
+    custom_limits: Optional[Dict[str, Any]] = None
+    
+    # Feature Flags
+    feature_flags: Optional[Dict[str, Any]] = None
+    
+    # Settings
+    timezone: Optional[str] = None
+    language: Optional[str] = None
+    theme: Optional[str] = None
+    
+    # Branding (for custom white-label)
+    branding: Optional[Dict[str, Any]] = None
+    
+    # Metadata
+    tags: List[str] = []
+    segments: List[str] = []
 
 
 class UserUpdate(BaseModel):
