@@ -86,9 +86,11 @@ const SignIn = () => {
       });
       navigate('/dashboard');
     } catch (error) {
+      console.error('Login error:', error);
+      const errorMessage = error.message || error.response?.data?.detail || 'Failed to sign in. Please check your credentials.';
       toast({
         title: 'Error',
-        description: error.response?.data?.detail || 'Failed to sign in',
+        description: errorMessage,
         variant: 'destructive'
       });
     } finally {
