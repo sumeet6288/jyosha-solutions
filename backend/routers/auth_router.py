@@ -69,12 +69,47 @@ async def login(user_data: UserLogin):
             detail="Incorrect email or password"
         )
     
+    # Check if user is banned or suspended
+    status_val = user_doc.get('status', 'active')
+    if status_val == 'banned':
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Your account has been banned"
+        )
+    elif status_val == 'suspended':
+        suspension_until = user_doc.get('suspension_until')
+        if suspension_until:
+            if isinstance(suspension_until, str):
+                suspension_until = datetime.fromisoformat(suspension_until)
+            if datetime.now(timezone.utc) < suspension_until:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail=f"Your account is suspended until {suspension_until.isoformat()}"
+                )
+            else:
+                # Suspension expired, reactivate account
+                await users_collection.update_one(
+                    {"email": user_data.email},
+                    {"$set": {"status": "active", "suspension_until": None, "suspension_reason": None}}
+                )
+    
     # Verify password
     if not verify_password(user_data.password, user_doc['password_hash']):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password"
         )
+    
+    # Update last login
+    await users_collection.update_one(
+        {"email": user_data.email},
+        {
+            "$set": {
+                "last_login": datetime.now(timezone.utc).isoformat()
+            },
+            "$inc": {"login_count": 1}
+        }
+    )
     
     # Create access token
     access_token = create_access_token(data={"sub": user_doc['email']})
