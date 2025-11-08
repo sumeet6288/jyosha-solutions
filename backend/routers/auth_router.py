@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from models import UserCreate, UserLogin, UserResponse, Token, User
-from auth import get_password_hash, verify_password, create_access_token, get_current_user_email, get_current_user
+from auth import get_password_hash, verify_password, create_access_token, get_current_user_email
 from datetime import datetime, timezone
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
