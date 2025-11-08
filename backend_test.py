@@ -8,7 +8,7 @@ import uuid
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://ready-dep-setup.preview.emergentagent.com/api"
+BACKEND_URL = "https://app-integration-14.preview.emergentagent.com/api"
 ADMIN_EMAIL = "admin@botsmith.com"
 ADMIN_PASSWORD = "admin123"
 ADMIN_USER_ID = "admin-001"
