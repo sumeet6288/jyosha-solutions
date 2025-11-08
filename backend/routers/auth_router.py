@@ -119,7 +119,7 @@ async def login(user_data: UserLogin):
 
 @router.get("/me", response_model=UserResponse)
 async def get_current_user(email: str = Depends(get_current_user_email)):
-    """Get current authenticated user."""
+    """Get current authenticated user with all profile fields."""
     user_doc = await users_collection.find_one({"email": email})
     if not user_doc:
         raise HTTPException(
@@ -136,6 +136,14 @@ async def get_current_user(email: str = Depends(get_current_user_email)):
     if isinstance(last_login, str):
         last_login = datetime.fromisoformat(last_login)
     
+    trial_ends_at = user_doc.get('trial_ends_at')
+    if isinstance(trial_ends_at, str):
+        trial_ends_at = datetime.fromisoformat(trial_ends_at)
+    
+    subscription_ends_at = user_doc.get('subscription_ends_at')
+    if isinstance(subscription_ends_at, str):
+        subscription_ends_at = datetime.fromisoformat(subscription_ends_at)
+    
     return UserResponse(
         id=user_doc['id'],
         name=user_doc['name'],
@@ -145,7 +153,31 @@ async def get_current_user(email: str = Depends(get_current_user_email)):
         status=user_doc.get('status', 'active'),
         phone=user_doc.get('phone'),
         avatar_url=user_doc.get('avatar_url'),
-        last_login=last_login
+        last_login=last_login,
+        # Profile Information
+        company=user_doc.get('company'),
+        job_title=user_doc.get('job_title'),
+        bio=user_doc.get('bio'),
+        address=user_doc.get('address'),
+        # Subscription & Plan
+        plan_id=user_doc.get('plan_id', 'free'),
+        subscription_status=user_doc.get('subscription_status'),
+        trial_ends_at=trial_ends_at,
+        subscription_ends_at=subscription_ends_at,
+        lifetime_access=user_doc.get('lifetime_access', False),
+        # Custom Limits
+        custom_limits=user_doc.get('custom_limits'),
+        # Feature Flags
+        feature_flags=user_doc.get('feature_flags'),
+        # Settings
+        timezone=user_doc.get('timezone'),
+        language=user_doc.get('language'),
+        theme=user_doc.get('theme'),
+        # Branding
+        branding=user_doc.get('branding'),
+        # Metadata
+        tags=user_doc.get('tags', []),
+        segments=user_doc.get('segments', [])
     )
 
 
