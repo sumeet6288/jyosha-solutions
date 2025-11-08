@@ -72,6 +72,35 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
+const AdminRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  const location = useLocation();
+  
+  // Show loading spinner while checking authentication
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  // Redirect to signin if not authenticated
+  if (!user) {
+    return <Navigate to="/signin" state={{ from: location }} replace />;
+  }
+  
+  // Redirect to dashboard if not admin
+  if (user.role !== 'admin') {
+    return <Navigate to="/dashboard" replace />;
+  }
+  
+  return children;
+};
+
 // Smooth scroll to top on route change
 function ScrollToTop() {
   const location = useLocation();
