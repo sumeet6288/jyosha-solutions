@@ -21,7 +21,7 @@ class Plan(BaseModel):
     """Subscription plan model"""
     id: str = Field(description="Plan ID (free, starter, professional, enterprise)")
     name: str = Field(description="Plan name")
-    price: float = Field(description="Monthly price in USD (0 for free, -1 for custom)")
+    price: float = Field(description="Monthly price in INR (0 for free, -1 for custom)")
     description: str = Field(description="Plan description")
     limits: PlanLimits = Field(description="Plan limits")
     features: list[str] = Field(default=[], description="Plan features list")
@@ -33,7 +33,7 @@ class Plan(BaseModel):
             "example": {
                 "id": "starter",
                 "name": "Starter",
-                "price": 150.0,
+                "price": 7999.0,
                 "description": "For growing businesses",
                 "limits": {
                     "max_chatbots": 5,
