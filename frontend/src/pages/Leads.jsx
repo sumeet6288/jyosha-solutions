@@ -153,9 +153,13 @@ const Leads = () => {
     }
 
     try {
+      const token = localStorage.getItem('botsmith_token');
       const response = await fetch(`${backendUrl}/api/leads/leads/${leadId}`, {
         method: 'DELETE',
-        credentials: 'include'
+        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
 
       if (response.ok) {
