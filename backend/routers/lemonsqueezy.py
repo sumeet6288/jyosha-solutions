@@ -384,9 +384,9 @@ async def get_plans():
             {
                 "id": "professional",
                 "name": "Professional",
-                "price": 499,
+                "price": 24999,
                 "currency": "INR",
-                "interval": "one-time",
+                "interval": "month",
                 "variant_id": VARIANT_IDS["professional"],
                 "features": [
                     "Unlimited chatbots",
