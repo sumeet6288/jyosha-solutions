@@ -369,7 +369,7 @@ async def get_plans():
             {
                 "id": "starter",
                 "name": "Starter",
-                "price": 150,
+                "price": 7999,
                 "currency": "INR",
                 "interval": "month",
                 "variant_id": VARIANT_IDS["starter"],
