@@ -80,6 +80,81 @@ const ChatbotsManagement = ({ backendUrl }) => {
     );
   };
 
+  const viewChatbotConversations = async (chatbot) => {
+    setSelectedChatbot(chatbot);
+    setConversationsLoading(true);
+    try {
+      const response = await fetch(`${backendUrl}/api/admin/conversations?chatbot_id=${chatbot.id}`);
+      const data = await response.json();
+      setConversations(data.conversations || []);
+    } catch (error) {
+      console.error('Error fetching conversations:', error);
+      setConversations([]);
+    } finally {
+      setConversationsLoading(false);
+    }
+  };
+
+  const viewConversationMessages = async (conversationId) => {
+    if (expandedConversation === conversationId) {
+      setExpandedConversation(null);
+      setMessages([]);
+      return;
+    }
+
+    setExpandedConversation(conversationId);
+    try {
+      const response = await fetch(`${backendUrl}/api/chat/messages/${conversationId}`);
+      const data = await response.json();
+      setMessages(data.messages || []);
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+      setMessages([]);
+    }
+  };
+
+  const closeConversationsModal = () => {
+    setSelectedChatbot(null);
+    setConversations([]);
+    setExpandedConversation(null);
+    setMessages([]);
+  };
+
+  const exportConversations = async (format) => {
+    if (!selectedChatbot) return;
+    
+    try {
+      const response = await fetch(`${backendUrl}/api/admin/conversations/export?format=${format}&chatbot_id=${selectedChatbot.id}`);
+      
+      if (format === 'csv') {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${selectedChatbot.name}_conversations_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } else {
+        const data = await response.json();
+        const dataStr = JSON.stringify(data, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${selectedChatbot.name}_conversations_${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
+      
+      alert('Export completed successfully');
+    } catch (error) {
+      console.error('Error exporting:', error);
+      alert('Export failed');
+    }
+  };
+
   const filteredChatbots = chatbots.filter(bot =>
     bot.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     bot.user_id.toLowerCase().includes(searchTerm.toLowerCase())
