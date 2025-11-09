@@ -650,6 +650,11 @@ async def get_email_campaigns():
         campaigns_collection = db_instance['email_campaigns']
         campaigns = await campaigns_collection.find({}).sort('created_at', -1).to_list(length=1000)
         
+        # Convert MongoDB documents to serializable format
+        for campaign in campaigns:
+            if "_id" in campaign:
+                campaign["_id"] = str(campaign["_id"])
+        
         return {
             "success": True,
             "campaigns": campaigns
