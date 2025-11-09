@@ -680,6 +680,10 @@ async def get_email_campaign(campaign_id: str):
         if not campaign:
             raise HTTPException(status_code=404, detail="Campaign not found")
         
+        # Convert MongoDB document to serializable format
+        if "_id" in campaign:
+            campaign["_id"] = str(campaign["_id"])
+        
         return {
             "success": True,
             "campaign": campaign
