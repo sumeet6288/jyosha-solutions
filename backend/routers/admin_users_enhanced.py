@@ -242,6 +242,21 @@ async def advanced_user_search(
         
         total_pages = (total_users + limit - 1) // limit
         
+        # Build filters applied dictionary with only primitive types
+        filters_applied = {}
+        if search:
+            filters_applied['search'] = search
+        if status:
+            filters_applied['status'] = status
+        if role:
+            filters_applied['role'] = role
+        if current_plan:
+            filters_applied['current_plan'] = current_plan
+        if lifecycle_stage:
+            filters_applied['lifecycle_stage'] = lifecycle_stage
+        filters_applied['sortBy'] = sortBy
+        filters_applied['sortOrder'] = sortOrder
+        
         return {
             "success": True,
             "users": enhanced_users,
@@ -253,7 +268,7 @@ async def advanced_user_search(
                 "has_next": page < total_pages,
                 "has_prev": page > 1
             },
-            "filters_applied": {k: v for k, v in locals().items() if k not in ['db_instance', 'users_collection', 'chatbots_collection', 'messages_collection', 'query', 'users', 'enhanced_users'] and v is not None}
+            "filters_applied": filters_applied
         }
     
     except Exception as e:
