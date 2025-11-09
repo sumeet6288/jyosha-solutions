@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bot, Power, PowerOff, Trash2, Search, CheckSquare } from 'lucide-react';
+import { Bot, Power, PowerOff, Trash2, Search, CheckSquare, MessageSquare, X, Eye, Download, User, Mail, Calendar, Clock } from 'lucide-react';
 import { Button } from '../ui/button';
 
 const ChatbotsManagement = ({ backendUrl }) => {
@@ -7,6 +7,11 @@ const ChatbotsManagement = ({ backendUrl }) => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedIds, setSelectedIds] = useState([]);
+  const [selectedChatbot, setSelectedChatbot] = useState(null);
+  const [conversations, setConversations] = useState([]);
+  const [conversationsLoading, setConversationsLoading] = useState(false);
+  const [expandedConversation, setExpandedConversation] = useState(null);
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     fetchChatbots();
