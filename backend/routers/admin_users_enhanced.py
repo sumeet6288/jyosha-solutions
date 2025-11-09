@@ -495,6 +495,11 @@ async def get_email_templates():
         templates_collection = db_instance['email_templates']
         templates = await templates_collection.find({}).to_list(length=1000)
         
+        # Convert MongoDB documents to serializable format
+        for template in templates:
+            if "_id" in template:
+                template["_id"] = str(template["_id"])
+        
         return {
             "success": True,
             "templates": templates
