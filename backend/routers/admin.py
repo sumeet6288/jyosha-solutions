@@ -755,23 +755,64 @@ async def get_revenue_overview():
 async def get_revenue_history(days: int = 30):
     """Get revenue history for charts"""
     try:
-        # Mock data - replace with actual data
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+            
+        users_collection = db_instance['users']
+        plans_collection = db_instance['plans']
+        
+        # Get all plans for pricing
+        plans = await plans_collection.find({}).to_list(length=100)
+        plan_prices = {plan['id']: plan['price'] for plan in plans}
+        
+        # Get all users
+        users = await users_collection.find({}).to_list(length=10000)
+        
         history = []
-        from datetime import datetime, timedelta
         for i in range(days):
-            date = (datetime.now() - timedelta(days=days-i)).strftime('%Y-%m-%d')
+            date = (datetime.now() - timedelta(days=days-i-1))
+            date_str = date.strftime('%Y-%m-%d')
+            
+            # Calculate metrics for this date
+            # Count users created on or before this date
+            users_by_date = [u for u in users 
+                           if u.get('created_at') and 
+                           isinstance(u['created_at'], datetime) and 
+                           u['created_at'].date() <= date.date()]
+            
+            # Count new users on this specific date
+            new_users_count = sum(1 for u in users 
+                                 if u.get('created_at') and 
+                                 isinstance(u['created_at'], datetime) and 
+                                 u['created_at'].date() == date.date())
+            
+            # Calculate revenue from active subscriptions
+            daily_revenue = 0
+            active_subs = 0
+            for user in users_by_date:
+                subscription = user.get('subscription', {})
+                plan_id = subscription.get('plan_id', 'free')
+                status = subscription.get('status', 'active')
+                
+                if status == 'active' and plan_id != 'free':
+                    active_subs += 1
+                    price = plan_prices.get(plan_id, 0)
+                    # Daily revenue approximation (monthly / 30)
+                    daily_revenue += price / 30
+            
             history.append({
-                "date": date,
-                "revenue": 500 + (i * 50),  # Mock increasing revenue
-                "subscriptions": 20 + i,
-                "new_users": 2 + (i % 5)
+                "date": date_str,
+                "revenue": round(daily_revenue, 2),
+                "subscriptions": active_subs,
+                "new_users": new_users_count
             })
+        
         return {
             "history": history,
             "total": len(history)
         }
     except Exception as e:
-        print(f"Error in get_revenue_history: {str(e)}")
+        logger.error(f"Error in get_revenue_history: {str(e)}")
         return {"history": [], "total": 0}
 
 
