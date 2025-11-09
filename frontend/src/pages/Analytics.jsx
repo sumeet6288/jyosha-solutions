@@ -2,25 +2,60 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { TrendingUp, MessageSquare, Users, Clock, BarChart3, CreditCard } from 'lucide-react';
-import { mockAnalytics } from '../mock/mockData';
+import axios from 'axios';
 import UserProfileDropdown from '../components/UserProfileDropdown';
 import ResponsiveNav from '../components/ResponsiveNav';
 import { useAuth } from '../contexts/AuthContext';
 import { AnalyticsSkeleton } from '../components/LoadingSkeleton';
 import Footer from '../components/Footer';
+import toast from 'react-hot-toast';
+
+const api = axios.create({
+  baseURL: process.env.REACT_APP_BACKEND_URL || ''
+});
 
 const Analytics = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const loadDashboardAnalytics = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await api.get('/api/analytics/dashboard');
+      // Convert backend data to expected format
+      const data = response.data;
+      setAnalytics({
+        totalConversations: data.total_conversations || 0,
+        activeChats: data.active_chatbots || 0,
+        satisfaction: 0, // This would need additional API call if needed
+        avgResponseTime: '0s', // This would need additional API call if needed
+        conversationTrend: [],
+        topicsDiscussed: []
+      });
+    } catch (error) {
+      console.error('Error loading analytics:', error);
+      setError(error.message);
+      toast.error('Failed to load analytics data');
+      // Set default empty data on error
+      setAnalytics({
+        totalConversations: 0,
+        activeChats: 0,
+        satisfaction: 0,
+        avgResponseTime: '0s',
+        conversationTrend: [],
+        topicsDiscussed: []
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    // Simulate loading
-    setTimeout(() => {
-      setAnalytics(mockAnalytics);
-      setLoading(false);
-    }, 800);
+    loadDashboardAnalytics();
   }, []);
 
   const handleLogout = () => {
