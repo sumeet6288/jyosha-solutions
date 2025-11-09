@@ -205,6 +205,11 @@ async def advanced_user_search(
             if messages_min is not None and messages_count < messages_min:
                 continue
             
+            # Convert datetime fields to ISO format strings
+            created_at = user.get('created_at')
+            last_login = user.get('last_login')
+            last_active = user.get('last_active')
+            
             enhanced_users.append({
                 'user_id': user.get('id'),
                 'name': user.get('name'),
@@ -223,9 +228,9 @@ async def advanced_user_search(
                 'total_spent': user.get('total_spent', 0.0),
                 'lifetime_value': user.get('lifetime_value', 0.0),
                 'current_plan': user.get('current_plan'),
-                'created_at': user.get('created_at'),
-                'last_login': user.get('last_login'),
-                'last_active': user.get('last_active'),
+                'created_at': created_at.isoformat() if isinstance(created_at, datetime) else str(created_at) if created_at else None,
+                'last_login': last_login.isoformat() if isinstance(last_login, datetime) else str(last_login) if last_login else None,
+                'last_active': last_active.isoformat() if isinstance(last_active, datetime) else str(last_active) if last_active else None,
                 'login_count': user.get('login_count', 0),
                 'onboarding_completed': user.get('onboarding_completed', False),
                 'onboarding_progress': user.get('onboarding_progress', 0),
