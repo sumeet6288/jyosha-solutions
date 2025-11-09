@@ -494,13 +494,16 @@ const Leads = () => {
                   <FileText className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-1">Plan Limits</h4>
+                  <h4 className="font-semibold text-gray-900 mb-1">Your Plan: {planName}</h4>
                   <p className="text-sm text-gray-600">
-                    <strong>Starter Plan:</strong> 100 leads | 
-                    <strong> Professional Plan:</strong> 500 leads
+                    You have <strong className="text-purple-600">{currentLeads} out of {maxLeads}</strong> leads used
+                    {' '}({Math.round((currentLeads / maxLeads) * 100)}% used)
                   </p>
                   <p className="text-sm text-gray-600 mt-1">
-                    {isStarter ? 'Upgrade to Professional to unlock 500 leads' : 'You have access to all Professional features'}
+                    {isStarter && !isAtLimit && 'Want more leads? Upgrade to Professional for 500 leads'}
+                    {isProfessional && !isAtLimit && 'You have access to all Professional features (500 leads)'}
+                    {isAtLimit && isStarter && '⚠️ Limit reached - Upgrade to Professional for more leads'}
+                    {isAtLimit && isProfessional && '⚠️ Limit reached - Contact support for Enterprise plan'}
                   </p>
                 </div>
               </div>
