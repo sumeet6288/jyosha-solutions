@@ -15,9 +15,9 @@ def init_router(db):
 
 
 
-@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
 async def register(user_data: UserCreate):
-    """Register a new user."""
+    """Register a new user and return access token."""
     # Check if user already exists
     existing_user = await users_collection.find_one({"email": user_data.email})
     if existing_user:
@@ -45,16 +45,12 @@ async def register(user_data: UserCreate):
     
     await users_collection.insert_one(user_doc)
     
-    return UserResponse(
-        id=user.id,
-        name=user.name,
-        email=user.email,
-        created_at=user.created_at,
-        role=user.role,
-        status=user.status,
-        phone=user.phone,
-        avatar_url=user.avatar_url,
-        last_login=user.last_login
+    # Create access token for auto-login
+    access_token = create_access_token(data={"sub": user.email})
+    
+    return Token(
+        access_token=access_token,
+        token_type="bearer"
     )
 
 
