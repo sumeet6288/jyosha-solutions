@@ -34,8 +34,12 @@ const Leads = () => {
   const fetchLeads = async () => {
     try {
       setLoading(true);
+      const token = localStorage.getItem('botsmith_token');
       const response = await fetch(`${backendUrl}/api/leads/leads`, {
-        credentials: 'include'
+        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
       const data = await response.json();
       setLeads(data.leads || []);
