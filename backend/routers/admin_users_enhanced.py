@@ -943,22 +943,39 @@ async def end_impersonation(session_id: str):
     try:
         impersonation_collection = db_instance['impersonation_sessions']
         
-        result = await impersonation_collection.update_one(
-            {'id': session_id},
-            {'$set': {'ended_at': datetime.now(timezone.utc)}}
-        )
-        
-        if result.matched_count == 0:
+        # Get the session first to calculate duration
+        session = await impersonation_collection.find_one({'id': session_id})
+        if not session:
             raise HTTPException(status_code=404, detail="Session not found")
         
+        # Calculate duration
+        now = datetime.now(timezone.utc)
+        started_at = session.get('started_at')
+        
+        # Handle started_at regardless of type
+        if isinstance(started_at, str):
+            from dateutil import parser
+            started_at = parser.parse(started_at)
+        elif isinstance(started_at, datetime):
+            # Make timezone aware if it isn't
+            if started_at.tzinfo is None:
+                started_at = started_at.replace(tzinfo=timezone.utc)
+        
+        duration_minutes = (now - started_at).total_seconds() / 60 if started_at else 0
+        
+        # Update session to mark as ended
+        result = await impersonation_collection.update_one(
+            {'id': session_id},
+            {'$set': {'ended_at': now}}
+        )
+        
         # Log the impersonation end
-        session = await impersonation_collection.find_one({'id': session_id})
         activity_log = ActivityLog(
             user_id="admin",
             action="ended_impersonation",
             resource_type="user",
             resource_id=session['target_user_id'],
-            details=f"Session duration: {(datetime.now(timezone.utc) - session['started_at']).total_seconds() / 60:.1f} minutes"
+            details=f"Session duration: {duration_minutes:.1f} minutes"
         )
         await db_instance['activity_logs'].insert_one(activity_log.model_dump())
         
