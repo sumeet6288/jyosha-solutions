@@ -14,7 +14,7 @@ const SecurityOverview = () => {
       time: '12 min read',
       icon: <Lock className="w-6 h-6" />,
       gradient: 'from-blue-500 to-cyan-600',
-      anchor: '1-authentication--authorization'
+      anchor: 'auth'
     },
     {
       id: 2,
@@ -23,7 +23,7 @@ const SecurityOverview = () => {
       time: '10 min read',
       icon: <Database className="w-6 h-6" />,
       gradient: 'from-purple-500 to-pink-600',
-      anchor: '2-data-protection'
+      anchor: 'data'
     },
     {
       id: 3,
@@ -32,7 +32,7 @@ const SecurityOverview = () => {
       time: '15 min read',
       icon: <Shield className="w-6 h-6" />,
       gradient: 'from-green-500 to-emerald-600',
-      anchor: '3-api-security'
+      anchor: 'api'
     },
     {
       id: 4,
@@ -41,7 +41,7 @@ const SecurityOverview = () => {
       time: '8 min read',
       icon: <CheckCircle className="w-6 h-6" />,
       gradient: 'from-orange-500 to-red-600',
-      anchor: '4-best-practices'
+      anchor: 'practices'
     }
   ];
 
