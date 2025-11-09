@@ -27,6 +27,11 @@ async def get_my_leads(current_user: dict = Depends(get_current_user)):
             
         leads = await db.leads.find({"user_id": user_id}).to_list(length=None)
         
+        # Convert MongoDB ObjectId to string for JSON serialization
+        for lead in leads:
+            if '_id' in lead:
+                lead['_id'] = str(lead['_id'])
+        
         # Get user's plan info from database
         user = await db.users.find_one({"id": user_id})
         subscription = user.get('subscription', {}) if user else {}
