@@ -57,7 +57,11 @@ async def get_my_leads(current_user: dict = Depends(get_current_user)):
 async def get_lead_stats(current_user: dict = Depends(get_current_user)):
     """Get lead statistics for current user"""
     try:
-        user_id = current_user.get('id')
+        # Handle both dict and User object
+        if hasattr(current_user, 'id'):
+            user_id = current_user.id
+        else:
+            user_id = current_user.get('id')
         
         total_leads = await db.leads.count_documents({"user_id": user_id})
         active_leads = await db.leads.count_documents({"user_id": user_id, "status": "active"})
