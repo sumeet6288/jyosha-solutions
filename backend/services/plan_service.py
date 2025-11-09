@@ -51,7 +51,7 @@ class PlanService:
             {
                 "id": "starter",
                 "name": "Starter",
-                "price": 150.0,
+                "price": 7999.0,
                 "description": "For growing businesses",
                 "limits": {
                     "max_chatbots": 5,
