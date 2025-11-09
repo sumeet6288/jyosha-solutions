@@ -676,31 +676,78 @@ async def get_revenue_overview():
         if db_instance is None:
             raise HTTPException(status_code=500, detail="Database not initialized")
         
-        # Mock data for demo - replace with actual billing database
+        users_collection = db_instance['users']
+        plans_collection = db_instance['plans']
+        
+        # Get all plans for pricing
+        plans = await plans_collection.find({}).to_list(length=100)
+        plan_prices = {plan['id']: plan['price'] for plan in plans}
+        
+        # Get all users with their subscriptions
+        users = await users_collection.find({}).to_list(length=10000)
+        
+        # Calculate real revenue
+        total_mrr = 0
+        revenue_by_plan = {"Free": 0, "Starter": 0, "Professional": 0, "Enterprise": 0}
+        active_subscriptions = 0
+        
+        for user in users:
+            subscription = user.get('subscription', {})
+            plan_id = subscription.get('plan_id', 'free')
+            status = subscription.get('status', 'active')
+            
+            # Count active paid subscriptions
+            if status == 'active' and plan_id != 'free':
+                active_subscriptions += 1
+                price = plan_prices.get(plan_id, 0)
+                total_mrr += price
+                
+                # Add to revenue by plan
+                plan_name = plan_id.capitalize()
+                if plan_name in revenue_by_plan:
+                    revenue_by_plan[plan_name] += price
+        
+        # Calculate other metrics
+        arr = total_mrr * 12
+        
+        # Get users created this month for growth calculation
+        now = datetime.now()
+        start_of_month = datetime(now.year, now.month, 1)
+        start_of_last_month = (start_of_month - timedelta(days=1)).replace(day=1)
+        
+        new_this_month = sum(1 for u in users 
+                            if u.get('created_at') and 
+                            isinstance(u['created_at'], datetime) and 
+                            u['created_at'] >= start_of_month)
+        
+        # Calculate total lifetime revenue (approximation: active subscriptions * avg 6 months)
+        total_revenue = total_mrr * 6
+        
         return {
-            "mrr": 15000,  # Monthly Recurring Revenue
-            "arr": 180000,  # Annual Recurring Revenue
-            "total_revenue": 45000,
-            "active_subscriptions": 25,
-            "churned_this_month": 2,
-            "new_this_month": 8,
-            "revenue_by_plan": {
-                "Free": 0,
-                "Starter": 7500,
-                "Professional": 12000,
-                "Enterprise": 25500
-            },
-            "revenue_growth": 15.5,  # percentage
-            "payment_failures": 1,
-            "pending_invoices": 3
+            "mrr": round(total_mrr, 2),
+            "arr": round(arr, 2),
+            "total_revenue": round(total_revenue, 2),
+            "active_subscriptions": active_subscriptions,
+            "churned_this_month": 0,  # Would need historical data
+            "new_this_month": new_this_month,
+            "revenue_by_plan": revenue_by_plan,
+            "revenue_growth": 0,  # Would need historical data to calculate
+            "payment_failures": 0,  # Would need payment provider integration
+            "pending_invoices": 0  # Would need payment provider integration
         }
     except Exception as e:
-        print(f"Error in get_revenue_overview: {str(e)}")
+        logger.error(f"Error in get_revenue_overview: {str(e)}")
         return {
             "mrr": 0,
             "arr": 0,
             "total_revenue": 0,
-            "active_subscriptions": 0
+            "active_subscriptions": 0,
+            "churned_this_month": 0,
+            "new_this_month": 0,
+            "revenue_by_plan": {"Free": 0, "Starter": 0, "Professional": 0, "Enterprise": 0},
+            "revenue_growth": 0,
+            "payment_failures": 0,
+            "pending_invoices": 0
         }
 
 
