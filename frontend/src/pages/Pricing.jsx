@@ -31,7 +31,7 @@ const Pricing = () => {
     },
     {
       name: 'Starter',
-      price: '$150',
+      price: '₹7,999',
       period: '/month',
       description: 'For growing businesses',
       icon: Zap,
