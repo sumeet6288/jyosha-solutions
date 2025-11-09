@@ -11,7 +11,7 @@ import uuid
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://fullstack-setup-6.preview.emergentagent.com/api"
+BACKEND_URL = "https://frontend-backend-db-4.preview.emergentagent.com/api"
 ADMIN_EMAIL = "admin@botsmith.com"
 ADMIN_PASSWORD = "admin123"
 
