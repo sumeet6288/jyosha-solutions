@@ -82,7 +82,7 @@ class PlanService:
             {
                 "id": "professional",
                 "name": "Professional",
-                "price": 499.0,
+                "price": 24999.0,
                 "description": "For large teams & high volume",
                 "limits": {
                     "max_chatbots": 25,
