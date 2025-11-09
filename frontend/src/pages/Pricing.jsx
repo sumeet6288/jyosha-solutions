@@ -51,7 +51,7 @@ const Pricing = () => {
     },
     {
       name: 'Professional',
-      price: '$499',
+      price: '₹24,999',
       period: '/month',
       description: 'For large teams & high volume',
       icon: Crown,
