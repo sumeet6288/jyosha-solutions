@@ -107,6 +107,11 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
+      
+      // Store token and fetch user data (auto-login after registration)
+      localStorage.setItem('botsmith_token', data.access_token);
+      await fetchCurrentUser();
+      
       setLoading(false);
       return { data };
     } catch (error) {
