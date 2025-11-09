@@ -201,7 +201,11 @@ async def update_lead(lead_id: str, lead_data: LeadCreate, current_user: dict = 
 async def delete_lead(lead_id: str, current_user: dict = Depends(get_current_user)):
     """Delete a specific lead (user can only delete their own leads)"""
     try:
-        user_id = current_user.get('id')
+        # Handle both dict and User object
+        if hasattr(current_user, 'id'):
+            user_id = current_user.id
+        else:
+            user_id = current_user.get('id')
         
         # Check if lead belongs to user
         lead = await db.leads.find_one({"id": lead_id, "user_id": user_id})
