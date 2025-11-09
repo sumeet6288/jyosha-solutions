@@ -80,22 +80,21 @@ async def get_admin_stats() -> Dict[str, Any]:
         if db_instance is None:
             raise HTTPException(status_code=500, detail="Database not initialized")
             
-        # Get total users count (unique user_ids from chatbots collection)
-        chatbots_collection = db_instance['chatbots']
-        users = await chatbots_collection.distinct('user_id')
-        total_users = len(users)
+        # Get total users count from users collection
+        users_collection = db_instance['users']
+        total_users = await users_collection.count_documents({})
         
         # Get total chatbots count
+        chatbots_collection = db_instance['chatbots']
         total_chatbots = await chatbots_collection.count_documents({})
         
         # Get total messages count
         messages_collection = db_instance['messages']
         total_messages = await messages_collection.count_documents({})
         
-        # Get active integrations count (chatbots with external integrations)
-        # For now, count unique AI providers being used
-        providers = await chatbots_collection.distinct('ai_provider')
-        active_integrations = len(providers)
+        # Get active integrations count
+        integrations_collection = db_instance['integrations']
+        active_integrations = await integrations_collection.count_documents({'enabled': True})
         
         return {
             "totalUsers": total_users,
@@ -104,7 +103,7 @@ async def get_admin_stats() -> Dict[str, Any]:
             "activeIntegrations": active_integrations
         }
     except Exception as e:
-        print(f"Error in get_admin_stats: {str(e)}")
+        logger.error(f"Error in get_admin_stats: {str(e)}")
         return {
             "totalUsers": 0,
             "activeChatbots": 0,
