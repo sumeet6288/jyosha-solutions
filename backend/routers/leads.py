@@ -100,7 +100,11 @@ async def get_lead_stats(current_user: dict = Depends(get_current_user)):
 async def create_lead(lead_data: LeadCreate, current_user: dict = Depends(get_current_user)):
     """Create a new lead for the current user"""
     try:
-        user_id = current_user.get('id')
+        # Handle both dict and User object
+        if hasattr(current_user, 'id'):
+            user_id = current_user.id
+        else:
+            user_id = current_user.get('id')
         
         # Get user's plan info
         user = await db.users.find_one({"id": user_id})
