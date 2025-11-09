@@ -87,10 +87,14 @@ const SignUp = () => {
       await register(formData.name, formData.email, formData.password);
       toast({
         title: 'Account created! 🎉',
-        description: 'Welcome to BotSmith. You are now logged in!'
+        description: 'Please verify your email to continue'
       });
-      // Redirect to dashboard after successful registration and auto-login
-      navigate('/dashboard');
+      // Redirect to email verification page
+      navigate('/verify-email', { 
+        state: { 
+          email: formData.email 
+        } 
+      });
     } catch (error) {
       console.error('Registration error:', error);
       const errorMessage = error.message || error.response?.data?.detail || 'Failed to create account';
