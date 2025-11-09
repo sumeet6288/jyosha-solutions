@@ -19,10 +19,15 @@ db = client.chatbase_db
 async def get_my_leads(current_user: dict = Depends(get_current_user)):
     """Get all leads for the current user"""
     try:
-        user_id = current_user.get('id')
+        # Handle both dict and User object
+        if hasattr(current_user, 'id'):
+            user_id = current_user.id
+        else:
+            user_id = current_user.get('id')
+            
         leads = await db.leads.find({"user_id": user_id}).to_list(length=None)
         
-        # Get user's plan info
+        # Get user's plan info from database
         user = await db.users.find_one({"id": user_id})
         subscription = user.get('subscription', {}) if user else {}
         plan_name = subscription.get('plan_name', 'Free')
