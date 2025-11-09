@@ -269,17 +269,28 @@ const ChatbotsManagement = ({ backendUrl }) => {
                     </span>
                   </td>
                   <td className="py-3 px-4">
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => toggleChatbot(bot.id)}
-                    >
-                      {bot.enabled !== false ? (
-                        <PowerOff className="w-4 h-4 text-yellow-600" />
-                      ) : (
-                        <Power className="w-4 h-4 text-green-600" />
-                      )}
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => viewChatbotConversations(bot)}
+                        title="View Conversations"
+                      >
+                        <MessageSquare className="w-4 h-4 text-purple-600" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => toggleChatbot(bot.id)}
+                        title={bot.enabled !== false ? 'Disable' : 'Enable'}
+                      >
+                        {bot.enabled !== false ? (
+                          <PowerOff className="w-4 h-4 text-yellow-600" />
+                        ) : (
+                          <Power className="w-4 h-4 text-green-600" />
+                        )}
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               ))}
