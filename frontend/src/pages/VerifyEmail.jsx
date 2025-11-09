@@ -123,17 +123,12 @@ const VerifyEmail = () => {
       if (verificationCode === '000000') {
         toast({
           title: 'Email Verified! 🎉',
-          description: 'Your email has been successfully verified'
+          description: 'Your email has been successfully verified. Welcome to BotSmith!'
         });
         
-        // Redirect to signin after 1 second
+        // Redirect to dashboard after 1 second (user is already logged in from signup)
         setTimeout(() => {
-          navigate('/signin', { 
-            state: { 
-              verified: true,
-              email: email 
-            } 
-          });
+          navigate('/dashboard');
         }, 1000);
       } else {
         toast({
