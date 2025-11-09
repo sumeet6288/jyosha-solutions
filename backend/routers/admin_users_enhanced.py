@@ -329,6 +329,11 @@ async def get_user_segments():
         segments_collection = db_instance['user_segments']
         segments = await segments_collection.find({}).to_list(length=1000)
         
+        # Convert MongoDB documents to serializable format
+        for segment in segments:
+            if "_id" in segment:
+                segment["_id"] = str(segment["_id"])
+        
         return {
             "success": True,
             "segments": segments
