@@ -2,17 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { TrendingUp, MessageSquare, Users, Clock, BarChart3, CreditCard } from 'lucide-react';
-import axios from 'axios';
 import UserProfileDropdown from '../components/UserProfileDropdown';
 import ResponsiveNav from '../components/ResponsiveNav';
 import { useAuth } from '../contexts/AuthContext';
 import { AnalyticsSkeleton } from '../components/LoadingSkeleton';
 import Footer from '../components/Footer';
 import toast from 'react-hot-toast';
-
-const api = axios.create({
-  baseURL: process.env.REACT_APP_BACKEND_URL || ''
-});
+import { analyticsAPI } from '../utils/api';
 
 const Analytics = () => {
   const navigate = useNavigate();
@@ -25,7 +21,7 @@ const Analytics = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.get('/api/analytics/dashboard');
+      const response = await analyticsAPI.getDashboard();
       // Convert backend data to expected format
       const data = response.data;
       setAnalytics({
