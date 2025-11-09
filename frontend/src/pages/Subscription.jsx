@@ -24,7 +24,7 @@ const SubscriptionNew = () => {
     {
       id: 'free',
       name: 'Free',
-      price: '$0',
+      price: '₹0',
       period: '/month',
       description: 'Perfect for trying out BotSmith',
       icon: Sparkles,
