@@ -58,10 +58,12 @@ const Leads = () => {
 
   const handleAddLead = async () => {
     try {
+      const token = localStorage.getItem('botsmith_token');
       const response = await fetch(`${backendUrl}/api/leads/leads`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         credentials: 'include',
         body: JSON.stringify(formData)
