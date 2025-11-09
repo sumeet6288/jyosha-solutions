@@ -31,8 +31,8 @@ LEMONSQUEEZY_API_BASE = "https://api.lemonsqueezy.com/v1"
 
 # Variant IDs for subscription plans
 VARIANT_IDS = {
-    "starter": "1052931",  # ₹150/month
-    "professional": "1052933"  # ₹499 one-time
+    "starter": "1052931",  # ₹7,999/month
+    "professional": "1052933"  # ₹24,999/month
 }
 
 class CheckoutRequest(BaseModel):
