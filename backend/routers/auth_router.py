@@ -140,6 +140,11 @@ async def get_current_user(email: str = Depends(get_current_user_email)):
     if isinstance(subscription_ends_at, str):
         subscription_ends_at = datetime.fromisoformat(subscription_ends_at)
     
+    # Get plan_id from subscription object if it exists, otherwise use the direct plan_id field
+    subscription = user_doc.get('subscription', {})
+    actual_plan_id = subscription.get('plan_id') or user_doc.get('plan_id', 'free')
+    subscription_status = subscription.get('status') or user_doc.get('subscription_status')
+    
     return UserResponse(
         id=user_doc['id'],
         name=user_doc['name'],
@@ -155,9 +160,9 @@ async def get_current_user(email: str = Depends(get_current_user_email)):
         job_title=user_doc.get('job_title'),
         bio=user_doc.get('bio'),
         address=user_doc.get('address'),
-        # Subscription & Plan
-        plan_id=user_doc.get('plan_id', 'free'),
-        subscription_status=user_doc.get('subscription_status'),
+        # Subscription & Plan - use subscription object values if available
+        plan_id=actual_plan_id,
+        subscription_status=subscription_status,
         trial_ends_at=trial_ends_at,
         subscription_ends_at=subscription_ends_at,
         lifetime_access=user_doc.get('lifetime_access', False),
