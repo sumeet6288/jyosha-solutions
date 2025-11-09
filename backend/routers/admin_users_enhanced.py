@@ -992,9 +992,20 @@ async def get_impersonation_history(
         sessions = await impersonation_collection.find({}).sort('started_at', -1).skip(skip).limit(limit).to_list(length=limit)
         total = await impersonation_collection.count_documents({})
         
+        # Convert ObjectId to string and format dates
+        formatted_sessions = []
+        for session in sessions:
+            session['_id'] = str(session['_id'])
+            # Convert datetime to ISO string if present
+            if 'started_at' in session and session['started_at']:
+                session['started_at'] = session['started_at'].isoformat() if hasattr(session['started_at'], 'isoformat') else str(session['started_at'])
+            if 'ended_at' in session and session['ended_at']:
+                session['ended_at'] = session['ended_at'].isoformat() if hasattr(session['ended_at'], 'isoformat') else str(session['ended_at'])
+            formatted_sessions.append(session)
+        
         return {
             "success": True,
-            "sessions": sessions,
+            "sessions": formatted_sessions,
             "pagination": {
                 "total": total,
                 "page": page,
