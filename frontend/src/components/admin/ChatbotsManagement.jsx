@@ -298,6 +298,156 @@ const ChatbotsManagement = ({ backendUrl }) => {
           </table>
         </div>
       )}
+
+      {/* Conversations Modal */}
+      {selectedChatbot && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
+            {/* Modal Header */}
+            <div className="bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <MessageSquare className="w-6 h-6 text-white" />
+                <div>
+                  <h3 className="text-xl font-bold text-white">{selectedChatbot.name} - Conversations</h3>
+                  <p className="text-purple-100 text-sm">Total: {conversations.length} conversations</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  size="sm"
+                  onClick={() => exportConversations('json')}
+                  className="bg-white text-purple-600 hover:bg-purple-50"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  JSON
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => exportConversations('csv')}
+                  className="bg-white text-purple-600 hover:bg-purple-50"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  CSV
+                </Button>
+                <button
+                  onClick={closeConversationsModal}
+                  className="text-white hover:bg-white hover:bg-opacity-20 rounded-full p-2 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Body */}
+            <div className="flex-1 overflow-y-auto p-6">
+              {conversationsLoading ? (
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+                  <p className="mt-4 text-gray-600">Loading conversations...</p>
+                </div>
+              ) : conversations.length === 0 ? (
+                <div className="text-center py-12 text-gray-500">
+                  <MessageSquare className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                  <p className="text-lg font-medium">No conversations found</p>
+                  <p className="text-sm mt-2">This chatbot hasn't had any conversations yet.</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {conversations.map((conv) => (
+                    <div
+                      key={conv.id}
+                      className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
+                    >
+                      {/* Conversation Header */}
+                      <div 
+                        className="bg-gray-50 p-4 cursor-pointer hover:bg-gray-100 transition-colors"
+                        onClick={() => viewConversationMessages(conv.id)}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="bg-purple-100 p-3 rounded-full">
+                              <User className="w-5 h-5 text-purple-600" />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-gray-900">
+                                {conv.user_name || 'Anonymous User'}
+                              </h4>
+                              <div className="flex items-center gap-4 mt-1 text-sm text-gray-600">
+                                <div className="flex items-center gap-1">
+                                  <Mail className="w-4 h-4" />
+                                  {conv.user_email || 'N/A'}
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <MessageSquare className="w-4 h-4" />
+                                  {conv.message_count || 0} messages
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Calendar className="w-4 h-4" />
+                                  {new Date(conv.created_at).toLocaleDateString()}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                              conv.status === 'active' ? 'bg-green-100 text-green-700' :
+                              conv.status === 'resolved' ? 'bg-blue-100 text-blue-700' :
+                              'bg-yellow-100 text-yellow-700'
+                            }`}>
+                              {conv.status}
+                            </span>
+                            <Eye className={`w-5 h-5 transition-transform ${
+                              expandedConversation === conv.id ? 'rotate-180' : ''
+                            } text-gray-400`} />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Expanded Messages */}
+                      {expandedConversation === conv.id && (
+                        <div className="p-4 bg-white border-t border-gray-200">
+                          {messages.length === 0 ? (
+                            <div className="text-center py-8 text-gray-500">
+                              <MessageSquare className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                              <p>No messages in this conversation</p>
+                            </div>
+                          ) : (
+                            <div className="space-y-3 max-h-96 overflow-y-auto">
+                              {messages.map((msg, idx) => (
+                                <div
+                                  key={idx}
+                                  className={`p-4 rounded-lg ${
+                                    msg.role === 'user'
+                                      ? 'bg-blue-50 border border-blue-200'
+                                      : 'bg-gray-50 border border-gray-200'
+                                  }`}
+                                >
+                                  <div className="flex items-center justify-between mb-2">
+                                    <span className={`text-xs font-semibold uppercase ${
+                                      msg.role === 'user' ? 'text-blue-700' : 'text-gray-700'
+                                    }`}>
+                                      {msg.role === 'user' ? '👤 User' : '🤖 Assistant'}
+                                    </span>
+                                    <div className="flex items-center gap-1 text-xs text-gray-500">
+                                      <Clock className="w-3 h-3" />
+                                      {new Date(msg.timestamp).toLocaleString()}
+                                    </div>
+                                  </div>
+                                  <p className="text-gray-800 whitespace-pre-wrap">{msg.content}</p>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
