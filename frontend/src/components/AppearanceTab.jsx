@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Palette, Image, Type, Layout, Eye, Upload, X } from 'lucide-react';
 import { chatbotAPI } from '../utils/api';
 import { toast } from 'sonner';
-import axios from 'axios';
 
 const AppearanceTab = ({ chatbot, onUpdate }) => {
   const [customization, setCustomization] = useState({
