@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from typing import List
 from datetime import datetime, timezone
@@ -9,6 +9,10 @@ from auth import get_current_user, get_current_user, User
 from services.plan_service import plan_service
 from services.cache_service import cache_service
 import logging
+import os
+import uuid
+import base64
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
