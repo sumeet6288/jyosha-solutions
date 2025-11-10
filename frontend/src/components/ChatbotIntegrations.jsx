@@ -53,9 +53,9 @@ const ChatbotIntegrations = ({ chatbot }) => {
       icon: <Phone className="w-6 h-6" />,
       gradient: 'from-green-500 to-green-600',
       fields: [
-        { name: 'api_key', label: 'API Key', type: 'password', required: true },
-        { name: 'phone_number', label: 'Phone Number', type: 'text', required: true },
-        { name: 'webhook_url', label: 'Webhook URL', type: 'text', required: false }
+        { name: 'access_token', label: 'Access Token (from Meta Business Suite)', type: 'password', required: true },
+        { name: 'phone_number_id', label: 'Phone Number ID', type: 'text', required: true },
+        { name: 'verify_token', label: 'Verify Token (for webhook)', type: 'text', required: false, placeholder: 'botsmith_verify_token' }
       ]
     },
     {
