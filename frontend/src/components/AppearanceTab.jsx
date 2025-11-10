@@ -52,6 +52,142 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
     window.open(previewUrl, '_blank');
   };
 
+  const handleLogoUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp', 'image/svg+xml'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Invalid file type. Please upload PNG, JPEG, JPG, GIF, WEBP, or SVG');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      toast.error(`Image size exceeds 5MB. Current size: ${(file.size / 1024 / 1024).toFixed(2)}MB`);
+      return;
+    }
+
+    setUploadingLogo(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('image_type', 'logo');
+
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
+      const response = await axios.post(
+        `${backendUrl}/api/chatbots/${chatbot.id}/upload-branding-image?image_type=logo`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      if (response.data.success) {
+        setCustomization(prev => ({ ...prev, logo_url: response.data.url }));
+        toast.success('Logo uploaded successfully!');
+        if (onUpdate) {
+          await onUpdate();
+        }
+      }
+    } catch (error) {
+      console.error('Error uploading logo:', error);
+      toast.error(error.response?.data?.detail || 'Failed to upload logo');
+    } finally {
+      setUploadingLogo(false);
+      // Reset file input
+      if (logoInputRef.current) {
+        logoInputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleAvatarUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp', 'image/svg+xml'];
+    if (!allowedTypes.includes(file.type)) {
+      toast.error('Invalid file type. Please upload PNG, JPEG, JPG, GIF, WEBP, or SVG');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      toast.error(`Image size exceeds 5MB. Current size: ${(file.size / 1024 / 1024).toFixed(2)}MB`);
+      return;
+    }
+
+    setUploadingAvatar(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('image_type', 'avatar');
+
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
+      const response = await axios.post(
+        `${backendUrl}/api/chatbots/${chatbot.id}/upload-branding-image?image_type=avatar`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      if (response.data.success) {
+        setCustomization(prev => ({ ...prev, avatar_url: response.data.url }));
+        toast.success('Avatar uploaded successfully!');
+        if (onUpdate) {
+          await onUpdate();
+        }
+      }
+    } catch (error) {
+      console.error('Error uploading avatar:', error);
+      toast.error(error.response?.data?.detail || 'Failed to upload avatar');
+    } finally {
+      setUploadingAvatar(false);
+      // Reset file input
+      if (avatarInputRef.current) {
+        avatarInputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleRemoveLogo = async () => {
+    try {
+      setCustomization(prev => ({ ...prev, logo_url: '' }));
+      await chatbotAPI.update(chatbot.id, { logo_url: '' });
+      toast.success('Logo removed successfully!');
+      if (onUpdate) {
+        await onUpdate();
+      }
+    } catch (error) {
+      console.error('Error removing logo:', error);
+      toast.error('Failed to remove logo');
+    }
+  };
+
+  const handleRemoveAvatar = async () => {
+    try {
+      setCustomization(prev => ({ ...prev, avatar_url: '' }));
+      await chatbotAPI.update(chatbot.id, { avatar_url: '' });
+      toast.success('Avatar removed successfully!');
+      if (onUpdate) {
+        await onUpdate();
+      }
+    } catch (error) {
+      console.error('Error removing avatar:', error);
+      toast.error('Failed to remove avatar');
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Color Customization */}
