@@ -389,68 +389,166 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
         </div>
         
         <div className="space-y-4">
+          {/* Logo Upload */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Logo URL
+              Logo
             </label>
-            <input
-              type="url"
-              value={customization.logo_url}
-              onChange={(e) => handleChange('logo_url', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              placeholder="https://example.com/logo.png"
-            />
-            {customization.logo_url && (
-              <div className="mt-2 p-3 border border-gray-200 rounded-lg bg-gray-50">
-                <p className="text-xs text-gray-500 mb-2">Logo Preview:</p>
-                <div className="flex items-center gap-3">
+            
+            {!customization.logo_url ? (
+              <div className="relative">
+                <input
+                  ref={logoInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/jpg,image/gif,image/webp,image/svg+xml"
+                  onChange={handleLogoUpload}
+                  className="hidden"
+                  disabled={uploadingLogo}
+                />
+                <button
+                  type="button"
+                  onClick={() => logoInputRef.current?.click()}
+                  disabled={uploadingLogo}
+                  className="w-full px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-400 hover:bg-purple-50 transition-colors flex items-center justify-center gap-2 text-gray-600 hover:text-purple-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {uploadingLogo ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-purple-600"></div>
+                      <span>Uploading...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-5 h-5" />
+                      <span>Click to upload logo</span>
+                    </>
+                  )}
+                </button>
+                <p className="mt-2 text-xs text-gray-500">
+                  PNG, JPG, GIF, WEBP, or SVG (max 5MB)
+                </p>
+              </div>
+            ) : (
+              <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-xs text-gray-500 font-medium">Logo Preview:</p>
+                  <button
+                    type="button"
+                    onClick={handleRemoveLogo}
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-lg transition-colors"
+                    title="Remove logo"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="flex items-center justify-center p-3 bg-white rounded-lg border border-gray-200">
                   <img 
                     src={customization.logo_url} 
                     alt="Logo preview" 
-                    className="h-12 object-contain max-w-[200px]"
+                    className="h-16 object-contain max-w-[250px]"
                     onError={(e) => {
                       e.target.style.display = 'none';
-                      const errorMsg = e.target.parentElement.querySelector('.error-message');
-                      if (errorMsg) errorMsg.style.display = 'block';
                     }}
                   />
-                  <div className="error-message hidden text-xs text-amber-600 bg-amber-50 px-3 py-2 rounded border border-amber-200">
-                    ⚠️ Preview unavailable. Logo will display correctly in public chat if URL is valid.
-                  </div>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => logoInputRef.current?.click()}
+                  disabled={uploadingLogo}
+                  className="mt-3 w-full px-3 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Upload className="w-4 h-4" />
+                  <span>Change Logo</span>
+                </button>
+                <input
+                  ref={logoInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/jpg,image/gif,image/webp,image/svg+xml"
+                  onChange={handleLogoUpload}
+                  className="hidden"
+                  disabled={uploadingLogo}
+                />
               </div>
             )}
           </div>
           
+          {/* Avatar Upload */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Avatar URL
+              Avatar
             </label>
-            <input
-              type="url"
-              value={customization.avatar_url}
-              onChange={(e) => handleChange('avatar_url', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              placeholder="https://example.com/avatar.png"
-            />
-            {customization.avatar_url && (
-              <div className="mt-2 p-3 border border-gray-200 rounded-lg bg-gray-50">
-                <p className="text-xs text-gray-500 mb-2">Avatar Preview:</p>
-                <div className="flex items-center gap-3">
+            
+            {!customization.avatar_url ? (
+              <div className="relative">
+                <input
+                  ref={avatarInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/jpg,image/gif,image/webp,image/svg+xml"
+                  onChange={handleAvatarUpload}
+                  className="hidden"
+                  disabled={uploadingAvatar}
+                />
+                <button
+                  type="button"
+                  onClick={() => avatarInputRef.current?.click()}
+                  disabled={uploadingAvatar}
+                  className="w-full px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-400 hover:bg-purple-50 transition-colors flex items-center justify-center gap-2 text-gray-600 hover:text-purple-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {uploadingAvatar ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-purple-600"></div>
+                      <span>Uploading...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-5 h-5" />
+                      <span>Click to upload avatar</span>
+                    </>
+                  )}
+                </button>
+                <p className="mt-2 text-xs text-gray-500">
+                  PNG, JPG, GIF, WEBP, or SVG (max 5MB)
+                </p>
+              </div>
+            ) : (
+              <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-xs text-gray-500 font-medium">Avatar Preview:</p>
+                  <button
+                    type="button"
+                    onClick={handleRemoveAvatar}
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-lg transition-colors"
+                    title="Remove avatar"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="flex items-center justify-center p-3 bg-white rounded-lg border border-gray-200">
                   <img 
                     src={customization.avatar_url} 
                     alt="Avatar preview" 
-                    className="w-12 h-12 rounded-full object-cover border-2 border-gray-300"
+                    className="w-20 h-20 rounded-full object-cover border-2 border-gray-300"
                     onError={(e) => {
                       e.target.style.display = 'none';
-                      const errorMsg = e.target.parentElement.querySelector('.error-message');
-                      if (errorMsg) errorMsg.style.display = 'block';
                     }}
                   />
-                  <div className="error-message hidden text-xs text-amber-600 bg-amber-50 px-3 py-2 rounded border border-amber-200">
-                    ⚠️ Preview unavailable. Avatar will display correctly in public chat if URL is valid.
-                  </div>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => avatarInputRef.current?.click()}
+                  disabled={uploadingAvatar}
+                  className="mt-3 w-full px-3 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Upload className="w-4 h-4" />
+                  <span>Change Avatar</span>
+                </button>
+                <input
+                  ref={avatarInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/jpg,image/gif,image/webp,image/svg+xml"
+                  onChange={handleAvatarUpload}
+                  className="hidden"
+                  disabled={uploadingAvatar}
+                />
               </div>
             )}
           </div>
