@@ -83,6 +83,8 @@ const NotificationCenter = ({ onClose }) => {
     }`;
 
     switch (type) {
+      case 'admin_message':
+        return <Bell className="w-5 h-5 text-purple-600" />;
       case 'new_conversation':
         return <MessageSquare className={iconClass} />;
       case 'high_priority_message':
