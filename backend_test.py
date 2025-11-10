@@ -241,40 +241,35 @@ except Exception as e:
     log_test("Unauthenticated request fails", False, f"Exception: {str(e)}")
 
 # ============================================================================
-# TEST 4: Change user plan from Free to Starter via admin panel ultimate-update
+# TEST 4: Test invalid file type (should fail with 400)
 # ============================================================================
-print("\n[TEST 4] Changing user plan from Free to Starter via admin panel...")
+print("\n[TEST 4] Test invalid file type...")
 try:
     headers = {"Authorization": f"Bearer {admin_token}"}
-    update_payload = {
-        "plan_id": "starter"
-    }
     
-    response = requests.put(
-        f"{BACKEND_URL}/admin/users/{test_user_id}/ultimate-update",
+    # Create a text file instead of image
+    invalid_file_content = b"This is not an image file"
+    
+    files = {
+        'file': ('test_file.txt', invalid_file_content, 'text/plain')
+    }
+    params = {'image_type': 'logo'}
+    
+    response = requests.post(
+        f"{BACKEND_URL}/chatbots/{TEST_CHATBOT_ID}/upload-branding-image",
         headers=headers,
-        json=update_payload,
+        files=files,
+        params=params,
         timeout=10
     )
     
-    if response.status_code == 200:
-        result = response.json()
-        
-        checks = []
-        checks.append(("Success flag", result.get("success") == True))
-        checks.append(("Has message", result.get("message") is not None))
-        
-        all_passed = all(check[1] for check in checks)
-        details = f"Success: {result.get('success')}, Message: {result.get('message')}"
-        log_test("Admin plan change Free→Starter", all_passed, details)
+    if response.status_code == 400:
+        log_test("Invalid file type rejected", True, "Correctly returned 400 Bad Request")
     else:
-        log_test("Admin plan change Free→Starter", False, f"Status: {response.status_code}, Response: {response.text}")
-        print("Cannot proceed without successful plan change. Exiting...")
-        exit(1)
+        log_test("Invalid file type rejected", False, f"Expected 400, got {response.status_code}")
+
 except Exception as e:
-    log_test("Admin plan change Free→Starter", False, f"Exception: {str(e)}")
-    print("Cannot proceed without successful plan change. Exiting...")
-    exit(1)
+    log_test("Invalid file type rejected", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 5: Verify subscription is updated with correct plan_id (Starter)
