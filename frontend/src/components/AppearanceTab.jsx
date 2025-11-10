@@ -72,20 +72,7 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
 
     setUploadingLogo(true);
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('image_type', 'logo');
-
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
-      const response = await axios.post(
-        `${backendUrl}/api/chatbots/${chatbot.id}/upload-branding-image?image_type=logo`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
+      const response = await chatbotAPI.uploadBrandingImage(chatbot.id, file, 'logo');
 
       if (response.data.success) {
         setCustomization(prev => ({ ...prev, logo_url: response.data.url }));
