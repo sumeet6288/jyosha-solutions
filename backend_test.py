@@ -11,7 +11,7 @@ import uuid
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://mern-deploy-flow.preview.emergentagent.com/api"
+BACKEND_URL = "https://mongo-fullstack.preview.emergentagent.com/api"
 ADMIN_EMAIL = "admin@botsmith.com"
 ADMIN_PASSWORD = "admin123"
 

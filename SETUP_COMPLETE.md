@@ -56,14 +56,14 @@ All dependencies have been successfully installed and all services are running!
 ## 🚀 Access URLs
 
 **Frontend Application:**
-https://mern-deploy-flow.preview.emergentagent.com
+https://mongo-fullstack.preview.emergentagent.com
 
 **Backend API:**
 - Internal: http://localhost:8001
-- External: https://mern-deploy-flow.preview.emergentagent.com/api
+- External: https://mongo-fullstack.preview.emergentagent.com/api
 
 **API Documentation:**
-https://mern-deploy-flow.preview.emergentagent.com/api/docs
+https://mongo-fullstack.preview.emergentagent.com/api/docs
 
 ## 🎨 Key Features Available
 
@@ -125,7 +125,7 @@ mongosh mongodb://localhost:27017/chatbase_db --eval "db.getCollectionNames()"
 - `EMERGENT_LLM_KEY`: [Configured]
 
 ### Frontend (.env)
-- `REACT_APP_BACKEND_URL`: https://mern-deploy-flow.preview.emergentagent.com
+- `REACT_APP_BACKEND_URL`: https://mongo-fullstack.preview.emergentagent.com
 - `WDS_SOCKET_PORT`: 443
 
 ## 📝 Next Steps
