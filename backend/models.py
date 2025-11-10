@@ -997,6 +997,15 @@ class InstagramMessage(BaseModel):
     text: str
 
 
+# WhatsApp Models
+class WhatsAppWebhookSetup(BaseModel):
+    base_url: str  # Base URL of your application (e.g., https://yourdomain.com)
+
+class WhatsAppMessage(BaseModel):
+    recipient_phone: str  # Phone number with country code (e.g., +1234567890)
+    text: str
+
+
 # Plan Models
 class PlanLimits(BaseModel):
     max_chatbots: int
