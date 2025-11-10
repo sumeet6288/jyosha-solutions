@@ -158,45 +158,58 @@ except Exception as e:
     exit(1)
 
 # ============================================================================
-# TEST 2: Create a new test user (to get fresh user without subscription)
+# TEST 2: Verify test chatbot exists or create it
 # ============================================================================
-print("\n[TEST 2] Creating a new test user...")
+print("\n[TEST 2] Verify test chatbot exists or create it...")
 try:
     headers = {"Authorization": f"Bearer {admin_token}"}
-    test_user_email = f"testuser_{uuid.uuid4().hex[:8]}@example.com"
     
-    user_data = {
-        "name": "Test User Plan Change",
-        "email": test_user_email,
-        "password": "testpass123",
-        "role": "user",
-        "status": "active",
-        "plan_id": "free"  # Start with Free plan
-    }
-    
-    response = requests.post(
-        f"{BACKEND_URL}/admin/users/create",
+    # First, try to get the specific chatbot
+    response = requests.get(
+        f"{BACKEND_URL}/chatbots",
         headers=headers,
-        json=user_data,
         timeout=10
     )
     
+    chatbot_exists = False
     if response.status_code == 200:
-        result = response.json()
-        test_user_id = result.get("user_id")
-        if test_user_id:
-            log_test("Create test user", True, f"Created user {test_user_email} with ID {test_user_id}")
+        chatbots = response.json()
+        for chatbot in chatbots:
+            if chatbot.get("id") == TEST_CHATBOT_ID:
+                chatbot_exists = True
+                break
+    
+    if not chatbot_exists:
+        # Create the test chatbot with the specific ID
+        create_response = requests.post(
+            f"{BACKEND_URL}/chatbots",
+            headers=headers,
+            json={
+                "name": "Test Branding Chatbot",
+                "model": "gpt-4o-mini",
+                "provider": "openai",
+                "temperature": 0.7,
+                "instructions": "You are a test chatbot for branding image uploads."
+            },
+            timeout=10
+        )
+        
+        if create_response.status_code == 201:
+            created_chatbot = create_response.json()
+            actual_chatbot_id = created_chatbot.get("id")
+            log_test("Create test chatbot", True, f"Created chatbot with ID: {actual_chatbot_id}")
+            # Update the test chatbot ID to use the newly created one
+            TEST_CHATBOT_ID = actual_chatbot_id
         else:
-            log_test("Create test user", False, "No user_id returned")
-            print("Cannot proceed without test user. Exiting...")
+            log_test("Create test chatbot", False, f"Status: {create_response.status_code}, Response: {create_response.text}")
+            print("Cannot proceed without test chatbot. Exiting...")
             exit(1)
     else:
-        log_test("Create test user", False, f"Status: {response.status_code}, Response: {response.text}")
-        print("Cannot proceed without test user. Exiting...")
-        exit(1)
+        log_test("Verify test chatbot exists", True, f"Chatbot {TEST_CHATBOT_ID} exists")
+
 except Exception as e:
-    log_test("Create test user", False, f"Exception: {str(e)}")
-    print("Cannot proceed without test user. Exiting...")
+    log_test("Verify test chatbot exists", False, f"Exception: {str(e)}")
+    print("Cannot proceed without test chatbot. Exiting...")
     exit(1)
 
 # ============================================================================
