@@ -683,6 +683,7 @@ class Conversation(BaseModel):
     
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     chatbot_id: str
+    session_id: Optional[str] = None  # Session ID for tracking user sessions
     user_id: Optional[str] = None
     user_name: Optional[str] = None
     user_email: Optional[str] = None
