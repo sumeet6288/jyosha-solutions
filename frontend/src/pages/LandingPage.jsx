@@ -434,6 +434,87 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Agency Pricing Comparison Table */}
+      <section className="py-16 px-4 sm:px-8 relative z-10">
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="glass-card rounded-2xl p-8 shadow-xl">
+            {/* Table Title */}
+            <h3 className="text-2xl sm:text-3xl font-bold mb-6 text-center bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              Agency Profitability Calculator
+            </h3>
+            
+            {/* Responsive Table Container */}
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-gradient-to-r from-purple-50 to-pink-50">
+                    <th className="text-left py-4 px-4 text-base font-bold text-gray-900 border-b-2 border-purple-200">Plan</th>
+                    <th className="text-right py-4 px-4 text-base font-bold text-gray-900 border-b-2 border-purple-200">Agency Cost</th>
+                    <th className="text-center py-4 px-4 text-base font-bold text-gray-900 border-b-2 border-purple-200">Bots</th>
+                    <th className="text-right py-4 px-4 text-base font-bold text-gray-900 border-b-2 border-purple-200">Client Price (avg)</th>
+                    <th className="text-right py-4 px-4 text-base font-bold text-gray-900 border-b-2 border-purple-200">Agency Revenue</th>
+                    <th className="text-right py-4 px-4 text-base font-bold text-gray-900 border-b-2 border-purple-200">Agency Profit</th>
+                    <th className="text-right py-4 px-4 text-base font-bold text-gray-900 border-b-2 border-purple-200">Margin %</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* Starter Plan */}
+                  <tr className="hover:bg-purple-50/50 transition-colors duration-200">
+                    <td className="py-4 px-4 text-base font-semibold text-gray-900 border-b border-gray-200">Starter</td>
+                    <td className="py-4 px-4 text-base text-right text-gray-700 border-b border-gray-200">₹7,999</td>
+                    <td className="py-4 px-4 text-base text-center text-gray-700 border-b border-gray-200">5</td>
+                    <td className="py-4 px-4 text-base text-right text-gray-700 border-b border-gray-200">₹3,500</td>
+                    <td className="py-4 px-4 text-base text-right font-semibold text-gray-900 border-b border-gray-200">₹17,500</td>
+                    <td className="py-4 px-4 text-base text-right font-semibold text-green-600 border-b border-gray-200">₹9,501</td>
+                    <td className="py-4 px-4 text-base text-right font-bold text-purple-600 border-b border-gray-200">54%</td>
+                  </tr>
+                  
+                  {/* Starter High Price */}
+                  <tr className="hover:bg-purple-50/50 transition-colors duration-200">
+                    <td className="py-4 px-4 text-base font-semibold text-gray-900 border-b border-gray-200">Starter (high price)</td>
+                    <td className="py-4 px-4 text-base text-right text-gray-700 border-b border-gray-200">₹7,999</td>
+                    <td className="py-4 px-4 text-base text-center text-gray-700 border-b border-gray-200">5</td>
+                    <td className="py-4 px-4 text-base text-right text-gray-700 border-b border-gray-200">₹4,000</td>
+                    <td className="py-4 px-4 text-base text-right font-semibold text-gray-900 border-b border-gray-200">₹20,000</td>
+                    <td className="py-4 px-4 text-base text-right font-semibold text-green-600 border-b border-gray-200">₹12,001</td>
+                    <td className="py-4 px-4 text-base text-right font-bold text-purple-600 border-b border-gray-200">60%</td>
+                  </tr>
+                  
+                  {/* Professional Plan */}
+                  <tr className="hover:bg-purple-50/50 transition-colors duration-200">
+                    <td className="py-4 px-4 text-base font-semibold text-gray-900 border-b border-gray-200">Professional</td>
+                    <td className="py-4 px-4 text-base text-right text-gray-700 border-b border-gray-200">₹24,999</td>
+                    <td className="py-4 px-4 text-base text-center text-gray-700 border-b border-gray-200">25</td>
+                    <td className="py-4 px-4 text-base text-right text-gray-700 border-b border-gray-200">₹3,500</td>
+                    <td className="py-4 px-4 text-base text-right font-semibold text-gray-900 border-b border-gray-200">₹87,500</td>
+                    <td className="py-4 px-4 text-base text-right font-semibold text-green-600 border-b border-gray-200">₹62,501</td>
+                    <td className="py-4 px-4 text-base text-right font-bold text-purple-600 border-b border-gray-200">71%</td>
+                  </tr>
+                  
+                  {/* Professional High Price */}
+                  <tr className="hover:bg-purple-50/50 transition-colors duration-200 bg-gradient-to-r from-purple-50/30 to-pink-50/30">
+                    <td className="py-4 px-4 text-base font-semibold text-gray-900">Professional (high price)</td>
+                    <td className="py-4 px-4 text-base text-right text-gray-700">₹24,999</td>
+                    <td className="py-4 px-4 text-base text-center text-gray-700">25</td>
+                    <td className="py-4 px-4 text-base text-right text-gray-700">₹4,000</td>
+                    <td className="py-4 px-4 text-base text-right font-semibold text-gray-900">₹1,00,000</td>
+                    <td className="py-4 px-4 text-base text-right font-semibold text-green-600">₹75,001</td>
+                    <td className="py-4 px-4 text-base text-right font-bold text-purple-600">75%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            {/* Bottom Note */}
+            <div className="mt-6 text-center">
+              <p className="text-base text-gray-600">
+                💡 <span className="font-semibold">Scale your agency profits</span> by reselling chatbots to multiple clients with attractive margins
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section - Streamlined Premium */}
       <section className="py-16 px-4 sm:px-8 relative z-10" ref={featuresRef}>
         <div className="max-w-6xl mx-auto relative z-10">
