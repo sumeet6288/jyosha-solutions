@@ -113,20 +113,7 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
 
     setUploadingAvatar(true);
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('image_type', 'avatar');
-
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
-      const response = await axios.post(
-        `${backendUrl}/api/chatbots/${chatbot.id}/upload-branding-image?image_type=avatar`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
+      const response = await chatbotAPI.uploadBrandingImage(chatbot.id, file, 'avatar');
 
       if (response.data.success) {
         setCustomization(prev => ({ ...prev, avatar_url: response.data.url }));
