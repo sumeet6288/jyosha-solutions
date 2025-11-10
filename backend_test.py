@@ -1,25 +1,39 @@
 """
-COMPREHENSIVE ULTIMATE EDIT ADMIN PANEL TESTING
+COMPREHENSIVE BRANDING IMAGE UPLOAD TESTING
 
-Test all 10 tabs in the Ultimate Edit modal to verify each tab's functionality with the backend:
-1. Basic Info - Profile fields (name, email, phone, address, bio, avatar_url, company, job_title)
-2. Permissions - Role and granular permissions (11 permissions)
-3. Security - Account status, email verification, 2FA, IP restrictions, session settings
-4. Subscription - Plan, billing details, trial/subscription dates, lifetime access
-5. Limits & Features - Custom limits (8 fields), feature flags (8 flags), API rate limits (4 settings)
-6. Appearance - Timezone, language, theme, custom CSS, branding (5 branding fields)
-7. Notifications - Email notifications, marketing emails, notification preferences (7 preferences)
-8. Metadata - Tags, segments, custom fields, admin notes, internal notes
-9. API & Integrations - API key, webhook URL, webhook events, OAuth tokens, integration preferences
-10. Tracking - Tracking enabled, analytics enabled, onboarding status
+Test the new image upload functionality for branding (logo and avatar).
 
-This test verifies that all fields in each tab can be updated via PUT /api/admin/users/{user_id}/ultimate-update
-and that the data persists correctly in the database.
+ENDPOINTS TO TEST:
+1. POST /api/chatbots/{chatbot_id}/upload-branding-image?image_type=logo
+2. POST /api/chatbots/{chatbot_id}/upload-branding-image?image_type=avatar
+
+TEST REQUIREMENTS:
+1. Authentication: Must include valid JWT token (use admin@botsmith.com / admin123 to login first)
+2. Test chatbot ID: 04569e1c-2d32-44f9-94aa-099822616d6a (user_id: admin-001)
+3. Create a small test image file (PNG or JPEG) programmatically for testing
+4. Test uploading logo image
+5. Test uploading avatar image
+6. Verify database updates (logo_url and avatar_url fields should contain base64 data URLs)
+7. Test file validation (wrong file type, file too large)
+8. Test without authentication (should fail with 401)
+9. Verify images are saved to /app/backend/uploads/branding/
+
+EXPECTED RESULTS:
+- Successful uploads return {success: true, message: "...", url: "data:image/...", filename: "..."}
+- Database fields logo_url and avatar_url should be updated with base64 data URLs
+- Files should be saved to disk at /app/backend/uploads/branding/
+- Invalid file types should return 400 error
+- Files > 5MB should return 413 error
+- Unauthenticated requests should return 401 error
 """
 import requests
 import json
 import uuid
+import base64
+import os
 from datetime import datetime
+from io import BytesIO
+from PIL import Image
 
 # Configuration
 BACKEND_URL = "https://app-bootstrapper-1.preview.emergentagent.com/api"
