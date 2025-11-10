@@ -39,6 +39,8 @@ from PIL import Image
 BACKEND_URL = "https://app-bootstrapper-1.preview.emergentagent.com/api"
 ADMIN_EMAIL = "admin@botsmith.com"
 ADMIN_PASSWORD = "admin123"
+TEST_CHATBOT_ID = "04569e1c-2d32-44f9-94aa-099822616d6a"
+ADMIN_USER_ID = "admin-001"
 
 # Test results tracking
 test_results = {
