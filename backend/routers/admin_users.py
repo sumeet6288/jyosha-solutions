@@ -1091,7 +1091,7 @@ async def verify_user_email(user_id: str):
 @router.post("/{user_id}/send-notification")
 async def send_user_notification(user_id: str, notification_data: dict):
     """
-    Send notification/email to user
+    Send notification/email to user - Creates in-app notification that user will see
     """
     try:
         if db_instance is None:
@@ -1103,11 +1103,25 @@ async def send_user_notification(user_id: str, notification_data: dict):
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         
-        subject = notification_data.get('subject', 'Notification from Admin')
+        subject = notification_data.get('subject', 'Message from Admin')
         message = notification_data.get('message', '')
         
-        # In a real app, you would send an actual email here
-        # For now, we'll log it and store in user's notification queue
+        # Create in-app notification using NotificationService
+        from services.notification_service import NotificationService
+        notification_service = NotificationService(db_instance)
+        
+        notification = await notification_service.create_notification(
+            user_id=user_id,
+            notification_type="admin_message",
+            title=subject,
+            message=message,
+            priority="high",
+            metadata={
+                "from": "admin",
+                "admin_sent": True
+            },
+            action_url=None
+        )
         
         # Log activity
         await log_activity(
@@ -1120,10 +1134,11 @@ async def send_user_notification(user_id: str, notification_data: dict):
         
         return {
             "success": True, 
-            "message": "Notification sent successfully",
+            "message": "Notification sent successfully and will appear in user's notification center",
             "details": {
                 "to": user.get('email'),
-                "subject": subject
+                "subject": subject,
+                "notification_id": notification.id
             }
         }
     
