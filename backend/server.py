@@ -110,6 +110,7 @@ api_router.include_router(telegram.router)
 api_router.include_router(slack.router)
 api_router.include_router(discord.router)
 api_router.include_router(msteams.router)
+api_router.include_router(instagram.router)
 api_router.include_router(tech_management.router, prefix="/tech", tags=["Tech Management"])
 
 # Include the router in the main app
