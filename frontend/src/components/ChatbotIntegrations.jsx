@@ -137,6 +137,18 @@ const ChatbotIntegrations = ({ chatbot }) => {
         { name: 'app_secret', label: 'App Secret', type: 'password', required: false },
         { name: 'verify_token', label: 'Verify Token', type: 'text', required: false }
       ]
+    },
+    {
+      id: 'instagram',
+      name: 'Instagram',
+      description: 'Connect your chatbot to Instagram Direct Messages',
+      icon: <MessageCircle className="w-6 h-6" />,
+      gradient: 'from-pink-500 to-purple-600',
+      fields: [
+        { name: 'page_access_token', label: 'Page Access Token', type: 'password', required: true },
+        { name: 'verify_token', label: 'Verify Token', type: 'text', required: false },
+        { name: 'app_secret', label: 'App Secret', type: 'password', required: false }
+      ]
     }
   ];
 
