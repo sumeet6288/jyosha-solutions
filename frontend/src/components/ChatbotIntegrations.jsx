@@ -115,18 +115,6 @@ const ChatbotIntegrations = ({ chatbot }) => {
       isAPIIntegration: true
     },
     {
-      id: 'twilio',
-      name: 'Twilio SMS',
-      description: 'Enable chatbot responses via SMS',
-      icon: <Phone className="w-6 h-6" />,
-      gradient: 'from-red-500 to-red-600',
-      fields: [
-        { name: 'account_sid', label: 'Account SID', type: 'text', required: true },
-        { name: 'auth_token', label: 'Auth Token', type: 'password', required: true },
-        { name: 'phone_number', label: 'Phone Number', type: 'text', required: true }
-      ]
-    },
-    {
       id: 'messenger',
       name: 'Facebook Messenger',
       description: 'Connect to Facebook Messenger',
