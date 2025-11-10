@@ -988,6 +988,15 @@ class MSTeamsMessage(BaseModel):
     service_url: Optional[str] = None  # Service URL for sending messages
 
 
+# Instagram Models
+class InstagramWebhookSetup(BaseModel):
+    base_url: str  # Base URL of your application (e.g., https://yourdomain.com)
+
+class InstagramMessage(BaseModel):
+    recipient_id: str  # Instagram user ID
+    text: str
+
+
 # Plan Models
 class PlanLimits(BaseModel):
     max_chatbots: int
