@@ -61,6 +61,13 @@ export const chatbotAPI = {
   update: (id, data) => api.put(`/chatbots/${id}`, data),
   delete: (id) => api.delete(`/chatbots/${id}`),
   toggle: (id) => api.patch(`/chatbots/${id}/toggle`),
+  uploadBrandingImage: (chatbotId, file, imageType) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post(`/chatbots/${chatbotId}/upload-branding-image?image_type=${imageType}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
 };
 
 // Source APIs
