@@ -581,6 +581,7 @@ class ChatbotResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
     messages_count: int
+    conversations_count: int = 0
     public_access: bool = True
     primary_color: str = "#7c3aed"
     secondary_color: str = "#ec4899"
