@@ -12,7 +12,19 @@ const ChatPage = () => {
   const [inputMessage, setInputMessage] = useState('');
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
-  const [sessionId] = useState(() => `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
+  const [sessionId] = useState(() => {
+    // Get or create session ID from localStorage for this chatbot
+    const storageKey = `chatbot_session_${id}`;
+    let storedSessionId = localStorage.getItem(storageKey);
+    
+    if (!storedSessionId) {
+      // Create new session ID and store it
+      storedSessionId = `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      localStorage.setItem(storageKey, storedSessionId);
+    }
+    
+    return storedSessionId;
+  });
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
