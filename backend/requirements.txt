@@ -42,5 +42,6 @@ tiktoken==0.8.0
 tokenizers==0.21.0
 psutil==6.1.1
 discord.py==2.4.0
+twilio==9.4.1
 
 
