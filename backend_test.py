@@ -72,7 +72,7 @@ def log_test(test_name, passed, details=""):
 def print_summary():
     """Print test summary"""
     print("\n" + "="*80)
-    print("COMPREHENSIVE ULTIMATE EDIT ADMIN PANEL TEST SUMMARY")
+    print("BRANDING IMAGE UPLOAD TEST SUMMARY")
     print("="*80)
     print(f"Total Tests: {test_results['total']}")
     print(f"Passed: {test_results['passed']} ✅")
@@ -87,6 +87,29 @@ def print_summary():
                 print(f"  - {test['name']}")
                 if test["details"]:
                     print(f"    {test['details']}")
+
+def create_test_image(width=100, height=100, format='PNG'):
+    """Create a small test image programmatically"""
+    # Create a simple colored image
+    img = Image.new('RGB', (width, height), color='red')
+    
+    # Save to BytesIO
+    img_bytes = BytesIO()
+    img.save(img_bytes, format=format)
+    img_bytes.seek(0)
+    
+    return img_bytes.getvalue()
+
+def create_large_test_image():
+    """Create a large test image (>5MB) for size validation testing"""
+    # Create a large image that will exceed 5MB when saved
+    img = Image.new('RGB', (3000, 3000), color='blue')
+    
+    img_bytes = BytesIO()
+    img.save(img_bytes, format='PNG')
+    img_bytes.seek(0)
+    
+    return img_bytes.getvalue()
 
 # Global variables for test data
 admin_token = None
