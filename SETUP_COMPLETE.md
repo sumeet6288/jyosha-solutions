@@ -56,14 +56,14 @@ All dependencies have been successfully installed and all services are running!
 ## 🚀 Access URLs
 
 **Frontend Application:**
-https://app-db-bootstrap.preview.emergentagent.com
+https://code-launchpad-5.preview.emergentagent.com
 
 **Backend API:**
 - Internal: http://localhost:8001
-- External: https://app-db-bootstrap.preview.emergentagent.com/api
+- External: https://code-launchpad-5.preview.emergentagent.com/api
 
 **API Documentation:**
-https://app-db-bootstrap.preview.emergentagent.com/api/docs
+https://code-launchpad-5.preview.emergentagent.com/api/docs
 
 ## 🎨 Key Features Available
 
@@ -125,7 +125,7 @@ mongosh mongodb://localhost:27017/chatbase_db --eval "db.getCollectionNames()"
 - `EMERGENT_LLM_KEY`: [Configured]
 
 ### Frontend (.env)
-- `REACT_APP_BACKEND_URL`: https://app-db-bootstrap.preview.emergentagent.com
+- `REACT_APP_BACKEND_URL`: https://code-launchpad-5.preview.emergentagent.com
 - `WDS_SOCKET_PORT`: 443
 
 ## 📝 Next Steps
