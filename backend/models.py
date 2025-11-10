@@ -692,6 +692,7 @@ class Conversation(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     message_count: int = 0
+    messages_count: int = 0  # Alias for message_count (compatibility)
 
 
 class ConversationResponse(BaseModel):
