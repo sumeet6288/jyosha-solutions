@@ -109,7 +109,8 @@ if response.status_code == 200:
         print(f"✅ Tags: {user_data.get('tags')} (Expected: ['premium-user', 'beta-tester', 'power-user'])")
         print(f"✅ Segments: {user_data.get('segments')} (Expected: ['enterprise', 'early-adopter'])")
         print(f"✅ Custom Fields - account_manager: {custom_fields.get('account_manager')} (Expected: John Doe)")
-        print(f"✅ Admin Notes: {user_data.get('admin_notes')[:30]}... (Expected: This is a test admin note...)")
+        admin_notes = user_data.get('admin_notes', '')
+        print(f"✅ Admin Notes: {admin_notes[:30]}... (Expected: This is a test admin note...)")
         
         # Tab 9: API & Integrations
         oauth_tokens = user_data.get('oauth_tokens', {})
