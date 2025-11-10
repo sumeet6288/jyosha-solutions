@@ -213,50 +213,32 @@ except Exception as e:
     exit(1)
 
 # ============================================================================
-# TEST 3: Verify initial subscription is created with Free plan
+# TEST 3: Test unauthenticated request (should fail with 401)
 # ============================================================================
-print("\n[TEST 3] Verifying initial subscription creation...")
+print("\n[TEST 3] Test unauthenticated request...")
 try:
-    # Login as the test user to check their subscription
-    login_response = requests.post(
-        f"{BACKEND_URL}/auth/login",
-        json={
-            "email": test_user_email,
-            "password": "testpass123"
-        },
+    # Create a small test image
+    test_image = create_test_image()
+    
+    files = {
+        'file': ('test_logo.png', test_image, 'image/png')
+    }
+    params = {'image_type': 'logo'}
+    
+    response = requests.post(
+        f"{BACKEND_URL}/chatbots/{TEST_CHATBOT_ID}/upload-branding-image",
+        files=files,
+        params=params,
         timeout=10
     )
     
-    if login_response.status_code == 200:
-        user_token = login_response.json().get("access_token")
-        user_headers = {"Authorization": f"Bearer {user_token}"}
-        
-        # Check current subscription
-        current_response = requests.get(
-            f"{BACKEND_URL}/plans/current",
-            headers=user_headers,
-            timeout=10
-        )
-        
-        if current_response.status_code == 200:
-            current_data = current_response.json()
-            subscription = current_data.get("subscription", {})
-            plan = current_data.get("plan", {})
-            
-            checks = []
-            checks.append(("Has subscription", subscription is not None))
-            checks.append(("Plan ID is free", subscription.get("plan_id") == "free"))
-            checks.append(("Plan name is Free", plan.get("name") == "Free"))
-            
-            all_passed = all(check[1] for check in checks)
-            details = f"Subscription plan_id: {subscription.get('plan_id')}, Plan name: {plan.get('name')}"
-            log_test("Initial subscription verification", all_passed, details)
-        else:
-            log_test("Initial subscription verification", False, f"Status: {current_response.status_code}")
+    if response.status_code == 401:
+        log_test("Unauthenticated request fails", True, "Correctly returned 401 Unauthorized")
     else:
-        log_test("Initial subscription verification", False, f"User login failed: {login_response.status_code}")
+        log_test("Unauthenticated request fails", False, f"Expected 401, got {response.status_code}")
+
 except Exception as e:
-    log_test("Initial subscription verification", False, f"Exception: {str(e)}")
+    log_test("Unauthenticated request fails", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 4: Change user plan from Free to Starter via admin panel ultimate-update
