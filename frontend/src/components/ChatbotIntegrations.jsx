@@ -353,6 +353,43 @@ const ChatbotIntegrations = ({ chatbot }) => {
     }
   };
 
+  const handleSetupInstagramWebhook = async (integrationId) => {
+    try {
+      setTesting(true);
+      const baseUrl = process.env.REACT_APP_BACKEND_URL || window.location.origin;
+      const response = await api.post(`/instagram/${chatbot.id}/setup-webhook`, {
+        base_url: baseUrl
+      });
+      
+      // Show instructions
+      const instructions = response.data.instructions || [];
+      
+      toast({
+        title: 'Webhook URL Generated',
+        description: `Webhook URL: ${response.data.webhook_url}\nVerify Token: ${response.data.verify_token}\n\nCheck console for detailed instructions.`
+      });
+      
+      // Log instructions to console for easy access
+      console.log('=== Instagram Webhook Setup Instructions ===');
+      console.log(`Webhook URL: ${response.data.webhook_url}`);
+      console.log(`Verify Token: ${response.data.verify_token}`);
+      console.log('\nSteps to complete:');
+      instructions.forEach((instruction) => {
+        console.log(instruction);
+      });
+      console.log('===========================================');
+      
+      fetchIntegrations();
+    } catch (error) {
+      toast({
+        title: 'Webhook Setup Failed',
+        description: error.response?.data?.detail || 'Failed to setup webhook',
+        variant: 'destructive'
+      });
+    } finally {
+      setTesting(false);
+    }
+  };
 
   const handleStartDiscordBot = async (integrationId) => {
     try {
