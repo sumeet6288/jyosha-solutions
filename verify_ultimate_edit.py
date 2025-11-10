@@ -92,7 +92,8 @@ if response.status_code == 200:
         print(f"✅ Timezone: {user_data.get('timezone')} (Expected: America/New_York)")
         print(f"✅ Language: {user_data.get('language')} (Expected: en)")
         print(f"✅ Theme: {user_data.get('theme')} (Expected: dark)")
-        print(f"✅ Custom CSS: {user_data.get('custom_css')[:30]}... (Expected: .custom { color: blue...)")
+        custom_css = user_data.get('custom_css', '')
+        print(f"✅ Custom CSS: {custom_css[:30]}... (Expected: .custom {{ color: blue...)")
         print(f"✅ Branding - logo_url: {branding.get('logo_url')} (Expected: https://example.com/logo.png)")
         print(f"✅ Branding - primary_color: {branding.get('primary_color')} (Expected: #7c3aed)")
         
