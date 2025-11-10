@@ -761,6 +761,18 @@ const ChatbotIntegrations = ({ chatbot }) => {
                         </Button>
                       )}
 
+                      {definition.id === 'instagram' && (
+                        <Button
+                          variant="outline"
+                          onClick={() => handleSetupInstagramWebhook(integration.id)}
+                          disabled={testing}
+                          className="border-2 border-green-600 text-green-600 hover:bg-green-50"
+                          title="Setup Instagram Webhook"
+                        >
+                          <Zap className="w-4 h-4" />
+                        </Button>
+                      )}
+
                       <Button
                         variant="outline"
                         onClick={() => handleDeleteIntegration(integration.id, definition.name)}
