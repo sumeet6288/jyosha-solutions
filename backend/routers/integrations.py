@@ -46,9 +46,21 @@ async def test_integration_connection(integration_type: str, credentials: dict) 
     try:
         if integration_type == "whatsapp":
             # Test WhatsApp Business API
-            if not credentials.get("api_key") or not credentials.get("phone_number"):
-                return {"success": False, "message": "Missing API key or phone number"}
-            return {"success": True, "message": "WhatsApp credentials validated"}
+            access_token = credentials.get("access_token") or credentials.get("api_key")
+            phone_number_id = credentials.get("phone_number_id")
+            
+            if not access_token or not phone_number_id:
+                return {"success": False, "message": "Missing access token or phone number ID"}
+            
+            # Try to validate by calling WhatsApp API
+            from services.whatsapp_service import WhatsAppService
+            whatsapp_service = WhatsAppService(access_token, phone_number_id)
+            result = await whatsapp_service.verify_token()
+            
+            if result.get("success"):
+                return {"success": True, "message": f"Connected to {result.get('verified_name', 'WhatsApp Business')} ({result.get('display_phone_number', '')})"}
+            else:
+                return {"success": False, "message": result.get("error", "Invalid credentials")}
         
         elif integration_type == "slack":
             # Test Slack Bot Token
