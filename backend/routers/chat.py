@@ -172,7 +172,7 @@ async def send_message(chat_request: ChatRequest):
             {
                 "$inc": {
                     "messages_count": 2,
-                    "conversations_count": 1 if not conversation else 0
+                    "conversations_count": 1 if is_new_conversation else 0
                 }
             }
         )
