@@ -237,15 +237,27 @@ async def process_messenger_message(chatbot_id: str, messaging_event: Dict[str, 
             })
         
         # Get relevant context from knowledge base
-        context = await get_relevant_context(chatbot_id, message_text)
+        rag_service = RAGService()
+        rag_result = await rag_service.retrieve_relevant_context(
+            query=message_text,
+            chatbot_id=chatbot_id,
+            top_k=3,
+            min_similarity=0.5
+        )
+        
+        context = rag_result.get("context") if rag_result.get("has_context") else None
+        citation_footer = rag_result.get("citation_footer")
         
         # Generate AI response
         chat_service = ChatService()
-        ai_response = await chat_service.generate_response(
-            chatbot=chatbot,
+        ai_response, citations = await chat_service.generate_response(
             message=message_text,
-            conversation_history=conversation_history,
-            context=context
+            session_id=session_id,
+            system_message=chatbot.get("instructions", "You are a helpful assistant."),
+            model=chatbot.get("model", "gpt-4o-mini"),
+            provider=chatbot.get("provider", "openai"),
+            context=context,
+            citation_footer=citation_footer
         )
         
         # Save assistant message
