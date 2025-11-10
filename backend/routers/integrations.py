@@ -124,6 +124,28 @@ async def test_integration_connection(integration_type: str, credentials: dict) 
                 return {"success": False, "message": "Missing page access token"}
             return {"success": True, "message": "Messenger credentials validated"}
         
+        elif integration_type == "instagram":
+            # Test Instagram Page Access Token
+            if not credentials.get("page_access_token"):
+                return {"success": False, "message": "Missing page access token"}
+            
+            # Try to validate token by calling Instagram Graph API
+            async with httpx.AsyncClient() as client:
+                response = await client.get(
+                    "https://graph.facebook.com/v18.0/me",
+                    params={
+                        "fields": "id,name,username",
+                        "access_token": credentials['page_access_token']
+                    },
+                    timeout=10.0
+                )
+                if response.status_code == 200:
+                    data = response.json()
+                    username = data.get('username', data.get('name', 'account'))
+                    return {"success": True, "message": f"Connected to Instagram @{username}"}
+                else:
+                    return {"success": False, "message": "Invalid page access token"}
+        
         elif integration_type == "msteams":
             # Test MS Teams Bot credentials
             if not credentials.get("app_id") or not credentials.get("app_password"):
