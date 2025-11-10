@@ -881,7 +881,7 @@ class Integration(BaseModel):
     
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     chatbot_id: str
-    integration_type: Literal["slack", "telegram", "discord", "whatsapp", "webchat", "api", "twilio", "messenger", "msteams", "instagram"]
+    integration_type: Literal["slack", "telegram", "discord", "whatsapp", "webchat", "api", "messenger", "msteams", "instagram"]
     credentials: Dict[str, str]  # Different for each integration type
     metadata: Dict[str, Any] = Field(default_factory=dict)
     enabled: bool = False
@@ -894,7 +894,7 @@ class Integration(BaseModel):
 
 
 class IntegrationCreate(BaseModel):
-    integration_type: Literal["slack", "telegram", "discord", "whatsapp", "webchat", "api", "twilio", "messenger", "msteams", "instagram"]
+    integration_type: Literal["slack", "telegram", "discord", "whatsapp", "webchat", "api", "messenger", "msteams", "instagram"]
     credentials: Dict[str, str]
     metadata: Optional[Dict[str, Any]] = None
 
