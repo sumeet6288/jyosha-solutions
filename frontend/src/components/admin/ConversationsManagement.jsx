@@ -41,15 +41,8 @@ const ConversationsManagement = ({ backendUrl }) => {
   const fetchMessages = async (conversationId) => {
     try {
       setLoadingMessages(true);
-      console.log('Fetching messages for conversation:', conversationId);
-      console.log('Backend URL:', backendUrl);
-      const url = `${backendUrl}/api/chat/messages/${conversationId}`;
-      console.log('Full URL:', url);
-      const response = await fetch(url);
-      console.log('Response status:', response.status);
+      const response = await fetch(`${backendUrl}/api/chat/messages/${conversationId}`);
       const data = await response.json();
-      console.log('Messages data received:', data);
-      console.log('Messages array length:', data?.length);
       setMessages(data || []);
     } catch (error) {
       console.error('Error fetching messages:', error);
