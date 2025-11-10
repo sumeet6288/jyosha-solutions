@@ -119,6 +119,12 @@ async def get_chatbot(
         if "instructions" not in chatbot or chatbot["instructions"] is None:
             chatbot["instructions"] = chatbot.get("system_message", "You are a helpful assistant.")
         
+        # Count conversations for this chatbot
+        conversations_count = await db_instance.conversations.count_documents(
+            {"chatbot_id": chatbot["id"]}
+        )
+        chatbot["conversations_count"] = conversations_count
+        
         return ChatbotResponse(**chatbot)
     except HTTPException:
         raise
