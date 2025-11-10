@@ -843,6 +843,30 @@ const ChatbotIntegrations = ({ chatbot }) => {
                         </Button>
                       )}
 
+                      {definition.id === 'whatsapp' && (
+                        <Button
+                          variant="outline"
+                          onClick={() => handleSetupWhatsAppWebhook(integration.id)}
+                          disabled={testing}
+                          className="border-2 border-green-600 text-green-600 hover:bg-green-50"
+                          title="Setup WhatsApp Webhook"
+                        >
+                          <Zap className="w-4 h-4" />
+                        </Button>
+                      )}
+
+                      {definition.id === 'messenger' && (
+                        <Button
+                          variant="outline"
+                          onClick={() => handleSetupMessengerWebhook(integration.id)}
+                          disabled={testing}
+                          className="border-2 border-green-600 text-green-600 hover:bg-green-50"
+                          title="Setup Messenger Webhook"
+                        >
+                          <Zap className="w-4 h-4" />
+                        </Button>
+                      )}
+
                       <Button
                         variant="outline"
                         onClick={() => handleDeleteIntegration(integration.id, definition.name)}
