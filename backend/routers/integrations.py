@@ -122,7 +122,16 @@ async def test_integration_connection(integration_type: str, credentials: dict) 
             # Test Facebook Messenger
             if not credentials.get("page_access_token"):
                 return {"success": False, "message": "Missing page access token"}
-            return {"success": True, "message": "Messenger credentials validated"}
+            
+            # Try to validate token by calling Messenger API
+            from services.messenger_service import MessengerService
+            messenger_service = MessengerService(credentials['page_access_token'])
+            result = await messenger_service.verify_token()
+            
+            if result.get("success"):
+                return {"success": True, "message": f"Connected to page: {result.get('page_name', 'Facebook Page')}"}
+            else:
+                return {"success": False, "message": result.get("error", "Invalid page access token")}
         
         elif integration_type == "instagram":
             # Test Instagram Page Access Token
