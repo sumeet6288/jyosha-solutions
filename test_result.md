@@ -750,7 +750,7 @@ frontend:
     file: "/app/frontend/src/components/AppearanceTab.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "user"
@@ -758,6 +758,9 @@ frontend:
       - working: true
         agent: "main"
         comment: "✅ BRANDING FULLY FUNCTIONAL: Verified complete branding functionality end-to-end. Testing confirmed: 1) BACKEND: logo_url and avatar_url fields properly supported in Chatbot model and saved to MongoDB, 2) FRONTEND APPEARANCE TAB: Both logo and avatar URL input fields working with live preview sections, 3) PUBLIC CHAT: Logo displays in purple header, avatar displays in chat messages with custom colors applied correctly, 4) API ENDPOINTS: Both /api/chatbots/{id} and /api/public/chatbot/{id} return branding fields correctly. IMPROVEMENTS ADDED: Enhanced user experience with blue info banner explaining branding purpose ('Add your company logo and bot avatar to personalize the chat experience'), improved error handling for preview images (shows helpful message 'Preview unavailable. Logo/Avatar will display correctly in public chat if URL is valid' instead of confusing 'Invalid URL'). Branding saves successfully and displays correctly in public chat widget. Feature is production-ready."
+      - working: true
+        agent: "main"
+        comment: "🎨 MAJOR UPGRADE: Image Upload Instead of URLs. Completely replaced URL input fields with direct image upload functionality. BACKEND CHANGES: 1) Added new endpoint POST /api/chatbots/{chatbot_id}/upload-branding-image with proper authentication (get_current_user), 2) Validates file types (PNG, JPEG, JPG, GIF, WEBP, SVG), 3) Validates file size (max 5MB), 4) Saves uploaded files to /app/backend/uploads/branding/, 5) Converts images to base64 data URLs for storage in MongoDB, 6) Updates logo_url or avatar_url fields in database, 7) Clears cache after update. FRONTEND CHANGES: 1) Added uploadBrandingImage method to chatbotAPI in utils/api.js with proper authentication headers, 2) Completely redesigned branding section in AppearanceTab.jsx, 3) Replaced URL input fields with beautiful upload buttons, 4) Added file input with hidden styling and click-to-upload functionality, 5) Added upload progress states (uploadingLogo, uploadingAvatar), 6) Added remove buttons for logo and avatar, 7) Added preview sections with proper image display, 8) Added file validation (type and size) before upload, 9) Beautiful UI with dashed border upload areas, upload icons, loading spinners. USER EXPERIENCE: Users can now click 'Click to upload logo/avatar' button, select image from their device, see upload progress, preview uploaded image, change or remove images easily. No more manual URL input required. Images automatically adjust and display correctly. All routes properly authenticated with JWT tokens from localStorage. Database updates correctly with base64 image data."
 
   - task: "Admin Panel Conversations Tab - Fully Functional with Message Viewer"
     implemented: true
