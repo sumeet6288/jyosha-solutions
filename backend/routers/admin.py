@@ -589,7 +589,7 @@ async def get_all_conversations(
                 "user_name": conv.get('user_name'),
                 "user_email": conv.get('user_email'),
                 "status": conv.get('status'),
-                "message_count": conv.get('message_count', 0),
+                "message_count": conv.get('messages_count', conv.get('message_count', 0)),
                 "created_at": conv.get('created_at'),
                 "updated_at": conv.get('updated_at')
             })
