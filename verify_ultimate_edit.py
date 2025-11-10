@@ -53,7 +53,8 @@ if response.status_code == 200:
         print(f"✅ Job Title: {user_data.get('job_title')} (Expected: Chief Technology Officer)")
         print(f"✅ Phone: {user_data.get('phone')} (Expected: +1-555-0123)")
         print(f"✅ Address: {user_data.get('address')} (Expected: 123 Admin Street, Suite 100)")
-        print(f"✅ Bio: {user_data.get('bio')[:50]}... (Expected: This is an updated admin bio...)")
+        bio = user_data.get('bio', '')
+        print(f"✅ Bio: {bio[:50]}... (Expected: This is an updated admin bio...)")
         print(f"✅ Avatar URL: {user_data.get('avatar_url')} (Expected: https://example.com/admin-avatar.jpg)")
         
         # Tab 2: Permissions
