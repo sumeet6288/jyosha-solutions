@@ -276,3 +276,85 @@ async def delete_chatbot(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to delete chatbot"
         )
+
+
+@router.post("/{chatbot_id}/upload-branding-image")
+async def upload_branding_image(
+    chatbot_id: str,
+    file: UploadFile = File(...),
+    image_type: str = "logo",  # "logo" or "avatar"
+    current_user: User = Depends(get_current_user)
+):
+    """Upload logo or avatar image for chatbot branding"""
+    try:
+        # Verify ownership
+        chatbot = await db_instance.chatbots.find_one({"id": chatbot_id, "user_id": current_user.id})
+        if not chatbot:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Chatbot not found"
+            )
+        
+        # Validate file type
+        allowed_types = ["image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp", "image/svg+xml"]
+        if file.content_type not in allowed_types:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Invalid file type. Allowed types: PNG, JPEG, JPG, GIF, WEBP, SVG"
+            )
+        
+        # Check file size (max 5MB for images)
+        file_content = await file.read()
+        file_size = len(file_content)
+        MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5MB
+        
+        if file_size > MAX_IMAGE_SIZE:
+            raise HTTPException(
+                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                detail=f"Image size exceeds maximum allowed size of 5MB. Current size: {file_size / 1024 / 1024:.2f}MB"
+            )
+        
+        # Create uploads directory if it doesn't exist
+        uploads_dir = Path("/app/backend/uploads/branding")
+        uploads_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Generate unique filename
+        file_extension = os.path.splitext(file.filename)[1]
+        unique_filename = f"{chatbot_id}_{image_type}_{uuid.uuid4()}{file_extension}"
+        file_path = uploads_dir / unique_filename
+        
+        # Save file
+        with open(file_path, "wb") as f:
+            f.write(file_content)
+        
+        # Create data URL for immediate use (for compatibility)
+        base64_image = base64.b64encode(file_content).decode('utf-8')
+        data_url = f"data:{file.content_type};base64,{base64_image}"
+        
+        # Update chatbot with new image URL
+        field_name = "logo_url" if image_type == "logo" else "avatar_url"
+        await db_instance.chatbots.update_one(
+            {"id": chatbot_id},
+            {"$set": {field_name: data_url, "updated_at": datetime.now(timezone.utc).isoformat()}}
+        )
+        
+        # Clear cache
+        cache_service.delete(f"chatbot_{chatbot_id}")
+        
+        logger.info(f"Successfully uploaded {image_type} for chatbot {chatbot_id}")
+        
+        return {
+            "success": True,
+            "message": f"{image_type.capitalize()} uploaded successfully",
+            "url": data_url,
+            "filename": unique_filename
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error uploading branding image: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to upload image: {str(e)}"
+        )
