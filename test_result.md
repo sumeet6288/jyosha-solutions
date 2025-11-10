@@ -673,6 +673,8 @@ test_plan:
   rag_testing_complete: true
 
 agent_communication:
+  - agent: "testing"
+    message: "✅ ADMIN CONVERSATIONS TESTING COMPLETE: The reported issue with messages not showing in the Admin Panel Conversations modal has been resolved. Testing confirmed that all 4 conversations display their messages correctly when 'View Messages' is clicked. The backend API endpoints are working properly (GET /api/admin/conversations and GET /api/chat/messages/{id} both return correct data). The modal opens successfully and shows the complete conversation history with proper formatting. The user-reported bug appears to have been fixed in a previous update. No further action needed - feature is fully functional."
   - agent: "main"
     message: "CRITICAL FIX - Integration Messages Not Counting on Dashboard: Fixed Telegram integration (and future integrations) not incrementing subscription message count on dashboard. Root cause: Telegram webhook message handler (process_telegram_message in telegram.py) was only updating chatbot.messages_count but NOT calling plan_service.increment_usage() to update subscription usage statistics. Fix applied: Added subscription usage tracking to telegram.py line 174-178 - now increments usage by 2 (user + assistant messages) when processing Telegram messages, same as regular chat and public chat endpoints. Messages from all channels (web chat, public widget, Telegram integration) now properly count towards subscription limits and display correctly on dashboard plan card."
   - agent: "main"
