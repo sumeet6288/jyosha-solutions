@@ -7,7 +7,7 @@ from typing import Dict, Any
 
 from services.messenger_service import MessengerService
 from services.chat_service import ChatService
-from services.rag_service import get_relevant_context
+from services.rag_service import RAGService
 from auth import get_current_user
 
 router = APIRouter(prefix="/messenger", tags=["messenger"])
