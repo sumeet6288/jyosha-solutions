@@ -21,6 +21,10 @@ const AppearanceTab = ({ chatbot, onUpdate }) => {
   });
 
   const [saving, setSaving] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const logoInputRef = useRef(null);
+  const avatarInputRef = useRef(null);
 
   const handleChange = (field, value) => {
     setCustomization(prev => ({ ...prev, [field]: value }));
