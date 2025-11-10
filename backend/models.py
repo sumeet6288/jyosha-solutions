@@ -706,6 +706,7 @@ class ConversationResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
     message_count: int = 0
+    messages_count: int = 0  # Alias for message_count
 
 
 # Analytics Models
