@@ -11,7 +11,22 @@ const ChatPreviewModal = ({ isOpen, onClose, chatbot }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [sessionId] = useState(() => `session-${Date.now()}`);
+  const [sessionId] = useState(() => {
+    // Get or create session ID from localStorage for this chatbot
+    if (chatbot?.id) {
+      const storageKey = `chatbot_session_${chatbot.id}`;
+      let storedSessionId = localStorage.getItem(storageKey);
+      
+      if (!storedSessionId) {
+        // Create new session ID and store it
+        storedSessionId = `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        localStorage.setItem(storageKey, storedSessionId);
+      }
+      
+      return storedSessionId;
+    }
+    return `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  });
 
   // Log chatbot colors for debugging
   React.useEffect(() => {
