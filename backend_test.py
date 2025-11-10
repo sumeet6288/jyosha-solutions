@@ -116,12 +116,13 @@ admin_token = None
 admin_user_id = None
 
 print("="*80)
-print("COMPREHENSIVE ULTIMATE EDIT ADMIN PANEL TESTING")
+print("COMPREHENSIVE BRANDING IMAGE UPLOAD TESTING")
 print("="*80)
 print(f"Backend URL: {BACKEND_URL}")
 print(f"Admin Email: {ADMIN_EMAIL}")
+print(f"Test Chatbot ID: {TEST_CHATBOT_ID}")
 print(f"Test Time: {datetime.now().isoformat()}")
-print("Testing all 10 tabs of Ultimate Edit modal functionality")
+print("Testing image upload functionality for chatbot branding")
 print("="*80 + "\n")
 
 # ============================================================================
