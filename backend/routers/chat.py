@@ -75,7 +75,9 @@ async def send_message(chat_request: ChatRequest):
             )
         
         # Create conversation if needed
+        is_new_conversation = False
         if not conversation:
+            is_new_conversation = True
             conversation = Conversation(
                 chatbot_id=chat_request.chatbot_id,
                 session_id=chat_request.session_id,
