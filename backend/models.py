@@ -697,6 +697,7 @@ class Conversation(BaseModel):
 class ConversationResponse(BaseModel):
     id: str
     chatbot_id: str
+    session_id: Optional[str] = None
     user_name: Optional[str] = None
     user_email: Optional[str] = None
     status: str = "active"
