@@ -77,9 +77,16 @@ async def get_chatbots(current_user: User = Depends(get_current_user)):
         ).to_list(length=None)
         
         # Ensure instructions field is populated from system_message if not present
+        # and add conversations count
         for chatbot in chatbots:
             if "instructions" not in chatbot or chatbot["instructions"] is None:
                 chatbot["instructions"] = chatbot.get("system_message", "You are a helpful assistant.")
+            
+            # Count conversations for this chatbot
+            conversations_count = await db_instance.conversations.count_documents(
+                {"chatbot_id": chatbot["id"]}
+            )
+            chatbot["conversations_count"] = conversations_count
         
         return [ChatbotResponse(**chatbot) for chatbot in chatbots]
     except Exception as e:
