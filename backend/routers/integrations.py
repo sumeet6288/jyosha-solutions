@@ -116,24 +116,6 @@ async def test_integration_connection(integration_type: str, credentials: dict) 
                 else:
                     return {"success": False, "message": "Invalid bot token"}
         
-        elif integration_type == "twilio":
-            # Test Twilio credentials
-            if not credentials.get("account_sid") or not credentials.get("auth_token"):
-                return {"success": False, "message": "Missing Account SID or Auth Token"}
-            
-            if not credentials.get("phone_number"):
-                return {"success": False, "message": "Missing Phone Number"}
-            
-            # Validate Twilio credentials
-            from services.twilio_service import TwilioService
-            twilio_service = TwilioService(
-                credentials.get("account_sid"),
-                credentials.get("auth_token"),
-                credentials.get("phone_number")
-            )
-            result = await twilio_service.validate_credentials()
-            return result
-        
         elif integration_type == "webchat":
             # Web chat is always available
             return {"success": True, "message": "Web chat widget is ready"}
