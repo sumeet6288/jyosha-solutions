@@ -692,7 +692,7 @@ const LandingPage = () => {
           </div>
 
           {/* Use Case Cards with Glassmorphism and Scroll Animation */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-6">
             {useCases.map((useCase, index) => (
               <div 
                 key={index}
