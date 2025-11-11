@@ -449,11 +449,9 @@ class Lead(BaseModel):
     
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     user_id: str  # User who owns this lead
-    name: Optional[str] = None
-    email: Optional[str] = None
-    phone: Optional[str] = None
-    company: Optional[str] = None
-    status: str = "active"  # active, contacted, converted, inactive
+    name: str
+    contact: str  # Email or Phone
+    status: Literal["New", "Contacted", "Closed"] = "New"
     notes: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
@@ -461,25 +459,36 @@ class Lead(BaseModel):
 
 
 class LeadCreate(BaseModel):
+    name: str
+    contact: str
+    status: Optional[Literal["New", "Contacted", "Closed"]] = "New"
+    notes: Optional[str] = None
+
+
+class LeadUpdate(BaseModel):
     name: Optional[str] = None
-    email: Optional[str] = None
-    phone: Optional[str] = None
-    company: Optional[str] = None
-    status: Optional[str] = "active"
+    contact: Optional[str] = None
+    status: Optional[Literal["New", "Contacted", "Closed"]] = None
     notes: Optional[str] = None
 
 
 class LeadResponse(BaseModel):
     id: str
     user_id: str
-    name: Optional[str] = None
-    email: Optional[str] = None
-    phone: Optional[str] = None
-    company: Optional[str] = None
-    status: str
+    name: str
+    contact: str
+    status: Literal["New", "Contacted", "Closed"]
     notes: Optional[str] = None
     created_at: datetime
     updated_at: datetime
+
+
+class LeadStatsResponse(BaseModel):
+    current_leads: int
+    max_leads: int
+    percentage_used: float
+    can_add_more: bool
+    plan_name: str
 
 
 # Chatbot Models
