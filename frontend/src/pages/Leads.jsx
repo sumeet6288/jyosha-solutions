@@ -473,7 +473,7 @@ const Leads = () => {
                           <div className="flex flex-col items-center justify-center text-gray-500">
                             <FileText className="w-16 h-16 text-gray-300 mb-4" />
                             <p className="text-lg font-semibold mb-2">No Leads Yet</p>
-                            <p className="text-sm">Click "Add New Lead" to get started</p>
+                            <p className="text-sm">Click "Add Demo Leads" to see example leads</p>
                           </div>
                         </td>
                       </tr>
