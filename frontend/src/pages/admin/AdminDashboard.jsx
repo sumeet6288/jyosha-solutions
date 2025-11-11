@@ -7,6 +7,7 @@ import UsersManagement from '../../components/admin/UsersManagement';
 import EnhancedUsersManagement from '../../components/admin/EnhancedUsersManagement';
 import AdvancedUsersManagement from '../../components/admin/AdvancedUsersManagement';
 import ChatbotsManagement from '../../components/admin/ChatbotsManagement';
+import EnhancedChatbotsManagement from '../../components/admin/EnhancedChatbotsManagement';
 import ConversationsManagement from '../../components/admin/ConversationsManagement';
 import SystemMonitoring from '../../components/admin/SystemMonitoring';
 import RevenueDashboard from '../../components/admin/RevenueDashboard';
