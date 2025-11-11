@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, CreditCard, FileText, Shield } from 'lucide-react';
+import { Menu, X, CreditCard, FileText, Shield, Users } from 'lucide-react';
 import UserProfileDropdown from './UserProfileDropdown';
 import NotificationBell from './NotificationBell';
 
