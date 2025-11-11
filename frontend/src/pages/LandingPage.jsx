@@ -675,8 +675,8 @@ const LandingPage = () => {
       </section>
 
       {/* Use Cases Section */}
-      <section className="py-20 px-4 sm:px-8 relative z-10 bg-white" ref={useCasesRef}>
-        <div className="max-w-6xl mx-auto">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10 bg-white" ref={useCasesRef}>
+        <div className="max-w-[1600px] mx-auto w-full">
           {/* Header */}
           <div className={`text-center mb-16 `}>
             <span className="px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-medium inline-flex items-center gap-2 mb-4">
