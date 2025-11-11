@@ -143,9 +143,8 @@ async def send_message(chat_request: ChatRequest):
                 citation_footer=citation_footer
             )
             
-            # Append citations to response if available
-            if citations:
-                ai_response = ai_response + "\n\n---\n**Sources:**\n" + citations
+            # Citations removed - users don't need to see source references
+            # The AI still uses the knowledge base context, but citations are hidden
                 
         except Exception as e:
             logger.error(f"AI response error: {str(e)}")
