@@ -406,12 +406,12 @@ const Leads = () => {
                   />
                 </div>
                 <Button
-                  onClick={() => setShowAddModal(true)}
+                  onClick={handleAddDemoLeads}
                   disabled={isAtLimit}
                   className={`${isAtLimit ? 'opacity-50 cursor-not-allowed' : ''} bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white`}
                 >
                   <Plus className="w-4 h-4 mr-2" />
-                  Add New Lead
+                  Add Demo Leads (3)
                 </Button>
               </div>
               
