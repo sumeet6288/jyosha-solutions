@@ -292,34 +292,78 @@ const SubscriptionNew = () => {
 
         {/* Current Subscription Status */}
         {subscriptionStatus?.has_subscription && (
-          <div className="mb-6 p-4 bg-purple-50 rounded-xl border border-purple-200">
+          <div className={`mb-6 p-4 rounded-xl border ${
+            subscriptionStatus.is_expired 
+              ? 'bg-red-50 border-red-300' 
+              : subscriptionStatus.is_expiring_soon 
+                ? 'bg-orange-50 border-orange-300' 
+                : 'bg-purple-50 border-purple-200'
+          }`}>
             <div className="flex items-center gap-2 mb-2">
-              <Crown className="w-5 h-5 text-purple-600" />
+              {subscriptionStatus.is_expired ? (
+                <AlertCircle className="w-5 h-5 text-red-600" />
+              ) : (
+                <Crown className="w-5 h-5 text-purple-600" />
+              )}
               <h2 className="text-base font-bold text-gray-900">Current Subscription</h2>
             </div>
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-700 text-sm">
+              <div className="flex-1">
+                <p className="text-gray-700 text-sm mb-1">
                   <span className="font-semibold">Plan:</span> {subscriptionStatus.plan}
                 </p>
-                <p className="text-gray-700 text-sm">
+                <p className="text-gray-700 text-sm mb-1">
                   <span className="font-semibold">Status:</span>{' '}
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                    subscriptionStatus.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                    subscriptionStatus.is_expired 
+                      ? 'bg-red-100 text-red-800'
+                      : subscriptionStatus.status === 'active' 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-gray-100 text-gray-800'
                   }`}>
-                    {subscriptionStatus.status}
+                    {subscriptionStatus.is_expired ? 'Expired' : subscriptionStatus.status}
                   </span>
                 </p>
-              </div>
-              {subscriptionStatus.renews_at && (
-                <div className="text-right">
-                  <p className="text-xs text-gray-500">Renews on</p>
-                  <p className="font-semibold text-gray-700 text-sm">
-                    {new Date(subscriptionStatus.renews_at).toLocaleDateString()}
+                {subscriptionStatus.billing_cycle && (
+                  <p className="text-gray-600 text-xs">
+                    <span className="font-semibold">Billing:</span> {subscriptionStatus.billing_cycle}
                   </p>
+                )}
+              </div>
+              {subscriptionStatus.expires_at && (
+                <div className="text-right">
+                  <p className="text-xs text-gray-500">
+                    {subscriptionStatus.is_expired ? 'Expired on' : 'Expires on'}
+                  </p>
+                  <p className="font-semibold text-gray-700 text-sm">
+                    {new Date(subscriptionStatus.expires_at).toLocaleDateString()}
+                  </p>
+                  {!subscriptionStatus.is_expired && subscriptionStatus.days_remaining !== null && (
+                    <p className={`text-xs mt-1 font-medium ${
+                      subscriptionStatus.is_expiring_soon ? 'text-orange-600' : 'text-green-600'
+                    }`}>
+                      {subscriptionStatus.days_remaining} {subscriptionStatus.days_remaining === 1 ? 'day' : 'days'} left
+                    </p>
+                  )}
                 </div>
               )}
             </div>
+            
+            {/* Expiration Warning */}
+            {(subscriptionStatus.is_expired || subscriptionStatus.is_expiring_soon) && (
+              <div className={`mt-3 p-3 rounded-lg ${
+                subscriptionStatus.is_expired ? 'bg-red-100' : 'bg-orange-100'
+              }`}>
+                <p className={`text-sm font-medium ${
+                  subscriptionStatus.is_expired ? 'text-red-900' : 'text-orange-900'
+                }`}>
+                  {subscriptionStatus.is_expired 
+                    ? '⚠️ Your subscription has expired. Renew now to continue using all features.'
+                    : `⏰ Your subscription is expiring in ${subscriptionStatus.days_remaining} ${subscriptionStatus.days_remaining === 1 ? 'day' : 'days'}!`
+                  }
+                </p>
+              </div>
+            )}
           </div>
         )}
 
