@@ -4,15 +4,18 @@ from datetime import datetime, timezone
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import uuid
-from models import Lead, LeadResponse, LeadCreate
+from models import User, Lead, LeadResponse, LeadCreate, LeadUpdate, LeadStatsResponse
+from services.plan_service import plan_service
 from auth import get_current_user
 
 router = APIRouter()
 
 # MongoDB connection
 MONGO_URL = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
+DB_NAME = os.environ.get('DB_NAME', 'chatbase_db')
 client = AsyncIOMotorClient(MONGO_URL)
-db = client.chatbase_db
+db = client[DB_NAME]
+leads_collection = db.leads
 
 
 @router.get("/leads", response_model=dict)
