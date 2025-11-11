@@ -15,7 +15,6 @@ const ResponsiveNav = ({ user, onLogout }) => {
   const baseNavItems = [
     { path: '/dashboard', label: 'Chatbots' },
     { path: '/analytics', label: 'Analytics' },
-    { path: '/leads', label: 'Leads', icon: Users },
     { path: '/subscription', label: 'Subscription', icon: CreditCard },
   ];
 
