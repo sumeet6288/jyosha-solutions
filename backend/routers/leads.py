@@ -67,65 +67,56 @@ async def get_lead_stats(current_user: User = Depends(get_current_user)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/leads")
-async def create_lead(lead_data: LeadCreate, current_user: dict = Depends(get_current_user)):
-    """Create a new lead for the current user"""
+@router.post("/leads", response_model=LeadResponse)
+async def create_lead(lead_data: LeadCreate, current_user: User = Depends(get_current_user)):
+    """Create a new lead for the current user (with plan limit check)"""
     try:
-        # Handle both dict and User object
-        if hasattr(current_user, 'id'):
-            user_id = current_user.id
+        # Check current lead count
+        current_count = await leads_collection.count_documents({"user_id": current_user.id})
+        
+        # Get plan limits using plan service
+        subscription = await plan_service.get_user_subscription(current_user.id)
+        plan = await plan_service.get_plan_by_id(subscription["plan_id"])
+        
+        # Check if custom limits exist
+        if hasattr(current_user, 'custom_limits') and current_user.custom_limits and 'max_leads' in current_user.custom_limits:
+            max_leads = current_user.custom_limits['max_leads']
         else:
-            user_id = current_user.get('id')
+            max_leads = plan["limits"].get("max_leads", 50)
         
-        # Get user's plan info
-        user = await db.users.find_one({"id": user_id})
-        subscription = user.get('subscription', {}) if user else {}
-        plan_name = subscription.get('plan_name', 'Free')
-        
-        plan_limits = {
-            'Free': 0,
-            'Starter': 100,
-            'Professional': 500,
-            'Enterprise': 10000
-        }
-        
-        max_leads = plan_limits.get(plan_name, 0)
-        current_count = await db.leads.count_documents({"user_id": user_id})
-        
-        # Check if user has reached their limit
+        # Enforce limit
         if current_count >= max_leads:
             raise HTTPException(
                 status_code=403,
                 detail={
-                    "message": f"You have reached your lead limit of {max_leads}. Upgrade your plan to add more leads.",
+                    "message": f"Lead limit reached. You have {current_count}/{max_leads} leads. Upgrade your plan to add more.",
                     "current": current_count,
                     "max": max_leads,
-                    "plan": plan_name
+                    "upgrade_required": True,
+                    "plan_name": plan["name"]
                 }
             )
         
         # Create new lead
-        lead = {
-            "id": str(uuid.uuid4()),
-            "user_id": user_id,
-            "name": lead_data.name or "",
-            "email": lead_data.email or "",
-            "phone": lead_data.phone or "",
-            "company": lead_data.company or "",
-            "status": lead_data.status or "active",
-            "notes": lead_data.notes or "",
-            "created_at": datetime.now(timezone.utc),
-            "updated_at": datetime.now(timezone.utc),
-            "metadata": {}
-        }
+        lead = Lead(
+            id=str(uuid.uuid4()),
+            user_id=current_user.id,
+            name=lead_data.name,
+            contact=lead_data.contact,
+            status=lead_data.status or "New",
+            notes=lead_data.notes,
+            created_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(timezone.utc)
+        )
         
-        await db.leads.insert_one(lead)
+        lead_dict = lead.model_dump()
+        await leads_collection.insert_one(lead_dict)
         
-        return {
-            "success": True,
-            "lead": lead,
-            "message": "Lead created successfully"
-        }
+        # Remove MongoDB _id for response
+        if '_id' in lead_dict:
+            lead_dict.pop('_id')
+        
+        return LeadResponse(**lead_dict)
         
     except HTTPException:
         raise
