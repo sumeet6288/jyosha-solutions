@@ -182,7 +182,7 @@ All design elements remain **exactly the same**:
 - ✅ MongoDB: Running on port 27017
 - ✅ Plans: Initialized with new prices
 
-**Preview URL**: https://db-ready-deploy.preview.emergentagent.com
+**Preview URL**: https://stack-preview-3.preview.emergentagent.com
 
 ---
 
