@@ -74,10 +74,16 @@ manager = ConnectionManager()
 
 # Create the main app without a prefix
 # Set max upload size to 100MB
+# Disable docs in production for security
+enable_docs = os.environ.get('ENVIRONMENT', 'development') != 'production'
+
 app = FastAPI(
     title="BotSmith API",
     description="AI-powered chatbot builder with multi-provider support",
-    version="1.0.0"
+    version="1.0.0",
+    docs_url="/docs" if enable_docs else None,
+    redoc_url="/redoc" if enable_docs else None,
+    openapi_url="/openapi.json" if enable_docs else None
 )
 
 # Create a router with the /api prefix
