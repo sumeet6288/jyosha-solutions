@@ -93,6 +93,7 @@ class PlanService:
                     "max_file_size_mb": 100,
                     "max_website_sources": 50,
                     "max_text_sources": 100,
+                    "max_leads": 1000,
                     "conversation_history_days": 90,
                     "allowed_ai_providers": ["openai", "anthropic", "google"],
                     "api_access": True,
