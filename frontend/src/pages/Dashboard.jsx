@@ -291,16 +291,20 @@ const Dashboard = () => {
             <p className="text-gray-600 text-sm font-medium">Total Chatbots</p>
           </div>
 
-          {/* Leads Card */}
+          {/* Leads Card - Coming Soon */}
           <div 
-            onClick={() => navigate('/leads')}
-            className="bg-white rounded-xl p-4 shadow-md hover:shadow-2xl transition-all duration-500 ease-out border border-gray-100 animate-fade-in-up animation-delay-400 hover-lift card-glow cursor-pointer group"
+            className="bg-white rounded-xl p-4 shadow-md transition-all duration-500 ease-out border border-gray-100 animate-fade-in-up animation-delay-400 cursor-not-allowed opacity-70 relative overflow-hidden"
           >
-            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-b from-orange-400 to-amber-600 mb-3 shadow-md transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
+            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-b from-orange-400 to-amber-600 mb-3 shadow-md">
               <FileText className="w-6 h-6 text-white" />
             </div>
             <p className="text-4xl font-bold text-orange-600 mb-1 transition-all duration-300">{analytics?.total_leads || 0}</p>
             <p className="text-gray-600 text-sm font-medium">Leads</p>
+            
+            {/* Coming Soon Badge */}
+            <div className="absolute top-2 right-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+              Coming Soon
+            </div>
           </div>
         </div>
 
