@@ -18,45 +18,20 @@ db = client[DB_NAME]
 leads_collection = db.leads
 
 
-@router.get("/leads", response_model=dict)
-async def get_my_leads(current_user: dict = Depends(get_current_user)):
+@router.get("/leads", response_model=List[LeadResponse])
+async def get_my_leads(current_user: User = Depends(get_current_user)):
     """Get all leads for the current user"""
     try:
-        # Handle both dict and User object
-        if hasattr(current_user, 'id'):
-            user_id = current_user.id
-        else:
-            user_id = current_user.get('id')
-            
-        leads = await db.leads.find({"user_id": user_id}).to_list(length=None)
+        leads = await leads_collection.find({"user_id": current_user.id}).to_list(length=10000)
         
-        # Convert MongoDB ObjectId to string for JSON serialization
+        # Convert to response format
+        lead_responses = []
         for lead in leads:
             if '_id' in lead:
-                lead['_id'] = str(lead['_id'])
+                lead.pop('_id')
+            lead_responses.append(LeadResponse(**lead))
         
-        # Get user's plan info from database
-        user = await db.users.find_one({"id": user_id})
-        subscription = user.get('subscription', {}) if user else {}
-        plan_name = subscription.get('plan_name', 'Free')
-        
-        plan_limits = {
-            'Free': 0,
-            'Starter': 100,
-            'Professional': 500,
-            'Enterprise': 10000
-        }
-        
-        max_leads = plan_limits.get(plan_name, 0)
-        current_count = len(leads)
-        
-        return {
-            "leads": leads,
-            "total": current_count,
-            "max_leads": max_leads,
-            "remaining": max(0, max_leads - current_count),
-            "plan_name": plan_name
-        }
+        return lead_responses
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
