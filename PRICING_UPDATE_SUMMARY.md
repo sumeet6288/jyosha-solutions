@@ -182,7 +182,7 @@ All design elements remain **exactly the same**:
 - ✅ MongoDB: Running on port 27017
 - ✅ Plans: Initialized with new prices
 
-**Preview URL**: https://mern-installer-2.preview.emergentagent.com
+**Preview URL**: https://mern-installer-3.preview.emergentagent.com
 
 ---
 
