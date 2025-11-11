@@ -205,12 +205,18 @@ class PlanService:
         # Get current subscription
         subscription = await self.get_user_subscription(user_id)
         
+        # Calculate new expiration date - 30 days from now
+        started_at = datetime.utcnow()
+        expires_at = started_at + timedelta(days=30)
+        
         # Update plan
         update_data = {
             "plan_id": new_plan_id,
             "status": "active",
-            "started_at": datetime.utcnow(),
-            "expires_at": None  # For now, no expiration (manual management)
+            "started_at": started_at,
+            "expires_at": expires_at,
+            "auto_renew": False,
+            "billing_cycle": "monthly"
         }
         
         await self.subscriptions_collection.update_one(
