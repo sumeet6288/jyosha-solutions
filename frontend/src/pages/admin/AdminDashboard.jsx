@@ -197,7 +197,7 @@ const AdminDashboard = () => {
               </div>
 
               {/* Recent Sources */}
-              <div className="bg-white rounded-xl border border-gray-200 p-6">
+              <div className="bg-white rounded-xl border border-gray-200 p-6 w-full">
                 <h3 className="text-xl font-bold mb-4">Recent Sources</h3>
                 <div className="space-y-2">
                   {sources.slice(0, 5).map((source) => (
