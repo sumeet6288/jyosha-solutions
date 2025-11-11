@@ -44,6 +44,7 @@ lemonsqueezy.init_router(db)
 admin.init_router(db)
 admin_users.init_router(db)
 admin_users_enhanced.init_router(db)
+admin_chatbots.init_router(db)
 notifications.init_router(db)
 
 # WebSocket connection manager for real-time notifications
