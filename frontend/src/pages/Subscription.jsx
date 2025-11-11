@@ -192,28 +192,33 @@ const SubscriptionNew = () => {
     setCheckingOut(planId);
     try {
       const token = localStorage.getItem('token');
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
       
+      // Use the new plan upgrade API
       const response = await axios.post(
-        `${BACKEND_URL}/api/lemonsqueezy/checkout/create`,
+        `${BACKEND_URL}/api/plans/upgrade`,
         {
-          plan: planId,
-          user_id: user.id || 'demo-user-123',
-          user_email: user.email || 'demo@botsmith.com'
+          plan_id: planId
         },
         {
           headers
         }
       );
 
-      // Redirect to checkout URL
-      if (response.data.checkout_url) {
-        window.location.href = response.data.checkout_url;
-      }
+      // Show success message
+      setShowSuccess(true);
+      
+      // Refresh subscription data
+      await fetchData();
+      
+      // Hide success message after 3 seconds
+      setTimeout(() => {
+        setShowSuccess(false);
+      }, 3000);
+      
     } catch (error) {
-      console.error('Error creating checkout:', error);
-      alert('Failed to create checkout. Please try again.');
+      console.error('Error upgrading plan:', error);
+      alert(error.response?.data?.detail || 'Failed to upgrade plan. Please try again.');
     } finally {
       setCheckingOut(null);
     }
