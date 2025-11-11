@@ -282,7 +282,7 @@ const AdminDashboard = () => {
           )}
 
           {activeTab === 'chatbots' && (
-            <ChatbotsManagement backendUrl={backendUrl} />
+            <EnhancedChatbotsManagement backendUrl={backendUrl} />
           )}
 
           {activeTab === 'conversations' && (
