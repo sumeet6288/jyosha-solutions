@@ -290,7 +290,7 @@ const AdminDashboard = () => {
           )}
 
           {activeTab === 'sources' && (
-            <div className="bg-white rounded-xl border border-gray-200 p-8">
+            <div className="bg-white rounded-xl border border-gray-200 p-6 w-full">
               <h2 className="text-2xl font-bold mb-6">Sources Management</h2>
               {sources.length === 0 ? (
                 <div className="text-center py-12 text-gray-500">
