@@ -750,6 +750,21 @@ frontend:
         agent: "main"
         comment: "✅ BOTH BUGS FIXED: 1) DUPLICATE SOURCE BUG: Found and removed duplicate insert statement in /app/backend/routers/sources.py line 212. Website sources were being inserted twice into MongoDB (line 208 and 212). Removed the duplicate, tested with new website source creation - confirmed only 1 entry created. Cleaned up existing duplicates from database. 2) ERROR OBJECT RENDERING BUG: Fixed React error in AddSourceModal.jsx where plan limit errors (objects with {message, current, max, upgrade_required}) were being rendered directly instead of extracting the message field. Updated error handling in both handleAddUrl() and handleAddText() functions to check if error.response.data.detail is an object and extract the .message field. File upload section already had correct handling. Both issues now resolved - website sources create single entries and plan limit errors display properly."
 
+  - task: "Learn Page Layout Fix - Removed White Space"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/Resources.jsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "user"
+        comment: "User reported white blank space on left and right sides of Learn page, and all icons were centered in the middle making the layout look unbalanced"
+      - working: true
+        agent: "main"
+        comment: "✅ LEARN PAGE LAYOUT COMPLETELY FIXED: Adjusted Resources.jsx (Learn page) layout to remove excessive white space and better distribute content across the screen. CHANGES: 1) CONTAINER WIDTH: Increased max-width from 'max-w-7xl' (1280px) to 'max-w-[1600px]' to utilize more screen real estate, 2) PADDING: Enhanced responsive padding from 'px-6' to 'px-4 sm:px-6 lg:px-8 xl:px-12' for better spacing control at different breakpoints, 3) QUICK LINKS GRID: Updated from fixed 'md:grid-cols-4' to responsive 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4' with better mobile/tablet support, 4) RESOURCES GRID: Changed from 'md:grid-cols-2 lg:grid-cols-3' to 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' to show 4 columns on extra-large screens instead of 3, removing the centered middle look, 5) SPACING: Reduced mb-20 to mb-16 for tighter vertical spacing, adjusted gaps from 'gap-8' to 'gap-6 sm:gap-8' for better mobile responsiveness, 6) RESPONSIVE ENHANCEMENTS: Added responsive text sizes (text-xl sm:text-2xl, text-3xl sm:text-4xl), responsive icon sizes (w-14 h-14 sm:w-16 sm:h-16), responsive padding on cards and buttons, added max-width 'w-full' to ensure full container width usage. RESULT: Learn page now utilizes full viewport width with minimal white space on sides, icons/cards are properly distributed across 4 columns on large screens (xl breakpoint), responsive design works beautifully on mobile (1 column), tablet (2 columns), desktop (3 columns), and extra-large screens (4 columns), content no longer appears cramped in the middle, professional edge-to-edge layout while maintaining readability."
+
   - task: "Branding Card in Appearance Section - Fully Functional"
     implemented: true
     working: true
