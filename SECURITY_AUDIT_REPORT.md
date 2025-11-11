@@ -75,7 +75,7 @@ CORS_ORIGINS="*"
 
 **Recommendation:** Restrict to specific domains
 ```env
-CORS_ORIGINS="https://mern-installer-5.preview.emergentagent.com,https://yourdomain.com"
+CORS_ORIGINS="https://fullstack-setup-9.preview.emergentagent.com,https://yourdomain.com"
 ```
 
 **Risk Level:** 🔴 HIGH  

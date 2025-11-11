@@ -113,7 +113,7 @@ Password: admin123
 ### Frontend (React)
 ```
 Local:     http://localhost:3000
-Preview:   https://mern-installer-5.preview.emergentagent.com
+Preview:   https://fullstack-setup-9.preview.emergentagent.com
 ```
 
 ### Backend API (FastAPI)
@@ -193,7 +193,7 @@ EMERGENT_LLM_KEY=sk-emergent-919922434748629944
 
 ### Frontend Environment (.env)
 ```env
-REACT_APP_BACKEND_URL=https://mern-installer-5.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://fullstack-setup-9.preview.emergentagent.com
 WDS_SOCKET_PORT=443
 REACT_APP_ENABLE_VISUAL_EDITS=true
 ENABLE_HEALTH_CHECK=false
@@ -223,7 +223,7 @@ Once logged in as admin, you'll have access to:
 ## 🚀 Next Steps
 
 1. **Login to the application**:
-   - Go to: https://mern-installer-5.preview.emergentagent.com
+   - Go to: https://fullstack-setup-9.preview.emergentagent.com
    - Email: admin@botsmith.com
    - Password: admin123
 
