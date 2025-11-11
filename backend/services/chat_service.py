@@ -46,7 +46,7 @@ class ChatService:
             enhanced_system = system_message
             if context:
                 enhanced_system += f"\n\nRelevant Knowledge Base Context:\n{context}"
-                enhanced_system += "\n\nImportant: Use the provided context to answer the question accurately. Reference the source numbers (e.g., 'According to Source 1...') when citing information."
+                enhanced_system += "\n\nImportant: Use the provided context to answer the question accurately and naturally. Integrate the information seamlessly without explicitly mentioning sources or reference numbers."
             
             # Initialize chat
             chat = LlmChat(
