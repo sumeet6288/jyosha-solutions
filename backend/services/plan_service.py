@@ -174,13 +174,18 @@ class PlanService:
     
     async def create_subscription(self, user_id: str, plan_id: str = "free") -> dict:
         """Create a new subscription for user"""
+        # Calculate expiration date - 30 days from now
+        started_at = datetime.utcnow()
+        expires_at = started_at + timedelta(days=30)
+        
         subscription = {
             "user_id": user_id,
             "plan_id": plan_id,
             "status": "active",
-            "started_at": datetime.utcnow(),
-            "expires_at": None,  # Free plan never expires
-            "auto_renew": True,
+            "started_at": started_at,
+            "expires_at": expires_at,
+            "auto_renew": False,
+            "billing_cycle": "monthly",  # monthly, yearly
             "usage": {
                 "chatbots_count": 0,
                 "messages_this_month": 0,
