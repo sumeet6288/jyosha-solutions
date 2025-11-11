@@ -218,7 +218,7 @@ const AdminDashboard = () => {
               </div>
 
               {/* Flagged Conversations */}
-              <div className="bg-white rounded-xl border border-gray-200 p-6 lg:col-span-2">
+              <div className="bg-white rounded-xl border border-gray-200 p-6 lg:col-span-2 w-full">
                 <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                   <AlertTriangle className="w-6 h-6 text-red-600" />
                   Flagged Conversations
