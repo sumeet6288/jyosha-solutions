@@ -36,45 +36,33 @@ async def get_my_leads(current_user: User = Depends(get_current_user)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get("/leads/stats", response_model=dict)
-async def get_lead_stats(current_user: dict = Depends(get_current_user)):
+@router.get("/leads/stats", response_model=LeadStatsResponse)
+async def get_lead_stats(current_user: User = Depends(get_current_user)):
     """Get lead statistics for current user"""
     try:
-        # Handle both dict and User object
-        if hasattr(current_user, 'id'):
-            user_id = current_user.id
+        # Count current leads
+        current_count = await leads_collection.count_documents({"user_id": current_user.id})
+        
+        # Get plan limits using plan service
+        subscription = await plan_service.get_user_subscription(current_user.id)
+        plan = await plan_service.get_plan_by_id(subscription["plan_id"])
+        
+        # Check if custom limits exist
+        if hasattr(current_user, 'custom_limits') and current_user.custom_limits and 'max_leads' in current_user.custom_limits:
+            max_leads = current_user.custom_limits['max_leads']
         else:
-            user_id = current_user.get('id')
+            max_leads = plan["limits"].get("max_leads", 50)
         
-        total_leads = await db.leads.count_documents({"user_id": user_id})
-        active_leads = await db.leads.count_documents({"user_id": user_id, "status": "active"})
-        contacted_leads = await db.leads.count_documents({"user_id": user_id, "status": "contacted"})
-        converted_leads = await db.leads.count_documents({"user_id": user_id, "status": "converted"})
+        # Calculate percentage
+        percentage = (current_count / max_leads * 100) if max_leads > 0 else 0
         
-        # Get user's plan limit
-        user = await db.users.find_one({"id": user_id})
-        subscription = user.get('subscription', {}) if user else {}
-        plan_name = subscription.get('plan_name', 'Free')
-        
-        plan_limits = {
-            'Free': 0,
-            'Starter': 100,
-            'Professional': 500,
-            'Enterprise': 10000
-        }
-        
-        max_leads = plan_limits.get(plan_name, 0)
-        
-        return {
-            "total_leads": total_leads,
-            "active_leads": active_leads,
-            "contacted_leads": contacted_leads,
-            "converted_leads": converted_leads,
-            "max_leads": max_leads,
-            "remaining_leads": max(0, max_leads - total_leads),
-            "plan_name": plan_name
-        }
-        
+        return LeadStatsResponse(
+            current_leads=current_count,
+            max_leads=max_leads,
+            percentage_used=round(percentage, 2),
+            can_add_more=current_count < max_leads,
+            plan_name=plan["name"]
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
