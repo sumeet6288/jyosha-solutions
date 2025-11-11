@@ -6,7 +6,7 @@ from pydantic import BaseModel
 import json
 import csv
 import io
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, Response
 import psutil
 import os
 from uuid import uuid4
