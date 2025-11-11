@@ -145,9 +145,8 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
             citation_footer=citation_footer
         )
         
-        # Append citations if available
-        if citations:
-            ai_response = ai_response + "\n\n---\n**Sources:**\n" + citations
+        # Citations removed - widget users don't need to see source references
+        # The AI still uses the knowledge base context, but citations are hidden
             
     except Exception as e:
         logger.error(f"AI response error in public chat: {str(e)}")
