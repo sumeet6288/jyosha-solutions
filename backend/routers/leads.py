@@ -156,26 +156,24 @@ async def update_lead(lead_id: str, lead_data: LeadUpdate, current_user: User = 
 
 
 @router.delete("/leads/{lead_id}")
-async def delete_lead(lead_id: str, current_user: dict = Depends(get_current_user)):
+async def delete_lead(lead_id: str, current_user: User = Depends(get_current_user)):
     """Delete a specific lead (user can only delete their own leads)"""
     try:
-        # Handle both dict and User object
-        if hasattr(current_user, 'id'):
-            user_id = current_user.id
-        else:
-            user_id = current_user.get('id')
-        
         # Check if lead belongs to user
-        lead = await db.leads.find_one({"id": lead_id, "user_id": user_id})
+        lead = await leads_collection.find_one({"id": lead_id, "user_id": current_user.id})
         if not lead:
             raise HTTPException(status_code=404, detail="Lead not found or access denied")
         
-        result = await db.leads.delete_one({"id": lead_id, "user_id": user_id})
+        result = await leads_collection.delete_one({"id": lead_id, "user_id": current_user.id})
         
         if result.deleted_count == 0:
             raise HTTPException(status_code=404, detail="Lead not found")
         
-        return {"success": True, "message": "Lead deleted successfully"}
+        return {
+            "success": True,
+            "message": "Lead deleted successfully",
+            "lead_id": lead_id
+        }
         
     except HTTPException:
         raise
