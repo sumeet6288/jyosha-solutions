@@ -102,6 +102,7 @@ api_router.include_router(lemonsqueezy.router, prefix="/lemonsqueezy", tags=["Le
 api_router.include_router(admin.router)
 api_router.include_router(admin_users.router)
 api_router.include_router(admin_users_enhanced.router)
+api_router.include_router(admin_chatbots.router)
 api_router.include_router(admin_leads.router, prefix="/admin", tags=["Admin Leads"])
 api_router.include_router(leads.router, prefix="/leads", tags=["Leads"])
 api_router.include_router(notifications.router)
