@@ -425,54 +425,137 @@ async def delete_user(user_id: str):
 
 # ==================== CHATBOT MANAGEMENT ====================
 @router.get("/chatbots/detailed")
-async def get_chatbots_detailed():
-    """Get detailed chatbot information"""
+async def get_chatbots_detailed(
+    search: Optional[str] = Query(None),
+    ai_provider: Optional[str] = Query(None),
+    enabled: Optional[bool] = Query(None),
+    owner_id: Optional[str] = Query(None),
+    sort_by: Optional[str] = Query("created_at"),
+    sort_order: Optional[str] = Query("desc"),
+    skip: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=100)
+):
+    """Get detailed chatbot information with filtering, sorting, and pagination"""
     try:
         if db_instance is None:
             raise HTTPException(status_code=500, detail="Database not initialized")
             
         chatbots_collection = db_instance['chatbots']
+        users_collection = db_instance['users']
         sources_collection = db_instance['sources']
         conversations_collection = db_instance['conversations']
         messages_collection = db_instance['messages']
+        integrations_collection = db_instance['integrations']
         
-        chatbots = []
-        async for bot in chatbots_collection.find({}).sort("created_at", -1):
-            chatbot_id = bot.get('id')
+        # Build filter query
+        filter_query = {}
+        
+        if search:
+            filter_query['$or'] = [
+                {'name': {'$regex': search, '$options': 'i'}},
+                {'description': {'$regex': search, '$options': 'i'}},
+                {'user_id': {'$regex': search, '$options': 'i'}}
+            ]
+        
+        if ai_provider:
+            filter_query['ai_provider'] = ai_provider
+        
+        if enabled is not None:
+            filter_query['enabled'] = enabled
+        
+        if owner_id:
+            filter_query['user_id'] = owner_id
+        
+        # Count total
+        total_count = await chatbots_collection.count_documents(filter_query)
+        
+        # Determine sort direction
+        sort_direction = -1 if sort_order == "desc" else 1
+        
+        # Fetch chatbots
+        cursor = chatbots_collection.find(filter_query).sort(sort_by, sort_direction).skip(skip).limit(limit)
+        chatbots = await cursor.to_list(length=limit)
+        
+        # Enrich with additional data
+        enriched_chatbots = []
+        for bot in chatbots:
+            user_id = bot.get('user_id', '')
+            bot_id = bot.get('id', bot.get('_id', ''))
             
-            # Count sources
-            sources_count = await sources_collection.count_documents({"chatbot_id": chatbot_id})
+            # Get owner info
+            user = await users_collection.find_one({'id': user_id})
+            owner_info = {
+                'id': user_id,
+                'name': user.get('name', 'Unknown') if user else 'Unknown',
+                'email': user.get('email', 'N/A') if user else 'N/A',
+                'plan': user.get('subscription', {}).get('plan_id', 'free') if user else 'free'
+            }
             
-            # Count conversations
-            conversations_count = await conversations_collection.count_documents({"chatbot_id": chatbot_id})
+            # Get statistics
+            sources_count = await sources_collection.count_documents({'chatbot_id': bot_id})
+            conversations_count = await conversations_collection.count_documents({'chatbot_id': bot_id})
+            messages_count = await messages_collection.count_documents({'chatbot_id': bot_id})
+            integrations_count = await integrations_collection.count_documents({'chatbot_id': bot_id})
+            active_integrations = await integrations_collection.count_documents({'chatbot_id': bot_id, 'enabled': True})
             
-            # Count messages
-            messages_count = await messages_collection.count_documents({"chatbot_id": chatbot_id})
+            # Calculate last activity
+            last_message = await messages_collection.find_one(
+                {'chatbot_id': bot_id},
+                sort=[('timestamp', -1)]
+            )
+            last_activity = last_message.get('timestamp') if last_message else bot.get('created_at')
             
-            chatbots.append({
-                "id": bot.get('id'),
-                "name": bot.get('name'),
-                "ai_provider": bot.get('ai_provider'),
-                "ai_model": bot.get('ai_model'),
-                "user_id": bot.get('user_id'),
-                "created_at": bot.get('created_at'),
-                "updated_at": bot.get('updated_at'),
-                "sources_count": sources_count,
-                "conversations_count": conversations_count,
-                "messages_count": messages_count,
-                "enabled": bot.get('enabled', True),
-                "status": bot.get('status', 'active'),
-                "primary_color": bot.get('primary_color'),
-                "welcome_message": bot.get('welcome_message')
-            })
+            enriched_bot = {
+                'id': bot_id,
+                'name': bot.get('name', 'Unnamed'),
+                'description': bot.get('description', ''),
+                'user_id': user_id,
+                'owner': owner_info,
+                'ai_provider': bot.get('ai_provider', 'openai'),
+                'ai_model': bot.get('ai_model', 'gpt-4o-mini'),
+                'temperature': bot.get('temperature', 0.7),
+                'max_tokens': bot.get('max_tokens', 2000),
+                'system_prompt': bot.get('system_prompt', ''),
+                'welcome_message': bot.get('welcome_message', ''),
+                'enabled': bot.get('enabled', True),
+                'public_access': bot.get('public_access', True),
+                'created_at': bot.get('created_at', datetime.utcnow().isoformat()),
+                'updated_at': bot.get('updated_at', datetime.utcnow().isoformat()),
+                'last_activity': last_activity.isoformat() if isinstance(last_activity, datetime) else last_activity,
+                'statistics': {
+                    'sources_count': sources_count,
+                    'conversations_count': conversations_count,
+                    'messages_count': messages_count,
+                    'integrations_count': integrations_count,
+                    'active_integrations': active_integrations
+                },
+                'widget_settings': {
+                    'position': bot.get('widget_position', 'bottom-right'),
+                    'theme': bot.get('widget_theme', 'light'),
+                    'size': bot.get('widget_size', 'medium'),
+                    'auto_expand': bot.get('auto_expand', False)
+                },
+                'appearance': {
+                    'primary_color': bot.get('primary_color', '#8B5CF6'),
+                    'secondary_color': bot.get('secondary_color', '#EC4899'),
+                    'chat_bubble_color': bot.get('chat_bubble_color', '#F3F4F6'),
+                    'font_family': bot.get('font_family', 'Inter')
+                }
+            }
+            
+            enriched_chatbots.append(enriched_bot)
         
         return {
-            "chatbots": chatbots,
-            "total": len(chatbots)
+            'success': True,
+            'chatbots': enriched_chatbots,
+            'total': total_count,
+            'skip': skip,
+            'limit': limit,
+            'has_more': (skip + limit) < total_count
         }
     except Exception as e:
-        print(f"Error in get_chatbots_detailed: {str(e)}")
-        return {"chatbots": [], "total": 0}
+        logger.error(f"Error in get_chatbots_detailed: {str(e)}")
+        return {"success": False, "chatbots": [], "total": 0, "error": str(e)}
 
 
 @router.put("/chatbots/{chatbot_id}/toggle")
