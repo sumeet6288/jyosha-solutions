@@ -1319,17 +1319,48 @@ async def get_users_statistics():
         moderator_users = await users_collection.count_documents({'role': 'moderator'})
         regular_users = await users_collection.count_documents({'role': 'user'})
         
-        # Recent activity
+        # Recent activity - handle both datetime objects and ISO string dates
         today = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
         week_ago = today - timedelta(days=7)
         month_ago = today - timedelta(days=30)
         
-        new_today = await users_collection.count_documents({'created_at': {'$gte': today}})
-        new_this_week = await users_collection.count_documents({'created_at': {'$gte': week_ago}})
-        new_this_month = await users_collection.count_documents({'created_at': {'$gte': month_ago}})
+        # Convert to ISO strings for comparison (since dates are stored as strings)
+        today_str = today.isoformat()
+        week_ago_str = week_ago.isoformat()
+        month_ago_str = month_ago.isoformat()
         
-        active_today = await users_collection.count_documents({'last_login': {'$gte': today}})
-        active_this_week = await users_collection.count_documents({'last_login': {'$gte': week_ago}})
+        # Try both datetime and string comparison
+        new_today = await users_collection.count_documents({
+            '$or': [
+                {'created_at': {'$gte': today}},
+                {'created_at': {'$gte': today_str}}
+            ]
+        })
+        new_this_week = await users_collection.count_documents({
+            '$or': [
+                {'created_at': {'$gte': week_ago}},
+                {'created_at': {'$gte': week_ago_str}}
+            ]
+        })
+        new_this_month = await users_collection.count_documents({
+            '$or': [
+                {'created_at': {'$gte': month_ago}},
+                {'created_at': {'$gte': month_ago_str}}
+            ]
+        })
+        
+        active_today = await users_collection.count_documents({
+            '$or': [
+                {'last_login': {'$gte': today}},
+                {'last_login': {'$gte': today_str}}
+            ]
+        })
+        active_this_week = await users_collection.count_documents({
+            '$or': [
+                {'last_login': {'$gte': week_ago}},
+                {'last_login': {'$gte': week_ago_str}}
+            ]
+        })
         
         # Subscription stats
         free_plan = await subscriptions_collection.count_documents({'plan_id': 'free'})
