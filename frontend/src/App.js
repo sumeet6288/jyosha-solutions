@@ -48,6 +48,8 @@ import NotFound from './pages/NotFound';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import { Toaster } from './components/ui/toaster';
 import { Toaster as SonnerToaster } from 'sonner';
+import SubscriptionExpiredModal from './components/SubscriptionExpiredModal';
+import useSubscriptionCheck from './hooks/useSubscriptionCheck';
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
