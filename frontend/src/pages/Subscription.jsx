@@ -121,15 +121,34 @@ const SubscriptionNew = () => {
       const token = localStorage.getItem('token');
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-      // Fetch subscription status
+      // Fetch subscription status using new plan service
       try {
-        const statusResponse = await axios.get(`${BACKEND_URL}/api/lemonsqueezy/subscription/status`, {
+        const usageResponse = await axios.get(`${BACKEND_URL}/api/plans/usage`, {
           headers
         });
-        setSubscriptionStatus(statusResponse.data);
+        
+        const statusResponse = await axios.get(`${BACKEND_URL}/api/plans/subscription-status`, {
+          headers
+        });
+        
+        // Combine both responses
+        const combinedData = {
+          has_subscription: true,
+          plan: usageResponse.data.plan.name,
+          plan_id: usageResponse.data.plan.id,
+          status: usageResponse.data.subscription.status,
+          expires_at: usageResponse.data.subscription.expires_at,
+          is_expired: statusResponse.data.is_expired,
+          is_expiring_soon: statusResponse.data.is_expiring_soon,
+          days_remaining: statusResponse.data.days_remaining,
+          auto_renew: usageResponse.data.subscription.auto_renew,
+          billing_cycle: usageResponse.data.subscription.billing_cycle
+        };
+        
+        setSubscriptionStatus(combinedData);
       } catch (error) {
-        console.log('No active subscription');
-        setSubscriptionStatus({ has_subscription: false, plan: 'free' });
+        console.log('No active subscription:', error);
+        setSubscriptionStatus({ has_subscription: false, plan: 'free', plan_id: 'free' });
       }
     } catch (error) {
       console.error('Error fetching subscription data:', error);
