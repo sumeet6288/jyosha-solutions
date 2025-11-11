@@ -632,6 +632,408 @@ async def bulk_chatbot_operations(operation: BulkOperation):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+
+@router.get("/chatbots/{chatbot_id}/details")
+async def get_chatbot_full_details(chatbot_id: str):
+    """Get complete details for a specific chatbot including sources, integrations, and conversations"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        users_collection = db_instance['users']
+        sources_collection = db_instance['sources']
+        conversations_collection = db_instance['conversations']
+        integrations_collection = db_instance['integrations']
+        
+        # Get chatbot
+        chatbot = await chatbots_collection.find_one({'id': chatbot_id})
+        if not chatbot:
+            raise HTTPException(status_code=404, detail="Chatbot not found")
+        
+        # Get owner
+        user = await users_collection.find_one({'id': chatbot.get('user_id')})
+        
+        # Get sources
+        sources_cursor = sources_collection.find({'chatbot_id': chatbot_id})
+        sources = await sources_cursor.to_list(length=100)
+        
+        # Get integrations
+        integrations_cursor = integrations_collection.find({'chatbot_id': chatbot_id})
+        integrations = await integrations_cursor.to_list(length=50)
+        
+        # Get recent conversations
+        conversations_cursor = conversations_collection.find(
+            {'chatbot_id': chatbot_id}
+        ).sort('created_at', -1).limit(10)
+        recent_conversations = await conversations_cursor.to_list(length=10)
+        
+        return {
+            'success': True,
+            'chatbot': {
+                'id': chatbot.get('id'),
+                'name': chatbot.get('name'),
+                'description': chatbot.get('description'),
+                'user_id': chatbot.get('user_id'),
+                'ai_provider': chatbot.get('ai_provider'),
+                'ai_model': chatbot.get('ai_model'),
+                'temperature': chatbot.get('temperature'),
+                'max_tokens': chatbot.get('max_tokens'),
+                'system_prompt': chatbot.get('system_prompt'),
+                'welcome_message': chatbot.get('welcome_message'),
+                'enabled': chatbot.get('enabled', True),
+                'public_access': chatbot.get('public_access', True),
+                'created_at': chatbot.get('created_at'),
+                'updated_at': chatbot.get('updated_at'),
+                'widget_settings': {
+                    'position': chatbot.get('widget_position'),
+                    'theme': chatbot.get('widget_theme'),
+                    'size': chatbot.get('widget_size'),
+                    'auto_expand': chatbot.get('auto_expand')
+                },
+                'appearance': {
+                    'primary_color': chatbot.get('primary_color'),
+                    'secondary_color': chatbot.get('secondary_color'),
+                    'chat_bubble_color': chatbot.get('chat_bubble_color'),
+                    'font_family': chatbot.get('font_family')
+                }
+            },
+            'owner': {
+                'id': user.get('id') if user else None,
+                'name': user.get('name') if user else 'Unknown',
+                'email': user.get('email') if user else 'N/A',
+                'plan': user.get('subscription', {}).get('plan_id', 'free') if user else 'free'
+            },
+            'sources': [
+                {
+                    'id': s.get('id'),
+                    'type': s.get('type'),
+                    'name': s.get('name'),
+                    'content': s.get('content', '')[:200] + '...' if len(s.get('content', '')) > 200 else s.get('content', ''),
+                    'status': s.get('status'),
+                    'created_at': s.get('created_at')
+                } for s in sources
+            ],
+            'integrations': [
+                {
+                    'id': i.get('id'),
+                    'type': i.get('type'),
+                    'enabled': i.get('enabled'),
+                    'created_at': i.get('created_at')
+                } for i in integrations
+            ],
+            'recent_conversations': [
+                {
+                    'id': c.get('id'),
+                    'user_name': c.get('user_name', 'Anonymous'),
+                    'status': c.get('status'),
+                    'created_at': c.get('created_at')
+                } for c in recent_conversations
+            ]
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting chatbot details: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.put("/chatbots/{chatbot_id}/update")
+async def update_chatbot_settings(chatbot_id: str, update_data: dict):
+    """Update chatbot settings"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        
+        # Check if chatbot exists
+        chatbot = await chatbots_collection.find_one({'id': chatbot_id})
+        if not chatbot:
+            raise HTTPException(status_code=404, detail="Chatbot not found")
+        
+        # Remove None values
+        update_dict = {k: v for k, v in update_data.items() if v is not None}
+        
+        if not update_dict:
+            raise HTTPException(status_code=400, detail="No fields to update")
+        
+        # Add updated_at timestamp
+        update_dict['updated_at'] = datetime.utcnow().isoformat()
+        
+        # Update chatbot
+        result = await chatbots_collection.update_one(
+            {'id': chatbot_id},
+            {'$set': update_dict}
+        )
+        
+        return {
+            'success': True,
+            'message': 'Chatbot updated successfully',
+            'modified': result.modified_count > 0,
+            'updated_fields': list(update_dict.keys())
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating chatbot: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.delete("/chatbots/{chatbot_id}")
+async def delete_chatbot_and_data(chatbot_id: str):
+    """Delete a chatbot and all its related data"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        sources_collection = db_instance['sources']
+        conversations_collection = db_instance['conversations']
+        messages_collection = db_instance['messages']
+        integrations_collection = db_instance['integrations']
+        
+        # Check if chatbot exists
+        chatbot = await chatbots_collection.find_one({'id': chatbot_id})
+        if not chatbot:
+            raise HTTPException(status_code=404, detail="Chatbot not found")
+        
+        # Delete all related data
+        await sources_collection.delete_many({'chatbot_id': chatbot_id})
+        await messages_collection.delete_many({'chatbot_id': chatbot_id})
+        await conversations_collection.delete_many({'chatbot_id': chatbot_id})
+        await integrations_collection.delete_many({'chatbot_id': chatbot_id})
+        
+        # Delete chatbot
+        await chatbots_collection.delete_one({'id': chatbot_id})
+        
+        return {
+            'success': True,
+            'message': 'Chatbot and all related data deleted successfully',
+            'chatbot_id': chatbot_id
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting chatbot: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/chatbots/{chatbot_id}/sources")
+async def get_chatbot_sources_list(chatbot_id: str):
+    """Get all sources for a chatbot"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        sources_collection = db_instance['sources']
+        
+        sources_cursor = sources_collection.find({'chatbot_id': chatbot_id})
+        sources = await sources_cursor.to_list(length=None)
+        
+        return {
+            'success': True,
+            'chatbot_id': chatbot_id,
+            'sources': [
+                {
+                    'id': s.get('id'),
+                    'type': s.get('type'),
+                    'name': s.get('name'),
+                    'content': s.get('content', ''),
+                    'status': s.get('status'),
+                    'created_at': s.get('created_at'),
+                    'file_size': len(s.get('content', '')),
+                    'url': s.get('url', '')
+                } for s in sources
+            ],
+            'total': len(sources)
+        }
+    except Exception as e:
+        logger.error(f"Error getting chatbot sources: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.delete("/chatbots/{chatbot_id}/sources/{source_id}")
+async def delete_chatbot_source_item(chatbot_id: str, source_id: str):
+    """Delete a specific source from a chatbot"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        sources_collection = db_instance['sources']
+        
+        # Delete source
+        result = await sources_collection.delete_one({
+            'id': source_id,
+            'chatbot_id': chatbot_id
+        })
+        
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Source not found")
+        
+        return {
+            'success': True,
+            'message': 'Source deleted successfully',
+            'source_id': source_id
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting source: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/chatbots/{chatbot_id}/analytics")
+async def get_chatbot_analytics_data(chatbot_id: str, days: int = Query(30, ge=1, le=365)):
+    """Get analytics for a specific chatbot"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        messages_collection = db_instance['messages']
+        conversations_collection = db_instance['conversations']
+        
+        start_date = datetime.utcnow() - timedelta(days=days)
+        
+        # Count messages
+        total_messages = await messages_collection.count_documents({'chatbot_id': chatbot_id})
+        recent_messages = await messages_collection.count_documents({
+            'chatbot_id': chatbot_id,
+            'timestamp': {'$gte': start_date.isoformat()}
+        })
+        
+        # Count conversations
+        total_conversations = await conversations_collection.count_documents({'chatbot_id': chatbot_id})
+        active_conversations = await conversations_collection.count_documents({
+            'chatbot_id': chatbot_id,
+            'status': 'active'
+        })
+        
+        return {
+            'success': True,
+            'chatbot_id': chatbot_id,
+            'period_days': days,
+            'analytics': {
+                'total_messages': total_messages,
+                'recent_messages': recent_messages,
+                'total_conversations': total_conversations,
+                'active_conversations': active_conversations,
+                'average_daily_messages': recent_messages / days if days > 0 else 0
+            }
+        }
+    except Exception as e:
+        logger.error(f"Error getting chatbot analytics: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/chatbots/{chatbot_id}/transfer-ownership")
+async def transfer_ownership(chatbot_id: str, request: dict):
+    """Transfer chatbot ownership to another user"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        users_collection = db_instance['users']
+        
+        new_owner_id = request.get('new_owner_id')
+        if not new_owner_id:
+            raise HTTPException(status_code=400, detail="new_owner_id is required")
+        
+        # Check if chatbot exists
+        chatbot = await chatbots_collection.find_one({'id': chatbot_id})
+        if not chatbot:
+            raise HTTPException(status_code=404, detail="Chatbot not found")
+        
+        # Check if new owner exists
+        new_owner = await users_collection.find_one({'id': new_owner_id})
+        if not new_owner:
+            raise HTTPException(status_code=404, detail="New owner not found")
+        
+        old_owner_id = chatbot.get('user_id')
+        
+        # Transfer ownership
+        await chatbots_collection.update_one(
+            {'id': chatbot_id},
+            {'$set': {
+                'user_id': new_owner_id,
+                'updated_at': datetime.utcnow().isoformat()
+            }}
+        )
+        
+        return {
+            'success': True,
+            'message': 'Ownership transferred successfully',
+            'chatbot_id': chatbot_id,
+            'old_owner_id': old_owner_id,
+            'new_owner_id': new_owner_id
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error transferring ownership: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/chatbots/export")
+async def export_chatbots_data(format: str = Query("json")):
+    """Export all chatbots data"""
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        chatbots_collection = db_instance['chatbots']
+        users_collection = db_instance['users']
+        
+        # Get all chatbots
+        cursor = chatbots_collection.find({})
+        chatbots = await cursor.to_list(length=None)
+        
+        # Enrich with owner info
+        export_data = []
+        for bot in chatbots:
+            user = await users_collection.find_one({'id': bot.get('user_id')})
+            export_data.append({
+                'id': bot.get('id'),
+                'name': bot.get('name'),
+                'description': bot.get('description'),
+                'owner_name': user.get('name') if user else 'Unknown',
+                'owner_email': user.get('email') if user else 'N/A',
+                'ai_provider': bot.get('ai_provider'),
+                'ai_model': bot.get('ai_model'),
+                'enabled': bot.get('enabled', True),
+                'public_access': bot.get('public_access', True),
+                'created_at': bot.get('created_at'),
+                'updated_at': bot.get('updated_at')
+            })
+        
+        if format == "csv":
+            # Create CSV
+            output = io.StringIO()
+            if export_data:
+                writer = csv.DictWriter(output, fieldnames=export_data[0].keys())
+                writer.writeheader()
+                writer.writerows(export_data)
+            
+            return StreamingResponse(
+                iter([output.getvalue()]),
+                media_type="text/csv",
+                headers={"Content-Disposition": f"attachment; filename=chatbots_{datetime.utcnow().strftime('%Y%m%d')}.csv"}
+            )
+        else:
+            # Return JSON
+            from fastapi.responses import Response
+            return Response(
+                content=json.dumps(export_data, indent=2),
+                media_type="application/json",
+                headers={"Content-Disposition": f"attachment; filename=chatbots_{datetime.utcnow().strftime('%Y%m%d')}.json"}
+            )
+    except Exception as e:
+        logger.error(f"Error exporting chatbots: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
 # ==================== CONVERSATIONS MANAGEMENT ====================
 @router.get("/conversations")
 async def get_all_conversations(
