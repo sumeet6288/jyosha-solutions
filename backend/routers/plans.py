@@ -70,3 +70,26 @@ async def check_limit(
     """Check if user has reached a specific limit"""
     result = await plan_service.check_limit(current_user.id, limit_type)
     return result
+
+@router.get("/subscription-status")
+async def check_subscription_status(current_user: User = Depends(get_current_user)):
+    """Check if subscription is expired or expiring soon"""
+    status = await plan_service.check_subscription_status(current_user.id)
+    return status
+
+@router.post("/renew")
+async def renew_subscription(current_user: User = Depends(get_current_user)):
+    """Renew current subscription for another month"""
+    try:
+        updated_subscription = await plan_service.renew_subscription(current_user.id)
+        
+        # Convert ObjectId to string
+        if "_id" in updated_subscription:
+            updated_subscription["_id"] = str(updated_subscription["_id"])
+        
+        return {
+            "message": "Subscription renewed successfully for 30 days",
+            "subscription": updated_subscription
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
