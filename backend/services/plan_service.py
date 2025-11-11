@@ -31,6 +31,7 @@ class PlanService:
                     "max_file_size_mb": 10,
                     "max_website_sources": 2,
                     "max_text_sources": 5,
+                    "max_leads": 50,
                     "conversation_history_days": 7,
                     "allowed_ai_providers": ["openai"],
                     "api_access": False,
