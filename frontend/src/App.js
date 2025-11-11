@@ -123,6 +123,15 @@ function ScrollToTop() {
 function AppContent() {
   const { user } = useAuth();
   
+  // Use subscription check hook - only when user is authenticated
+  const {
+    subscriptionStatus,
+    currentPlan,
+    showExpirationModal,
+    handleModalClose,
+    handleRenewed
+  } = useSubscriptionCheck();
+  
   return (
     <div className="App">
       <BrowserRouter>
@@ -177,6 +186,17 @@ function AppContent() {
       <Toaster />
       <SonnerToaster position="top-right" richColors />
       <HotToaster position="top-right" />
+      
+      {/* Subscription Expiration Modal */}
+      {user && (
+        <SubscriptionExpiredModal
+          isOpen={showExpirationModal}
+          onClose={handleModalClose}
+          subscriptionStatus={subscriptionStatus}
+          currentPlan={currentPlan}
+          onRenewed={handleRenewed}
+        />
+      )}
     </div>
   );
 }
