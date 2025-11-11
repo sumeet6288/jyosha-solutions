@@ -180,9 +180,9 @@ const AdminDashboard = () => {
               </div>
 
               {/* Overview Content */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-6">
               {/* Quick Stats */}
-              <div className="bg-white rounded-xl border border-gray-200 p-6">
+              <div className="bg-white rounded-xl border border-gray-200 p-6 w-full">
                 <h3 className="text-xl font-bold mb-4">Quick Stats</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
