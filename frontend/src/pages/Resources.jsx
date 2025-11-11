@@ -129,8 +129,8 @@ const Resources = () => {
         </div>
       </nav>
 
-      <div className="pt-24 pb-16 px-6 relative z-10">
-        <div className="max-w-7xl mx-auto">
+      <div className="pt-24 pb-16 px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10">
+        <div className="max-w-[1600px] mx-auto w-full">
           {/* Back Button */}
           <div className={`mb-6 animate-fade-in-up transform transition-all duration-700 delay-100 ${isLoaded ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`}>
             <Button 
@@ -144,7 +144,7 @@ const Resources = () => {
           </div>
           
           {/* Hero Section */}
-          <div className={`text-center mb-20 animate-fade-in-up transform transition-all duration-700 delay-200 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <div className={`text-center mb-16 animate-fade-in-up transform transition-all duration-700 delay-200 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
             <div className="inline-block mb-4">
               <span className="px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-sm font-medium inline-flex items-center gap-2 animate-bounce-subtle">
                 <Lightbulb className="w-4 h-4" />
@@ -154,11 +154,11 @@ const Resources = () => {
             <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-purple-900 to-pink-900 bg-clip-text text-transparent">
               Learn
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Everything you need to build, deploy, and optimize amazing AI chatbots</p>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto px-4">Everything you need to build, deploy, and optimize amazing AI chatbots</p>
           </div>
 
           {/* Quick Links Categories */}
-          <div className="grid md:grid-cols-4 gap-6 mb-20 animate-fade-in-up">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-16 animate-fade-in-up">
             {categories.map((category, index) => (
               <div 
                 key={index}
@@ -175,11 +175,11 @@ const Resources = () => {
           </div>
 
           {/* Resources Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 mb-16">
             {resources.map((resource, index) => (
               <div 
                 key={index} 
-                className={`group bg-white/90 backdrop-blur-sm p-8 rounded-2xl border-2 border-purple-200/50 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/30 transition-all duration-500 transform hover:-translate-y-3 cursor-pointer animate-fade-in-up relative overflow-hidden ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
+                className={`group bg-white/90 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border-2 border-purple-200/50 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/30 transition-all duration-500 transform hover:-translate-y-3 cursor-pointer animate-fade-in-up relative overflow-hidden ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
                 style={{ animationDelay: `${index * 50}ms`, transitionDelay: `${600 + index * 50}ms` }}
                 onClick={() => resource.link !== '#' && navigate(resource.link)}
               >
@@ -187,19 +187,19 @@ const Resources = () => {
                 <div className={`absolute inset-0 bg-gradient-to-br ${resource.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}></div>
                 
                 <div className="relative z-10">
-                  <div className={`w-16 h-16 bg-gradient-to-br ${resource.gradient} rounded-2xl flex items-center justify-center text-white mb-5 shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
+                  <div className={`w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br ${resource.gradient} rounded-2xl flex items-center justify-center text-white mb-4 sm:mb-5 shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
                     {resource.icon}
                   </div>
-                  <h3 className="text-2xl font-bold mb-3 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300">{resource.title}</h3>
-                  <p className="text-gray-600 mb-4 text-base line-clamp-2 min-h-[3rem]">{resource.description}</p>
+                  <h3 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all duration-300">{resource.title}</h3>
+                  <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem]">{resource.description}</p>
                   <div className="flex items-center gap-2 text-purple-600 font-medium group-hover:text-pink-600 transition-colors">
                     {resource.link !== '#' ? (
                       <>
-                        <span>Explore</span>
-                        <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                        <span className="text-sm sm:text-base">Explore</span>
+                        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-2 transition-transform" />
                       </>
                     ) : (
-                      <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">Coming Soon</span>
+                      <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs sm:text-sm">Coming Soon</span>
                     )}
                   </div>
                 </div>
@@ -209,19 +209,19 @@ const Resources = () => {
 
           {/* CTA Section */}
           <div className={`bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 rounded-2xl p-1 shadow-2xl animate-fade-in-up transform transition-all duration-700 delay-900 ${isLoaded ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
-            <div className="bg-white/95 backdrop-blur-sm rounded-xl p-12 text-center">
-              <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Still have questions?</h2>
-              <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">Our support team is here to help you succeed. Get in touch with us anytime.</p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="bg-white/95 backdrop-blur-sm rounded-xl p-8 sm:p-12 text-center">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Still have questions?</h2>
+              <p className="text-gray-600 text-base sm:text-lg mb-6 sm:mb-8 max-w-2xl mx-auto px-4">Our support team is here to help you succeed. Get in touch with us anytime.</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
                 <Button 
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-purple-500/30 transform hover:scale-105 transition-all duration-300"
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg rounded-xl shadow-lg shadow-purple-500/30 transform hover:scale-105 transition-all duration-300"
                   onClick={() => navigate('/enterprise')}
                 >
                   Contact Support
                 </Button>
                 <Button 
                   variant="outline" 
-                  className="border-2 border-purple-300 hover:bg-purple-50 px-8 py-6 text-lg rounded-xl transform hover:scale-105 transition-all duration-300"
+                  className="border-2 border-purple-300 hover:bg-purple-50 px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg rounded-xl transform hover:scale-105 transition-all duration-300"
                   onClick={() => navigate('/dashboard')}
                 >
                   Start Building
