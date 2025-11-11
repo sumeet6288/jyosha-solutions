@@ -143,12 +143,12 @@ const AdminDashboard = () => {
           </div>
         </nav>
 
-        <div className="p-8">
+        <div className="p-6 max-w-full">
           {/* Main Content */}
           {activeTab === 'overview' && (
             <>
               {/* Stats Overview - Only on Overview Tab */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
                 <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
                   <Users className="w-8 h-8 text-blue-600 mb-3" />
                   <p className="text-3xl font-bold">
