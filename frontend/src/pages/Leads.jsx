@@ -56,47 +56,73 @@ const Leads = () => {
     }
   };
 
-  const handleAddLead = async () => {
+  const handleAddDemoLeads = async () => {
     try {
-      const token = localStorage.getItem('botsmith_token');
-      const response = await fetch(`${backendUrl}/api/leads/leads`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+      const demoLeads = [
+        {
+          name: 'John Smith',
+          email: 'john.smith@example.com',
+          phone: '+1-555-0101',
+          company: 'Tech Solutions Inc',
+          status: 'active',
+          notes: 'Demo lead - Interested in enterprise solutions'
         },
-        credentials: 'include',
-        body: JSON.stringify(formData)
-      });
+        {
+          name: 'Sarah Johnson',
+          email: 'sarah.j@businesscorp.com',
+          phone: '+1-555-0102',
+          company: 'Business Corp',
+          status: 'active',
+          notes: 'Demo lead - Looking for consultation'
+        },
+        {
+          name: 'Michael Brown',
+          email: 'mbrown@startup.io',
+          phone: '+1-555-0103',
+          company: 'StartUp.io',
+          status: 'contacted',
+          notes: 'Demo lead - Requires follow-up'
+        }
+      ];
 
-      const data = await response.json();
+      const token = localStorage.getItem('botsmith_token');
+      let successCount = 0;
+      
+      for (const demoLead of demoLeads) {
+        try {
+          const response = await fetch(`${backendUrl}/api/leads/leads`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            credentials: 'include',
+            body: JSON.stringify(demoLead)
+          });
 
-      if (response.ok) {
+          if (response.ok) {
+            successCount++;
+          }
+        } catch (error) {
+          console.error('Error adding demo lead:', error);
+        }
+      }
+
+      if (successCount > 0) {
         toast({
           title: 'Success',
-          description: 'Lead added successfully'
-        });
-        setShowAddModal(false);
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          company: '',
-          status: 'active',
-          notes: ''
+          description: `Added ${successCount} demo leads successfully`
         });
         fetchLeads();
-      } else if (response.status === 403) {
+      } else {
         toast({
-          title: 'Limit Reached',
-          description: data.detail?.message || 'You have reached your lead limit',
+          title: 'Failed',
+          description: 'Failed to add demo leads. You may have reached your limit.',
           variant: 'destructive'
         });
-      } else {
-        throw new Error('Failed to add lead');
       }
     } catch (error) {
-      console.error('Error adding lead:', error);
+      console.error('Error adding demo leads:', error);
       toast({
         title: 'Error',
         description: 'Failed to add lead',
