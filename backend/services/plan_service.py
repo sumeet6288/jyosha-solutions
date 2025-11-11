@@ -312,6 +312,71 @@ class PlanService:
             }
         )
     
+    async def check_subscription_status(self, user_id: str) -> dict:
+        """Check if subscription is expired or about to expire"""
+        subscription = await self.get_user_subscription(user_id)
+        
+        if not subscription:
+            return {"status": "no_subscription", "is_expired": True}
+        
+        expires_at = subscription.get("expires_at")
+        if not expires_at:
+            return {"status": "active", "is_expired": False, "days_remaining": None}
+        
+        now = datetime.utcnow()
+        
+        # Check if expired
+        if now > expires_at:
+            # Auto-expire the subscription
+            await self.subscriptions_collection.update_one(
+                {"user_id": user_id},
+                {"$set": {"status": "expired"}}
+            )
+            return {
+                "status": "expired",
+                "is_expired": True,
+                "expired_on": expires_at,
+                "days_overdue": (now - expires_at).days
+            }
+        
+        # Calculate days remaining
+        days_remaining = (expires_at - now).days
+        
+        # Check if expiring soon (within 3 days)
+        is_expiring_soon = days_remaining <= 3
+        
+        return {
+            "status": subscription.get("status", "active"),
+            "is_expired": False,
+            "is_expiring_soon": is_expiring_soon,
+            "days_remaining": days_remaining,
+            "expires_at": expires_at
+        }
+    
+    async def renew_subscription(self, user_id: str) -> dict:
+        """Renew user's current subscription for another month"""
+        subscription = await self.get_user_subscription(user_id)
+        
+        # Calculate new expiration date - 30 days from now
+        started_at = datetime.utcnow()
+        expires_at = started_at + timedelta(days=30)
+        
+        # Update subscription
+        update_data = {
+            "status": "active",
+            "started_at": started_at,
+            "expires_at": expires_at
+        }
+        
+        await self.subscriptions_collection.update_one(
+            {"user_id": user_id},
+            {"$set": update_data}
+        )
+        
+        # Get updated subscription
+        updated_subscription = await self.get_user_subscription(user_id)
+        return updated_subscription
+    
     async def get_usage_stats(self, user_id: str) -> dict:
         """Get detailed usage statistics with limits"""
         subscription = await self.get_user_subscription(user_id)
@@ -333,11 +398,24 @@ class PlanService:
             if user_doc.get("custom_max_file_uploads") is not None:
                 limits["max_file_uploads"] = user_doc["custom_max_file_uploads"]
         
+        # Get subscription status
+        subscription_status = await self.check_subscription_status(user_id)
+        
         return {
             "plan": {
                 "id": plan["id"],
                 "name": plan["name"],
                 "price": plan["price"]
+            },
+            "subscription": {
+                "status": subscription.get("status", "active"),
+                "started_at": subscription.get("started_at"),
+                "expires_at": subscription.get("expires_at"),
+                "is_expired": subscription_status.get("is_expired", False),
+                "is_expiring_soon": subscription_status.get("is_expiring_soon", False),
+                "days_remaining": subscription_status.get("days_remaining"),
+                "auto_renew": subscription.get("auto_renew", False),
+                "billing_cycle": subscription.get("billing_cycle", "monthly")
             },
             "usage": {
                 "chatbots": {
