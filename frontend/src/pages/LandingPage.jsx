@@ -745,14 +745,14 @@ const LandingPage = () => {
       </section>
 
       {/* What Makes Us Different Section */}
-      <section className="py-20 px-4 sm:px-8 bg-gradient-to-br from-gray-50 to-purple-50 relative overflow-hidden" ref={differentiatorsRef}>
+      <section className="py-20 px-4 sm:px-6 lg:px-8 xl:px-12 bg-gradient-to-br from-gray-50 to-purple-50 relative overflow-hidden" ref={differentiatorsRef}>
         {/* Background Elements */}
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 right-0 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl animate-pulse-slow"></div>
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl animate-pulse-slow animation-delay-2000"></div>
         </div>
 
-        <div className="max-w-6xl mx-auto relative z-10">
+        <div className="max-w-[1600px] mx-auto relative z-10 w-full">
           {/* Header */}
           <div className={`text-center mb-16 `}>
             <span className="px-4 py-2 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 text-sm font-medium inline-flex items-center gap-2 mb-4">
