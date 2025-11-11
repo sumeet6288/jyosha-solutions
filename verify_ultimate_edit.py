@@ -5,7 +5,7 @@ import requests
 import json
 
 # Configuration
-BACKEND_URL = "https://app-bootstrapper-1.preview.emergentagent.com/api"
+BACKEND_URL = "https://web-stack-preview-1.preview.emergentagent.com/api"
 ADMIN_EMAIL = "admin@botsmith.com"
 ADMIN_PASSWORD = "admin123"
 
