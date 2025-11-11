@@ -435,8 +435,8 @@ const LandingPage = () => {
       </section>
 
       {/* Agency Pricing Comparison Table */}
-      <section className="py-8 sm:py-16 px-3 sm:px-8 relative z-10">
-        <div className="max-w-6xl mx-auto relative z-10">
+      <section className="py-8 sm:py-16 px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10">
+        <div className="max-w-[1600px] mx-auto relative z-10 w-full">
           <div className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-8 shadow-xl">
             {/* Table Title */}
             <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 sm:mb-6 text-center bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
