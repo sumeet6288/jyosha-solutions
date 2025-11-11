@@ -350,7 +350,7 @@ async def setup_whatsapp_webhook(
             raise HTTPException(status_code=404, detail="WhatsApp integration not found. Please configure WhatsApp first.")
         
         # Generate webhook URL
-        backend_url = os.environ.get('BACKEND_URL', 'https://web-stack-preview-1.preview.emergentagent.com')
+        backend_url = os.environ.get('BACKEND_URL', 'https://fullstack-setup-8.preview.emergentagent.com')
         webhook_url = f"{backend_url}/api/whatsapp/webhook/{chatbot_id}"
         verify_token = integration.get("metadata", {}).get("verify_token", "botsmith_verify_token")
         
