@@ -499,22 +499,7 @@ const Leads = () => {
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex gap-2">
-                              <Button 
-                                size="sm" 
-                                variant="outline"
-                                onClick={() => handleEditClick(lead)}
-                                className="text-blue-600 hover:bg-blue-50"
-                              >
-                                <Edit className="w-4 h-4" />
-                              </Button>
-                              <Button 
-                                size="sm" 
-                                variant="outline"
-                                onClick={() => handleDeleteLead(lead.id)}
-                                className="text-red-600 hover:bg-red-50"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
+                              <span className="text-sm text-gray-500 italic">View Only</span>
                             </div>
                           </td>
                         </tr>
