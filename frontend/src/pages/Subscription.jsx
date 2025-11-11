@@ -378,7 +378,7 @@ const SubscriptionNew = () => {
             const Icon = plan.icon;
             const isPopular = plan.popular;
             const isFree = plan.isFree;
-            const currentPlan = subscriptionStatus?.plan?.toLowerCase() === plan.id.toLowerCase();
+            const currentPlan = subscriptionStatus?.plan_id?.toLowerCase() === plan.id.toLowerCase();
 
             return (
               <div
