@@ -15,7 +15,7 @@
 ## 🌐 Access URLs
 
 ### Frontend Application
-**URL:** https://stack-preview-3.preview.emergentagent.com
+**URL:** https://mern-installer-2.preview.emergentagent.com
 
 ### Backend API Documentation
 **URL:** http://localhost:8001/docs
@@ -83,7 +83,7 @@ Implemented comprehensive role-based access control (RBAC) with three security l
 ## 🧪 Testing Instructions
 
 ### Test Admin Access
-1. Navigate to: https://stack-preview-3.preview.emergentagent.com
+1. Navigate to: https://mern-installer-2.preview.emergentagent.com
 2. Click "Sign In"
 3. Login with admin credentials:
    - Email: `admin@botsmith.com`
