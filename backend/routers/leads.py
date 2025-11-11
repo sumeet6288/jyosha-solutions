@@ -124,34 +124,30 @@ async def create_lead(lead_data: LeadCreate, current_user: User = Depends(get_cu
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.put("/leads/{lead_id}")
-async def update_lead(lead_id: str, lead_data: LeadCreate, current_user: dict = Depends(get_current_user)):
+@router.put("/leads/{lead_id}", response_model=LeadResponse)
+async def update_lead(lead_id: str, lead_data: LeadUpdate, current_user: User = Depends(get_current_user)):
     """Update a specific lead (user can only update their own leads)"""
     try:
-        # Handle both dict and User object
-        if hasattr(current_user, 'id'):
-            user_id = current_user.id
-        else:
-            user_id = current_user.get('id')
-        
         # Check if lead belongs to user
-        lead = await db.leads.find_one({"id": lead_id, "user_id": user_id})
+        lead = await leads_collection.find_one({"id": lead_id, "user_id": current_user.id})
         if not lead:
             raise HTTPException(status_code=404, detail="Lead not found or access denied")
         
-        update_data = lead_data.dict(exclude_unset=True)
-        update_data["updated_at"] = datetime.now(timezone.utc)
+        # Update fields
+        update_data = lead_data.model_dump(exclude_unset=True)
+        if update_data:
+            update_data["updated_at"] = datetime.now(timezone.utc)
+            await leads_collection.update_one(
+                {"id": lead_id, "user_id": current_user.id},
+                {"$set": update_data}
+            )
         
-        result = await db.leads.update_one(
-            {"id": lead_id, "user_id": user_id},
-            {"$set": update_data}
-        )
+        # Get updated lead
+        updated_lead = await leads_collection.find_one({"id": lead_id})
+        if '_id' in updated_lead:
+            updated_lead.pop('_id')
         
-        if result.matched_count == 0:
-            raise HTTPException(status_code=404, detail="Lead not found")
-        
-        updated_lead = await db.leads.find_one({"id": lead_id})
-        return {"success": True, "lead": updated_lead, "message": "Lead updated successfully"}
+        return LeadResponse(**updated_lead)
         
     except HTTPException:
         raise
