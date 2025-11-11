@@ -150,9 +150,7 @@ async def process_discord_message(
             # Unpack the tuple
             response_text, citation_footer = response_tuple
             
-            # Append citation footer if available
-            if citation_footer:
-                response_text += f"\n\n{citation_footer}"
+            # Citations removed - users don't need to see source references
             
         except Exception as e:
             logger.error(f"Error generating AI response: {str(e)}")
