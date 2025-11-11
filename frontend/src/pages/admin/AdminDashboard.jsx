@@ -156,7 +156,7 @@ const AdminDashboard = () => {
                   </p>
                   <p className="text-gray-600 text-sm mt-1">Total Users</p>
                 </div>
-                <div className="bg-white p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
+                <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
                   <Bot className="w-8 h-8 text-green-600 mb-3" />
                   <p className="text-3xl font-bold">
                     {loading ? '...' : stats.activeChatbots.toLocaleString()}
