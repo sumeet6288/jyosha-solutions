@@ -520,8 +520,8 @@ const LandingPage = () => {
       </section>
 
       {/* Features Section - Streamlined Premium */}
-      <section className="py-16 px-4 sm:px-8 relative z-10" ref={featuresRef}>
-        <div className="max-w-6xl mx-auto relative z-10">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10" ref={featuresRef}>
+        <div className="max-w-[1600px] mx-auto relative z-10 w-full">
           {/* Header */}
           <div className={`text-center mb-12 `}>
             <h2 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-purple-900 to-gray-900 bg-clip-text text-transparent">
