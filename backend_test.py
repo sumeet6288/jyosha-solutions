@@ -78,28 +78,25 @@ def print_summary():
                 if test["details"]:
                     print(f"    {test['details']}")
 
-def create_test_image(width=100, height=100, format='PNG'):
-    """Create a small test image programmatically"""
-    # Create a simple colored image
-    img = Image.new('RGB', (width, height), color='red')
-    
-    # Save to BytesIO
-    img_bytes = BytesIO()
-    img.save(img_bytes, format=format)
-    img_bytes.seek(0)
-    
-    return img_bytes.getvalue()
+def create_test_user(name, email):
+    """Create a test user for statistics testing"""
+    return {
+        "name": name,
+        "email": email,
+        "password": "testpass123",
+        "role": "user",
+        "status": "active"
+    }
 
-def create_large_test_image():
-    """Create a large test image (>5MB) for size validation testing"""
-    # Create a large image that will exceed 5MB when saved
-    img = Image.new('RGB', (3000, 3000), color='blue')
-    
-    img_bytes = BytesIO()
-    img.save(img_bytes, format='PNG')
-    img_bytes.seek(0)
-    
-    return img_bytes.getvalue()
+def create_test_chatbot(name, user_id):
+    """Create a test chatbot for statistics testing"""
+    return {
+        "name": name,
+        "model": "gpt-4o-mini",
+        "provider": "openai",
+        "temperature": 0.7,
+        "instructions": f"Test chatbot for user {user_id}"
+    }
 
 # Global variables for test data
 admin_token = None
