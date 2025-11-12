@@ -6,6 +6,7 @@ import { Label } from '../components/ui/label';
 import { useToast } from '../hooks/use-toast';
 import { useAuth } from '../contexts/AuthContext';
 import { Mail, Lock, Eye, EyeOff, Sparkles, Zap, ChevronRight } from 'lucide-react';
+import BotSmithLogo from '../components/BotSmithLogo';
 
 const SignIn = () => {
   const navigate = useNavigate();
