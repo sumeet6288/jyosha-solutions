@@ -128,6 +128,7 @@ async def get_enhanced_users(
                 'email': user.get('email'),
                 'role': user.get('role', 'user'),
                 'status': user.get('status', 'active'),
+                'plan_id': user.get('plan_id', 'free'),
                 'phone': user.get('phone'),
                 'avatar_url': user.get('avatar_url'),
                 'company': user.get('company'),
