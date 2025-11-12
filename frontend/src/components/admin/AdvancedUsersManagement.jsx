@@ -1448,7 +1448,7 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
       )}
 
       {/* Statistics Modal */}
-      {showStatisticsModal && statistics && (
+      {showStatisticsModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
@@ -1457,6 +1457,14 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
                 <X className="w-5 h-5" />
               </button>
             </div>
+            {!statistics ? (
+              <div className="p-6 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+                  <p className="text-gray-600">Loading statistics...</p>
+                </div>
+              </div>
+            ) : (
             <div className="p-6 space-y-6">
               <div className="grid grid-cols-3 gap-4">
                 <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg p-6 border border-purple-200">
