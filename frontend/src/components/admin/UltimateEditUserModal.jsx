@@ -462,6 +462,75 @@ const UltimateEditUserModal = ({ user, backendUrl, onClose, onSave }) => {
         <span className="text-sm text-gray-700">Force Password Change on Next Login</span>
       </label>
 
+      {/* Change Password Section */}
+      <div className="border border-purple-200 rounded-lg p-4 bg-purple-50">
+        <div className="flex items-center gap-2 mb-4">
+          <Key className="w-5 h-5 text-purple-600" />
+          <h3 className="text-sm font-semibold text-gray-800">Change User Password</h3>
+        </div>
+        
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={newPassword}
+                onChange={(e) => {
+                  setNewPassword(e.target.value);
+                  setPasswordError('');
+                }}
+                placeholder="Enter new password"
+                className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+            <input
+              type={showPassword ? "text" : "password"}
+              value={confirmPassword}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+                setPasswordError('');
+              }}
+              placeholder="Confirm new password"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+            />
+          </div>
+
+          {passwordError && (
+            <div className="flex items-center gap-2 text-red-600 text-sm">
+              <AlertCircle className="w-4 h-4" />
+              <span>{passwordError}</span>
+            </div>
+          )}
+
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Info className="w-4 h-4" />
+            <span>Password must be at least 8 characters long</span>
+          </div>
+
+          <Button
+            type="button"
+            onClick={handleChangePassword}
+            disabled={!newPassword || !confirmPassword}
+            className="w-full bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <Key className="w-4 h-4 mr-2" />
+            Update Password
+          </Button>
+        </div>
+      </div>
+
       {/* Allowed IPs */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">Allowed IP Addresses</label>
