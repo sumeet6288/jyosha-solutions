@@ -4,7 +4,8 @@ import {
   Bell, Database, Code, Palette, Globe, Lock, Clock, Mail,
   Smartphone, MapPin, Briefcase, Tag, Star, Key, FileText,
   ToggleLeft, ToggleRight, Plus, Trash2, Edit, Copy, Check,
-  AlertCircle, Info, ChevronDown, ChevronUp, Search, Filter
+  AlertCircle, Info, ChevronDown, ChevronUp, Search, Filter,
+  Eye, EyeOff
 } from 'lucide-react';
 import { Button } from '../ui/button';
 
