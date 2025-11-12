@@ -456,7 +456,10 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
         </div>
         <div className="flex gap-2">
           <Button
-            onClick={() => setShowStatisticsModal(true)}
+            onClick={() => {
+              fetchStatistics();
+              setShowStatisticsModal(true);
+            }}
             variant="outline"
             className="flex items-center gap-2"
           >
