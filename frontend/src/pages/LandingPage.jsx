@@ -201,27 +201,8 @@ const LandingPage = () => {
       <nav className="fixed top-0 left-0 right-0 glass-strong backdrop-blur-xl border-b border-white/30 z-[100] shadow-lg shadow-purple-500/10">
         <div className="max-w-[95%] mx-auto px-4 sm:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate('/')}>
-            {/* Simplified Logo - No animations for performance */}
-            <div className="relative">
-              {/* Main logo container */}
-              <div className="relative w-12 h-12 bg-gradient-to-br from-purple-600 via-fuchsia-500 to-pink-600 rounded-2xl flex items-center justify-center transition-transform duration-300 hover:scale-105 shadow-xl border border-white/20">
-                {/* Inner gradient highlight */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/30 to-transparent opacity-50"></div>
-                
-                {/* Bot icon */}
-                <svg className="w-7 h-7 text-white relative z-10 drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
-                  {/* Robot head */}
-                  <path d="M12 2C11.45 2 11 2.45 11 3V4H7C5.89 4 5 4.89 5 6V18C5 19.11 5.89 20 7 20H17C18.11 20 19 19.11 19 18V6C19 4.89 18.11 4 17 4H13V3C13 2.45 12.55 2 12 2M7 6H17V18H7V6Z"/>
-                  {/* Eyes */}
-                  <circle cx="9" cy="10" r="1.5"/>
-                  <circle cx="15" cy="10" r="1.5"/>
-                  {/* Smile */}
-                  <path d="M9 14C9 14 10 15.5 12 15.5S15 14 15 14" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round"/>
-                  {/* Antenna */}
-                  <circle cx="12" cy="3" r="1"/>
-                </svg>
-              </div>
-            </div>
+            {/* Premium "B" Logo */}
+            <BotSmithLogo size="md" showGlow={false} animate={false} />
             
             {/* Premium Brand Typography */}
             <div className="flex flex-col -space-y-0.5">
