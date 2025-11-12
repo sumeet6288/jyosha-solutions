@@ -142,6 +142,10 @@ const UltimateEditUserModal = ({ user, backendUrl, onClose, onSave }) => {
   const [newAllowedIP, setNewAllowedIP] = useState('');
   const [newBlockedIP, setNewBlockedIP] = useState('');
   const [newNote, setNewNote] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
   const [saving, setSaving] = useState(false);
   const [expandedSections, setExpandedSections] = useState({});
 
