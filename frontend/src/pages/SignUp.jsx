@@ -208,15 +208,8 @@ const SignUp = () => {
             <div className="relative bg-white rounded-2xl md:rounded-3xl shadow-2xl p-4 sm:p-6 border border-gray-200 transform transition-all duration-500 hover:shadow-purple-500/20">
               {/* Logo Section with enhanced animations */}
               <div className="flex items-center gap-2 mb-4 sm:mb-6 group/logo cursor-pointer animate-slide-in-top" onClick={() => navigate('/')}>
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl blur-md opacity-30 group-hover/logo:opacity-50 transition-opacity duration-500 animate-neon-glow"></div>
-                  
-                  <div className="relative w-10 h-10 sm:w-11 sm:h-11 bg-gradient-to-br from-purple-600 via-fuchsia-500 to-pink-600 rounded-xl flex items-center justify-center transform group-hover/logo:scale-110 group-hover/logo:rotate-12 transition-all duration-500 shadow-xl border-2 border-white/80">
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/40 to-transparent opacity-60"></div>
-                    
-                    <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-white relative z-10 drop-shadow-md animate-heartbeat" />
-                  </div>
-                </div>
+                {/* Beautiful "B" Logo */}
+                <BotSmithLogo size="sm" showGlow={true} animate={false} />
                 
                 <div className="flex flex-col -space-y-0.5">
                   <div className="flex items-baseline gap-1">
