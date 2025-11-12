@@ -144,59 +144,41 @@ except Exception as e:
     exit(1)
 
 # ============================================================================
-# TEST 2: Verify test chatbot exists or create it
+# TEST 2: Test GET /api/admin/users/enhanced endpoint basic functionality
 # ============================================================================
-print("\n[TEST 2] Verify test chatbot exists or create it...")
+print("\n[TEST 2] Test GET /api/admin/users/enhanced endpoint...")
 try:
     headers = {"Authorization": f"Bearer {admin_token}"}
     
-    # First, try to get the specific chatbot
     response = requests.get(
-        f"{BACKEND_URL}/chatbots",
+        f"{BACKEND_URL}/admin/users/enhanced",
         headers=headers,
         timeout=10
     )
     
-    chatbot_exists = False
     if response.status_code == 200:
-        chatbots = response.json()
-        for chatbot in chatbots:
-            if chatbot.get("id") == TEST_CHATBOT_ID:
-                chatbot_exists = True
-                break
-    
-    if not chatbot_exists:
-        # Create the test chatbot with the specific ID
-        create_response = requests.post(
-            f"{BACKEND_URL}/chatbots",
-            headers=headers,
-            json={
-                "name": "Test Branding Chatbot",
-                "model": "gpt-4o-mini",
-                "provider": "openai",
-                "temperature": 0.7,
-                "instructions": "You are a test chatbot for branding image uploads."
-            },
-            timeout=10
-        )
+        data = response.json()
         
-        if create_response.status_code == 201:
-            created_chatbot = create_response.json()
-            actual_chatbot_id = created_chatbot.get("id")
-            log_test("Create test chatbot", True, f"Created chatbot with ID: {actual_chatbot_id}")
-            # Update the test chatbot ID to use the newly created one
-            TEST_CHATBOT_ID = actual_chatbot_id
-        else:
-            log_test("Create test chatbot", False, f"Status: {create_response.status_code}, Response: {create_response.text}")
-            print("Cannot proceed without test chatbot. Exiting...")
-            exit(1)
+        # Check response structure
+        checks = []
+        checks.append(("Has users array", "users" in data))
+        checks.append(("Has total count", "total" in data))
+        checks.append(("Users is list", isinstance(data.get("users", []), list)))
+        checks.append(("Total is number", isinstance(data.get("total", 0), int)))
+        
+        all_passed = all(check[1] for check in checks)
+        details = f"Response structure: users={len(data.get('users', []))}, total={data.get('total', 0)}"
+        log_test("Enhanced users endpoint structure", all_passed, details)
+        
+        # Store initial user count for later comparison
+        global initial_user_count
+        initial_user_count = len(data.get("users", []))
+        
     else:
-        log_test("Verify test chatbot exists", True, f"Chatbot {TEST_CHATBOT_ID} exists")
+        log_test("Enhanced users endpoint structure", False, f"Status: {response.status_code}, Response: {response.text}")
 
 except Exception as e:
-    log_test("Verify test chatbot exists", False, f"Exception: {str(e)}")
-    print("Cannot proceed without test chatbot. Exiting...")
-    exit(1)
+    log_test("Enhanced users endpoint structure", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 3: Test unauthenticated request (should fail with 401)
