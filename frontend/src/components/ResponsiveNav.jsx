@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, CreditCard, FileText, Shield, Users } from 'lucide-react';
 import UserProfileDropdown from './UserProfileDropdown';
 import NotificationBell from './NotificationBell';
+import BotSmithLogo from './BotSmithLogo';
 
 const ResponsiveNav = ({ user, onLogout }) => {
   const navigate = useNavigate();
