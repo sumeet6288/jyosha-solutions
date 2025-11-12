@@ -1,30 +1,23 @@
 """
-COMPREHENSIVE BRANDING IMAGE UPLOAD TESTING
+COMPREHENSIVE ADMIN USER MANAGEMENT STATISTICS COLUMN TESTING
 
-Test the new image upload functionality for branding (logo and avatar).
+Test the Admin User Management Statistics Column functionality.
 
 ENDPOINTS TO TEST:
-1. POST /api/chatbots/{chatbot_id}/upload-branding-image?image_type=logo
-2. POST /api/chatbots/{chatbot_id}/upload-branding-image?image_type=avatar
+1. GET /api/admin/users/enhanced
 
 TEST REQUIREMENTS:
 1. Authentication: Must include valid JWT token (use admin@botsmith.com / admin123 to login first)
-2. Test chatbot ID: 04569e1c-2d32-44f9-94aa-099822616d6a (user_id: admin-001)
-3. Create a small test image file (PNG or JPEG) programmatically for testing
-4. Test uploading logo image
-5. Test uploading avatar image
-6. Verify database updates (logo_url and avatar_url fields should contain base64 data URLs)
-7. Test file validation (wrong file type, file too large)
-8. Test without authentication (should fail with 401)
-9. Verify images are saved to /app/backend/uploads/branding/
+2. Test the statistics data structure in the API response
+3. Verify statistics accuracy by creating test data
+4. Test with multiple users to ensure statistics are correctly attributed
+5. Test users with no chatbots show 0 for all statistics
 
 EXPECTED RESULTS:
-- Successful uploads return {success: true, message: "...", url: "data:image/...", filename: "..."}
-- Database fields logo_url and avatar_url should be updated with base64 data URLs
-- Files should be saved to disk at /app/backend/uploads/branding/
-- Invalid file types should return 400 error
-- Files > 5MB should return 413 error
-- Unauthenticated requests should return 401 error
+- API should return users array with statistics object for each user
+- Statistics should include: chatbots_count, messages_count, conversations_count, sources_count
+- Statistics counts should match actual database records
+- All count fields should be present and numeric
 """
 import requests
 import json
