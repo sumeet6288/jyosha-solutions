@@ -4,6 +4,7 @@ import { Button } from '../components/ui/button';
 import { MessageSquare, Zap, BarChart3, Globe, Shield, Sparkles, ChevronRight, Menu, X, Star, ArrowRight, Check, Upload, Brain, Palette, Rocket, ShoppingCart, GraduationCap, Heart, Briefcase, Users, TrendingUp, Clock, Award } from 'lucide-react';
 import Footer from '../components/Footer';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import BotSmithLogo from '../components/BotSmithLogo';
 
 const LandingPage = () => {
   const navigate = useNavigate();
