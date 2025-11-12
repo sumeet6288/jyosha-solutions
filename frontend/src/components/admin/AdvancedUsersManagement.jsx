@@ -1570,6 +1570,7 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
                 </div>
               </div>
             </div>
+            )}
           </div>
         </div>
       )}
