@@ -25,14 +25,11 @@ import uuid
 import base64
 import os
 from datetime import datetime
-from io import BytesIO
-from PIL import Image
 
 # Configuration
 BACKEND_URL = "https://mern-installer-6.preview.emergentagent.com/api"
 ADMIN_EMAIL = "admin@botsmith.com"
 ADMIN_PASSWORD = "admin123"
-TEST_CHATBOT_ID = "04569e1c-2d32-44f9-94aa-099822616d6a"
 ADMIN_USER_ID = "admin-001"
 
 # Test results tracking
