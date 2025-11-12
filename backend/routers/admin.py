@@ -2109,6 +2109,12 @@ async def get_users_enhanced(
                 "messages_count": messages_count,
                 "conversations_count": conversations_count,
                 "sources_count": sources_count,
+                "statistics": {
+                    "chatbots_count": chatbots_count,
+                    "messages_count": messages_count,
+                    "conversations_count": conversations_count,
+                    "sources_count": sources_count
+                },
                 "created_at": user.get('created_at'),
                 "last_login": user.get('last_login'),
                 "login_count": user.get('login_count', 0),
