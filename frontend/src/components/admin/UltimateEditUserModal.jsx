@@ -266,6 +266,48 @@ const UltimateEditUserModal = ({ user, backendUrl, onClose, onSave }) => {
     }
   };
 
+  const handleChangePassword = async () => {
+    // Validation
+    if (!newPassword || !confirmPassword) {
+      setPasswordError('Both password fields are required');
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      setPasswordError('Password must be at least 8 characters long');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setPasswordError('Passwords do not match');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${backendUrl}/api/admin/users/${user.user_id}/reset-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ new_password: newPassword }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || 'Failed to change password');
+      }
+
+      // Success
+      alert(`✅ Password changed successfully for ${user.name}!`);
+      setNewPassword('');
+      setConfirmPassword('');
+      setPasswordError('');
+      setShowPassword(false);
+    } catch (error) {
+      setPasswordError(error.message || 'Failed to change password');
+    }
+  };
+
   const renderBasicInfo = () => (
     <div className="space-y-6">
       <div className="grid grid-cols-2 gap-4">
