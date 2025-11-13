@@ -32,7 +32,7 @@ const Analytics = () => {
       const data = response.data;
       
       // Load chatbots
-      const chatbotsResponse = await chatbotAPI.getAll();
+      const chatbotsResponse = await chatbotAPI.list();
       const chatbotsData = chatbotsResponse.data.chatbots || [];
       setChatbots(chatbotsData);
       
