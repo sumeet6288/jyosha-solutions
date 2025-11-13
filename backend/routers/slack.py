@@ -71,6 +71,28 @@ async def process_slack_message(
         
         slack_service = get_slack_service(bot_token)
         
+        # ✅ CHECK MESSAGE LIMIT BEFORE PROCESSING
+        owner_user_id = chatbot.get('user_id')
+        if owner_user_id:
+            from services.plan_service import plan_service
+            limit_check = await plan_service.check_limit(owner_user_id, "messages")
+            
+            if limit_check.get("reached"):
+                # Send limit exceeded message to user
+                limit_message = (
+                    f"⚠️ *Message Limit Reached*\n\n"
+                    f"This chatbot has used {limit_check['current']}/{limit_check['max']} messages this month.\n"
+                    f"The owner needs to upgrade their plan to continue using this bot.\n\n"
+                    f"Dashboard: {os.environ.get('FRONTEND_URL', 'https://mern-stack-deploy-1.preview.emergentagent.com')}"
+                )
+                await slack_service.send_message(
+                    channel=channel,
+                    text=limit_message,
+                    thread_ts=thread_ts
+                )
+                logger.warning(f"Message limit reached for user {owner_user_id}. Current: {limit_check['current']}, Max: {limit_check['max']}")
+                return
+        
         # Generate session ID based on channel and user
         session_id = f"slack_{channel}_{user_id}"
         
