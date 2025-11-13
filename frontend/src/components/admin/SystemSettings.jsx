@@ -1,9 +1,72 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, Save, RefreshCw, Zap, Mail, Shield, Database } from 'lucide-react';
+import { Settings, Save, RefreshCw, Zap, Mail, Shield, Database, Globe, Lock, Plug, Image, Clock, Languages, CheckCircle, XCircle } from 'lucide-react';
 import { Button } from '../ui/button';
 
 const SystemSettings = ({ backendUrl }) => {
-  const [settings, setSettings] = useState(null);
+  const [settings, setSettings] = useState({
+    // Existing settings
+    maintenance_mode: false,
+    allow_registrations: true,
+    default_plan: 'Free',
+    max_chatbots_per_user: 1,
+    email_notifications: true,
+    auto_moderation: false,
+    ai_providers: {
+      openai: { enabled: true, rate_limit: 100 },
+      anthropic: { enabled: true, rate_limit: 100 },
+      google: { enabled: true, rate_limit: 100 }
+    },
+    // Platform Settings
+    platform: {
+      site_name: 'BotSmith',
+      site_logo_url: '',
+      timezone: 'UTC',
+      default_language: 'en',
+      support_email: 'support@botsmith.com',
+      admin_email: 'admin@botsmith.com'
+    },
+    // Authentication Settings
+    authentication: {
+      require_email_verification: true,
+      enable_oauth: true,
+      oauth_providers: {
+        google: { enabled: false, client_id: '', client_secret: '' },
+        github: { enabled: false, client_id: '', client_secret: '' },
+        microsoft: { enabled: false, client_id: '', client_secret: '' }
+      },
+      password_policy: {
+        min_length: 8,
+        require_uppercase: true,
+        require_lowercase: true,
+        require_numbers: true,
+        require_special_chars: true,
+        password_expiry_days: 90
+      },
+      two_factor_auth: {
+        enforce_for_admins: true,
+        enforce_for_all_users: false,
+        allowed_methods: ['app', 'sms', 'email']
+      },
+      session_settings: {
+        session_timeout_minutes: 1440,
+        max_concurrent_sessions: 3,
+        remember_me_duration_days: 30
+      }
+    },
+    // Integrations Management
+    integrations: {
+      slack: { enabled: true, max_per_chatbot: 5 },
+      telegram: { enabled: true, max_per_chatbot: 5 },
+      discord: { enabled: true, max_per_chatbot: 5 },
+      whatsapp: { enabled: true, max_per_chatbot: 3 },
+      messenger: { enabled: false, max_per_chatbot: 3 },
+      instagram: { enabled: false, max_per_chatbot: 3 },
+      twilio: { enabled: true, max_per_chatbot: 5 },
+      teams: { enabled: false, max_per_chatbot: 3 },
+      webchat: { enabled: true, max_per_chatbot: 10 },
+      api: { enabled: true, max_per_chatbot: 10 }
+    }
+  });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -16,7 +79,21 @@ const SystemSettings = ({ backendUrl }) => {
       setLoading(true);
       const response = await fetch(`${backendUrl}/api/admin/settings`);
       const data = await response.json();
-      setSettings(data);
+      // Merge fetched data with default structure
+      setSettings(prevSettings => ({
+        ...prevSettings,
+        ...data,
+        platform: { ...prevSettings.platform, ...(data.platform || {}) },
+        authentication: { 
+          ...prevSettings.authentication, 
+          ...(data.authentication || {}),
+          oauth_providers: { ...prevSettings.authentication.oauth_providers, ...(data.authentication?.oauth_providers || {}) },
+          password_policy: { ...prevSettings.authentication.password_policy, ...(data.authentication?.password_policy || {}) },
+          two_factor_auth: { ...prevSettings.authentication.two_factor_auth, ...(data.authentication?.two_factor_auth || {}) },
+          session_settings: { ...prevSettings.authentication.session_settings, ...(data.authentication?.session_settings || {}) }
+        },
+        integrations: { ...prevSettings.integrations, ...(data.integrations || {}) }
+      }));
     } catch (error) {
       console.error('Error fetching settings:', error);
     } finally {
@@ -34,11 +111,11 @@ const SystemSettings = ({ backendUrl }) => {
       });
       const data = await response.json();
       if (data.success) {
-        alert('Settings saved successfully');
+        alert('✅ Settings saved successfully!');
       }
     } catch (error) {
       console.error('Error saving settings:', error);
-      alert('Failed to save settings');
+      alert('❌ Failed to save settings');
     } finally {
       setSaving(false);
     }
