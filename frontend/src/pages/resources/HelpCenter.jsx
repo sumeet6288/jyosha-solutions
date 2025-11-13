@@ -13,7 +13,7 @@ const HelpCenter = () => {
       category: 'Getting Started',
       questions: [
         { q: 'How do I create my first chatbot?', a: 'Click "Create New" on your dashboard. A chatbot is automatically created. Then customize it in the Chatbot Builder by adding knowledge sources, customizing appearance, and testing it.' },
-        { q: 'What AI models are supported?', a: 'We support OpenAI (GPT-4o, GPT-4o-mini), Anthropic (Claude 3.5 Sonnet, Claude 3 Opus), and Google (Gemini 2.0 Flash, Gemini 1.5 Pro).' },
+        { q: 'What AI models are supported?', a: 'We support 3 optimized AI models: OpenAI GPT-4o Mini, Anthropic Claude 3.5 Haiku, and Google Gemini Flash Lite.' },
         { q: 'Do I need an API key?', a: 'You can use our Emergent LLM Key which works across all providers, or use your own API keys from OpenAI, Anthropic, or Google.' },
         { q: 'How long does it take to set up?', a: 'You can create and deploy your first chatbot in about 5-10 minutes following our Quick Start guide.' },
       ]
