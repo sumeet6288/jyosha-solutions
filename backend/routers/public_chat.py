@@ -85,6 +85,24 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
     if not chatbot.get("public_access", False):
         raise HTTPException(status_code=403, detail="This chatbot is not publicly accessible")
     
+    # ✅ CHECK MESSAGE LIMIT BEFORE PROCESSING
+    user_id = chatbot.get("user_id")
+    if user_id:
+        from services.plan_service import plan_service
+        limit_check = await plan_service.check_limit(user_id, "messages")
+        
+        if limit_check.get("reached"):
+            # Return error response with limit information
+            raise HTTPException(
+                status_code=429,
+                detail={
+                    "message": f"This chatbot has reached its message limit ({limit_check['current']}/{limit_check['max']} messages used this month). Please contact the chatbot owner to upgrade their plan.",
+                    "current": limit_check['current'],
+                    "max": limit_check['max'],
+                    "limit_reached": True
+                }
+            )
+    
     # Find or create conversation
     conversation = await db_instance.conversations.find_one({
         "chatbot_id": chatbot_id,
