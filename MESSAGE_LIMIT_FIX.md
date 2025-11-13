@@ -73,7 +73,9 @@ User sends message → Check limit →
 
 ## 💬 User Experience
 
-When a user exceeds their message limit, they now see:
+### Integration Users (Telegram, Slack, Discord, etc.)
+
+When a user exceeds their message limit through integrations, they now see:
 
 **Telegram/WhatsApp/Messenger/Instagram:**
 ```
