@@ -39,7 +39,7 @@ const Pricing = () => {
       popular: true,
       features: [
         '5 chatbots',
-        '10,000 messages/month',
+        '15,000 messages/month',
         'Advanced analytics',
         'Priority support',
         'Custom branding',
