@@ -40,7 +40,7 @@ class UpdateSubscriptionRequest(BaseModel):
 
 
 @router.post("/create-checkout")
-async def create_checkout(request: CreateCheckoutRequest, db = Depends(get_database)):
+async def create_checkout(request: CreateCheckoutRequest):
     """
     Create a LemonSqueezy checkout for a subscription plan.
     
@@ -48,7 +48,7 @@ async def create_checkout(request: CreateCheckoutRequest, db = Depends(get_datab
     """
     try:
         # Get plan details
-        plan = await db.plans.find_one({"name": request.plan_id.capitalize()})
+        plan = await _db.plans.find_one({"name": request.plan_id.capitalize()})
         
         if not plan:
             raise HTTPException(status_code=404, detail="Plan not found")
