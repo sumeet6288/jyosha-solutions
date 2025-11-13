@@ -65,7 +65,7 @@ const QuickStartGuide = () => {
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
-                  <span>Choose your AI provider (OpenAI GPT-4o-mini, Claude 3.5 Sonnet, or Gemini 2.0 Flash)</span>
+                  <span>Choose your AI provider (OpenAI GPT-4o Mini, Claude 3.5 Haiku, or Gemini Flash Lite)</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
