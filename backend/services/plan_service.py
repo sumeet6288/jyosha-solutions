@@ -88,7 +88,7 @@ class PlanService:
                 "description": "For large teams & high volume",
                 "limits": {
                     "max_chatbots": 25,
-                    "max_messages_per_month": 100000,
+                    "max_messages_per_month": 125000,
                     "max_file_uploads": 100,
                     "max_file_size_mb": 100,
                     "max_website_sources": 50,
