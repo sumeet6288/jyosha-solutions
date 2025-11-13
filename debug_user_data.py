@@ -5,7 +5,7 @@ import requests
 import json
 
 # Configuration
-BACKEND_URL = "https://mongo-app-preview.preview.emergentagent.com/api"
+BACKEND_URL = "https://pricing-flow-fix.preview.emergentagent.com/api"
 ADMIN_EMAIL = "admin@botsmith.com"
 ADMIN_PASSWORD = "admin123"
 
