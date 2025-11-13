@@ -212,7 +212,14 @@ const Pricing = () => {
                               price: plan.price,
                               period: plan.period
                             }));
-                            navigate('/dashboard');
+                            
+                            // If user is authenticated, go to subscription page
+                            // If not authenticated, redirect to signup
+                            if (user) {
+                              navigate('/subscription');
+                            } else {
+                              navigate('/signup');
+                            }
                           }
                         }}
                       >
