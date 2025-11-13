@@ -352,14 +352,14 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Provider Distribution Pie Chart */}
-                {providerDistribution.length > 0 && (
-                  <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="p-2 bg-gradient-to-br from-green-500 to-green-600 rounded-lg">
-                        <Bot className="w-5 h-5 text-white" />
-                      </div>
-                      <h3 className="text-xl font-bold text-gray-900">AI Provider Usage</h3>
+                <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-gradient-to-br from-green-500 to-green-600 rounded-lg">
+                      <Bot className="w-5 h-5 text-white" />
                     </div>
+                    <h3 className="text-xl font-bold text-gray-900">AI Provider Usage</h3>
+                  </div>
+                  {providerDistribution && providerDistribution.length > 0 && providerDistribution[0].name !== 'No providers yet' ? (
                     <ResponsiveContainer width="100%" height={300}>
                       <PieChart>
                         <Pie
@@ -388,8 +388,18 @@ const AdminDashboard = () => {
                         <Legend />
                       </PieChart>
                     </ResponsiveContainer>
-                  </div>
-                )}
+                  ) : (
+                    <div className="h-[300px] flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="text-gray-400 mb-2">
+                          <Bot className="w-16 h-16 mx-auto opacity-50" />
+                        </div>
+                        <p className="text-gray-500 font-medium">No AI provider data yet</p>
+                        <p className="text-sm text-gray-400 mt-1">Data will appear once chatbots are created with AI providers</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
 
                 {/* Conversations Trend Line Chart */}
                 <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
