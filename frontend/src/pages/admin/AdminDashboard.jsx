@@ -409,23 +409,35 @@ const AdminDashboard = () => {
                     </div>
                     <h3 className="text-xl font-bold text-gray-900">Conversations Trend</h3>
                   </div>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={userGrowthData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '12px' }} />
-                      <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
-                      <Tooltip 
-                        contentStyle={{ 
-                          backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-                          border: '2px solid #fed7aa',
-                          borderRadius: '12px',
-                          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-                        }} 
-                      />
-                      <Legend />
-                      <Line type="monotone" dataKey="count" stroke="#f97316" strokeWidth={3} name="Users" dot={{ fill: '#f97316', r: 4 }} />
-                    </LineChart>
-                  </ResponsiveContainer>
+                  {userGrowthData && userGrowthData.length > 0 && userGrowthData[0].date !== 'No data' ? (
+                    <ResponsiveContainer width="100%" height={300}>
+                      <LineChart data={userGrowthData}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                        <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '12px' }} />
+                        <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+                            border: '2px solid #fed7aa',
+                            borderRadius: '12px',
+                            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                          }} 
+                        />
+                        <Legend />
+                        <Line type="monotone" dataKey="count" stroke="#f97316" strokeWidth={3} name="Users" dot={{ fill: '#f97316', r: 4 }} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="h-[300px] flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="text-gray-400 mb-2">
+                          <Activity className="w-16 h-16 mx-auto opacity-50" />
+                        </div>
+                        <p className="text-gray-500 font-medium">No conversation data yet</p>
+                        <p className="text-sm text-gray-400 mt-1">Data will appear once chatbots start handling conversations</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
