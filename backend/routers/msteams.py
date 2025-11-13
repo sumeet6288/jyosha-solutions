@@ -62,6 +62,24 @@ async def process_msteams_message(
         # Create MS Teams service
         teams_service = MSTeamsService(app_id, app_password)
         
+        # ✅ CHECK MESSAGE LIMIT BEFORE PROCESSING
+        owner_user_id = chatbot.get('user_id')
+        if owner_user_id:
+            from services.plan_service import plan_service
+            limit_check = await plan_service.check_limit(owner_user_id, "messages")
+            
+            if limit_check.get("reached"):
+                # Send limit exceeded message to user
+                limit_message = (
+                    f"⚠️ **Message Limit Reached**\n\n"
+                    f"This chatbot has used {limit_check['current']}/{limit_check['max']} messages this month.\n"
+                    f"The owner needs to upgrade their plan to continue using this bot.\n\n"
+                    f"Dashboard: {os.environ.get('FRONTEND_URL', 'https://mern-stack-deploy-1.preview.emergentagent.com')}"
+                )
+                await teams_service.send_message(service_url, conversation_id, limit_message)
+                logger.warning(f"Message limit reached for user {owner_user_id}. Current: {limit_check['current']}, Max: {limit_check['max']}")
+                return
+        
         # Extract user info
         from_user = activity.get("from", {})
         user_id = from_user.get("id", "unknown")
