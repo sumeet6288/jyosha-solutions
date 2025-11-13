@@ -53,11 +53,60 @@ class UserEditData(BaseModel):
     max_text_sources: Optional[int] = None
     status: Optional[str] = None
 
+class PlatformSettings(BaseModel):
+    site_name: Optional[str] = None
+    site_logo_url: Optional[str] = None
+    timezone: Optional[str] = None
+    default_language: Optional[str] = None
+    support_email: Optional[str] = None
+    admin_email: Optional[str] = None
+
+class OAuthProvider(BaseModel):
+    enabled: Optional[bool] = None
+    client_id: Optional[str] = None
+    client_secret: Optional[str] = None
+
+class PasswordPolicy(BaseModel):
+    min_length: Optional[int] = None
+    require_uppercase: Optional[bool] = None
+    require_lowercase: Optional[bool] = None
+    require_numbers: Optional[bool] = None
+    require_special_chars: Optional[bool] = None
+    password_expiry_days: Optional[int] = None
+
+class TwoFactorAuth(BaseModel):
+    enforce_for_admins: Optional[bool] = None
+    enforce_for_all_users: Optional[bool] = None
+    allowed_methods: Optional[List[str]] = None
+
+class SessionSettings(BaseModel):
+    session_timeout_minutes: Optional[int] = None
+    max_concurrent_sessions: Optional[int] = None
+    remember_me_duration_days: Optional[int] = None
+
+class AuthenticationSettings(BaseModel):
+    require_email_verification: Optional[bool] = None
+    enable_oauth: Optional[bool] = None
+    oauth_providers: Optional[Dict[str, OAuthProvider]] = None
+    password_policy: Optional[PasswordPolicy] = None
+    two_factor_auth: Optional[TwoFactorAuth] = None
+    session_settings: Optional[SessionSettings] = None
+
+class IntegrationConfig(BaseModel):
+    enabled: Optional[bool] = None
+    max_per_chatbot: Optional[int] = None
+
 class SystemSettings(BaseModel):
     maintenance_mode: Optional[bool] = None
     allow_registrations: Optional[bool] = None
     default_plan: Optional[str] = None
     max_chatbots_per_user: Optional[int] = None
+    email_notifications: Optional[bool] = None
+    auto_moderation: Optional[bool] = None
+    ai_providers: Optional[Dict[str, Dict[str, Any]]] = None
+    platform: Optional[PlatformSettings] = None
+    authentication: Optional[AuthenticationSettings] = None
+    integrations: Optional[Dict[str, IntegrationConfig]] = None
 
 class EmailTemplate(BaseModel):
     name: str
