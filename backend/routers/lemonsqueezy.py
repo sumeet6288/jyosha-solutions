@@ -135,12 +135,12 @@ async def handle_webhook(
 
 
 @router.get("/subscription/{user_id}")
-async def get_user_subscription(user_id: str, db = Depends(get_database)):
+async def get_user_subscription(user_id: str):
     """
     Get the current subscription for a user.
     """
     try:
-        subscription = await db.lemon_squeezy_subscriptions.find_one(
+        subscription = await _db.lemon_squeezy_subscriptions.find_one(
             {"user_id": user_id, "status": {"$in": ["active", "on_trial", "past_due"]}}
         )
         
