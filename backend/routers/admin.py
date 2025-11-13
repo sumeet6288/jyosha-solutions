@@ -1597,7 +1597,8 @@ async def get_provider_distribution():
 async def get_system_settings():
     """Get system settings"""
     try:
-        # Mock settings - in production, fetch from database
+        # In production, fetch from database
+        # For now, return default settings with all new features
         return {
             "maintenance_mode": False,
             "allow_registrations": True,
@@ -1605,11 +1606,58 @@ async def get_system_settings():
             "max_chatbots_per_user": 1,
             "ai_providers": {
                 "openai": {"enabled": True, "rate_limit": 100},
-                "claude": {"enabled": True, "rate_limit": 100},
+                "anthropic": {"enabled": True, "rate_limit": 100},
                 "gemini": {"enabled": True, "rate_limit": 100}
             },
             "email_notifications": True,
-            "auto_moderation": False
+            "auto_moderation": False,
+            "platform": {
+                "site_name": "BotSmith",
+                "site_logo_url": "",
+                "timezone": "UTC",
+                "default_language": "en",
+                "support_email": "support@botsmith.com",
+                "admin_email": "admin@botsmith.com"
+            },
+            "authentication": {
+                "require_email_verification": True,
+                "enable_oauth": True,
+                "oauth_providers": {
+                    "google": {"enabled": False, "client_id": "", "client_secret": ""},
+                    "github": {"enabled": False, "client_id": "", "client_secret": ""},
+                    "microsoft": {"enabled": False, "client_id": "", "client_secret": ""}
+                },
+                "password_policy": {
+                    "min_length": 8,
+                    "require_uppercase": True,
+                    "require_lowercase": True,
+                    "require_numbers": True,
+                    "require_special_chars": True,
+                    "password_expiry_days": 90
+                },
+                "two_factor_auth": {
+                    "enforce_for_admins": True,
+                    "enforce_for_all_users": False,
+                    "allowed_methods": ["app", "sms", "email"]
+                },
+                "session_settings": {
+                    "session_timeout_minutes": 1440,
+                    "max_concurrent_sessions": 3,
+                    "remember_me_duration_days": 30
+                }
+            },
+            "integrations": {
+                "slack": {"enabled": True, "max_per_chatbot": 5},
+                "telegram": {"enabled": True, "max_per_chatbot": 5},
+                "discord": {"enabled": True, "max_per_chatbot": 5},
+                "whatsapp": {"enabled": True, "max_per_chatbot": 3},
+                "messenger": {"enabled": False, "max_per_chatbot": 3},
+                "instagram": {"enabled": False, "max_per_chatbot": 3},
+                "twilio": {"enabled": True, "max_per_chatbot": 5},
+                "teams": {"enabled": False, "max_per_chatbot": 3},
+                "webchat": {"enabled": True, "max_per_chatbot": 10},
+                "api": {"enabled": True, "max_per_chatbot": 10}
+            }
         }
     except Exception as e:
         print(f"Error in get_system_settings: {str(e)}")
