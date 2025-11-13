@@ -168,7 +168,7 @@ await db.subscriptions.update_one(
 
 ## 🔧 Technical Details
 
-### Limit Check Implementation:
+### Limit Check Implementation (Integrations):
 ```python
 # Check message limit before processing
 owner_user_id = chatbot.get('user_id')
@@ -182,6 +182,44 @@ if owner_user_id:
         await integration_service.send_message(user_id, limit_message)
         logger.warning(f"Limit reached for user {owner_user_id}")
         return  # Stop processing
+```
+
+### Limit Check Implementation (Widget/Web Chat):
+```python
+# Check message limit before processing
+user_id = chatbot.get("user_id")
+if user_id:
+    from services.plan_service import plan_service
+    limit_check = await plan_service.check_limit(user_id, "messages")
+    
+    if limit_check.get("reached"):
+        # Return HTTP 429 error
+        raise HTTPException(
+            status_code=429,
+            detail={
+                "message": f"This chatbot has reached its message limit...",
+                "current": limit_check['current'],
+                "max": limit_check['max'],
+                "limit_reached": True
+            }
+        )
+```
+
+### Frontend Error Handling (Widget):
+```javascript
+catch (error) {
+  const isLimitError = error.response?.status === 429;
+  
+  if (isLimitError) {
+    // Show prominent warning in chat
+    setMessages(prev => [...prev, {
+      role: 'assistant',
+      content: `⚠️ ${errorDetail.message}`,
+      isError: true
+    }]);
+    toast.error('Message limit reached', { duration: 5000 });
+  }
+}
 ```
 
 ### Uses Existing Plan Service:
