@@ -69,6 +69,27 @@ async def process_telegram_message(
         
         telegram_service = get_telegram_service(bot_token)
         
+        # ✅ CHECK MESSAGE LIMIT BEFORE PROCESSING
+        user_id = chatbot.get('user_id')
+        if user_id:
+            from services.plan_service import plan_service
+            limit_check = await plan_service.check_limit(user_id, "messages")
+            
+            if limit_check.get("reached"):
+                # Send limit exceeded message to user
+                limit_message = (
+                    f"⚠️ Message limit reached!\n\n"
+                    f"You've used {limit_check['current']}/{limit_check['max']} messages this month.\n"
+                    f"Please upgrade your plan to continue using this chatbot.\n\n"
+                    f"Visit your dashboard to upgrade: {os.environ.get('FRONTEND_URL', 'https://mern-stack-deploy-1.preview.emergentagent.com')}"
+                )
+                await telegram_service.send_message(
+                    chat_id=chat_id,
+                    text=limit_message
+                )
+                logger.warning(f"Message limit reached for user {user_id}. Current: {limit_check['current']}, Max: {limit_check['max']}")
+                return
+        
         # Send typing indicator
         await telegram_service.send_chat_action(chat_id, "typing")
         
