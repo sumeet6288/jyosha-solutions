@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/button';
-import { Users, Bot, BarChart3, Database, LogOut, FileText, AlertTriangle, Shield } from 'lucide-react';
+import { Users, Bot, BarChart3, Database, LogOut, FileText, AlertTriangle, Shield, TrendingUp, MessageSquare, Activity } from 'lucide-react';
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import UsersManagement from '../../components/admin/UsersManagement';
 import EnhancedUsersManagement from '../../components/admin/EnhancedUsersManagement';
