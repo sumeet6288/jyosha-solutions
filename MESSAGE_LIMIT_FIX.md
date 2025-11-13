@@ -46,6 +46,16 @@ Added message limit checking **BEFORE** processing any messages from integration
 - Added limit check in `process_instagram_message()` function
 - Sends formatted limit exceeded message to Instagram users
 
+### 8. `/app/backend/routers/public_chat.py` ⭐ NEW
+- Added limit check in `public_chat()` endpoint for widget/web chat
+- Returns HTTP 429 error with detailed limit information
+- Prevents widget users from sending messages when limit is reached
+
+### 9. `/app/frontend/src/pages/PublicChat.jsx` ⭐ NEW
+- Enhanced error handling to detect 429 (limit exceeded) errors
+- Shows prominent warning message in chat widget
+- Displays user-friendly error message with upgrade prompt
+
 ## 🔍 How It Works
 
 ### Before (Bug):
