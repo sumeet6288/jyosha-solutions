@@ -9,7 +9,15 @@ from utils.signature_verification import verify_lemon_squeezy_signature
 from database import get_database
 
 logger = logging.getLogger(__name__)
-router = APIRouter(prefix="/api/lemonsqueezy", tags=["lemonsqueezy"])
+router = APIRouter(tags=["lemonsqueezy"])
+
+# Database instance
+_db = None
+
+def init_router(db):
+    """Initialize router with database instance."""
+    global _db
+    _db = db
 
 
 class CreateCheckoutRequest(BaseModel):
