@@ -345,7 +345,7 @@ async def setup_messenger_webhook(
             raise HTTPException(status_code=404, detail="Messenger integration not found. Please configure Messenger first.")
         
         # Generate webhook URL
-        backend_url = os.environ.get('BACKEND_URL', 'https://fullstack-setup-11.preview.emergentagent.com')
+        backend_url = os.environ.get('BACKEND_URL', 'https://mern-deploy-flow-1.preview.emergentagent.com')
         webhook_url = f"{backend_url}/api/messenger/webhook/{chatbot_id}"
         verify_token = integration.get("metadata", {}).get("verify_token", "botsmith_messenger_verify")
         
