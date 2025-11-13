@@ -202,8 +202,7 @@ async def cancel_subscription(
 
 @router.post("/subscription/update")
 async def update_subscription(
-    request: UpdateSubscriptionRequest,
-    db = Depends(get_database)
+    request: UpdateSubscriptionRequest
 ):
     """
     Update a subscription (upgrade/downgrade or pause/resume).
@@ -214,7 +213,7 @@ async def update_subscription(
         # Get new variant ID if upgrading/downgrading
         new_variant_id = None
         if request.new_plan_id:
-            plan = await db.plans.find_one({"name": request.new_plan_id.capitalize()})
+            plan = await _db.plans.find_one({"name": request.new_plan_id.capitalize()})
             if not plan:
                 raise HTTPException(status_code=404, detail="Plan not found")
             
