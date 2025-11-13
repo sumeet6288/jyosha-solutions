@@ -240,10 +240,22 @@ The fix is **live and active** immediately for all integrations.
 - Each integration has slightly different message formatting (plain text, Markdown, or bold syntax)
 - The dashboard URL is configurable via `FRONTEND_URL` environment variable
 - Logging includes current vs max message counts for debugging
-- The fix doesn't affect web chat (which already had limit checking)
+- Widget returns HTTP 429 status code for proper error handling
+- Frontend widget shows in-chat error message with warning icon (⚠️)
+- All 8 channels (7 integrations + widget) now enforce limits consistently
+
+## 🆕 Updated Features
+
+### Widget-Specific Features:
+1. **HTTP 429 Status Code** - Standard "Too Many Requests" response
+2. **Detailed Error Object** - Includes current/max counts and limit_reached flag
+3. **In-Chat Warning** - Error message appears in chat conversation
+4. **Toast Notification** - 5-second toast alert for immediate feedback
+5. **User-Friendly Message** - Clear explanation with contact owner prompt
 
 ---
 
 **Fix applied:** 2025-11-13
-**Issue:** Integration messages bypassing plan limits
-**Status:** ✅ RESOLVED
+**Issue:** Integration AND widget messages bypassing plan limits
+**Updated:** Added widget/web chat limit enforcement
+**Status:** ✅ FULLY RESOLVED
