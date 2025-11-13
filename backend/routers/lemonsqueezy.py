@@ -6,7 +6,6 @@ import logging
 from services.lemonsqueezy_service import LemonSqueezyService
 from services.webhook_processor import WebhookProcessor
 from utils.signature_verification import verify_lemon_squeezy_signature
-from database import get_database
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["lemonsqueezy"])
