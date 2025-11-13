@@ -107,6 +107,33 @@ The owner needs to upgrade their plan to continue using this bot.
 Dashboard: https://mern-stack-deploy-1.preview.emergentagent.com
 ```
 
+### Widget/Web Chat Users
+
+When a user tries to chat via widget after limit is exceeded:
+
+**In Chat Widget:**
+```
+⚠️ This chatbot has reached its message limit (118/100 messages used this month). 
+Please contact the chatbot owner to upgrade their plan.
+```
+
+**Toast Notification:**
+```
+❌ Message limit reached
+```
+
+**Error Response (HTTP 429):**
+```json
+{
+  "detail": {
+    "message": "This chatbot has reached its message limit (118/100 messages used this month). Please contact the chatbot owner to upgrade their plan.",
+    "current": 118,
+    "max": 100,
+    "limit_reached": true
+  }
+}
+```
+
 ## 🧪 Testing
 
 To test this fix:
