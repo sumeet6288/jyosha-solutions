@@ -73,6 +73,33 @@ async def process_discord_message(
         
         discord_service = get_discord_service(bot_token)
         
+        # Get chatbot to check user limits
+        chatbot = await db.chatbots.find_one({"id": chatbot_id})
+        if not chatbot:
+            logger.error(f"Chatbot not found: {chatbot_id}")
+            return
+        
+        # ✅ CHECK MESSAGE LIMIT BEFORE PROCESSING
+        owner_user_id = chatbot.get('user_id')
+        if owner_user_id:
+            from services.plan_service import plan_service
+            limit_check = await plan_service.check_limit(owner_user_id, "messages")
+            
+            if limit_check.get("reached"):
+                # Send limit exceeded message to user
+                limit_message = (
+                    f"⚠️ **Message Limit Reached**\n\n"
+                    f"This chatbot has used {limit_check['current']}/{limit_check['max']} messages this month.\n"
+                    f"The owner needs to upgrade their plan to continue using this bot.\n\n"
+                    f"Dashboard: {os.environ.get('FRONTEND_URL', 'https://mern-stack-deploy-1.preview.emergentagent.com')}"
+                )
+                await discord_service.send_message(
+                    channel_id=channel_id,
+                    content=limit_message
+                )
+                logger.warning(f"Message limit reached for user {owner_user_id}. Current: {limit_check['current']}, Max: {limit_check['max']}")
+                return
+        
         # Create session ID based on channel and user
         session_id = f"discord_{channel_id}_{user_id}"
         
