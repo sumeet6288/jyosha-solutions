@@ -180,8 +180,7 @@ async def get_user_subscription(user_id: str):
 
 @router.post("/subscription/cancel")
 async def cancel_subscription(
-    request: SubscriptionActionRequest,
-    db = Depends(get_database)
+    request: SubscriptionActionRequest
 ):
     """
     Cancel a subscription.
