@@ -19,7 +19,7 @@ This checks if dependencies are already installed and only installs if needed.
 
 ## ✨ Features
 
-- Multi-Provider AI (GPT-4o-mini, Claude 3.5 Sonnet, Gemini 2.0 Flash)
+- Multi-Provider AI (GPT-4o Mini, Claude 3.5 Haiku, Gemini Flash Lite)
 - File Uploads (PDF, DOCX, TXT, XLSX, CSV)
 - Website Scraping
 - RAG System with MongoDB (Text-based, no ChromaDB)
