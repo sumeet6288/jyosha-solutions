@@ -94,18 +94,18 @@ const YourFirstChatbot = () => {
                   
                   <div className="grid md:grid-cols-3 gap-3">
                     <div className="p-3 bg-green-50 border-2 border-green-200 rounded-lg">
-                      <p className="font-bold text-green-900 mb-1">OpenAI GPT-4o-mini</p>
+                      <p className="font-bold text-green-900 mb-1">OpenAI GPT-4o Mini</p>
                       <p className="text-xs text-gray-600 mb-2">Fast, reliable, and excellent for most use cases</p>
                       <span className="text-xs bg-green-200 text-green-800 px-2 py-1 rounded-full">Recommended</span>
                     </div>
                     <div className="p-3 bg-purple-50 border-2 border-purple-200 rounded-lg">
-                      <p className="font-bold text-purple-900 mb-1">Claude 3.5 Sonnet</p>
-                      <p className="text-xs text-gray-600 mb-2">Advanced reasoning for complex queries</p>
-                      <span className="text-xs bg-purple-200 text-purple-800 px-2 py-1 rounded-full">Advanced</span>
+                      <p className="font-bold text-purple-900 mb-1">Claude 3.5 Haiku</p>
+                      <p className="text-xs text-gray-600 mb-2">Efficient and cost-effective responses</p>
+                      <span className="text-xs bg-purple-200 text-purple-800 px-2 py-1 rounded-full">Efficient</span>
                     </div>
                     <div className="p-3 bg-blue-50 border-2 border-blue-200 rounded-lg">
-                      <p className="font-bold text-blue-900 mb-1">Gemini 2.0 Flash</p>
-                      <p className="text-xs text-gray-600 mb-2">Lightning fast for simple interactions</p>
+                      <p className="font-bold text-blue-900 mb-1">Gemini Flash Lite</p>
+                      <p className="text-xs text-gray-600 mb-2">Ultra-fast for simple interactions</p>
                       <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full">Fastest</span>
                     </div>
                   </div>
