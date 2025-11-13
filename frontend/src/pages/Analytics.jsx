@@ -167,8 +167,27 @@ const Analytics = () => {
           <p className="text-gray-600">Track your chatbot performance and user engagement</p>
         </div>
 
+        {/* Time Range Selector */}
+        <div className="flex justify-end mb-6 animate-fade-in">
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-1 border-2 border-purple-200/50 shadow-lg">
+            {['7', '30', '90'].map((days) => (
+              <button
+                key={days}
+                onClick={() => setTimeRange(days)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                  timeRange === days
+                    ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                    : 'text-gray-600 hover:text-purple-600'
+                }`}
+              >
+                {days} Days
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Key Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="group bg-white/80 backdrop-blur-sm p-6 rounded-2xl border-2 border-purple-200/50 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 transform hover:-translate-y-2 animate-fade-in-up overflow-hidden relative">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-pink-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
             <div className="relative z-10">
@@ -184,10 +203,10 @@ const Analytics = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-cyan-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
             <div className="relative z-10">
               <div className="p-3 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl shadow-lg shadow-blue-500/30 mb-3 inline-block transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                <Users className="w-6 h-6 text-white" />
+                <Activity className="w-6 h-6 text-white" />
               </div>
-              <p className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">{analytics?.activeChats || 0}</p>
-              <p className="text-gray-600 text-sm mt-2 font-medium">Active Users</p>
+              <p className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">{analytics?.totalMessages?.toLocaleString() || 0}</p>
+              <p className="text-gray-600 text-sm mt-2 font-medium">Total Messages</p>
             </div>
           </div>
           
@@ -195,10 +214,10 @@ const Analytics = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-green-600 to-emerald-600 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
             <div className="relative z-10">
               <div className="p-3 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl shadow-lg shadow-green-500/30 mb-3 inline-block transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                <TrendingUp className="w-6 h-6 text-white" />
+                <Bot className="w-6 h-6 text-white" />
               </div>
-              <p className="text-4xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">{analytics?.satisfaction || 0}%</p>
-              <p className="text-gray-600 text-sm mt-2 font-medium">Satisfaction Rate</p>
+              <p className="text-4xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">{analytics?.activeChats || 0} / {analytics?.totalChatbots || 0}</p>
+              <p className="text-gray-600 text-sm mt-2 font-medium">Active Chatbots</p>
             </div>
           </div>
           
