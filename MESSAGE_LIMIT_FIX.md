@@ -158,11 +158,13 @@ await db.subscriptions.update_one(
 
 ## 📊 Benefits
 
-1. ✅ **Proper limit enforcement** - Users can't exceed their plan limits
+1. ✅ **Proper limit enforcement** - Users can't exceed their plan limits across ALL channels
 2. ✅ **Clear communication** - Users know why the bot stopped responding
 3. ✅ **Revenue protection** - Prevents unlimited usage on limited plans
 4. ✅ **Upgrade prompts** - Directs users to upgrade their plan
-5. ✅ **All integrations covered** - Works across all 7 integration types
+5. ✅ **All channels covered** - Works across 7 integrations + widget/web chat (8 total)
+6. ✅ **Consistent experience** - Same limit checking across all communication channels
+7. ✅ **User-friendly errors** - Widget shows in-chat warnings instead of generic errors
 
 ## 🔧 Technical Details
 
