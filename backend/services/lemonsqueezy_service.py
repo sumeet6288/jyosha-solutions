@@ -42,15 +42,24 @@ class LemonSqueezyService:
             Checkout object with URL
         """
         
+        # Build attributes with only non-None values
+        attributes = {}
+        
+        if custom_price is not None:
+            attributes["custom_price"] = custom_price
+        
+        if redirect_url:
+            attributes["product_options"] = {
+                "redirect_url": redirect_url
+            }
+        
+        if checkout_data:
+            attributes["checkout_data"] = checkout_data
+        
         payload = {
             "data": {
                 "type": "checkouts",
-                "attributes": {
-                    "custom_price": custom_price,
-                    "product_options": {
-                        "redirect_url": redirect_url or f"{os.environ.get('REACT_APP_BACKEND_URL', '')}/dashboard"
-                    }
-                },
+                "attributes": attributes,
                 "relationships": {
                     "store": {
                         "data": {
@@ -67,10 +76,6 @@ class LemonSqueezyService:
                 }
             }
         }
-        
-        # Add checkout data if provided
-        if checkout_data:
-            payload["data"]["attributes"]["checkout_data"] = checkout_data
         
         try:
             async with httpx.AsyncClient(timeout=30.0) as client:
