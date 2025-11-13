@@ -38,6 +38,11 @@ const AdminDashboard = () => {
   const [sources, setSources] = useState([]);
   const [flaggedContent, setFlaggedContent] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [timeRange, setTimeRange] = useState('30');
+  const [userGrowthData, setUserGrowthData] = useState([]);
+  const [messageVolumeData, setMessageVolumeData] = useState([]);
+  const [providerDistribution, setProviderDistribution] = useState([]);
+  const [analyticsData, setAnalyticsData] = useState(null);
   const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
 
   useEffect(() => {
