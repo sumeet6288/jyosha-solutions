@@ -145,12 +145,6 @@ async def process_discord_message(
         }
         await db.messages.insert_one(user_message)
         
-        # Get chatbot configuration
-        chatbot = await db.chatbots.find_one({"id": chatbot_id})
-        if not chatbot:
-            logger.error(f"Chatbot not found: {chatbot_id}")
-            return
-        
         # Get knowledge base context
         context = ""
         try:
