@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { TrendingUp, MessageSquare, Users, Clock, BarChart3, CreditCard } from 'lucide-react';
+import { TrendingUp, MessageSquare, Users, Clock, BarChart3, Bot, Activity, Calendar } from 'lucide-react';
 import UserProfileDropdown from '../components/UserProfileDropdown';
 import ResponsiveNav from '../components/ResponsiveNav';
 import { useAuth } from '../contexts/AuthContext';
 import { AnalyticsSkeleton } from '../components/LoadingSkeleton';
 import Footer from '../components/Footer';
 import toast from 'react-hot-toast';
-import { analyticsAPI } from '../utils/api';
+import { analyticsAPI, chatbotAPI } from '../utils/api';
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const Analytics = () => {
   const navigate = useNavigate();
