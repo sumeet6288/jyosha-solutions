@@ -118,15 +118,42 @@ const PublicChat = () => {
       console.error('Error sending message:', error);
       console.error('Error details:', error.response?.data || error.message);
       
-      // Add error message to chat
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: 'Sorry, I encountered an error. Please try again.',
-        timestamp: new Date(),
-        isError: true
-      }]);
+      // Check if it's a message limit error (429 status)
+      const isLimitError = error.response?.status === 429;
+      const errorDetail = error.response?.data?.detail;
       
-      toast.error(error.response?.data?.detail || 'Failed to send message');
+      let errorMessage = 'Sorry, I encountered an error. Please try again.';
+      
+      if (isLimitError) {
+        // Handle limit exceeded error specially
+        if (typeof errorDetail === 'object' && errorDetail.message) {
+          errorMessage = errorDetail.message;
+        } else if (typeof errorDetail === 'string') {
+          errorMessage = errorDetail;
+        } else {
+          errorMessage = 'This chatbot has reached its message limit. Please contact the owner to upgrade their plan.';
+        }
+        
+        // Add prominent error message to chat
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: `⚠️ ${errorMessage}`,
+          timestamp: new Date(),
+          isError: true
+        }]);
+        
+        toast.error('Message limit reached', { duration: 5000 });
+      } else {
+        // Regular error handling
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: errorMessage,
+          timestamp: new Date(),
+          isError: true
+        }]);
+        
+        toast.error(typeof errorDetail === 'string' ? errorDetail : 'Failed to send message');
+      }
     } finally {
       setSending(false);
     }
