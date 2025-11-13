@@ -12,7 +12,7 @@ export const AI_PROVIDERS = {
       { value: 'claude-3-5-haiku-20241022', label: 'Claude 3.5 Haiku' },
     ]
   },
-  gemini: {
+  google: {
     name: 'Google (Gemini)',
     models: [
       { value: 'gemini-2.0-flash-lite', label: 'Gemini Flash Lite' },
