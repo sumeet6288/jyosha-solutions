@@ -56,7 +56,53 @@ const AdminDashboard = () => {
     fetchAdminStats();
     fetchSources();
     fetchFlaggedContent();
-  }, [navigate]);
+    fetchAnalyticsData();
+  }, [navigate, timeRange]);
+
+  const fetchAnalyticsData = async () => {
+    try {
+      // Fetch user growth
+      const userGrowthRes = await fetch(`${backendUrl}/api/admin/analytics/users/growth?days=${timeRange}`);
+      const userGrowthJson = await userGrowthRes.json();
+      
+      // Fetch message volume
+      const messageVolumeRes = await fetch(`${backendUrl}/api/admin/analytics/messages/volume?days=${timeRange}`);
+      const messageVolumeJson = await messageVolumeRes.json();
+      
+      // Fetch provider distribution
+      const providerRes = await fetch(`${backendUrl}/api/admin/analytics/providers/distribution`);
+      const providerJson = await providerRes.json();
+      
+      // Fetch general analytics
+      const analyticsRes = await fetch(`${backendUrl}/api/admin/analytics`);
+      const analyticsJson = await analyticsRes.json();
+      
+      // Process user growth data
+      const formattedUserGrowth = (userGrowthJson.growth || []).map(item => ({
+        date: new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        count: item.count || 0
+      }));
+      
+      // Process message volume data
+      const formattedMessageVolume = (messageVolumeJson.volume || []).map(item => ({
+        date: new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        count: item.count || 0
+      }));
+      
+      // Process provider distribution
+      const formattedProviders = (providerJson.providers || []).map(item => ({
+        name: item.provider || 'Unknown',
+        value: item.count || 0
+      }));
+      
+      setUserGrowthData(formattedUserGrowth);
+      setMessageVolumeData(formattedMessageVolume);
+      setProviderDistribution(formattedProviders);
+      setAnalyticsData(analyticsJson);
+    } catch (error) {
+      console.error('Error fetching analytics data:', error);
+    }
+  };
 
   const fetchAdminStats = async () => {
     try {
