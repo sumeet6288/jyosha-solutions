@@ -77,23 +77,29 @@ const AdminDashboard = () => {
       const analyticsRes = await fetch(`${backendUrl}/api/admin/analytics`);
       const analyticsJson = await analyticsRes.json();
       
-      // Process user growth data
-      const formattedUserGrowth = (userGrowthJson.growth || []).map(item => ({
-        date: new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        count: item.count || 0
-      }));
+      // Process user growth data with fallback
+      const formattedUserGrowth = (userGrowthJson.growth || []).length > 0 
+        ? (userGrowthJson.growth || []).map(item => ({
+            date: new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+            count: item.count || 0
+          }))
+        : [{ date: 'No data', count: 0 }]; // Fallback for empty data
       
-      // Process message volume data
-      const formattedMessageVolume = (messageVolumeJson.volume || []).map(item => ({
-        date: new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        count: item.count || 0
-      }));
+      // Process message volume data with fallback
+      const formattedMessageVolume = (messageVolumeJson.volume || []).length > 0
+        ? (messageVolumeJson.volume || []).map(item => ({
+            date: new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+            count: item.count || 0
+          }))
+        : [{ date: 'No data', count: 0 }]; // Fallback for empty data
       
-      // Process provider distribution
-      const formattedProviders = (providerJson.providers || []).map(item => ({
-        name: item.provider || 'Unknown',
-        value: item.count || 0
-      }));
+      // Process provider distribution with fallback
+      const formattedProviders = (providerJson.providers || []).length > 0
+        ? (providerJson.providers || []).map(item => ({
+            name: item.provider || 'Unknown',
+            value: item.count || 0
+          }))
+        : [{ name: 'No providers yet', value: 1 }]; // Fallback for empty data
       
       setUserGrowthData(formattedUserGrowth);
       setMessageVolumeData(formattedMessageVolume);
@@ -101,6 +107,10 @@ const AdminDashboard = () => {
       setAnalyticsData(analyticsJson);
     } catch (error) {
       console.error('Error fetching analytics data:', error);
+      // Set fallback data on error
+      setUserGrowthData([{ date: 'No data', count: 0 }]);
+      setMessageVolumeData([{ date: 'No data', count: 0 }]);
+      setProviderDistribution([{ name: 'No data', value: 1 }]);
     }
   };
 
