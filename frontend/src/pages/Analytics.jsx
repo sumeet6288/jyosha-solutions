@@ -233,7 +233,7 @@ const Analytics = () => {
           </div>
         </div>
 
-        {analytics && analytics.totalConversations === 0 && (
+        {analytics && analytics.totalConversations === 0 ? (
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-16 text-center shadow-xl animate-fade-in">
             <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-4 transform hover:scale-110 transition-transform duration-300">
               <BarChart3 className="w-10 h-10 text-purple-600" />
@@ -247,46 +247,175 @@ const Analytics = () => {
               Go to Dashboard
             </Button>
           </div>
-        )}
-
-        {analytics && analytics.conversationTrend && analytics.conversationTrend.length > 0 && (
+        ) : (
           <>
-            {/* Conversation Trend */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-8 mb-8 shadow-xl animate-fade-in-up">
-              <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">Conversation Trend</h2>
-              <div className="h-64 flex items-end gap-3">
-                {analytics?.conversationTrend.map((item, index) => (
-                  <div key={index} className="flex-1 flex flex-col items-center group">
-                    <div
-                      className="w-full bg-gradient-to-t from-purple-600 to-pink-600 rounded-t-xl transition-all hover:from-purple-700 hover:to-pink-700 shadow-lg hover:shadow-purple-500/50 transform hover:scale-105"
-                      style={{ height: `${(item.count / 250) * 100}%` }}
-                    ></div>
-                    <p className="text-xs text-gray-500 mt-2 font-medium group-hover:text-purple-600 transition-colors">{item.date.split('-')[2]}</p>
+            {/* Graphs Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              
+              {/* Conversation Trend - Area Chart */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-6 shadow-xl animate-fade-in-up">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg">
+                    <MessageSquare className="w-5 h-5 text-white" />
                   </div>
-                ))}
+                  <h2 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">Conversations Over Time</h2>
+                </div>
+                <ResponsiveContainer width="100%" height={300}>
+                  <AreaChart data={conversationData}>
+                    <defs>
+                      <linearGradient id="colorConv" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#9333ea" stopOpacity={0.8}/>
+                        <stop offset="95%" stopColor="#ec4899" stopOpacity={0.1}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '12px' }} />
+                    <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+                        border: '2px solid #e9d5ff',
+                        borderRadius: '12px',
+                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                      }} 
+                    />
+                    <Area type="monotone" dataKey="count" stroke="#9333ea" strokeWidth={2} fillOpacity={1} fill="url(#colorConv)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Message Volume - Bar Chart */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-blue-200/50 p-6 shadow-xl animate-fade-in-up animation-delay-300">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg">
+                    <Activity className="w-5 h-5 text-white" />
+                  </div>
+                  <h2 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-blue-600 bg-clip-text text-transparent">Message Volume</h2>
+                </div>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={messageData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '12px' }} />
+                    <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+                        border: '2px solid #dbeafe',
+                        borderRadius: '12px',
+                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                      }} 
+                    />
+                    <Bar dataKey="count" fill="url(#barGradient)" radius={[8, 8, 0, 0]} />
+                    <defs>
+                      <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#3b82f6" />
+                        <stop offset="100%" stopColor="#06b6d4" />
+                      </linearGradient>
+                    </defs>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* AI Provider Distribution - Pie Chart */}
+              {providerData.length > 0 && (
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-green-200/50 p-6 shadow-xl animate-fade-in-up animation-delay-500">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg">
+                      <Bot className="w-5 h-5 text-white" />
+                    </div>
+                    <h2 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-green-600 bg-clip-text text-transparent">AI Provider Distribution</h2>
+                  </div>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={providerData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                        outerRadius={100}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {providerData.map((entry, index) => {
+                          const colors = ['#9333ea', '#3b82f6', '#10b981', '#f59e0b', '#ef4444'];
+                          return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />;
+                        })}
+                      </Pie>
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+                          border: '2px solid #d1fae5',
+                          borderRadius: '12px',
+                          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                        }} 
+                      />
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+
+              {/* Chatbot Performance - Line Chart */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-orange-200/50 p-6 shadow-xl animate-fade-in-up animation-delay-700">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg">
+                    <TrendingUp className="w-5 h-5 text-white" />
+                  </div>
+                  <h2 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-orange-600 bg-clip-text text-transparent">Performance Metrics</h2>
+                </div>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={conversationData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '12px' }} />
+                    <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+                        border: '2px solid #fed7aa',
+                        borderRadius: '12px',
+                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                      }} 
+                    />
+                    <Legend />
+                    <Line type="monotone" dataKey="count" stroke="#f97316" strokeWidth={3} name="Conversations" dot={{ fill: '#f97316', r: 4 }} />
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
             </div>
 
-            {/* Top Topics */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-8 shadow-xl animate-fade-in-up">
-              <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">Top Discussion Topics</h2>
-              <div className="space-y-4">
-                {analytics?.topicsDiscussed.map((topic, index) => (
-                  <div key={index} className="group p-4 rounded-xl hover:bg-purple-50 transition-all duration-300">
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="font-semibold text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text transition-all">{topic.topic}</span>
-                        <span className="text-sm text-gray-500 font-medium">{topic.count} mentions</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
-                        <div
-                          className="bg-gradient-to-r from-purple-600 to-pink-600 h-2.5 rounded-full transition-all duration-1000 ease-out shadow-sm"
-                          style={{ width: `${(topic.count / 500) * 100}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+            {/* Additional Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl p-6 text-white shadow-xl animate-fade-in-up">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold">Satisfaction Rate</h3>
+                  <TrendingUp className="w-6 h-6" />
+                </div>
+                <p className="text-5xl font-bold mb-2">{analytics?.satisfaction || 0}%</p>
+                <p className="text-purple-100 text-sm">Based on user interactions</p>
+              </div>
+
+              <div className="bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl p-6 text-white shadow-xl animate-fade-in-up animation-delay-300">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold">Avg Msg/Conv</h3>
+                  <MessageSquare className="w-6 h-6" />
+                </div>
+                <p className="text-5xl font-bold mb-2">
+                  {analytics?.totalConversations > 0 
+                    ? (analytics.totalMessages / analytics.totalConversations).toFixed(1)
+                    : 0
+                  }
+                </p>
+                <p className="text-blue-100 text-sm">Messages per conversation</p>
+              </div>
+
+              <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl p-6 text-white shadow-xl animate-fade-in-up animation-delay-500">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold">Total Leads</h3>
+                  <Users className="w-6 h-6" />
+                </div>
+                <p className="text-5xl font-bold mb-2">{analytics?.totalLeads || 0}</p>
+                <p className="text-green-100 text-sm">Captured from conversations</p>
               </div>
             </div>
           </>
