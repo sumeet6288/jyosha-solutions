@@ -199,35 +199,54 @@ const AdminDashboard = () => {
           {/* Main Content */}
           {activeTab === 'overview' && (
             <>
+              {/* Time Range Selector */}
+              <div className="flex justify-end mb-6">
+                <div className="bg-white rounded-xl p-1 border border-gray-200 shadow-sm">
+                  {['7', '30', '90'].map((days) => (
+                    <button
+                      key={days}
+                      onClick={() => setTimeRange(days)}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                        timeRange === days
+                          ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md'
+                          : 'text-gray-600 hover:text-blue-600'
+                      }`}
+                    >
+                      {days} Days
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* Stats Overview - Only on Overview Tab */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
-                  <Users className="w-8 h-8 text-blue-600 mb-3" />
-                  <p className="text-3xl font-bold">
+                <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                  <Users className="w-8 h-8 text-white mb-3 opacity-90" />
+                  <p className="text-4xl font-bold text-white">
                     {loading ? '...' : stats.totalUsers.toLocaleString()}
                   </p>
-                  <p className="text-gray-600 text-sm mt-1">Total Users</p>
+                  <p className="text-blue-100 text-sm mt-1 font-medium">Total Users</p>
                 </div>
-                <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
-                  <Bot className="w-8 h-8 text-green-600 mb-3" />
-                  <p className="text-3xl font-bold">
+                <div className="bg-gradient-to-br from-green-500 to-green-600 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                  <Bot className="w-8 h-8 text-white mb-3 opacity-90" />
+                  <p className="text-4xl font-bold text-white">
                     {loading ? '...' : stats.activeChatbots.toLocaleString()}
                   </p>
-                  <p className="text-gray-600 text-sm mt-1">Active Chatbots</p>
+                  <p className="text-green-100 text-sm mt-1 font-medium">Active Chatbots</p>
                 </div>
-                <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
-                  <BarChart3 className="w-8 h-8 text-purple-600 mb-3" />
-                  <p className="text-3xl font-bold">
+                <div className="bg-gradient-to-br from-purple-500 to-purple-600 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                  <MessageSquare className="w-8 h-8 text-white mb-3 opacity-90" />
+                  <p className="text-4xl font-bold text-white">
                     {loading ? '...' : stats.totalMessages.toLocaleString()}
                   </p>
-                  <p className="text-gray-600 text-sm mt-1">Total Messages</p>
+                  <p className="text-purple-100 text-sm mt-1 font-medium">Total Messages</p>
                 </div>
-                <div className="bg-white p-6 rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
-                  <Database className="w-8 h-8 text-orange-600 mb-3" />
-                  <p className="text-3xl font-bold">
+                <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+                  <Database className="w-8 h-8 text-white mb-3 opacity-90" />
+                  <p className="text-4xl font-bold text-white">
                     {loading ? '...' : stats.activeIntegrations.toLocaleString()}
                   </p>
-                  <p className="text-gray-600 text-sm mt-1">Integrations</p>
+                  <p className="text-orange-100 text-sm mt-1 font-medium">Integrations</p>
                 </div>
               </div>
 
