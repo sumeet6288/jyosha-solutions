@@ -271,28 +271,40 @@ const AdminDashboard = () => {
                     </div>
                     <h3 className="text-xl font-bold text-gray-900">User Growth</h3>
                   </div>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <AreaChart data={userGrowthData}>
-                      <defs>
-                        <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
-                          <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.1}/>
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '12px' }} />
-                      <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
-                      <Tooltip 
-                        contentStyle={{ 
-                          backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-                          border: '2px solid #dbeafe',
-                          borderRadius: '12px',
-                          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-                        }} 
-                      />
-                      <Area type="monotone" dataKey="count" stroke="#3b82f6" strokeWidth={2} fillOpacity={1} fill="url(#colorUsers)" />
-                    </AreaChart>
-                  </ResponsiveContainer>
+                  {userGrowthData && userGrowthData.length > 0 && userGrowthData[0].date !== 'No data' ? (
+                    <ResponsiveContainer width="100%" height={300}>
+                      <AreaChart data={userGrowthData}>
+                        <defs>
+                          <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
+                            <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.1}/>
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                        <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '12px' }} />
+                        <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)', 
+                            border: '2px solid #dbeafe',
+                            borderRadius: '12px',
+                            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                          }} 
+                        />
+                        <Area type="monotone" dataKey="count" stroke="#3b82f6" strokeWidth={2} fillOpacity={1} fill="url(#colorUsers)" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="h-[300px] flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="text-gray-400 mb-2">
+                          <BarChart3 className="w-16 h-16 mx-auto opacity-50" />
+                        </div>
+                        <p className="text-gray-500 font-medium">No user growth data yet</p>
+                        <p className="text-sm text-gray-400 mt-1">Data will appear once users start signing up</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Message Volume Chart */}
