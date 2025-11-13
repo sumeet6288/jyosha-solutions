@@ -189,39 +189,45 @@ const SubscriptionNew = () => {
       return;
     }
     
+    // Handle Free plan
+    if (planId === 'free') {
+      alert('You are already on the Free plan');
+      return;
+    }
+    
     setCheckingOut(planId);
     try {
       const token = localStorage.getItem('token');
       const headers = token ? { Authorization: `Bearer ${token}` } : {};
       
-      // Use the new plan upgrade API
+      // Get user data
+      const userResponse = await axios.get(`${BACKEND_URL}/api/auth/me`, { headers });
+      const userData = userResponse.data;
+      
+      // Create LemonSqueezy checkout
       const response = await axios.post(
-        `${BACKEND_URL}/api/plans/upgrade`,
+        `${BACKEND_URL}/api/lemonsqueezy/create-checkout`,
         {
-          plan_id: planId
+          plan_id: planId,
+          user_id: userData.user_id,
+          user_email: userData.email,
+          user_name: userData.name || userData.email.split('@')[0]
         },
-        {
-          headers
-        }
+        { headers }
       );
 
-      // Show success message
-      setShowSuccess(true);
-      
-      // Refresh subscription data
-      await fetchData();
-      
-      // Hide success message after 3 seconds
-      setTimeout(() => {
-        setShowSuccess(false);
-      }, 3000);
-      
+      if (response.data.success && response.data.checkout_url) {
+        // Redirect to LemonSqueezy checkout
+        window.location.href = response.data.checkout_url;
+      } else {
+        throw new Error('Failed to create checkout');
+      }
     } catch (error) {
-      console.error('Error upgrading plan:', error);
-      alert(error.response?.data?.detail || 'Failed to upgrade plan. Please try again.');
-    } finally {
+      console.error('Error creating checkout:', error);
+      alert(error.response?.data?.detail || 'Failed to create checkout. Please try again.');
       setCheckingOut(null);
     }
+    // Don't reset checkingOut here as we're redirecting
   };
 
   if (loading) {
