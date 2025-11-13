@@ -34,7 +34,7 @@ LEMONSQUEEZY_STORE_ID = os.getenv("LEMONSQUEEZY_STORE_ID")
 LEMONSQUEEZY_SIGNING_SECRET = os.getenv("LEMONSQUEEZY_SIGNING_SECRET")
 LEMONSQUEEZY_API_BASE = "https://api.lemonsqueezy.com/v1"
 
-# Variant IDs for subscription plans (Update these with your actual Lemon Squeezy variant IDs)
+# Variant IDs for subscription plans (Updated with actual Lemon Squeezy variant IDs)
 VARIANT_IDS = {
     "starter": "1052931",  # ₹7,999/month - 5 chatbots, 15,000 messages/month
     "professional": "1052933"  # ₹24,999/month - 25 chatbots, 125,000 messages/month
