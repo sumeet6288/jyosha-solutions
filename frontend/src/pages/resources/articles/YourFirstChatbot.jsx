@@ -114,7 +114,7 @@ const YourFirstChatbot = () => {
 
               <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
                 <p className="text-sm text-blue-900">
-                  <strong>💡 First-Time Tip:</strong> Start with <strong>OpenAI GPT-4o-mini</strong> - it's the perfect 
+                  <strong>💡 First-Time Tip:</strong> Start with <strong>OpenAI GPT-4o Mini</strong> - it's the perfect 
                   balance of speed, quality, and cost. You can always change it later in Settings!
                 </p>
               </div>
