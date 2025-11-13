@@ -111,28 +111,22 @@ const BestPractices = () => {
 
   const modelRecommendations = [
     {
-      model: "GPT-4o-mini",
+      model: "GPT-4o Mini",
       useCase: "General Purpose",
       description: "Best for most use cases - fast, cost-effective, and high quality",
-      bestFor: ["Customer support", "FAQs", "General queries"]
+      bestFor: ["Customer support", "FAQs", "General queries", "Technical support"]
     },
     {
-      model: "GPT-4o",
-      useCase: "Complex Tasks",
-      description: "Most capable model for complex reasoning and detailed responses",
-      bestFor: ["Technical support", "Detailed analysis", "Complex problem-solving"]
+      model: "Claude 3.5 Haiku",
+      useCase: "Efficient & Balanced",
+      description: "Excellent balance of speed and quality with cost-effective pricing",
+      bestFor: ["Multi-turn dialogues", "Business communications", "Context-aware responses"]
     },
     {
-      model: "Claude 3.5 Sonnet",
-      useCase: "Long Conversations",
-      description: "Excellent for extended conversations with strong context retention",
-      bestFor: ["Consultative selling", "Multi-turn dialogues", "Context-heavy tasks"]
-    },
-    {
-      model: "Gemini 2.0 Flash",
+      model: "Gemini Flash Lite",
       useCase: "Speed & Efficiency",
       description: "Ultra-fast responses with good quality, perfect for high-volume",
-      bestFor: ["High-traffic sites", "Quick responses", "Simple queries"]
+      bestFor: ["High-traffic sites", "Quick responses", "Simple queries", "Real-time chat"]
     }
   ];
 
