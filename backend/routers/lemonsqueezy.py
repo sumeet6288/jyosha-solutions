@@ -99,8 +99,7 @@ async def create_checkout(request: CreateCheckoutRequest):
 @router.post("/webhook")
 async def handle_webhook(
     request: Request,
-    background_tasks: BackgroundTasks,
-    db = Depends(get_database)
+    background_tasks: BackgroundTasks
 ):
     """
     Handle incoming LemonSqueezy webhook events.
@@ -129,7 +128,7 @@ async def handle_webhook(
         raise HTTPException(status_code=400, detail=f"Invalid JSON: {str(e)}")
     
     # Process webhook in background
-    background_tasks.add_task(WebhookProcessor.process_webhook, payload, db)
+    background_tasks.add_task(WebhookProcessor.process_webhook, payload, _db)
     
     # Return 200 OK immediately
     return {"success": True}
