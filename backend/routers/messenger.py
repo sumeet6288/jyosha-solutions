@@ -172,6 +172,24 @@ async def process_messenger_message(chatbot_id: str, messaging_event: Dict[str, 
         
         messenger_service = MessengerService(page_access_token)
         
+        # ✅ CHECK MESSAGE LIMIT BEFORE PROCESSING
+        owner_user_id = chatbot.get('user_id')
+        if owner_user_id:
+            from services.plan_service import plan_service
+            limit_check = await plan_service.check_limit(owner_user_id, "messages")
+            
+            if limit_check.get("reached"):
+                # Send limit exceeded message to user
+                limit_message = (
+                    f"⚠️ Message Limit Reached\n\n"
+                    f"This chatbot has used {limit_check['current']}/{limit_check['max']} messages this month.\n"
+                    f"The owner needs to upgrade their plan to continue using this bot.\n\n"
+                    f"Dashboard: {os.environ.get('FRONTEND_URL', 'https://mern-stack-deploy-1.preview.emergentagent.com')}"
+                )
+                await messenger_service.send_message(sender_id, limit_message)
+                logger.warning(f"Message limit reached for user {owner_user_id}. Current: {limit_check['current']}, Max: {limit_check['max']}")
+                return
+        
         # Generate session ID from sender ID and chatbot
         session_id = f"messenger_{chatbot_id}_{sender_id}"
         
