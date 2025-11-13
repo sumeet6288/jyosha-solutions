@@ -24,6 +24,11 @@ def init_router(db: AsyncIOMotorDatabase):
     db_instance = db
 
 # Lemon Squeezy Configuration
+# Get these from your Lemon Squeezy Dashboard:
+# 1. API Key: Settings → API → Create API Key
+# 2. Store ID: Settings → Stores → Copy Store ID
+# 3. Signing Secret: Settings → Webhooks → Create Webhook → Copy Signing Secret
+# Add these to /app/backend/.env file
 LEMONSQUEEZY_API_KEY = os.getenv("LEMONSQUEEZY_API_KEY")
 LEMONSQUEEZY_STORE_ID = os.getenv("LEMONSQUEEZY_STORE_ID")
 LEMONSQUEEZY_SIGNING_SECRET = os.getenv("LEMONSQUEEZY_SIGNING_SECRET")
