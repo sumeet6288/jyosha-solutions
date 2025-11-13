@@ -103,7 +103,7 @@ class PlanService:
                 },
                 "features": [
                     "25 chatbots",
-                    "100,000 messages/month",
+                    "1,25,000 messages/month",
                     "Advanced analytics",
                     "24/7 priority support",
                     "Custom branding",
