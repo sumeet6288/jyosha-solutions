@@ -87,8 +87,8 @@ const ChatbotManagement = () => {
 
               <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
                 <p className="text-sm text-blue-900">
-                  <strong>💡 Pro Tip:</strong> Choose your AI provider based on your needs. GPT-4o-mini is great for general use, 
-                  Claude excels at complex queries, and Gemini is fastest for simple interactions.
+                  <strong>💡 Pro Tip:</strong> Choose your AI provider based on your needs. GPT-4o Mini is great for general use, 
+                  Claude 3.5 Haiku is efficient and cost-effective, and Gemini Flash Lite is ultra-fast for simple interactions.
                 </p>
               </div>
 
