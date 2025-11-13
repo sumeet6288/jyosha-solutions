@@ -37,7 +37,7 @@ class Plan(BaseModel):
                 "description": "For growing businesses",
                 "limits": {
                     "max_chatbots": 5,
-                    "max_messages_per_month": 10000,
+                    "max_messages_per_month": 15000,
                     "max_file_uploads": 20,
                     "max_file_size_mb": 50,
                     "max_website_sources": 10,
