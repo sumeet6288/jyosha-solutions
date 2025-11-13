@@ -81,7 +81,7 @@ class ChatService:
             "anthropic": [
                 "claude-3-5-haiku-20241022"
             ],
-            "gemini": [
+            "google": [
                 "gemini-2.0-flash-lite"
             ]
         }
