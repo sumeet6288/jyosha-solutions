@@ -364,7 +364,7 @@ async def get_subscription_status(
 
 @router.get("/plans")
 async def get_plans():
-    """Get available subscription plans"""
+    """Get available subscription plans with Lemon Squeezy integration"""
     return {
         "plans": [
             {
@@ -374,13 +374,25 @@ async def get_plans():
                 "currency": "INR",
                 "interval": "month",
                 "variant_id": VARIANT_IDS["starter"],
+                "description": "For growing businesses",
                 "features": [
-                    "3 Chatbots",
-                    "1,000 messages/month",
-                    "File uploads",
-                    "Website scraping",
-                    "Basic analytics"
-                ]
+                    "5 chatbots",
+                    "15,000 messages/month",
+                    "Advanced analytics",
+                    "Priority support",
+                    "Custom branding",
+                    "API access",
+                    "All AI models"
+                ],
+                "limits": {
+                    "max_chatbots": 5,
+                    "max_messages_per_month": 15000,
+                    "max_file_uploads": 20,
+                    "max_file_size_mb": 50,
+                    "max_website_sources": 10,
+                    "max_text_sources": 20,
+                    "max_leads": 100
+                }
             },
             {
                 "id": "professional",
@@ -389,16 +401,30 @@ async def get_plans():
                 "currency": "INR",
                 "interval": "month",
                 "variant_id": VARIANT_IDS["professional"],
+                "description": "For large teams & high volume",
                 "features": [
-                    "Unlimited chatbots",
-                    "10,000 messages/month",
-                    "Priority support",
+                    "25 chatbots",
+                    "1,25,000 messages/month",
                     "Advanced analytics",
+                    "24/7 priority support",
                     "Custom branding",
-                    "API access"
-                ]
+                    "Full API access",
+                    "All AI models",
+                    "Custom integrations",
+                    "Dedicated account manager"
+                ],
+                "limits": {
+                    "max_chatbots": 25,
+                    "max_messages_per_month": 125000,
+                    "max_file_uploads": 100,
+                    "max_file_size_mb": 100,
+                    "max_website_sources": 50,
+                    "max_text_sources": 100,
+                    "max_leads": 1000
+                }
             }
-        ]
+        ],
+        "note": "Enterprise plan with custom pricing available - contact sales"
     }
 
 
