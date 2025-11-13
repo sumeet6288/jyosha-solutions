@@ -64,18 +64,18 @@ const ChatbotManagement = () => {
                   <div className="mt-3 grid md:grid-cols-3 gap-3">
                     <div className="p-3 bg-green-50 border-2 border-green-200 rounded-lg">
                       <p className="font-bold text-green-900 text-sm">OpenAI</p>
-                      <p className="text-xs text-gray-600">GPT-4o-mini</p>
+                      <p className="text-xs text-gray-600">GPT-4o Mini</p>
                       <p className="text-xs text-gray-500">Fast & reliable</p>
                     </div>
                     <div className="p-3 bg-purple-50 border-2 border-purple-200 rounded-lg">
                       <p className="font-bold text-purple-900 text-sm">Claude</p>
-                      <p className="text-xs text-gray-600">3.5 Sonnet</p>
-                      <p className="text-xs text-gray-500">Advanced reasoning</p>
+                      <p className="text-xs text-gray-600">3.5 Haiku</p>
+                      <p className="text-xs text-gray-500">Efficient & cost-effective</p>
                     </div>
                     <div className="p-3 bg-blue-50 border-2 border-blue-200 rounded-lg">
                       <p className="font-bold text-blue-900 text-sm">Gemini</p>
-                      <p className="text-xs text-gray-600">2.0 Flash</p>
-                      <p className="text-xs text-gray-500">Lightning fast</p>
+                      <p className="text-xs text-gray-600">Flash Lite</p>
+                      <p className="text-xs text-gray-500">Ultra-fast</p>
                     </div>
                   </div>
                 </li>
