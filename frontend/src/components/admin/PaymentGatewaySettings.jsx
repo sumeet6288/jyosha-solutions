@@ -297,6 +297,20 @@ const PaymentGatewaySettings = ({ backendUrl }) => {
           </div>
         )}
 
+        {/* Test Mode Warning Banner */}
+        {settings.lemonsqueezy.test_mode && settings.lemonsqueezy.enabled && (
+          <div className="mb-6 p-4 bg-yellow-50 border-2 border-yellow-300 rounded-lg flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="font-semibold text-yellow-900 mb-1">⚠️ Test Mode Active</p>
+              <p className="text-sm text-yellow-800">
+                You are currently using <span className="font-semibold">test API keys</span>. No real payments will be processed. 
+                Make sure to switch to live mode and update your API keys before going to production.
+              </p>
+            </div>
+          </div>
+        )}
+
         <div className="space-y-6">
           {/* API Key */}
           <div className="space-y-2">
