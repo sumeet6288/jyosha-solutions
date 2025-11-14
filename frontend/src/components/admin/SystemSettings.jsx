@@ -430,38 +430,140 @@ const SystemSettings = ({ backendUrl }) => {
           Registration & Authentication
         </h3>
         
-        {/* Basic Auth Settings */}
-        <div className="space-y-4 mb-6">
-          <div className="flex items-center justify-between p-4 bg-white rounded-lg border border-rose-100">
-            <div>
-              <div className="font-semibold text-rose-900">Require Email Verification</div>
-              <div className="text-sm text-gray-600">Users must verify email before accessing features</div>
+        {/* Registration Settings */}
+        <div className="mb-6">
+          <h4 className="font-bold text-rose-900 mb-4">Registration Settings</h4>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-white rounded-lg border border-rose-100">
+              <div>
+                <div className="font-semibold text-rose-900">Allow New Registrations</div>
+                <div className="text-sm text-gray-600">Enable new users to create accounts</div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={settings?.allow_registrations !== false}
+                  onChange={(e) => setSettings({...settings, allow_registrations: e.target.checked})}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-rose-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-600"></div>
+              </label>
             </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={settings.authentication?.require_email_verification !== false}
-                onChange={(e) => setSettings({...settings, authentication: {...settings.authentication, require_email_verification: e.target.checked}})}
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-rose-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-600"></div>
-            </label>
-          </div>
 
-          <div className="flex items-center justify-between p-4 bg-white rounded-lg border border-rose-100">
-            <div>
-              <div className="font-semibold text-rose-900">Enable OAuth Login</div>
-              <div className="text-sm text-gray-600">Allow users to sign in with third-party providers</div>
+            <div className="flex items-center justify-between p-4 bg-white rounded-lg border border-rose-100">
+              <div>
+                <div className="font-semibold text-rose-900">Auto-Approve Registrations</div>
+                <div className="text-sm text-gray-600">Automatically approve new user accounts</div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={settings.authentication?.auto_approve_registrations !== false}
+                  onChange={(e) => setSettings({...settings, authentication: {...settings.authentication, auto_approve_registrations: e.target.checked}})}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-rose-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-600"></div>
+              </label>
             </div>
-            <label className="relative inline-flex items-center cursor-pointer">
+
+            <div className="p-4 bg-white rounded-lg border border-rose-100">
+              <label className="block font-semibold text-rose-900 mb-2">Allowed Email Domains</label>
+              <p className="text-xs text-gray-600 mb-3">Comma-separated list of allowed email domains (e.g., company.com, partner.com). Leave empty to allow all domains.</p>
               <input
-                type="checkbox"
-                checked={settings.authentication?.enable_oauth !== false}
-                onChange={(e) => setSettings({...settings, authentication: {...settings.authentication, enable_oauth: e.target.checked}})}
-                className="sr-only peer"
+                type="text"
+                value={settings.authentication?.allowed_email_domains || ''}
+                onChange={(e) => setSettings({...settings, authentication: {...settings.authentication, allowed_email_domains: e.target.value}})}
+                placeholder="company.com, partner.com"
+                className="w-full px-4 py-2 border-2 border-rose-200 rounded-lg focus:ring-2 focus:ring-rose-500"
               />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-rose-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-600"></div>
-            </label>
+            </div>
+
+            <div className="p-4 bg-white rounded-lg border border-rose-100">
+              <label className="block font-semibold text-rose-900 mb-2">Blocked Email Domains</label>
+              <p className="text-xs text-gray-600 mb-3">Comma-separated list of blocked email domains (e.g., tempmail.com). Users from these domains cannot register.</p>
+              <input
+                type="text"
+                value={settings.authentication?.blocked_email_domains || ''}
+                onChange={(e) => setSettings({...settings, authentication: {...settings.authentication, blocked_email_domains: e.target.value}})}
+                placeholder="tempmail.com, disposable.com"
+                className="w-full px-4 py-2 border-2 border-rose-200 rounded-lg focus:ring-2 focus:ring-rose-500"
+              />
+            </div>
+
+            <div className="p-4 bg-white rounded-lg border border-rose-100">
+              <label className="block font-semibold text-rose-900 mb-2">Registration Welcome Message</label>
+              <p className="text-xs text-gray-600 mb-3">Custom message shown to new users after successful registration</p>
+              <textarea
+                value={settings.authentication?.registration_welcome_message || 'Welcome to BotSmith! Start building amazing AI chatbots today.'}
+                onChange={(e) => setSettings({...settings, authentication: {...settings.authentication, registration_welcome_message: e.target.value}})}
+                rows={3}
+                className="w-full px-4 py-2 border-2 border-rose-200 rounded-lg focus:ring-2 focus:ring-rose-500"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Basic Auth Settings */}
+        <div className="mb-6">
+          <h4 className="font-bold text-rose-900 mb-4">Authentication Settings</h4>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-white rounded-lg border border-rose-100">
+              <div>
+                <div className="font-semibold text-rose-900">Require Email Verification</div>
+                <div className="text-sm text-gray-600">Users must verify email before accessing features</div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={settings.authentication?.require_email_verification !== false}
+                  onChange={(e) => setSettings({...settings, authentication: {...settings.authentication, require_email_verification: e.target.checked}})}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-rose-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-600"></div>
+              </label>
+            </div>
+
+            <div className="flex items-center justify-between p-4 bg-white rounded-lg border border-rose-100">
+              <div>
+                <div className="font-semibold text-rose-900">Enable OAuth Login</div>
+                <div className="text-sm text-gray-600">Allow users to sign in with third-party providers</div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={settings.authentication?.enable_oauth !== false}
+                  onChange={(e) => setSettings({...settings, authentication: {...settings.authentication, enable_oauth: e.target.checked}})}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-rose-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-600"></div>
+              </label>
+            </div>
+
+            <div className="p-4 bg-white rounded-lg border border-rose-100">
+              <label className="block font-semibold text-rose-900 mb-2">Failed Login Attempts Limit</label>
+              <p className="text-xs text-gray-600 mb-3">Number of failed login attempts before account lockout (0 = unlimited)</p>
+              <input
+                type="number"
+                min="0"
+                max="10"
+                value={settings.authentication?.failed_login_attempts_limit || 5}
+                onChange={(e) => setSettings({...settings, authentication: {...settings.authentication, failed_login_attempts_limit: parseInt(e.target.value)}})}
+                className="w-full px-4 py-2 border-2 border-rose-200 rounded-lg focus:ring-2 focus:ring-rose-500"
+              />
+            </div>
+
+            <div className="p-4 bg-white rounded-lg border border-rose-100">
+              <label className="block font-semibold text-rose-900 mb-2">Account Lockout Duration (minutes)</label>
+              <p className="text-xs text-gray-600 mb-3">How long to lock account after failed login attempts</p>
+              <input
+                type="number"
+                min="5"
+                max="1440"
+                value={settings.authentication?.account_lockout_duration_minutes || 30}
+                onChange={(e) => setSettings({...settings, authentication: {...settings.authentication, account_lockout_duration_minutes: parseInt(e.target.value)}})}
+                className="w-full px-4 py-2 border-2 border-rose-200 rounded-lg focus:ring-2 focus:ring-rose-500"
+              />
+            </div>
           </div>
         </div>
 
