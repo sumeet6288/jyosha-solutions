@@ -220,35 +220,48 @@ except Exception as e:
     log_test("Unauthenticated settings request fails", False, f"Exception: {str(e)}")
 
 # ============================================================================
-# TEST 4: Test invalid file type (should fail with 400)
+# TEST 4: Test PUT /api/admin/settings - Update registration settings
 # ============================================================================
-print("\n[TEST 4] Test invalid file type...")
+print("\n[TEST 4] Test PUT /api/admin/settings - Update registration settings...")
 try:
     headers = {"Authorization": f"Bearer {admin_token}"}
     
-    # Create a text file instead of image
-    invalid_file_content = b"This is not an image file"
-    
-    files = {
-        'file': ('test_file.txt', invalid_file_content, 'text/plain')
+    # Test data for registration settings update
+    update_data = {
+        "authentication": {
+            "auto_approve_registrations": False,
+            "allowed_email_domains": "company.com,partner.org",
+            "blocked_email_domains": "spam.com,tempmail.net",
+            "registration_welcome_message": "Welcome to our platform!",
+            "failed_login_attempts_limit": 3,
+            "account_lockout_duration_minutes": 60
+        }
     }
-    params = {'image_type': 'logo'}
     
-    response = requests.post(
-        f"{BACKEND_URL}/chatbots/{TEST_CHATBOT_ID}/upload-branding-image",
+    response = requests.put(
+        f"{BACKEND_URL}/admin/settings",
         headers=headers,
-        files=files,
-        params=params,
+        json=update_data,
         timeout=10
     )
     
-    if response.status_code == 400:
-        log_test("Invalid file type rejected", True, "Correctly returned 400 Bad Request")
+    if response.status_code == 200:
+        result = response.json()
+        
+        checks = []
+        checks.append(("Success flag", result.get("success") == True))
+        checks.append(("Has message", result.get("message") is not None))
+        checks.append(("Modified count present", "modified_count" in result))
+        
+        all_passed = all(check[1] for check in checks)
+        details = f"Success: {result.get('success')}, Message: {result.get('message')}"
+        log_test("Update registration settings", all_passed, details)
+        
     else:
-        log_test("Invalid file type rejected", False, f"Expected 400, got {response.status_code}")
+        log_test("Update registration settings", False, f"Status: {response.status_code}, Response: {response.text}")
 
 except Exception as e:
-    log_test("Invalid file type rejected", False, f"Exception: {str(e)}")
+    log_test("Update registration settings", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 5: Test file too large (should fail with 413)
