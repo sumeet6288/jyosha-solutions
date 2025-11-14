@@ -114,12 +114,12 @@ admin_token = None
 admin_user_id = None
 
 print("="*80)
-print("COMPREHENSIVE ADMIN USER MANAGEMENT STATISTICS TESTING")
+print("COMPREHENSIVE ADMIN SETTINGS - REGISTRATION & AUTHENTICATION TESTING")
 print("="*80)
 print(f"Backend URL: {BACKEND_URL}")
 print(f"Admin Email: {ADMIN_EMAIL}")
 print(f"Test Time: {datetime.now().isoformat()}")
-print("Testing Admin User Management Statistics Column functionality")
+print("Testing Registration & Authentication settings functionality in admin panel")
 print("="*80 + "\n")
 
 # ============================================================================
