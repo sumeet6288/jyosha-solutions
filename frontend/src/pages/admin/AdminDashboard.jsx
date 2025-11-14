@@ -23,6 +23,7 @@ import LifecycleManagement from '../../components/admin/LifecycleManagement';
 import ImpersonationPanel from '../../components/admin/ImpersonationPanel';
 import LeadsManagement from '../../components/admin/LeadsManagement';
 import TechManagement from '../../components/admin/TechManagement';
+import PaymentGatewaySettings from '../../components/admin/PaymentGatewaySettings';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
