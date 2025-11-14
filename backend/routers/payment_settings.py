@@ -184,6 +184,95 @@ async def test_lemonsqueezy_connection(request: TestConnectionRequest):
         )
 
 
+@router.post("/fetch-products")
+async def fetch_lemonsqueezy_products(request: TestConnectionRequest):
+    """
+    Fetch all products and variants from LemonSqueezy store
+    """
+    try:
+        if not request.api_key or not request.store_id:
+            raise HTTPException(
+                status_code=400, 
+                detail="API key and Store ID are required"
+            )
+        
+        headers = {
+            "Accept": "application/vnd.api+json",
+            "Content-Type": "application/vnd.api+json",
+            "Authorization": f"Bearer {request.api_key}"
+        }
+        
+        async with httpx.AsyncClient() as client:
+            # Fetch products
+            products_response = await client.get(
+                f"https://api.lemonsqueezy.com/v1/products?filter[store_id]={request.store_id}",
+                headers=headers,
+                timeout=15.0
+            )
+            
+            if products_response.status_code != 200:
+                raise HTTPException(
+                    status_code=products_response.status_code,
+                    detail="Failed to fetch products from LemonSqueezy"
+                )
+            
+            products_data = products_response.json()
+            products = []
+            
+            # Process each product
+            for product in products_data.get('data', []):
+                product_id = product['id']
+                product_name = product['attributes']['name']
+                
+                # Fetch variants for this product
+                variants_response = await client.get(
+                    f"https://api.lemonsqueezy.com/v1/variants?filter[product_id]={product_id}",
+                    headers=headers,
+                    timeout=15.0
+                )
+                
+                variants = []
+                if variants_response.status_code == 200:
+                    variants_data = variants_response.json()
+                    for variant in variants_data.get('data', []):
+                        variants.append({
+                            "id": variant['id'],
+                            "name": variant['attributes']['name'],
+                            "price": variant['attributes']['price'],
+                            "interval": variant['attributes'].get('interval'),
+                            "interval_count": variant['attributes'].get('interval_count')
+                        })
+                
+                products.append({
+                    "id": product_id,
+                    "name": product_name,
+                    "variants": variants
+                })
+            
+            return {
+                "success": True,
+                "products": products
+            }
+                
+    except httpx.TimeoutException:
+        raise HTTPException(
+            status_code=408,
+            detail="Request timeout. Please try again."
+        )
+    except httpx.RequestError as e:
+        logger.error(f"Network error fetching products: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Network error: {str(e)}"
+        )
+    except Exception as e:
+        logger.error(f"Error fetching products: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error: {str(e)}"
+        )
+
+
 @router.delete("")
 async def delete_payment_settings():
     """
