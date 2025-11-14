@@ -70,6 +70,11 @@ class LemonSqueezyService:
         Returns:
             Checkout object with URL
         """
+        # Load settings from database
+        await self._load_settings()
+        
+        if not self.api_key or not self.store_id:
+            raise ValueError("LemonSqueezy is not configured. Please configure it in Admin Panel > Payment Gateway Settings.")
         
         # Build attributes with only non-None values
         attributes = {}
