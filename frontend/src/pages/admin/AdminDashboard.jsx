@@ -690,6 +690,10 @@ const AdminDashboard = () => {
             <SystemSettings backendUrl={backendUrl} />
           )}
 
+          {activeTab === 'payment-gateway' && (
+            <PaymentGatewaySettings backendUrl={backendUrl} />
+          )}
+
           {activeTab === 'tech' && (
             <TechManagement backendUrl={backendUrl} />
           )}
