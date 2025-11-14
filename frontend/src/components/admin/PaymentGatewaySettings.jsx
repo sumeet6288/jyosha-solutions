@@ -212,30 +212,60 @@ const PaymentGatewaySettings = ({ backendUrl }) => {
 
       {/* LemonSqueezy Settings */}
       <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className="text-xl font-bold flex items-center gap-2">
-              <Zap className="w-6 h-6 text-yellow-500" />
-              LemonSqueezy Integration
-            </h3>
-            <p className="text-sm text-gray-600 mt-1">Manage subscription payments with LemonSqueezy</p>
+        <div className="flex flex-col gap-4 mb-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-bold flex items-center gap-2">
+                <Zap className="w-6 h-6 text-yellow-500" />
+                LemonSqueezy Integration
+              </h3>
+              <p className="text-sm text-gray-600 mt-1">Manage subscription payments with LemonSqueezy</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={settings.lemonsqueezy.enabled}
+                  onChange={(e) => setSettings({
+                    ...settings,
+                    lemonsqueezy: { ...settings.lemonsqueezy, enabled: e.target.checked }
+                  })}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600"></div>
+              </label>
+              <span className="text-sm font-medium text-gray-700">
+                {settings.lemonsqueezy.enabled ? 'Enabled' : 'Disabled'}
+              </span>
+            </div>
           </div>
-          <div className="flex items-center gap-3">
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={settings.lemonsqueezy.enabled}
-                onChange={(e) => setSettings({
-                  ...settings,
-                  lemonsqueezy: { ...settings.lemonsqueezy, enabled: e.target.checked }
-                })}
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600"></div>
-            </label>
-            <span className="text-sm font-medium text-gray-700">
-              {settings.lemonsqueezy.enabled ? 'Enabled' : 'Disabled'}
-            </span>
+
+          {/* Test Mode Toggle */}
+          <div className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-blue-600" />
+              <div>
+                <p className="text-sm font-semibold text-blue-900">Test Mode</p>
+                <p className="text-xs text-blue-700">Use test API keys for development and testing</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={settings.lemonsqueezy.test_mode}
+                  onChange={(e) => setSettings({
+                    ...settings,
+                    lemonsqueezy: { ...settings.lemonsqueezy, test_mode: e.target.checked }
+                  })}
+                  className="sr-only peer"
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-blue-600 peer-checked:to-cyan-600"></div>
+              </label>
+              <span className="text-sm font-medium text-blue-900">
+                {settings.lemonsqueezy.test_mode ? 'Test Mode' : 'Live Mode'}
+              </span>
+            </div>
           </div>
         </div>
 
