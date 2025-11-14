@@ -71,7 +71,7 @@ EMERGENT_LLM_KEY=sk-emergent-919922434748629944
 
 #### Frontend (.env)
 ```
-REACT_APP_BACKEND_URL=https://app-stack-demo.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://admin-fixes-4.preview.emergentagent.com
 WDS_SOCKET_PORT=443
 REACT_APP_ENABLE_VISUAL_EDITS=true
 ENABLE_HEALTH_CHECK=false
@@ -80,8 +80,8 @@ ENABLE_HEALTH_CHECK=false
 ## 🌐 Access URLs
 
 ### Application Access
-- **Frontend**: https://app-stack-demo.preview.emergentagent.com
-- **Backend API Docs**: https://app-stack-demo.preview.emergentagent.com/docs
+- **Frontend**: https://admin-fixes-4.preview.emergentagent.com
+- **Backend API Docs**: https://admin-fixes-4.preview.emergentagent.com/docs
 - **Local Frontend**: http://localhost:3000
 - **Local Backend**: http://localhost:8001
 
@@ -144,7 +144,7 @@ tail -f /var/log/supervisor/frontend.out.log
 
 ## 📝 Next Steps
 
-1. **Access the Application**: Open https://app-stack-demo.preview.emergentagent.com
+1. **Access the Application**: Open https://admin-fixes-4.preview.emergentagent.com
 2. **Login**: Use admin@botsmith.com / admin123
 3. **Change Password**: Go to Account Settings and update the default password
 4. **Create Your First Chatbot**: Navigate to Dashboard and click "New Chatbot"
@@ -179,4 +179,4 @@ tail -f /var/log/supervisor/frontend.out.log
 
 **Setup Date**: November 14, 2025
 **Status**: ✅ FULLY OPERATIONAL
-**Preview URL**: https://app-stack-demo.preview.emergentagent.com
+**Preview URL**: https://admin-fixes-4.preview.emergentagent.com
