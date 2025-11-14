@@ -155,41 +155,51 @@ except Exception as e:
     exit(1)
 
 # ============================================================================
-# TEST 2: Test GET /api/admin/users/enhanced endpoint basic functionality
+# TEST 2: Test GET /api/admin/settings endpoint - Fetch current system settings
 # ============================================================================
-print("\n[TEST 2] Test GET /api/admin/users/enhanced endpoint...")
+print("\n[TEST 2] Test GET /api/admin/settings endpoint...")
 try:
     headers = {"Authorization": f"Bearer {admin_token}"}
     
     response = requests.get(
-        f"{BACKEND_URL}/admin/users/enhanced",
+        f"{BACKEND_URL}/admin/settings",
         headers=headers,
         timeout=10
     )
     
     if response.status_code == 200:
-        data = response.json()
+        settings_data = response.json()
         
-        # Check response structure
+        # Check response structure for authentication settings
         checks = []
-        checks.append(("Has users array", "users" in data))
-        checks.append(("Has total count", "total" in data))
-        checks.append(("Users is list", isinstance(data.get("users", []), list)))
-        checks.append(("Total is number", isinstance(data.get("total", 0), int)))
+        checks.append(("Has authentication section", "authentication" in settings_data))
+        
+        if "authentication" in settings_data:
+            auth_settings = settings_data["authentication"]
+            checks.append(("Has auto_approve_registrations", "auto_approve_registrations" in auth_settings))
+            checks.append(("Has allowed_email_domains", "allowed_email_domains" in auth_settings))
+            checks.append(("Has blocked_email_domains", "blocked_email_domains" in auth_settings))
+            checks.append(("Has registration_welcome_message", "registration_welcome_message" in auth_settings))
+            checks.append(("Has failed_login_attempts_limit", "failed_login_attempts_limit" in auth_settings))
+            checks.append(("Has account_lockout_duration_minutes", "account_lockout_duration_minutes" in auth_settings))
+            checks.append(("Has password_policy", "password_policy" in auth_settings))
+            checks.append(("Has two_factor_auth", "two_factor_auth" in auth_settings))
+            checks.append(("Has session_settings", "session_settings" in auth_settings))
+            checks.append(("Has oauth_providers", "oauth_providers" in auth_settings))
         
         all_passed = all(check[1] for check in checks)
-        details = f"Response structure: users={len(data.get('users', []))}, total={data.get('total', 0)}"
-        log_test("Enhanced users endpoint structure", all_passed, details)
+        details = f"Authentication fields present: {sum(1 for check in checks if check[1])}/{len(checks)}"
+        log_test("GET admin settings structure", all_passed, details)
         
-        # Store initial user count for later comparison
-        global initial_user_count
-        initial_user_count = len(data.get("users", []))
+        # Store original settings for comparison
+        global original_settings
+        original_settings = settings_data
         
     else:
-        log_test("Enhanced users endpoint structure", False, f"Status: {response.status_code}, Response: {response.text}")
+        log_test("GET admin settings structure", False, f"Status: {response.status_code}, Response: {response.text}")
 
 except Exception as e:
-    log_test("Enhanced users endpoint structure", False, f"Exception: {str(e)}")
+    log_test("GET admin settings structure", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 3: Test unauthenticated request (should fail with 401)
