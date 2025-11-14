@@ -1595,11 +1595,18 @@ async def get_provider_distribution():
 # ==================== SYSTEM SETTINGS ====================
 @router.get("/settings")
 async def get_system_settings():
-    """Get system settings"""
+    """Get system settings from database"""
     try:
-        # In production, fetch from database
-        # For now, return default settings with all new features
-        return {
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        settings_collection = db_instance['system_settings']
+        
+        # Try to get settings from database
+        settings_doc = await settings_collection.find_one({"_id": "system_settings"})
+        
+        # Default settings
+        default_settings = {
             "maintenance_mode": False,
             "allow_registrations": True,
             "default_plan": "Free",
@@ -1659,22 +1666,62 @@ async def get_system_settings():
                 "api": {"enabled": True, "max_per_chatbot": 10}
             }
         }
+        
+        # If no settings found in database, initialize with defaults
+        if not settings_doc:
+            default_settings["_id"] = "system_settings"
+            default_settings["created_at"] = datetime.utcnow().isoformat()
+            default_settings["updated_at"] = datetime.utcnow().isoformat()
+            await settings_collection.insert_one(default_settings)
+            settings_doc = default_settings
+        
+        # Remove MongoDB _id from response
+        if "_id" in settings_doc:
+            del settings_doc["_id"]
+        if "created_at" in settings_doc:
+            del settings_doc["created_at"]
+        if "updated_at" in settings_doc:
+            del settings_doc["updated_at"]
+            
+        return settings_doc
+        
     except Exception as e:
-        print(f"Error in get_system_settings: {str(e)}")
-        return {}
+        logger.error(f"Error in get_system_settings: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.put("/settings")
 async def update_system_settings(settings: SystemSettings):
-    """Update system settings"""
+    """Update system settings in database"""
     try:
-        # In production, save to database
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+        
+        settings_collection = db_instance['system_settings']
+        
+        # Convert settings to dict and remove None values
+        settings_dict = settings.dict(exclude_unset=True, exclude_none=True)
+        
+        # Add timestamp
+        settings_dict["updated_at"] = datetime.utcnow().isoformat()
+        
+        # Update or insert settings
+        result = await settings_collection.update_one(
+            {"_id": "system_settings"},
+            {"$set": settings_dict},
+            upsert=True
+        )
+        
+        logger.info(f"System settings updated: {result.modified_count} documents modified")
+        
         return {
             "success": True,
             "message": "Settings updated successfully",
-            "settings": settings.dict(exclude_unset=True)
+            "modified_count": result.modified_count
         }
+        
     except Exception as e:
+        logger.error(f"Error in update_system_settings: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
