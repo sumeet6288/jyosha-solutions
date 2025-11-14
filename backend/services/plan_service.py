@@ -237,34 +237,58 @@ class PlanService:
         subscription = await self.get_user_subscription(user_id)
         plan = await self.get_plan_by_id(subscription["plan_id"])
         
+        # Get user's custom limits if they exist
+        user = await self.users_collection.find_one({"id": user_id})
+        custom_limits = user.get("custom_limits", {}) if user else {}
+        
         usage = subscription.get("usage", {})
         limits = plan["limits"]
+        
+        # Apply custom limits (they override plan limits if set)
+        # Check both custom_limits dict and legacy custom_max_* fields
+        effective_max_chatbots = custom_limits.get("max_chatbots") or user.get("custom_max_chatbots") if user else None
+        effective_max_messages = custom_limits.get("max_messages_per_month") or user.get("custom_max_messages") if user else None
+        effective_max_file_uploads = custom_limits.get("max_file_uploads") or user.get("custom_max_file_uploads") if user else None
+        effective_max_website_sources = custom_limits.get("max_website_sources") if custom_limits else None
+        effective_max_text_sources = custom_limits.get("max_text_sources") if custom_limits else None
+        
+        # Use custom limits if set, otherwise use plan limits
+        max_chatbots = effective_max_chatbots if effective_max_chatbots is not None else limits["max_chatbots"]
+        max_messages = effective_max_messages if effective_max_messages is not None else limits["max_messages_per_month"]
+        max_file_uploads = effective_max_file_uploads if effective_max_file_uploads is not None else limits["max_file_uploads"]
+        max_website_sources = effective_max_website_sources if effective_max_website_sources is not None else limits["max_website_sources"]
+        max_text_sources = effective_max_text_sources if effective_max_text_sources is not None else limits["max_text_sources"]
         
         limit_checks = {
             "chatbots": {
                 "current": usage.get("chatbots_count", 0),
-                "max": limits["max_chatbots"],
-                "reached": usage.get("chatbots_count", 0) >= limits["max_chatbots"]
+                "max": max_chatbots,
+                "reached": usage.get("chatbots_count", 0) >= max_chatbots,
+                "custom_limit_applied": effective_max_chatbots is not None
             },
             "messages": {
                 "current": usage.get("messages_this_month", 0),
-                "max": limits["max_messages_per_month"],
-                "reached": usage.get("messages_this_month", 0) >= limits["max_messages_per_month"]
+                "max": max_messages,
+                "reached": usage.get("messages_this_month", 0) >= max_messages,
+                "custom_limit_applied": effective_max_messages is not None
             },
             "file_uploads": {
                 "current": usage.get("file_uploads_count", 0),
-                "max": limits["max_file_uploads"],
-                "reached": usage.get("file_uploads_count", 0) >= limits["max_file_uploads"]
+                "max": max_file_uploads,
+                "reached": usage.get("file_uploads_count", 0) >= max_file_uploads,
+                "custom_limit_applied": effective_max_file_uploads is not None
             },
             "website_sources": {
                 "current": usage.get("website_sources_count", 0),
-                "max": limits["max_website_sources"],
-                "reached": usage.get("website_sources_count", 0) >= limits["max_website_sources"]
+                "max": max_website_sources,
+                "reached": usage.get("website_sources_count", 0) >= max_website_sources,
+                "custom_limit_applied": effective_max_website_sources is not None
             },
             "text_sources": {
                 "current": usage.get("text_sources_count", 0),
-                "max": limits["max_text_sources"],
-                "reached": usage.get("text_sources_count", 0) >= limits["max_text_sources"]
+                "max": max_text_sources,
+                "reached": usage.get("text_sources_count", 0) >= max_text_sources,
+                "custom_limit_applied": effective_max_text_sources is not None
             }
         }
         
