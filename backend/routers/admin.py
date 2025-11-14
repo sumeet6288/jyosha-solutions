@@ -1657,7 +1657,13 @@ async def get_system_settings():
                     "session_timeout_minutes": 1440,
                     "max_concurrent_sessions": 3,
                     "remember_me_duration_days": 30
-                }
+                },
+                "auto_approve_registrations": True,
+                "allowed_email_domains": "",
+                "blocked_email_domains": "tempmail.com,throwaway.email,guerrillamail.com",
+                "registration_welcome_message": "Welcome to BotSmith! Start building amazing AI chatbots today.",
+                "failed_login_attempts_limit": 5,
+                "account_lockout_duration_minutes": 30
             },
             "integrations": {
                 "slack": {"enabled": True, "max_per_chatbot": 5},
