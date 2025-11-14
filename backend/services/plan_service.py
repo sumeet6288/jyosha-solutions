@@ -418,13 +418,32 @@ class PlanService:
         user_doc = await users_collection.find_one({"id": user_id})
         
         if user_doc:
+            # Get custom limits from both new dict format and legacy fields
+            custom_limits = user_doc.get("custom_limits", {})
+            
             # Override with custom limits if they exist
-            if user_doc.get("custom_max_chatbots") is not None:
+            # Check new custom_limits dict first, then legacy fields
+            if custom_limits.get("max_chatbots") is not None:
+                limits["max_chatbots"] = custom_limits["max_chatbots"]
+            elif user_doc.get("custom_max_chatbots") is not None:
                 limits["max_chatbots"] = user_doc["custom_max_chatbots"]
-            if user_doc.get("custom_max_messages") is not None:
+                
+            if custom_limits.get("max_messages_per_month") is not None:
+                limits["max_messages_per_month"] = custom_limits["max_messages_per_month"]
+            elif user_doc.get("custom_max_messages") is not None:
                 limits["max_messages_per_month"] = user_doc["custom_max_messages"]
-            if user_doc.get("custom_max_file_uploads") is not None:
+                
+            if custom_limits.get("max_file_uploads") is not None:
+                limits["max_file_uploads"] = custom_limits["max_file_uploads"]
+            elif user_doc.get("custom_max_file_uploads") is not None:
                 limits["max_file_uploads"] = user_doc["custom_max_file_uploads"]
+                
+            # Also check for website and text sources from custom_limits
+            if custom_limits.get("max_website_sources") is not None:
+                limits["max_website_sources"] = custom_limits["max_website_sources"]
+                
+            if custom_limits.get("max_text_sources") is not None:
+                limits["max_text_sources"] = custom_limits["max_text_sources"]
         
         # Get subscription status
         subscription_status = await self.check_subscription_status(user_id)
