@@ -31,6 +31,7 @@ class LemonSqueezyPlans(BaseModel):
 
 class LemonSqueezySettings(BaseModel):
     enabled: bool = False
+    test_mode: bool = True
     api_key: str = ""
     store_id: str = ""
     webhook_url: str = ""
