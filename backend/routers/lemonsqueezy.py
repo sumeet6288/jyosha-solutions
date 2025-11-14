@@ -47,18 +47,23 @@ async def create_checkout(request: CreateCheckoutRequest):
     Returns the checkout URL that the user should be redirected to.
     """
     try:
-        # Get plan details
-        plan = await _db.plans.find_one({"name": request.plan_id.capitalize()})
+        # Get payment settings from database
+        payment_settings = await _db.payment_settings.find_one({})
         
-        if not plan:
-            raise HTTPException(status_code=404, detail="Plan not found")
+        if not payment_settings or not payment_settings.get('lemonsqueezy', {}).get('enabled'):
+            raise HTTPException(
+                status_code=400,
+                detail="LemonSqueezy payment gateway is not enabled. Please contact administrator."
+            )
         
-        variant_id = plan.get("lemon_squeezy_variant_id")
+        # Get variant ID from payment settings
+        plans_mapping = payment_settings.get('lemonsqueezy', {}).get('plans', {})
+        variant_id = plans_mapping.get(request.plan_id.lower())
         
         if not variant_id:
             raise HTTPException(
                 status_code=400,
-                detail=f"Plan {request.plan_id} does not have a LemonSqueezy variant ID configured"
+                detail=f"Plan {request.plan_id} does not have a LemonSqueezy variant ID configured in Payment Gateway settings. Please contact administrator."
             )
         
         # Create checkout with custom data
