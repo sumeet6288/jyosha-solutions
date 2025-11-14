@@ -192,6 +192,7 @@ class LemonSqueezyService:
         Returns:
             Updated subscription object
         """
+        await self._load_settings()
         
         attributes = {}
         if variant_id:
