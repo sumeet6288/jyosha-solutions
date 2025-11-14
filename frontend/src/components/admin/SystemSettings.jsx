@@ -51,7 +51,13 @@ const SystemSettings = ({ backendUrl }) => {
         session_timeout_minutes: 1440,
         max_concurrent_sessions: 3,
         remember_me_duration_days: 30
-      }
+      },
+      auto_approve_registrations: true,
+      allowed_email_domains: '',
+      blocked_email_domains: 'tempmail.com,throwaway.email,guerrillamail.com',
+      registration_welcome_message: 'Welcome to BotSmith! Start building amazing AI chatbots today.',
+      failed_login_attempts_limit: 5,
+      account_lockout_duration_minutes: 30
     },
     // Integrations Management
     integrations: {
