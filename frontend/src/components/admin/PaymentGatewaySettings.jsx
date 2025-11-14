@@ -343,9 +343,17 @@ const PaymentGatewaySettings = ({ backendUrl }) => {
                 )}
               </div>
             </div>
-            <p className="text-xs text-gray-500">
-              Get your API key from: <a href="https://app.lemonsqueezy.com/settings/api" target="_blank" rel="noopener noreferrer" className="text-purple-600 hover:underline">LemonSqueezy Settings → API</a>
-            </p>
+            <div className="flex items-start gap-2">
+              {settings.lemonsqueezy.test_mode && (
+                <div className="flex items-center gap-1 px-2 py-1 bg-blue-100 border border-blue-300 rounded text-xs text-blue-800 font-semibold">
+                  <AlertTriangle className="w-3 h-3" />
+                  Test Key
+                </div>
+              )}
+              <p className="text-xs text-gray-500">
+                Get your {settings.lemonsqueezy.test_mode ? 'test' : 'live'} API key from: <a href="https://app.lemonsqueezy.com/settings/api" target="_blank" rel="noopener noreferrer" className="text-purple-600 hover:underline">LemonSqueezy Settings → API</a>
+              </p>
+            </div>
           </div>
 
           {/* Store ID */}
