@@ -1,23 +1,34 @@
 """
-COMPREHENSIVE ADMIN USER MANAGEMENT STATISTICS COLUMN TESTING
+COMPREHENSIVE ADMIN SETTINGS - REGISTRATION & AUTHENTICATION TESTING
 
-Test the Admin User Management Statistics Column functionality.
+Test the Registration & Authentication settings functionality in the admin panel.
 
 ENDPOINTS TO TEST:
-1. GET /api/admin/users/enhanced
+1. GET /api/admin/settings - Fetch current system settings including authentication fields
+2. PUT /api/admin/settings - Update authentication settings with new registration fields
 
 TEST REQUIREMENTS:
 1. Authentication: Must include valid JWT token (use admin@botsmith.com / admin123 to login first)
-2. Test the statistics data structure in the API response
-3. Verify statistics accuracy by creating test data
-4. Test with multiple users to ensure statistics are correctly attributed
-5. Test users with no chatbots show 0 for all statistics
+2. Test fetching current system settings with all authentication fields
+3. Test updating authentication settings with new registration fields:
+   - auto_approve_registrations: false
+   - allowed_email_domains: "company.com,partner.org"
+   - blocked_email_domains: "spam.com,tempmail.net"
+   - registration_welcome_message: "Welcome to our platform!"
+   - failed_login_attempts_limit: 3
+   - account_lockout_duration_minutes: 60
+4. Verify settings are properly saved to MongoDB in system_settings collection
+5. Test password policy updates (min_length, require_uppercase, etc.)
+6. Test 2FA settings updates (enforce_for_admins, enforce_for_all_users)
+7. Test session settings updates (session_timeout_minutes, max_concurrent_sessions)
+8. Test OAuth provider configuration updates
 
 EXPECTED RESULTS:
-- API should return users array with statistics object for each user
-- Statistics should include: chatbots_count, messages_count, conversations_count, sources_count
-- Statistics counts should match actual database records
-- All count fields should be present and numeric
+- All new registration fields should be present in the response
+- Settings should persist in MongoDB
+- Updates should be reflected immediately
+- No errors or validation issues
+- Database collection: system_settings, Document ID: "system_settings"
 """
 import requests
 import json
