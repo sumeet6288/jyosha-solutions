@@ -91,6 +91,12 @@ class AuthenticationSettings(BaseModel):
     password_policy: Optional[PasswordPolicy] = None
     two_factor_auth: Optional[TwoFactorAuth] = None
     session_settings: Optional[SessionSettings] = None
+    auto_approve_registrations: Optional[bool] = None
+    allowed_email_domains: Optional[str] = None
+    blocked_email_domains: Optional[str] = None
+    registration_welcome_message: Optional[str] = None
+    failed_login_attempts_limit: Optional[int] = None
+    account_lockout_duration_minutes: Optional[int] = None
 
 class IntegrationConfig(BaseModel):
     enabled: Optional[bool] = None
