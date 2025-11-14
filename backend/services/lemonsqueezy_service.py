@@ -161,6 +161,8 @@ class LemonSqueezyService:
         Returns:
             Updated subscription object
         """
+        await self._load_settings()
+        
         try:
             async with httpx.AsyncClient(timeout=30.0) as client:
                 response = await client.delete(
