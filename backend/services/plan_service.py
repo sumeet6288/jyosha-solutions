@@ -469,29 +469,31 @@ class PlanService:
                     "current": usage.get("chatbots_count", 0),
                     "limit": limits["max_chatbots"],
                     "percentage": round((usage.get("chatbots_count", 0) / limits["max_chatbots"]) * 100, 1) if limits["max_chatbots"] < 999999 else 0,
-                    "is_custom": user_doc.get("custom_max_chatbots") is not None if user_doc else False
+                    "is_custom": (user_doc.get("custom_limits", {}).get("max_chatbots") is not None or user_doc.get("custom_max_chatbots") is not None) if user_doc else False
                 },
                 "messages": {
                     "current": usage.get("messages_this_month", 0),
                     "limit": limits["max_messages_per_month"],
                     "percentage": round((usage.get("messages_this_month", 0) / limits["max_messages_per_month"]) * 100, 1) if limits["max_messages_per_month"] < 999999 else 0,
-                    "is_custom": user_doc.get("custom_max_messages") is not None if user_doc else False
+                    "is_custom": (user_doc.get("custom_limits", {}).get("max_messages_per_month") is not None or user_doc.get("custom_max_messages") is not None) if user_doc else False
                 },
                 "file_uploads": {
                     "current": usage.get("file_uploads_count", 0),
                     "limit": limits["max_file_uploads"],
                     "percentage": round((usage.get("file_uploads_count", 0) / limits["max_file_uploads"]) * 100, 1) if limits["max_file_uploads"] < 999999 else 0,
-                    "is_custom": user_doc.get("custom_max_file_uploads") is not None if user_doc else False
+                    "is_custom": (user_doc.get("custom_limits", {}).get("max_file_uploads") is not None or user_doc.get("custom_max_file_uploads") is not None) if user_doc else False
                 },
                 "website_sources": {
                     "current": usage.get("website_sources_count", 0),
                     "limit": limits["max_website_sources"],
-                    "percentage": round((usage.get("website_sources_count", 0) / limits["max_website_sources"]) * 100, 1) if limits["max_website_sources"] < 999999 else 0
+                    "percentage": round((usage.get("website_sources_count", 0) / limits["max_website_sources"]) * 100, 1) if limits["max_website_sources"] < 999999 else 0,
+                    "is_custom": (user_doc.get("custom_limits", {}).get("max_website_sources") is not None) if user_doc else False
                 },
                 "text_sources": {
                     "current": usage.get("text_sources_count", 0),
                     "limit": limits["max_text_sources"],
-                    "percentage": round((usage.get("text_sources_count", 0) / limits["max_text_sources"]) * 100, 1) if limits["max_text_sources"] < 999999 else 0
+                    "percentage": round((usage.get("text_sources_count", 0) / limits["max_text_sources"]) * 100, 1) if limits["max_text_sources"] < 999999 else 0,
+                    "is_custom": (user_doc.get("custom_limits", {}).get("max_text_sources") is not None) if user_doc else False
                 }
             },
             "last_reset": usage.get("last_reset", datetime.utcnow())
