@@ -407,11 +407,33 @@ const PaymentGatewaySettings = ({ backendUrl }) => {
 
           {/* Plan IDs Mapping */}
           <div className="space-y-4 pt-6 border-t border-gray-200">
-            <h4 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-              <DollarSign className="w-5 h-5 text-purple-600" />
-              Plan ID Mapping
-            </h4>
-            <p className="text-sm text-gray-600">Map your LemonSqueezy product/variant IDs to subscription plans</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                  <DollarSign className="w-5 h-5 text-purple-600" />
+                  Plan ID Mapping
+                </h4>
+                <p className="text-sm text-gray-600">Map your LemonSqueezy product/variant IDs to subscription plans</p>
+              </div>
+              <Button
+                onClick={fetchProducts}
+                disabled={!settings.lemonsqueezy.api_key || !settings.lemonsqueezy.store_id || fetchingProducts}
+                variant="outline"
+                className="text-sm"
+              >
+                {fetchingProducts ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-purple-600 mr-2"></div>
+                    Fetching...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    Auto-Fetch Products
+                  </>
+                )}
+              </Button>
+            </div>
 
             {/* Free Plan */}
             <div className="space-y-2">
