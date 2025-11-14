@@ -202,32 +202,22 @@ except Exception as e:
     log_test("GET admin settings structure", False, f"Exception: {str(e)}")
 
 # ============================================================================
-# TEST 3: Test unauthenticated request (should fail with 401)
+# TEST 3: Test unauthenticated request to settings (should fail with 401)
 # ============================================================================
-print("\n[TEST 3] Test unauthenticated request...")
+print("\n[TEST 3] Test unauthenticated request to settings...")
 try:
-    # Create a small test image
-    test_image = create_test_image()
-    
-    files = {
-        'file': ('test_logo.png', test_image, 'image/png')
-    }
-    params = {'image_type': 'logo'}
-    
-    response = requests.post(
-        f"{BACKEND_URL}/chatbots/{TEST_CHATBOT_ID}/upload-branding-image",
-        files=files,
-        params=params,
+    response = requests.get(
+        f"{BACKEND_URL}/admin/settings",
         timeout=10
     )
     
     if response.status_code == 401:
-        log_test("Unauthenticated request fails", True, "Correctly returned 401 Unauthorized")
+        log_test("Unauthenticated settings request fails", True, "Correctly returned 401 Unauthorized")
     else:
-        log_test("Unauthenticated request fails", False, f"Expected 401, got {response.status_code}")
+        log_test("Unauthenticated settings request fails", False, f"Expected 401, got {response.status_code}")
 
 except Exception as e:
-    log_test("Unauthenticated request fails", False, f"Exception: {str(e)}")
+    log_test("Unauthenticated settings request fails", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 4: Test invalid file type (should fail with 400)
