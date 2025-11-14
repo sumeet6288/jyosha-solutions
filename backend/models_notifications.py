@@ -19,7 +19,8 @@ class Notification(BaseModel):
         "webhook_event",
         "source_processing",
         "chatbot_down",
-        "api_error"
+        "api_error",
+        "admin_message"
     ]
     title: str
     message: str
