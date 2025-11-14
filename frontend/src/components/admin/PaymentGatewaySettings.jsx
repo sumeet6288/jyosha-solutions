@@ -82,7 +82,8 @@ const PaymentGatewaySettings = ({ backendUrl }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           api_key: settings.lemonsqueezy.api_key,
-          store_id: settings.lemonsqueezy.store_id
+          store_id: settings.lemonsqueezy.store_id,
+          test_mode: settings.lemonsqueezy.test_mode
         })
       });
       
@@ -108,6 +109,36 @@ const PaymentGatewaySettings = ({ backendUrl }) => {
       });
     } finally {
       setTestingConnection(false);
+    }
+  };
+
+  const fetchProducts = async () => {
+    try {
+      setFetchingProducts(true);
+      
+      const response = await fetch(`${backendUrl}/api/admin/payment-settings/fetch-products`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          api_key: settings.lemonsqueezy.api_key,
+          store_id: settings.lemonsqueezy.store_id,
+          test_mode: settings.lemonsqueezy.test_mode
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok && data.success) {
+        alert(`✅ Found ${data.products.length} products!\n\nProducts will be displayed for you to map to plans.`);
+        console.log('Products:', data.products);
+      } else {
+        alert(`❌ Failed to fetch products: ${data.detail || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      alert('❌ Failed to fetch products. Please check your network.');
+    } finally {
+      setFetchingProducts(false);
     }
   };
 
