@@ -3,7 +3,7 @@ import {
   Users, Bot, BarChart3, Settings, Activity, Database, 
   Shield, MessageSquare, FileText, DollarSign, TrendingUp, 
   Mail, Search, Target, UserCheck, ChevronLeft, ChevronRight,
-  LayoutDashboard, Contact, Flag, Zap, Code
+  LayoutDashboard, Contact, Flag, Zap, Code, CreditCard
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
