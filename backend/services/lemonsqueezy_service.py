@@ -3,8 +3,15 @@ import httpx
 import logging
 from typing import Optional, Dict, Any
 import os
+from motor.motor_asyncio import AsyncIOMotorClient
 
 logger = logging.getLogger(__name__)
+
+# MongoDB connection
+mongo_url = os.environ.get('MONGO_URL', 'mongodb://localhost:27017')
+db_name = os.environ.get('DB_NAME', 'chatbase_db')
+client = AsyncIOMotorClient(mongo_url)
+db = client[db_name]
 
 
 class LemonSqueezyService:
@@ -12,8 +19,30 @@ class LemonSqueezyService:
     
     def __init__(self):
         self.base_url = "https://api.lemonsqueezy.com/v1"
-        self.api_key = os.environ.get('LEMON_SQUEEZY_API_KEY')
-        self.store_id = os.environ.get('LEMON_SQUEEZY_STORE_ID', '234448')
+        self.api_key = None
+        self.store_id = None
+    
+    async def _load_settings(self):
+        """Load payment settings from database."""
+        if self.api_key and self.store_id:
+            return  # Already loaded
+        
+        try:
+            settings = await db.payment_settings.find_one({})
+            if settings and settings.get('lemonsqueezy', {}).get('enabled'):
+                self.api_key = settings['lemonsqueezy'].get('api_key')
+                self.store_id = settings['lemonsqueezy'].get('store_id')
+                logger.info("Payment settings loaded from database")
+            else:
+                # Fallback to environment variables
+                self.api_key = os.environ.get('LEMON_SQUEEZY_API_KEY')
+                self.store_id = os.environ.get('LEMON_SQUEEZY_STORE_ID', '234448')
+                logger.warning("Using fallback environment variables for LemonSqueezy")
+        except Exception as e:
+            logger.error(f"Error loading payment settings: {e}")
+            # Fallback to environment variables
+            self.api_key = os.environ.get('LEMON_SQUEEZY_API_KEY')
+            self.store_id = os.environ.get('LEMON_SQUEEZY_STORE_ID', '234448')
     
     def _get_headers(self) -> Dict[str, str]:
         """Get HTTP headers required for all Lemon Squeezy API requests."""
