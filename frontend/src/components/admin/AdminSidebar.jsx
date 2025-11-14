@@ -28,6 +28,7 @@ const AdminSidebar = ({ activeTab, onTabChange, isCollapsed, setIsCollapsed }) =
     { id: 'contact-sales', label: 'Contact Sales', icon: Zap },
     { id: 'moderation', label: 'Moderation', icon: Shield },
     { id: 'tech', label: 'Tech', icon: Code },
+    { id: 'payment-gateway', label: 'Payment Gateway', icon: CreditCard },
     { id: 'settings', label: 'Settings', icon: Settings }
   ];
 
