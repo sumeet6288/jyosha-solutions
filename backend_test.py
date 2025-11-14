@@ -73,7 +73,7 @@ def log_test(test_name, passed, details=""):
 def print_summary():
     """Print test summary"""
     print("\n" + "="*80)
-    print("BRANDING IMAGE UPLOAD TEST SUMMARY")
+    print("ADMIN SETTINGS - REGISTRATION & AUTHENTICATION TEST SUMMARY")
     print("="*80)
     print(f"Total Tests: {test_results['total']}")
     print(f"Passed: {test_results['passed']} ✅")
