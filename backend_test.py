@@ -264,35 +264,40 @@ except Exception as e:
     log_test("Update registration settings", False, f"Exception: {str(e)}")
 
 # ============================================================================
-# TEST 5: Test file too large (should fail with 413)
+# TEST 5: Verify settings persistence - GET updated settings
 # ============================================================================
-print("\n[TEST 5] Test file too large...")
+print("\n[TEST 5] Verify settings persistence - GET updated settings...")
 try:
     headers = {"Authorization": f"Bearer {admin_token}"}
     
-    # Create a large image (>5MB)
-    large_image = create_large_test_image()
-    
-    files = {
-        'file': ('large_image.png', large_image, 'image/png')
-    }
-    params = {'image_type': 'logo'}
-    
-    response = requests.post(
-        f"{BACKEND_URL}/chatbots/{TEST_CHATBOT_ID}/upload-branding-image",
+    response = requests.get(
+        f"{BACKEND_URL}/admin/settings",
         headers=headers,
-        files=files,
-        params=params,
-        timeout=30  # Longer timeout for large file
+        timeout=10
     )
     
-    if response.status_code == 413:
-        log_test("Large file rejected", True, "Correctly returned 413 Request Entity Too Large")
+    if response.status_code == 200:
+        updated_settings = response.json()
+        
+        checks = []
+        if "authentication" in updated_settings:
+            auth = updated_settings["authentication"]
+            checks.append(("auto_approve_registrations updated", auth.get("auto_approve_registrations") == False))
+            checks.append(("allowed_email_domains updated", auth.get("allowed_email_domains") == "company.com,partner.org"))
+            checks.append(("blocked_email_domains updated", auth.get("blocked_email_domains") == "spam.com,tempmail.net"))
+            checks.append(("registration_welcome_message updated", auth.get("registration_welcome_message") == "Welcome to our platform!"))
+            checks.append(("failed_login_attempts_limit updated", auth.get("failed_login_attempts_limit") == 3))
+            checks.append(("account_lockout_duration_minutes updated", auth.get("account_lockout_duration_minutes") == 60))
+        
+        all_passed = all(check[1] for check in checks)
+        details = f"Updated fields verified: {sum(1 for check in checks if check[1])}/{len(checks)}"
+        log_test("Settings persistence verification", all_passed, details)
+        
     else:
-        log_test("Large file rejected", False, f"Expected 413, got {response.status_code}. Size: {len(large_image)/1024/1024:.2f}MB")
+        log_test("Settings persistence verification", False, f"Status: {response.status_code}")
 
 except Exception as e:
-    log_test("Large file rejected", False, f"Exception: {str(e)}")
+    log_test("Settings persistence verification", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 6: Test successful logo upload
