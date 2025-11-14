@@ -145,10 +145,11 @@ async def test_lemonsqueezy_connection(request: TestConnectionRequest):
             if response.status_code == 200:
                 data = response.json()
                 store_name = data.get('data', {}).get('attributes', {}).get('name', 'Unknown Store')
+                mode_text = " (Test Mode)" if request.test_mode else " (Live Mode)"
                 
                 return TestConnectionResponse(
                     success=True,
-                    message="Successfully connected to LemonSqueezy!",
+                    message=f"Successfully connected to LemonSqueezy!{mode_text}",
                     store_name=store_name
                 )
             elif response.status_code == 401:
