@@ -48,6 +48,7 @@ class PaymentSettings(BaseModel):
 class TestConnectionRequest(BaseModel):
     api_key: str
     store_id: str
+    test_mode: bool = True
 
 
 class TestConnectionResponse(BaseModel):
