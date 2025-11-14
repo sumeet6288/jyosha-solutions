@@ -6,6 +6,7 @@ const PaymentGatewaySettings = ({ backendUrl }) => {
   const [settings, setSettings] = useState({
     lemonsqueezy: {
       enabled: false,
+      test_mode: true,
       api_key: '',
       store_id: '',
       webhook_url: '',
@@ -25,6 +26,7 @@ const PaymentGatewaySettings = ({ backendUrl }) => {
   const [testingConnection, setTestingConnection] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState(null);
   const [copied, setCopied] = useState('');
+  const [fetchingProducts, setFetchingProducts] = useState(false);
 
   useEffect(() => {
     fetchSettings();
