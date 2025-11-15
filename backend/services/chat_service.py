@@ -58,9 +58,9 @@ class ChatService:
             # Set model and provider
             chat.with_model(provider, model)
             
-            # Use TOON (Token Object Oriented Notation) format to reduce token usage
-            # TOON is more compact than JSON and uses fewer tokens
-            chat.with_params(response_format={"type": "toon"})
+            # Use text format for more efficient token usage (default behavior)
+            # This avoids the overhead of JSON structure in responses
+            chat.with_params(response_format={"type": "text"})
             
             # Create user message
             user_message = UserMessage(text=message)
