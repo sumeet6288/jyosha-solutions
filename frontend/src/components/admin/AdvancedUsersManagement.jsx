@@ -375,15 +375,24 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
         method: 'DELETE'
       });
       
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ detail: 'Unknown error' }));
+        alert(`Failed to delete user: ${errorData.detail || 'Unknown error'}`);
+        return;
+      }
+      
       const data = await response.json();
       if (data.success) {
         alert('User deleted successfully');
-        fetchUsers();
-        fetchStatistics();
+        // Refresh the user list and statistics
+        await fetchUsers();
+        await fetchStatistics();
+      } else {
+        alert(`Failed to delete user: ${data.message || 'Unknown error'}`);
       }
     } catch (error) {
-      alert('Error deleting user');
-      console.error(error);
+      alert(`Error deleting user: ${error.message}`);
+      console.error('Delete user error:', error);
     }
   };
 
