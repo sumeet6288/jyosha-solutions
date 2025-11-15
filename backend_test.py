@@ -209,22 +209,49 @@ except Exception as e:
     log_test("Create test user", False, f"Exception: {str(e)}")
 
 # ============================================================================
-# TEST 3: Test unauthenticated request to settings (should fail with 401)
+# TEST 3: Verify user appears in enhanced users list
 # ============================================================================
-print("\n[TEST 3] Test unauthenticated request to settings...")
+print("\n[TEST 3] Verify user appears in enhanced users list...")
 try:
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    
     response = requests.get(
-        f"{BACKEND_URL}/admin/settings",
+        f"{BACKEND_URL}/admin/users/enhanced",
+        headers=headers,
         timeout=10
     )
     
-    if response.status_code == 401:
-        log_test("Unauthenticated settings request fails", True, "Correctly returned 401 Unauthorized")
+    if response.status_code == 200:
+        result = response.json()
+        
+        checks = []
+        checks.append(("Success flag", result.get("success") == True))
+        checks.append(("Has users array", "users" in result))
+        checks.append(("Has total count", "total" in result))
+        
+        # Look for our test user
+        user_found = False
+        if result.get("users") and test_user_id:
+            for user in result["users"]:
+                if user.get("user_id") == test_user_id:
+                    user_found = True
+                    checks.append(("Test user found", True))
+                    checks.append(("Correct email", user.get("email") == test_user_data["email"]))
+                    checks.append(("Correct name", user.get("name") == test_user_data["name"]))
+                    break
+        
+        if not user_found:
+            checks.append(("Test user found", False))
+        
+        all_passed = all(check[1] for check in checks)
+        details = f"Total users: {result.get('total')}, Test user found: {user_found}"
+        log_test("User appears in enhanced list", all_passed, details)
+        
     else:
-        log_test("Unauthenticated settings request fails", False, f"Expected 401, got {response.status_code}")
+        log_test("User appears in enhanced list", False, f"Status: {response.status_code}, Response: {response.text}")
 
 except Exception as e:
-    log_test("Unauthenticated settings request fails", False, f"Exception: {str(e)}")
+    log_test("User appears in enhanced list", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 4: Test PUT /api/admin/settings - Update registration settings
