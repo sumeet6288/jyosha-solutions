@@ -227,7 +227,7 @@ try:
         
         all_passed = all(check[1] for check in checks)
         details = f"Total users: {result.get('total')}, Test user found: {user_found}"
-        log_test("User appears in enhanced list", all_passed, details)
+        log_test("User appears in enhanced list", all_passed and user_found, details)
         
     else:
         log_test("User appears in enhanced list", False, f"Status: {response.status_code}, Response: {response.text}")
