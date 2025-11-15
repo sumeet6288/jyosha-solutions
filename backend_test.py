@@ -1,34 +1,38 @@
 """
-COMPREHENSIVE ADMIN SETTINGS - REGISTRATION & AUTHENTICATION TESTING
+COMPREHENSIVE USER DELETION FUNCTIONALITY TESTING
 
-Test the Registration & Authentication settings functionality in the admin panel.
+Test the user deletion functionality in the admin panel.
 
 ENDPOINTS TO TEST:
-1. GET /api/admin/settings - Fetch current system settings including authentication fields
-2. PUT /api/admin/settings - Update authentication settings with new registration fields
+1. POST /api/admin/users/create - Create a test user for deletion
+2. GET /api/admin/users/enhanced - Verify user exists in the list
+3. DELETE /api/admin/users/{user_id} - Delete the user
+4. GET /api/admin/users/enhanced - Verify user is removed from list
+5. DELETE /api/admin/users/non-existent-id - Test error handling for non-existent user
 
 TEST REQUIREMENTS:
 1. Authentication: Must include valid JWT token (use admin@botsmith.com / admin123 to login first)
-2. Test fetching current system settings with all authentication fields
-3. Test updating authentication settings with new registration fields:
-   - auto_approve_registrations: false
-   - allowed_email_domains: "company.com,partner.org"
-   - blocked_email_domains: "spam.com,tempmail.net"
-   - registration_welcome_message: "Welcome to our platform!"
-   - failed_login_attempts_limit: 3
-   - account_lockout_duration_minutes: 60
-4. Verify settings are properly saved to MongoDB in system_settings collection
-5. Test password policy updates (min_length, require_uppercase, etc.)
-6. Test 2FA settings updates (enforce_for_admins, enforce_for_all_users)
-7. Test session settings updates (session_timeout_minutes, max_concurrent_sessions)
-8. Test OAuth provider configuration updates
+2. Create a new test user with:
+   - name: "Test User for Deletion"
+   - email: "testdelete@test.com"
+   - password: "test123"
+   - role: "user"
+3. Verify the user was created by checking GET /api/admin/users/enhanced
+4. Delete the user via DELETE /api/admin/users/{user_id}
+5. Verify deletion was successful:
+   - Response should have success: true
+   - GET /api/admin/users/enhanced should NOT include the deleted user
+   - Database should NOT have the user (check MongoDB)
+6. Test error handling by trying to delete a non-existent user:
+   - DELETE /api/admin/users/non-existent-id
+   - Should return 404 error
 
 EXPECTED RESULTS:
-- All new registration fields should be present in the response
-- Settings should persist in MongoDB
-- Updates should be reflected immediately
-- No errors or validation issues
-- Database collection: system_settings, Document ID: "system_settings"
+- User creation should succeed
+- User should appear in enhanced users list
+- Deletion should succeed with success: true
+- User should be removed from database and users list
+- Deleting non-existent user should return 404 error
 """
 import requests
 import json
