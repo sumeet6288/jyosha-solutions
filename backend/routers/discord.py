@@ -150,7 +150,7 @@ async def process_discord_message(
         try:
             from services.vector_store import VectorStore
             vector_store = VectorStore(db)
-            relevant_chunks = await vector_store.search(chatbot_id, message_content, top_k=3)
+            relevant_chunks = await vector_store.search(chatbot_id, message_content, top_k=2)
             if relevant_chunks:
                 context = "\n\n".join([chunk["content"] for chunk in relevant_chunks])
         except Exception as e:
