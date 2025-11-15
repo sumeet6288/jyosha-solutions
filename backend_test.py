@@ -331,51 +331,29 @@ else:
         log_test("Verify user removal from list", False, f"Exception: {str(e)}")
 
 # ============================================================================
-# TEST 6: Test successful logo upload
+# TEST 6: Test error handling - delete non-existent user
 # ============================================================================
-print("\n[TEST 6] Test successful logo upload...")
+print("\n[TEST 6] Test error handling - delete non-existent user...")
 try:
     headers = {"Authorization": f"Bearer {admin_token}"}
     
-    # Create a small test image
-    test_logo = create_test_image(150, 150, 'PNG')
+    # Try to delete a non-existent user
+    non_existent_id = "non-existent-user-id-12345"
     
-    files = {
-        'file': ('test_logo.png', test_logo, 'image/png')
-    }
-    params = {'image_type': 'logo'}
-    
-    response = requests.post(
-        f"{BACKEND_URL}/chatbots/{TEST_CHATBOT_ID}/upload-branding-image",
+    response = requests.delete(
+        f"{BACKEND_URL}/admin/users/{non_existent_id}",
         headers=headers,
-        files=files,
-        params=params,
         timeout=10
     )
     
-    if response.status_code == 200:
-        result = response.json()
-        
-        checks = []
-        checks.append(("Success flag", result.get("success") == True))
-        checks.append(("Has message", result.get("message") is not None))
-        checks.append(("Has URL", result.get("url") is not None))
-        checks.append(("Has filename", result.get("filename") is not None))
-        checks.append(("URL is data URL", result.get("url", "").startswith("data:image/")))
-        
-        all_passed = all(check[1] for check in checks)
-        details = f"Success: {result.get('success')}, URL starts with: {result.get('url', '')[:50]}..."
-        log_test("Logo upload success", all_passed, details)
-        
-        # Store the logo URL for database verification
-        global logo_url
-        logo_url = result.get("url")
-        
+    if response.status_code == 404:
+        log_test("Delete non-existent user returns 404", True, "Correctly returned 404 Not Found")
     else:
-        log_test("Logo upload success", False, f"Status: {response.status_code}, Response: {response.text}")
+        result = response.json() if response.headers.get('content-type', '').startswith('application/json') else response.text
+        log_test("Delete non-existent user returns 404", False, f"Expected 404, got {response.status_code}, Response: {result}")
 
 except Exception as e:
-    log_test("Logo upload success", False, f"Exception: {str(e)}")
+    log_test("Delete non-existent user returns 404", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 7: Test successful avatar upload
