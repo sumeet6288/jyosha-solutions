@@ -304,7 +304,7 @@ else:
             
             all_passed = all(check[1] for check in checks)
             details = f"Total users: {result.get('total')}, Test user found: {user_found} (should be False)"
-            log_test("Verify user removal from list", all_passed, details)
+            log_test("Verify user removal from list", all_passed and not user_found, details)
             
         else:
             log_test("Verify user removal from list", False, f"Status: {response.status_code}, Response: {response.text}")
