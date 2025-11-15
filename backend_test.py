@@ -118,12 +118,12 @@ admin_token = None
 admin_user_id = None
 
 print("="*80)
-print("COMPREHENSIVE ADMIN SETTINGS - REGISTRATION & AUTHENTICATION TESTING")
+print("COMPREHENSIVE USER DELETION FUNCTIONALITY TESTING")
 print("="*80)
 print(f"Backend URL: {BACKEND_URL}")
 print(f"Admin Email: {ADMIN_EMAIL}")
 print(f"Test Time: {datetime.now().isoformat()}")
-print("Testing Registration & Authentication settings functionality in admin panel")
+print("Testing user deletion functionality in admin panel")
 print("="*80 + "\n")
 
 # ============================================================================
