@@ -20,8 +20,8 @@ class RAGService:
         )
         self.vector_store = VectorStore()
         
-        # Configuration - OPTIMIZED for speed
-        self.top_k_results = 3  # Reduced from 5 to 3 for faster retrieval
+        # Configuration - OPTIMIZED for speed and token usage
+        self.top_k_results = 2  # Reduced from 3 to 2 to save 10-20% tokens per message
         self.similarity_threshold = 0.4  # Increased from 0.3 to 0.4 for better quality
         
         logger.info("Basic RAG Service initialized successfully (no embeddings) - OPTIMIZED")
