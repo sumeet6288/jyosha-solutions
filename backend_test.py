@@ -159,51 +159,54 @@ except Exception as e:
     exit(1)
 
 # ============================================================================
-# TEST 2: Test GET /api/admin/settings endpoint - Fetch current system settings
+# TEST 2: Create a test user for deletion
 # ============================================================================
-print("\n[TEST 2] Test GET /api/admin/settings endpoint...")
+print("\n[TEST 2] Create a test user for deletion...")
+test_user_data = {
+    "name": "Test User for Deletion",
+    "email": "testdelete@test.com",
+    "password": "test123",
+    "role": "user"
+}
+test_user_id = None
+
 try:
     headers = {"Authorization": f"Bearer {admin_token}"}
     
-    response = requests.get(
-        f"{BACKEND_URL}/admin/settings",
+    response = requests.post(
+        f"{BACKEND_URL}/admin/users/create",
         headers=headers,
+        json=test_user_data,
         timeout=10
     )
     
     if response.status_code == 200:
-        settings_data = response.json()
+        result = response.json()
         
-        # Check response structure for authentication settings
         checks = []
-        checks.append(("Has authentication section", "authentication" in settings_data))
+        checks.append(("Success flag", result.get("success") == True))
+        checks.append(("Has user_id", result.get("user_id") is not None))
+        checks.append(("Has message", result.get("message") is not None))
+        checks.append(("User data present", result.get("user") is not None))
         
-        if "authentication" in settings_data:
-            auth_settings = settings_data["authentication"]
-            checks.append(("Has auto_approve_registrations", "auto_approve_registrations" in auth_settings))
-            checks.append(("Has allowed_email_domains", "allowed_email_domains" in auth_settings))
-            checks.append(("Has blocked_email_domains", "blocked_email_domains" in auth_settings))
-            checks.append(("Has registration_welcome_message", "registration_welcome_message" in auth_settings))
-            checks.append(("Has failed_login_attempts_limit", "failed_login_attempts_limit" in auth_settings))
-            checks.append(("Has account_lockout_duration_minutes", "account_lockout_duration_minutes" in auth_settings))
-            checks.append(("Has password_policy", "password_policy" in auth_settings))
-            checks.append(("Has two_factor_auth", "two_factor_auth" in auth_settings))
-            checks.append(("Has session_settings", "session_settings" in auth_settings))
-            checks.append(("Has oauth_providers", "oauth_providers" in auth_settings))
+        if result.get("user"):
+            user_data = result["user"]
+            checks.append(("Correct email", user_data.get("email") == test_user_data["email"]))
+            checks.append(("Correct name", user_data.get("name") == test_user_data["name"]))
+            checks.append(("Correct role", user_data.get("role") == test_user_data["role"]))
         
         all_passed = all(check[1] for check in checks)
-        details = f"Authentication fields present: {sum(1 for check in checks if check[1])}/{len(checks)}"
-        log_test("GET admin settings structure", all_passed, details)
+        details = f"User created with ID: {result.get('user_id')}"
+        log_test("Create test user", all_passed, details)
         
-        # Store original settings for comparison
-        global original_settings
-        original_settings = settings_data
+        # Store user ID for deletion test
+        test_user_id = result.get("user_id")
         
     else:
-        log_test("GET admin settings structure", False, f"Status: {response.status_code}, Response: {response.text}")
+        log_test("Create test user", False, f"Status: {response.status_code}, Response: {response.text}")
 
 except Exception as e:
-    log_test("GET admin settings structure", False, f"Exception: {str(e)}")
+    log_test("Create test user", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 3: Test unauthenticated request to settings (should fail with 401)
