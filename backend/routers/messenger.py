@@ -259,7 +259,7 @@ async def process_messenger_message(chatbot_id: str, messaging_event: Dict[str, 
         rag_result = await rag_service.retrieve_relevant_context(
             query=message_text,
             chatbot_id=chatbot_id,
-            top_k=3,
+            top_k=2,
             min_similarity=0.5
         )
         
