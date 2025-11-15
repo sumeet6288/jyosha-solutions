@@ -93,25 +93,7 @@ def print_summary():
                 if test["details"]:
                     print(f"    {test['details']}")
 
-def create_test_user(name, email):
-    """Create a test user for statistics testing"""
-    return {
-        "name": name,
-        "email": email,
-        "password": "testpass123",
-        "role": "user",
-        "status": "active"
-    }
-
-def create_test_chatbot(name, user_id):
-    """Create a test chatbot for statistics testing"""
-    return {
-        "name": name,
-        "model": "gpt-4o-mini",
-        "provider": "openai",
-        "temperature": 0.7,
-        "instructions": f"Test chatbot for user {user_id}"
-    }
+# Helper functions removed - not needed for user deletion testing
 
 # Global variables for test data
 admin_token = None
