@@ -1,8 +1,8 @@
-# TOON Format Implementation
+# Text Format Implementation (Token Optimization)
 
 ## Overview
 
-The application has been updated to use **TOON (Token Object Oriented Notation)** instead of JSON for LLM responses. This change significantly reduces token usage and costs when communicating with AI providers.
+The application has been updated to use **TEXT format** instead of JSON for LLM responses. This change reduces token usage overhead by avoiding unnecessary JSON structure in responses.
 
 ---
 
