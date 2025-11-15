@@ -267,7 +267,7 @@ async def process_whatsapp_message(chatbot_id: str, message: Dict[str, Any], val
         rag_result = await rag_service.retrieve_relevant_context(
             query=text_body,
             chatbot_id=chatbot_id,
-            top_k=3,
+            top_k=2,
             min_similarity=0.5
         )
         
