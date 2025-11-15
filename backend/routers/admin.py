@@ -450,6 +450,7 @@ async def delete_user(user_id: str):
         if db_instance is None:
             raise HTTPException(status_code=500, detail="Database not initialized")
         
+        users_collection = db_instance['users']
         chatbots_collection = db_instance['chatbots']
         sources_collection = db_instance['sources']
         conversations_collection = db_instance['conversations']
@@ -467,13 +468,21 @@ async def delete_user(user_id: str):
             await sources_collection.delete_many({"chatbot_id": {"$in": user_chatbots}})
         
         # Delete user's chatbots
-        result = await chatbots_collection.delete_many({"user_id": user_id})
+        chatbots_result = await chatbots_collection.delete_many({"user_id": user_id})
+        
+        # Delete the user from users collection
+        user_result = await users_collection.delete_one({"id": user_id})
+        
+        if user_result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail=f"User {user_id} not found")
         
         return {
             "success": True,
-            "message": f"User {user_id} and all related data deleted",
-            "deleted_chatbots": result.deleted_count
+            "message": f"User {user_id} and all related data deleted successfully",
+            "deleted_chatbots": chatbots_result.deleted_count
         }
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
