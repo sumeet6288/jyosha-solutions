@@ -88,7 +88,7 @@ Password: admin123
 ## 🌐 Application Access
 
 ### Preview URL:
-**https://full-stack-setup-6.preview.emergentagent.com**
+**https://mern-stack-preview-1.preview.emergentagent.com**
 
 ### Local Access:
 - **Frontend:** http://localhost:3000
@@ -178,7 +178,7 @@ PORT=8001
 
 ### Frontend (.env):
 ```
-REACT_APP_BACKEND_URL=https://full-stack-setup-6.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://mern-stack-preview-1.preview.emergentagent.com
 HOST=0.0.0.0
 PORT=3000
 ```
@@ -188,7 +188,7 @@ PORT=3000
 ## ✨ Next Steps
 
 1. **Access the Application:**
-   Visit: https://full-stack-setup-6.preview.emergentagent.com
+   Visit: https://mern-stack-preview-1.preview.emergentagent.com
 
 2. **Login as Admin:**
    - Email: admin@botsmith.com
@@ -271,6 +271,6 @@ sudo supervisorctl status
 
 Your BotSmith AI Chatbot Builder is now fully installed and ready to use.
 
-**Preview URL:** https://full-stack-setup-6.preview.emergentagent.com
+**Preview URL:** https://mern-stack-preview-1.preview.emergentagent.com
 
 Happy chatbot building! 🤖✨

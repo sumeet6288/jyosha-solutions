@@ -83,7 +83,7 @@ async def process_slack_message(
                     f"⚠️ *Message Limit Reached*\n\n"
                     f"This chatbot has used {limit_check['current']}/{limit_check['max']} messages this month.\n"
                     f"The owner needs to upgrade their plan to continue using this bot.\n\n"
-                    f"Dashboard: {os.environ.get('FRONTEND_URL', 'https://full-stack-setup-6.preview.emergentagent.com')}"
+                    f"Dashboard: {os.environ.get('FRONTEND_URL', 'https://mern-stack-preview-1.preview.emergentagent.com')}"
                 )
                 await slack_service.send_message(
                     channel=channel,
