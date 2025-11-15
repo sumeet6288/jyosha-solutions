@@ -140,7 +140,7 @@ async def public_chat(chatbot_id: str, request: PublicChatRequest):
     rag_task = rag_service.retrieve_relevant_context(
         query=request.message,
         chatbot_id=chatbot_id,
-        top_k=3,  # Reduced from 5 to 3 for faster response
+        top_k=2,  # Reduced from 3 to 2 to save 10-20% tokens per message
         min_similarity=0.5  # Adjusted for better balance
     )
     
