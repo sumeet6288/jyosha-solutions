@@ -6,33 +6,29 @@ The application has been updated to use **TEXT format** instead of JSON for LLM 
 
 ---
 
-## What is TOON?
+## What is Text Format?
 
-**TOON (Token Object Oriented Notation)** is a more compact serialization format compared to JSON that:
-- Uses fewer tokens in LLM responses
-- Reduces API costs
-- Maintains the same data structure and functionality
+**Text format** returns plain text responses without JSON wrapping, which:
+- Eliminates unnecessary JSON structure overhead
+- Reduces token usage in responses
+- Provides cleaner, more natural responses
 - More efficient for token-based pricing models
 
-### Token Savings Example:
+### Supported Response Formats:
 
-**JSON Format** (verbose):
-```json
-{
-  "response": "Hello, how can I help you?",
-  "confidence": 0.95,
-  "sources": ["doc1", "doc2"]
-}
-```
-Approximate tokens: 25-30
+The OpenAI/LiteLLM API supports these formats:
+1. **`text`** (default) - Plain text responses ✅ **Now using this**
+2. **`json_object`** - Structured JSON responses
+3. **`json_schema`** - JSON with specific schema
 
-**TOON Format** (compact):
-```
-response:Hello, how can I help you?|confidence:0.95|sources:doc1,doc2
-```
-Approximate tokens: 15-18
+### Token Savings:
 
-**Savings: ~40-50% reduction in tokens**
+By using text format instead of structured JSON, we save tokens on:
+- JSON syntax overhead (`{}`, `[]`, `:`, `,`)
+- Unnecessary field names
+- Whitespace and formatting
+
+**Estimated savings: 5-10% per response**
 
 ---
 
