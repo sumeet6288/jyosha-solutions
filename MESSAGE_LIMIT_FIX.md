@@ -84,7 +84,7 @@ When a user exceeds their message limit through integrations, they now see:
 This chatbot has used 118/100 messages this month.
 The owner needs to upgrade their plan to continue using this bot.
 
-Dashboard: https://full-stack-setup-5.preview.emergentagent.com
+Dashboard: https://full-stack-setup-6.preview.emergentagent.com
 ```
 
 **Slack:**
@@ -94,7 +94,7 @@ Dashboard: https://full-stack-setup-5.preview.emergentagent.com
 This chatbot has used 118/100 messages this month.
 The owner needs to upgrade their plan to continue using this bot.
 
-Dashboard: https://full-stack-setup-5.preview.emergentagent.com
+Dashboard: https://full-stack-setup-6.preview.emergentagent.com
 ```
 
 **Discord/MS Teams:**
@@ -104,7 +104,7 @@ Dashboard: https://full-stack-setup-5.preview.emergentagent.com
 This chatbot has used 118/100 messages this month.
 The owner needs to upgrade their plan to continue using this bot.
 
-Dashboard: https://full-stack-setup-5.preview.emergentagent.com
+Dashboard: https://full-stack-setup-6.preview.emergentagent.com
 ```
 
 ### Widget/Web Chat Users

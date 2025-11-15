@@ -81,7 +81,7 @@ async def process_telegram_message(
                     f"⚠️ Message limit reached!\n\n"
                     f"You've used {limit_check['current']}/{limit_check['max']} messages this month.\n"
                     f"Please upgrade your plan to continue using this chatbot.\n\n"
-                    f"Visit your dashboard to upgrade: {os.environ.get('FRONTEND_URL', 'https://full-stack-setup-5.preview.emergentagent.com')}"
+                    f"Visit your dashboard to upgrade: {os.environ.get('FRONTEND_URL', 'https://full-stack-setup-6.preview.emergentagent.com')}"
                 )
                 await telegram_service.send_message(
                     chat_id=chat_id,
