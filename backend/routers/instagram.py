@@ -137,7 +137,7 @@ async def process_instagram_message(
             relevant_chunks = await vector_store.search(
                 chatbot_id=chatbot_id,
                 query=message_text,
-                top_k=3
+                top_k=2
             )
             if relevant_chunks:
                 context = "\n\n".join([chunk['text'] for chunk in relevant_chunks])
