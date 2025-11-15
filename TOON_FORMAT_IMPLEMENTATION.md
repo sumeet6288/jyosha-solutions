@@ -44,9 +44,9 @@ Added TOON format configuration to the chat service:
 # Set model and provider
 chat.with_model(provider, model)
 
-# Use TOON (Token Object Oriented Notation) format to reduce token usage
-# TOON is more compact than JSON and uses fewer tokens
-chat.with_params(response_format={"type": "toon"})
+# Use text format for more efficient token usage
+# This avoids JSON structure overhead in responses
+chat.with_params(response_format={"type": "text"})
 ```
 
 ### Where TOON is Applied:
