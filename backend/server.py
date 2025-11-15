@@ -123,6 +123,7 @@ api_router.include_router(whatsapp.router)
 api_router.include_router(messenger.router)
 api_router.include_router(tech_management.router, prefix="/tech", tags=["Tech Management"])
 api_router.include_router(payment_settings.router)
+api_router.include_router(admin_settings.router, prefix="/admin/settings", tags=["Admin Settings"])
 
 # Include the router in the main app
 app.include_router(api_router)
