@@ -348,14 +348,25 @@ const NotificationPreferences = () => {
               </div>
             ) : !pushEnabled ? (
               <div className="space-y-4">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                  <p className="text-sm text-blue-900 font-medium mb-2">📌 How to enable notifications:</p>
+                  <ol className="text-sm text-blue-800 space-y-1 ml-4 list-decimal">
+                    <li>Click the button below</li>
+                    <li>When your browser asks, click <strong>"Allow"</strong></li>
+                    <li>You'll receive a test notification</li>
+                  </ol>
+                  <p className="text-xs text-blue-700 mt-3">
+                    💡 If blocked: Click the 🔒 lock icon in your address bar → Site Settings → Notifications → Allow
+                  </p>
+                </div>
                 <p className="text-sm text-gray-600">
-                  Enable browser push notifications to stay updated even when you're not using BotSmith.
+                  Enable browser notifications to stay updated even when you're not using BotSmith.
                 </p>
                 <button
                   onClick={requestPushPermission}
                   className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-md hover:shadow-lg"
                 >
-                  Enable Push Notifications
+                  Enable Notifications
                 </button>
               </div>
             ) : (
