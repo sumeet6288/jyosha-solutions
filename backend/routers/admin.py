@@ -364,7 +364,7 @@ async def get_admin_analytics():
 @router.get("/analytics/users/growth")
 async def get_user_growth(days: int = Query(default=30, ge=1, le=365)):
     """
-    Get user growth analytics over specified number of days
+    Get user growth analytics over specified number of days (cumulative)
     """
     try:
         if db_instance is None:
@@ -372,40 +372,51 @@ async def get_user_growth(days: int = Query(default=30, ge=1, le=365)):
             
         users_collection = db_instance['users']
         
-        # Calculate start date
-        start_date = datetime.now() - timedelta(days=days)
+        # Calculate date range
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days)
         
-        # Aggregate users by day
+        # Get all users with their creation dates
         pipeline = [
             {
                 "$match": {
-                    "created_at": {"$gte": start_date.isoformat()}
-                }
-            },
-            {
-                "$group": {
-                    "_id": {
-                        "$dateToString": {
-                            "format": "%Y-%m-%d",
-                            "date": {"$toDate": "$created_at"}
-                        }
-                    },
-                    "users": {"$sum": 1}
+                    "created_at": {"$exists": True}
                 }
             },
             {
                 "$project": {
-                    "_id": 0,
-                    "date": "$_id",
-                    "users": 1
+                    "date": {"$substr": ["$created_at", 0, 10]}
                 }
             },
-            {"$sort": {"date": 1}}
+            {
+                "$group": {
+                    "_id": "$date",
+                    "count": {"$sum": 1}
+                }
+            },
+            {"$sort": {"_id": 1}}
         ]
         
-        growth_data = []
+        # Get user counts by day
+        users_by_day = {}
         async for doc in users_collection.aggregate(pipeline):
-            growth_data.append(doc)
+            users_by_day[doc['_id']] = doc['count']
+        
+        # Generate cumulative data for all days in range
+        growth_data = []
+        cumulative = 0
+        current_date = start_date
+        
+        while current_date <= end_date:
+            date_str = current_date.strftime('%Y-%m-%d')
+            daily_count = users_by_day.get(date_str, 0)
+            cumulative += daily_count
+            
+            growth_data.append({
+                "date": date_str,
+                "count": cumulative  # Frontend expects 'count' field
+            })
+            current_date += timedelta(days=1)
         
         return {
             "growth": growth_data,
