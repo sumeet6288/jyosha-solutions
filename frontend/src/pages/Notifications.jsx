@@ -204,7 +204,17 @@ const Notifications = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50">
-      <Navbar />
+      {/* Navigation */}
+      <nav className="bg-white border-b border-gray-200 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <ResponsiveNav />
+            <div className="flex items-center space-x-4">
+              <UserProfileDropdown user={user} onLogout={logout} />
+            </div>
+          </div>
+        </div>
+      </nav>
       
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
