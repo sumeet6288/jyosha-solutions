@@ -1005,7 +1005,7 @@ const ChatbotBuilder = () => {
                   ) : (
                     <>
                       <MessageSquare className="w-4 h-4 mr-2" />
-                      Load Chat Logs
+                      Refresh Chat Logs
                     </>
                   )}
                 </Button>
