@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -11,6 +11,7 @@ const ChatPreviewModal = ({ isOpen, onClose, chatbot }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef(null);
   const [sessionId] = useState(() => {
     // Get or create session ID from localStorage for this chatbot
     if (chatbot?.id) {
@@ -27,6 +28,15 @@ const ChatPreviewModal = ({ isOpen, onClose, chatbot }) => {
     }
     return `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   });
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, loading]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   // Log chatbot colors for debugging
   React.useEffect(() => {
