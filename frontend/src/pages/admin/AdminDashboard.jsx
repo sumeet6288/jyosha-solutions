@@ -107,9 +107,19 @@ const AdminDashboard = () => {
           }))
         : [{ name: 'No providers yet', value: 1 }]; // Fallback for empty data
       
+      // Process conversations trend data with fallback
+      const formattedConversationsTrend = (conversationsTrendJson.trend || []).length > 0
+        ? (conversationsTrendJson.trend || []).map(item => ({
+            date: new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+            count: item.count || 0,
+            conversations: item.conversations || 0
+          }))
+        : [{ date: 'No data', count: 0 }]; // Fallback for empty data
+      
       setUserGrowthData(formattedUserGrowth);
       setMessageVolumeData(formattedMessageVolume);
       setProviderDistribution(formattedProviders);
+      setConversationsTrendData(formattedConversationsTrend);
       setAnalyticsData(analyticsJson);
     } catch (error) {
       console.error('Error fetching analytics data:', error);
