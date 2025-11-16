@@ -178,6 +178,12 @@ export async function getCurrentPushSubscription() {
  * Send subscription to backend
  */
 export async function sendSubscriptionToBackend(subscription, api) {
+  // If no subscription (VAPID keys not configured), skip backend save
+  if (!subscription) {
+    console.log('ℹ️ No push subscription to save (VAPID keys not configured - this is OK for basic notifications)');
+    return null;
+  }
+
   try {
     const subscriptionObject = {
       endpoint: subscription.endpoint,
