@@ -97,7 +97,7 @@ export async function subscribeToPushNotifications() {
   if (Notification.permission !== 'granted') {
     const permission = await requestNotificationPermission();
     if (permission !== 'granted') {
-      throw new Error('Notification permission denied');
+      throw new Error('Permission denied by user. Please check your browser settings and allow notifications for this site.');
     }
   }
 
