@@ -61,6 +61,13 @@ const ChatbotBuilder = () => {
     }
   }, [chatbot]);
 
+  // Auto-load conversations when analytics tab is opened
+  useEffect(() => {
+    if (activeTab === 'analytics' && chatbot && conversations.length === 0 && !loadingConversations) {
+      loadConversations();
+    }
+  }, [activeTab, chatbot]);
+
   const loadChatbot = async () => {
     try {
       setLoading(true);
