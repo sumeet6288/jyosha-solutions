@@ -43,6 +43,7 @@ const AdminDashboard = () => {
   const [userGrowthData, setUserGrowthData] = useState([]);
   const [messageVolumeData, setMessageVolumeData] = useState([]);
   const [providerDistribution, setProviderDistribution] = useState([]);
+  const [conversationsTrendData, setConversationsTrendData] = useState([]);
   const [analyticsData, setAnalyticsData] = useState(null);
   const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
 
