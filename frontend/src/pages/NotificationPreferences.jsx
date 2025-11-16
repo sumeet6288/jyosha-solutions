@@ -322,16 +322,37 @@ const NotificationPreferences = () => {
                 </p>
                 <button
                   onClick={requestPushPermission}
-                  className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all"
+                  className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-md hover:shadow-lg"
                 >
                   Enable Push Notifications
                 </button>
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="flex items-center gap-2 text-green-600 mb-2">
+                <div className="flex items-center gap-2 text-green-600 mb-4">
                   <Bell className="w-5 h-5" />
-                  <span className="text-sm font-medium">Push notifications enabled</span>
+                  <span className="text-sm font-medium">Push notifications enabled ✅</span>
+                </div>
+                
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => testPushNotification().then(() => {
+                      toast.success('Test notification sent!');
+                    }).catch((error) => {
+                      toast.error('Failed to send test notification');
+                      console.error(error);
+                    })}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all text-sm shadow-sm"
+                  >
+                    Test Notification
+                  </button>
+                  
+                  <button
+                    onClick={disablePushNotifications}
+                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all text-sm"
+                  >
+                    Disable Push
+                  </button>
                 </div>
               </div>
             )}
