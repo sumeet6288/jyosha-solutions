@@ -300,7 +300,7 @@ async def upload_branding_image(
         if file.content_type not in allowed_types:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Invalid file type. Allowed types: PNG, JPEG, JPG, GIF, WEBP, SVG"
+                detail="Invalid file type. Allowed types: PNG, JPEG, JPG, GIF, WEBP, SVG"
             )
         
         # Check file size (max 5MB for images)
