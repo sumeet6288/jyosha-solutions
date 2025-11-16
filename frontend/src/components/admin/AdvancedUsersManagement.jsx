@@ -605,7 +605,7 @@ const AdvancedUsersManagement = ({ backendUrl }) => {
       </div>
 
       {/* Users Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gradient-to-r from-purple-50 to-pink-50 border-b border-gray-200">
