@@ -114,7 +114,7 @@ const AdvancedAnalytics = ({ backendUrl }) => {
             <Users className="w-5 h-5 text-purple-600" />
             User Growth Trend
           </h3>
-          {userGrowth.length > 0 && userGrowth.some(d => d.users > 0) ? (
+          {userGrowth.length > 0 && userGrowth.some(d => (d.count || 0) > 0) ? (
             <ResponsiveContainer width="100%" height={300}>
               <AreaChart data={userGrowth}>
                 <defs>
@@ -127,7 +127,7 @@ const AdvancedAnalytics = ({ backendUrl }) => {
                 <XAxis dataKey="date" tick={{ fontSize: 12 }} />
                 <YAxis tick={{ fontSize: 12 }} allowDecimals={false} />
                 <Tooltip />
-                <Area type="monotone" dataKey="users" stroke="#8b5cf6" fillOpacity={1} fill="url(#colorUsers)" name="New Users" />
+                <Area type="monotone" dataKey="count" stroke="#8b5cf6" fillOpacity={1} fill="url(#colorUsers)" name="New Users" />
               </AreaChart>
             </ResponsiveContainer>
           ) : (
