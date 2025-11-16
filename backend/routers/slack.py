@@ -239,7 +239,8 @@ async def process_slack_message(
                         text="Sorry, I encountered an error processing your message. Please try again.",
                         thread_ts=thread_ts or event_ts
                     )
-        except:
+        except Exception as e:
+            logger.error(f"Error sending Slack error message: {e}")
             pass
 
 
