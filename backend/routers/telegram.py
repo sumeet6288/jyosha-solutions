@@ -236,7 +236,8 @@ async def process_telegram_message(
                         chat_id=chat_id,
                         text="Sorry, I encountered an error processing your message. Please try again."
                     )
-        except:
+        except Exception as e:
+            logger.error(f"Error sending Telegram error message: {e}")
             pass
 
 
