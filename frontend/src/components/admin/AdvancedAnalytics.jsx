@@ -240,32 +240,43 @@ const AdvancedAnalytics = ({ backendUrl }) => {
               </tr>
             </thead>
             <tbody>
-              {providerDist.map((provider, idx) => {
-                const total = providerDist.reduce((sum, p) => sum + p.count, 0);
-                const percentage = ((provider.count / total) * 100).toFixed(1);
-                return (
-                  <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-3 px-4 font-medium">{provider.provider}</td>
-                    <td className="py-3 px-4">{provider.count}</td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center gap-2">
-                        <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-[100px]">
-                          <div
-                            className="bg-purple-600 h-2 rounded-full"
-                            style={{ width: `${percentage}%` }}
-                          ></div>
+              {providerDist.length > 0 ? (
+                providerDist.map((provider, idx) => {
+                  const percentage = totalProviders > 0 
+                    ? ((provider.count / totalProviders) * 100).toFixed(1) 
+                    : '0.0';
+                  const providerName = provider.provider || 'Not Specified';
+                  return (
+                    <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50">
+                      <td className="py-3 px-4 font-medium">{providerName}</td>
+                      <td className="py-3 px-4">{provider.count || 0}</td>
+                      <td className="py-3 px-4">
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-[100px]">
+                            <div
+                              className="bg-purple-600 h-2 rounded-full"
+                              style={{ width: `${percentage}%` }}
+                            ></div>
+                          </div>
+                          <span className="text-sm text-gray-600">{percentage}%</span>
                         </div>
-                        <span className="text-sm text-gray-600">{percentage}%</span>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
-                        Active
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })}
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
+                          Active
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan="4" className="py-8 text-center text-gray-400">
+                    <p className="text-lg font-medium">No provider data available</p>
+                    <p className="text-sm mt-2">Create chatbots with AI providers to see statistics</p>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
