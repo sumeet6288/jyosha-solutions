@@ -182,7 +182,7 @@ const AdvancedAnalytics = ({ backendUrl }) => {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ provider, count }) => `${provider}: ${count}`}
+                  label={({ provider, count }) => `${provider || 'Not Specified'}: ${count || 0}`}
                   outerRadius={100}
                   fill="#8884d8"
                   dataKey="count"
@@ -191,7 +191,10 @@ const AdvancedAnalytics = ({ backendUrl }) => {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip formatter={(value, name, props) => {
+                  const providerName = props.payload.provider || 'Not Specified';
+                  return [value, providerName];
+                }} />
               </PieChart>
             </ResponsiveContainer>
           ) : (
