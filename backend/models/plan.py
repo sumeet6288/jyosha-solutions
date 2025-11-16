@@ -73,8 +73,8 @@ class UserSubscription(BaseModel):
     # Usage tracking
     usage: Dict[str, Any] = Field(default_factory=dict, description="Current usage statistics")
     
-    class Config:
-        json_schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "user_id": "user123",
                 "plan_id": "starter",
@@ -91,6 +91,7 @@ class UserSubscription(BaseModel):
                 }
             }
         }
+    }
 
 class UsageStats(BaseModel):
     """User usage statistics"""
