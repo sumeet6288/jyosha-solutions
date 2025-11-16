@@ -426,9 +426,9 @@ const AdminDashboard = () => {
                     </div>
                     <h3 className="text-xl font-bold text-gray-900">Conversations Trend</h3>
                   </div>
-                  {userGrowthData && userGrowthData.length > 0 && userGrowthData[0].date !== 'No data' ? (
+                  {conversationsTrendData && conversationsTrendData.length > 0 && conversationsTrendData[0].date !== 'No data' ? (
                     <ResponsiveContainer width="100%" height={300}>
-                      <LineChart data={userGrowthData}>
+                      <LineChart data={conversationsTrendData}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                         <XAxis dataKey="date" stroke="#6b7280" style={{ fontSize: '12px' }} />
                         <YAxis stroke="#6b7280" style={{ fontSize: '12px' }} />
@@ -441,7 +441,7 @@ const AdminDashboard = () => {
                           }} 
                         />
                         <Legend />
-                        <Line type="monotone" dataKey="count" stroke="#f97316" strokeWidth={3} name="Users" dot={{ fill: '#f97316', r: 4 }} />
+                        <Line type="monotone" dataKey="count" stroke="#f97316" strokeWidth={3} name="Conversations" dot={{ fill: '#f97316', r: 4 }} />
                       </LineChart>
                     </ResponsiveContainer>
                   ) : (
