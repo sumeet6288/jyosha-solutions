@@ -928,13 +928,23 @@ const ChatbotBuilder = () => {
 
               {/* Live Preview */}
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-purple-200/50 p-6 shadow-xl">
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-gray-900 mb-1 bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">Live Preview</h3>
-                  <p className="text-sm text-gray-600">See how your chatbot will look when embedded</p>
+                <div className="mb-4 flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-1 bg-gradient-to-r from-gray-900 to-purple-600 bg-clip-text text-transparent">Live Preview</h3>
+                    <p className="text-sm text-gray-600">See how your chatbot will look when embedded</p>
+                  </div>
+                  <Button
+                    onClick={() => setIframeKey(prev => prev + 1)}
+                    variant="outline"
+                    size="sm"
+                    className="border-purple-300 hover:bg-purple-50"
+                  >
+                    🔄 Refresh
+                  </Button>
                 </div>
                 <div className="border-2 border-purple-300 rounded-xl overflow-hidden shadow-lg" style={{ height: '600px' }}>
                   <iframe
-                    key={`embed-${chatbot.id}-${activeTab}`}
+                    key={`embed-${chatbot.id}-${iframeKey}`}
                     src={`${window.location.origin}/embed/${chatbot.id}`}
                     width="100%"
                     height="100%"
