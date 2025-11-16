@@ -211,7 +211,13 @@ const AdvancedAnalytics = ({ backendUrl }) => {
           <h3 className="text-lg font-bold mb-4">Provider Usage Comparison</h3>
           {providerDist.length > 0 ? (
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={providerDist} layout="vertical">
+              <BarChart 
+                data={providerDist.map(p => ({ 
+                  ...p, 
+                  provider: p.provider || 'Not Specified' 
+                }))} 
+                layout="vertical"
+              >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis type="number" tick={{ fontSize: 12 }} allowDecimals={false} />
                 <YAxis dataKey="provider" type="category" tick={{ fontSize: 12 }} width={100} />
