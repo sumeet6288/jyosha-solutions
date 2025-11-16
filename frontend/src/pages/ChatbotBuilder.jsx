@@ -933,8 +933,8 @@ const ChatbotBuilder = () => {
                 </div>
                 <div className="border-2 border-purple-300 rounded-xl overflow-hidden shadow-lg" style={{ height: '600px' }}>
                   <iframe
-                    key={Date.now()}
-                    src={`${window.location.origin}/embed/${chatbot.id}?v=${Date.now()}`}
+                    key={`embed-${chatbot.id}-${activeTab}`}
+                    src={`${window.location.origin}/embed/${chatbot.id}`}
                     width="100%"
                     height="100%"
                     frameBorder="0"
