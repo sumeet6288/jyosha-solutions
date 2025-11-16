@@ -77,7 +77,7 @@ The backend already has:
 
 ## Testing
 To test push notifications:
-1. Go to https://app-bootstrap-5.preview.emergentagent.com
+1. Go to https://mern-deploy-3.preview.emergentagent.com
 2. Login with: admin@botsmith.com / admin123
 3. Navigate to Notification Preferences page
 4. Click "Enable Push Notifications"

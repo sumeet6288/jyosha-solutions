@@ -78,9 +78,9 @@ All services running successfully:
 ### 5. Application URLs
 
 **Production Preview:**
-- Frontend: https://app-bootstrap-5.preview.emergentagent.com
-- Backend API: https://app-bootstrap-5.preview.emergentagent.com/api
-- API Documentation: https://app-bootstrap-5.preview.emergentagent.com/docs
+- Frontend: https://mern-deploy-3.preview.emergentagent.com
+- Backend API: https://mern-deploy-3.preview.emergentagent.com/api
+- API Documentation: https://mern-deploy-3.preview.emergentagent.com/docs
 
 **Local Development:**
 - Frontend: http://localhost:3000
@@ -91,7 +91,7 @@ All services running successfully:
 
 **Frontend (.env):**
 ```
-REACT_APP_BACKEND_URL=https://app-bootstrap-5.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://mern-deploy-3.preview.emergentagent.com
 ```
 
 **Backend (.env):**
@@ -155,7 +155,7 @@ MONGO_URL=mongodb://localhost:27017/chatbase_db
 ## Quick Start Guide
 
 ### 1. Access the Application
-Open: https://app-bootstrap-5.preview.emergentagent.com
+Open: https://mern-deploy-3.preview.emergentagent.com
 
 ### 2. Login as Admin
 - Email: admin@botsmith.com
@@ -265,7 +265,7 @@ Detailed documentation available in:
 - `/app/README.md` - Project overview
 - `/app/PUSH_NOTIFICATION_FIX.md` - Push notification implementation
 - `/app/test_result.md` - Testing history and protocols
-- Backend API Docs: https://app-bootstrap-5.preview.emergentagent.com/docs
+- Backend API Docs: https://mern-deploy-3.preview.emergentagent.com/docs
 
 ## Support
 
@@ -279,4 +279,4 @@ For issues or questions:
 
 **Setup Completed:** November 16, 2025
 **Status:** All systems operational ✅
-**Preview URL:** https://app-bootstrap-5.preview.emergentagent.com
+**Preview URL:** https://mern-deploy-3.preview.emergentagent.com
