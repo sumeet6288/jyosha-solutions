@@ -361,6 +361,173 @@ async def get_admin_analytics():
         }
 
 
+@router.get("/analytics/users/growth")
+async def get_user_growth(days: int = Query(default=30, ge=1, le=365)):
+    """
+    Get user growth analytics over specified number of days
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+            
+        users_collection = db_instance['users']
+        
+        # Calculate start date
+        start_date = datetime.now() - timedelta(days=days)
+        
+        # Aggregate users by day
+        pipeline = [
+            {
+                "$match": {
+                    "created_at": {"$gte": start_date.isoformat()}
+                }
+            },
+            {
+                "$group": {
+                    "_id": {
+                        "$dateToString": {
+                            "format": "%Y-%m-%d",
+                            "date": {"$toDate": "$created_at"}
+                        }
+                    },
+                    "users": {"$sum": 1}
+                }
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    "date": "$_id",
+                    "users": 1
+                }
+            },
+            {"$sort": {"date": 1}}
+        ]
+        
+        growth_data = []
+        async for doc in users_collection.aggregate(pipeline):
+            growth_data.append(doc)
+        
+        return {
+            "growth": growth_data,
+            "total": len(growth_data),
+            "period_days": days
+        }
+    except Exception as e:
+        logger.error(f"Error in get_user_growth: {str(e)}")
+        return {
+            "growth": [],
+            "total": 0,
+            "period_days": days
+        }
+
+
+@router.get("/analytics/messages/volume")
+async def get_message_volume(days: int = Query(default=30, ge=1, le=365)):
+    """
+    Get message volume analytics over specified number of days
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+            
+        messages_collection = db_instance['messages']
+        
+        # Calculate start date
+        start_date = datetime.now() - timedelta(days=days)
+        
+        # Aggregate messages by day
+        pipeline = [
+            {
+                "$match": {
+                    "timestamp": {"$gte": start_date.isoformat()}
+                }
+            },
+            {
+                "$group": {
+                    "_id": {
+                        "$dateToString": {
+                            "format": "%Y-%m-%d",
+                            "date": {"$toDate": "$timestamp"}
+                        }
+                    },
+                    "messages": {"$sum": 1}
+                }
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    "date": "$_id",
+                    "messages": 1
+                }
+            },
+            {"$sort": {"date": 1}}
+        ]
+        
+        volume_data = []
+        async for doc in messages_collection.aggregate(pipeline):
+            volume_data.append(doc)
+        
+        return {
+            "volume": volume_data,
+            "total": len(volume_data),
+            "period_days": days
+        }
+    except Exception as e:
+        logger.error(f"Error in get_message_volume: {str(e)}")
+        return {
+            "volume": [],
+            "total": 0,
+            "period_days": days
+        }
+
+
+@router.get("/analytics/providers/distribution")
+async def get_provider_distribution():
+    """
+    Get AI provider distribution analytics
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+            
+        chatbots_collection = db_instance['chatbots']
+        
+        # Aggregate by provider
+        pipeline = [
+            {
+                "$group": {
+                    "_id": "$ai_provider",
+                    "count": {"$sum": 1}
+                }
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    "provider": "$_id",
+                    "count": 1
+                }
+            },
+            {"$sort": {"count": -1}}
+        ]
+        
+        distribution_data = []
+        async for doc in chatbots_collection.aggregate(pipeline):
+            distribution_data.append(doc)
+        
+        return {
+            "distribution": distribution_data,
+            "providers": distribution_data,  # Alias for compatibility
+            "total_providers": len(distribution_data)
+        }
+    except Exception as e:
+        logger.error(f"Error in get_provider_distribution: {str(e)}")
+        return {
+            "distribution": [],
+            "providers": [],
+            "total_providers": 0
+        }
+
+
 # ==================== USER MANAGEMENT ====================
 @router.get("/users/detailed")
 async def get_users_detailed():
