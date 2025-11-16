@@ -18,6 +18,7 @@ import Subscription from './pages/Subscription';
 import Leads from './pages/Leads';
 import LeadsManagement from './pages/LeadsManagement';
 import NotificationPreferences from './pages/NotificationPreferences';
+import Notifications from './pages/Notifications';
 import EmbedChat from './pages/EmbedChat';
 import ChatPage from './pages/ChatPage';
 import PublicChat from './pages/PublicChat';
