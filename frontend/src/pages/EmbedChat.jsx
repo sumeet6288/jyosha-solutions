@@ -26,7 +26,6 @@ const EmbedChat = () => {
     return storedSessionId;
   });
   const [isMinimized, setIsMinimized] = useState(false);
-  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     loadChatbot();
