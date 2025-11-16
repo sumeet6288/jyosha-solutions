@@ -46,6 +46,7 @@ const ChatbotBuilder = () => {
   const [copied, setCopied] = useState('');
   const [webhookUrl, setWebhookUrl] = useState('');
   const [webhookEnabled, setWebhookEnabled] = useState(false);
+  const [iframeKey, setIframeKey] = useState(0);
 
   useEffect(() => {
     loadChatbot();
