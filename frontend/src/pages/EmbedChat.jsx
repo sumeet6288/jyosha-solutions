@@ -32,14 +32,6 @@ const EmbedChat = () => {
     loadChatbot();
   }, [id]);
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   const loadChatbot = async () => {
     try {
       const response = await chatbotAPI.get(id);
