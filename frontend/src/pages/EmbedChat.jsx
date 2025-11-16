@@ -182,7 +182,7 @@ const EmbedChat = () => {
           </div>
 
           {/* Input */}
-          <div className="bg-white border-t border-gray-200 px-6 py-4">
+          <div className="bg-white border-t border-gray-200 px-3 py-3">
             <div className="flex gap-3">
               <Input
                 value={inputMessage}
@@ -190,7 +190,7 @@ const EmbedChat = () => {
                 onKeyPress={handleKeyPress}
                 placeholder="Type your message..."
                 disabled={sending}
-                className="flex-1"
+                className="flex-1 text-base"
               />
               <Button
                 onClick={handleSendMessage}
