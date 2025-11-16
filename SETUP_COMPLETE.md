@@ -75,12 +75,12 @@ All dependencies have been successfully installed and services are running!
 ## 🌐 Access URLs
 
 ### Frontend (User Interface)
-- **URL**: https://devops-mongo-app.preview.emergentagent.com
+- **URL**: https://mern-installer-8.preview.emergentagent.com
 - **Status**: ✅ Accessible
 
 ### Backend API
-- **Base URL**: https://devops-mongo-app.preview.emergentagent.com/api
-- **Documentation**: https://devops-mongo-app.preview.emergentagent.com/docs
+- **Base URL**: https://mern-installer-8.preview.emergentagent.com/api
+- **Documentation**: https://mern-installer-8.preview.emergentagent.com/docs
 - **Status**: ✅ Accessible
 
 ### Local Development URLs
@@ -90,7 +90,7 @@ All dependencies have been successfully installed and services are running!
 
 ## 🔐 Login Instructions
 
-1. Open https://devops-mongo-app.preview.emergentagent.com
+1. Open https://mern-installer-8.preview.emergentagent.com
 2. Click "Sign In"
 3. Use credentials:
    - Email: `admin@botsmith.com`
@@ -190,13 +190,13 @@ mongodb      ✅ RUNNING  (pid 36, port 27017)
 - `EMERGENT_LLM_KEY`: [configured]
 
 ### Frontend (.env)
-- `REACT_APP_BACKEND_URL`: https://devops-mongo-app.preview.emergentagent.com
+- `REACT_APP_BACKEND_URL`: https://mern-installer-8.preview.emergentagent.com
 - `WDS_SOCKET_PORT`: 443
 
 ## 📱 Next Steps
 
 1. **Login to Application**
-   - Visit: https://devops-mongo-app.preview.emergentagent.com
+   - Visit: https://mern-installer-8.preview.emergentagent.com
    - Use admin credentials provided above
 
 2. **Change Admin Password**
