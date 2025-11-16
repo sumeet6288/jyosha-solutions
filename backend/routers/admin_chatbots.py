@@ -633,7 +633,8 @@ async def get_chatbot_analytics(
                 else:
                     date_key = msg_date.date().isoformat() if hasattr(msg_date, 'date') else str(msg_date)
                 daily_counts[date_key] = daily_counts.get(date_key, 0) + 1
-            except:
+            except Exception as e:
+                logger.warning(f"Error processing message date: {e}")
                 continue
         
         return {
