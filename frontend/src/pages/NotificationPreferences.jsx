@@ -5,6 +5,13 @@ import { toast } from 'react-hot-toast';
 import ResponsiveNav from '../components/ResponsiveNav';
 import { useAuth } from '../contexts/AuthContext';
 import Footer from '../components/Footer';
+import { 
+  subscribeToPushNotifications, 
+  unsubscribeFromPushNotifications,
+  sendSubscriptionToBackend,
+  testPushNotification,
+  isPushSupported as checkPushSupport
+} from '../utils/pushNotifications';
 
 const NotificationPreferences = () => {
   const { user, logout } = useAuth();
