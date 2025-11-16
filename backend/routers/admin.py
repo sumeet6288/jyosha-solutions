@@ -1861,20 +1861,20 @@ async def get_provider_distribution():
             {"$sort": {"count": -1}}
         ]
         
-        distribution = []
+        providers = []
         async for doc in chatbots_collection.aggregate(pipeline):
-            distribution.append({
+            providers.append({
                 "provider": doc['_id'] or 'Unknown',
                 "count": doc['count']
             })
         
         return {
-            "distribution": distribution,
-            "total": len(distribution)
+            "providers": providers,  # Frontend expects 'providers' key
+            "total": len(providers)
         }
     except Exception as e:
         print(f"Error in get_provider_distribution: {str(e)}")
-        return {"distribution": [], "total": 0}
+        return {"providers": [], "total": 0}
 
 
 # ==================== SYSTEM SETTINGS ====================
