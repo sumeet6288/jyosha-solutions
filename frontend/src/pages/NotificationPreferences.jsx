@@ -55,8 +55,8 @@ const NotificationPreferences = () => {
     }
   };
 
-  const checkPushSupport = () => {
-    const supported = 'Notification' in window && 'serviceWorker' in navigator && 'PushManager' in window;
+  const checkPushSupportStatus = () => {
+    const supported = checkPushSupport();
     setPushSupported(supported);
     if (supported) {
       setPushEnabled(Notification.permission === 'granted');
@@ -78,16 +78,43 @@ const NotificationPreferences = () => {
     }
 
     try {
-      const permission = await Notification.requestPermission();
-      if (permission === 'granted') {
-        setPushEnabled(true);
-        toast.success('Push notifications enabled!');
-      } else {
-        toast.error('Push notification permission denied');
-      }
+      toast.loading('Setting up push notifications...');
+      
+      // Subscribe to push notifications
+      const subscription = await subscribeToPushNotifications();
+      
+      // Send subscription to backend
+      await sendSubscriptionToBackend(subscription, api);
+      
+      setPushEnabled(true);
+      toast.dismiss();
+      toast.success('✅ Push notifications enabled successfully!');
+      
+      // Test notification
+      setTimeout(() => {
+        testPushNotification().catch(console.error);
+      }, 1000);
+      
     } catch (error) {
-      console.error('Error requesting push permission:', error);
-      toast.error('Failed to enable push notifications');
+      toast.dismiss();
+      console.error('Error enabling push notifications:', error);
+      
+      if (error.message.includes('permission denied')) {
+        toast.error('Push notification permission denied. Please allow notifications in your browser settings.');
+      } else {
+        toast.error('Failed to enable push notifications: ' + error.message);
+      }
+    }
+  };
+
+  const disablePushNotifications = async () => {
+    try {
+      await unsubscribeFromPushNotifications();
+      setPushEnabled(false);
+      toast.success('Push notifications disabled');
+    } catch (error) {
+      console.error('Error disabling push notifications:', error);
+      toast.error('Failed to disable push notifications');
     }
   };
 
