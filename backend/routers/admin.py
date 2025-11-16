@@ -528,6 +528,67 @@ async def get_provider_distribution():
         }
 
 
+@router.get("/analytics/conversations/trend")
+async def get_conversations_trend(days: int = Query(default=30, ge=1, le=365)):
+    """
+    Get conversations trend over specified number of days
+    """
+    try:
+        if db_instance is None:
+            raise HTTPException(status_code=500, detail="Database not initialized")
+            
+        conversations_collection = db_instance['conversations']
+        
+        # Calculate start date
+        start_date = datetime.now() - timedelta(days=days)
+        
+        # Aggregate conversations by day
+        pipeline = [
+            {
+                "$match": {
+                    "created_at": {"$gte": start_date.isoformat()}
+                }
+            },
+            {
+                "$group": {
+                    "_id": {
+                        "$dateToString": {
+                            "format": "%Y-%m-%d",
+                            "date": {"$toDate": "$created_at"}
+                        }
+                    },
+                    "conversations": {"$sum": 1}
+                }
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    "date": "$_id",
+                    "conversations": 1,
+                    "count": "$conversations"  # Alias for compatibility with frontend
+                }
+            },
+            {"$sort": {"date": 1}}
+        ]
+        
+        trend_data = []
+        async for doc in conversations_collection.aggregate(pipeline):
+            trend_data.append(doc)
+        
+        return {
+            "trend": trend_data,
+            "total": len(trend_data),
+            "period_days": days
+        }
+    except Exception as e:
+        logger.error(f"Error in get_conversations_trend: {str(e)}")
+        return {
+            "trend": [],
+            "total": 0,
+            "period_days": days
+        }
+
+
 # ==================== USER MANAGEMENT ====================
 @router.get("/users/detailed")
 async def get_users_detailed():
