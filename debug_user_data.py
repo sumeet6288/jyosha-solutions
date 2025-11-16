@@ -5,7 +5,7 @@ import requests
 import json
 
 # Configuration
-BACKEND_URL = "https://mern-deploy-3.preview.emergentagent.com/api"
+BACKEND_URL = "https://mern-installer-9.preview.emergentagent.com/api"
 ADMIN_EMAIL = "admin@botsmith.com"
 ADMIN_PASSWORD = "admin123"
 

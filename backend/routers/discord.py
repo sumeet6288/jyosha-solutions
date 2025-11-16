@@ -91,7 +91,7 @@ async def process_discord_message(
                     f"⚠️ **Message Limit Reached**\n\n"
                     f"This chatbot has used {limit_check['current']}/{limit_check['max']} messages this month.\n"
                     f"The owner needs to upgrade their plan to continue using this bot.\n\n"
-                    f"Dashboard: {os.environ.get('FRONTEND_URL', 'https://mern-deploy-3.preview.emergentagent.com')}"
+                    f"Dashboard: {os.environ.get('FRONTEND_URL', 'https://mern-installer-9.preview.emergentagent.com')}"
                 )
                 await discord_service.send_message(
                     channel_id=channel_id,
