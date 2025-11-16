@@ -40,7 +40,7 @@ const NotificationPreferences = () => {
 
   useEffect(() => {
     fetchPreferences();
-    checkPushSupport();
+    checkPushSupportStatus();
   }, []);
 
   const fetchPreferences = async () => {
