@@ -182,8 +182,8 @@ const EmbedChat = () => {
           </div>
 
           {/* Input */}
-          <div className="bg-white border-t border-gray-200 px-3 py-3">
-            <div className="flex gap-3">
+          <div className="bg-white border-t border-gray-200 px-2 py-3">
+            <div className="flex gap-2">
               <Input
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
