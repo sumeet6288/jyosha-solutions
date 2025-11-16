@@ -28,8 +28,8 @@ class Plan(BaseModel):
     is_active: bool = Field(default=True, description="Is plan active")
     created_at: datetime = Field(default_factory=datetime.utcnow)
     
-    class Config:
-        json_schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "id": "starter",
                 "name": "Starter",
@@ -59,6 +59,7 @@ class Plan(BaseModel):
                 ]
             }
         }
+    }
 
 class UserSubscription(BaseModel):
     """User subscription model"""
