@@ -194,6 +194,8 @@ const ChatPreviewModal = ({ isOpen, onClose, chatbot }) => {
               </div>
             </div>
           )}
+          {/* Invisible div for auto-scroll anchor */}
+          <div ref={messagesEndRef} />
         </div>
 
         <div className="flex gap-2 pt-4 border-t">
