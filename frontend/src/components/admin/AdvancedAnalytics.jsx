@@ -145,7 +145,7 @@ const AdvancedAnalytics = ({ backendUrl }) => {
             <MessageSquare className="w-5 h-5 text-blue-600" />
             Message Volume Trend
           </h3>
-          {messageVolume.length > 0 && messageVolume.some(d => d.messages > 0) ? (
+          {messageVolume.length > 0 && messageVolume.some(d => (d.count || 0) > 0) ? (
             <ResponsiveContainer width="100%" height={300}>
               <AreaChart data={messageVolume}>
                 <defs>
@@ -158,7 +158,7 @@ const AdvancedAnalytics = ({ backendUrl }) => {
                 <XAxis dataKey="date" tick={{ fontSize: 12 }} />
                 <YAxis tick={{ fontSize: 12 }} allowDecimals={false} />
                 <Tooltip />
-                <Area type="monotone" dataKey="messages" stroke="#3b82f6" fillOpacity={1} fill="url(#colorMessages)" name="Messages" />
+                <Area type="monotone" dataKey="count" stroke="#3b82f6" fillOpacity={1} fill="url(#colorMessages)" name="Messages" />
               </AreaChart>
             </ResponsiveContainer>
           ) : (
