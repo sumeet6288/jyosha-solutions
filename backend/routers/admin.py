@@ -1780,37 +1780,58 @@ async def get_user_growth(days: int = 30):
 
 @router.get("/analytics/messages/volume")
 async def get_message_volume(days: int = 30):
-    """Get message volume over time"""
+    """Get message volume over time - daily message counts"""
     try:
         if db_instance is None:
             raise HTTPException(status_code=500, detail="Database not initialized")
         
         messages_collection = db_instance['messages']
         
-        # Get messages by day
-        thirty_days_ago = (datetime.now() - timedelta(days=days)).isoformat()
+        # Calculate date range
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days)
+        start_date_str = start_date.strftime('%Y-%m-%d')
         
+        # Get messages by day
         pipeline = [
             {
                 "$match": {
-                    "timestamp": {"$gte": thirty_days_ago}
+                    "timestamp": {"$exists": True}
+                }
+            },
+            {
+                "$project": {
+                    "date": {"$substr": ["$timestamp", 0, 10]}
                 }
             },
             {
                 "$group": {
-                    "_id": {"$substr": ["$timestamp", 0, 10]},
+                    "_id": "$date",
                     "count": {"$sum": 1}
                 }
             },
             {"$sort": {"_id": 1}}
         ]
         
-        volume_data = []
+        # Get message counts by day
+        messages_by_day = {}
         async for doc in messages_collection.aggregate(pipeline):
+            if doc['_id'] >= start_date_str:
+                messages_by_day[doc['_id']] = doc['count']
+        
+        # Generate data for all days in range
+        volume_data = []
+        current_date = start_date
+        
+        while current_date <= end_date:
+            date_str = current_date.strftime('%Y-%m-%d')
+            daily_count = messages_by_day.get(date_str, 0)
+            
             volume_data.append({
-                "date": doc['_id'],
-                "messages": doc['count']
+                "date": date_str,
+                "count": daily_count  # Frontend expects 'count' field
             })
+            current_date += timedelta(days=1)
         
         return {
             "volume": volume_data,
