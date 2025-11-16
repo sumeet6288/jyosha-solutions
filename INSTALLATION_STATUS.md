@@ -57,7 +57,7 @@ All services are running successfully:
 ## Application Access
 
 ### 🌐 Public URL
-**Preview URL**: https://dev-preview-120.preview.emergentagent.com
+**Preview URL**: https://app-bootstrap-5.preview.emergentagent.com
 
 ### 🔗 Local URLs
 - **Frontend**: http://localhost:3000
@@ -195,7 +195,7 @@ EMERGENT_LLM_KEY=sk-emergent-919922434748629944
 
 ### Frontend (.env)
 ```
-REACT_APP_BACKEND_URL=https://dev-preview-120.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://app-bootstrap-5.preview.emergentagent.com
 WDS_SOCKET_PORT=443
 REACT_APP_ENABLE_VISUAL_EDITS=true
 ENABLE_HEALTH_CHECK=false
@@ -265,7 +265,7 @@ curl http://localhost:8001/api/plans/
 ## Next Steps
 
 1. **Login to Application**
-   - Visit: https://dev-preview-120.preview.emergentagent.com
+   - Visit: https://app-bootstrap-5.preview.emergentagent.com
    - Use credentials: admin@botsmith.com / admin123
    - Change password immediately
 
@@ -340,7 +340,7 @@ mongosh --eval "db.adminCommand('ping')"
 ✅ **MongoDB**: Running with chatbase_db database
 ✅ **Services**: All 3 services running (backend, frontend, mongodb)
 ✅ **Database**: Initialized with 1 admin user and 4 subscription plans
-✅ **Preview**: Accessible at https://dev-preview-120.preview.emergentagent.com
+✅ **Preview**: Accessible at https://app-bootstrap-5.preview.emergentagent.com
 
 **Status**: 🟢 **All Systems Operational**
 
