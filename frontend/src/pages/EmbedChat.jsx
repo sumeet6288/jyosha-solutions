@@ -179,7 +179,6 @@ const EmbedChat = () => {
                 </div>
               </div>
             )}
-            <div ref={messagesEndRef} />
           </div>
 
           {/* Input */}
