@@ -75,6 +75,10 @@ const AdminDashboard = () => {
       const providerRes = await fetch(`${backendUrl}/api/admin/analytics/providers/distribution`);
       const providerJson = await providerRes.json();
       
+      // Fetch conversations trend
+      const conversationsTrendRes = await fetch(`${backendUrl}/api/admin/analytics/conversations/trend?days=${timeRange}`);
+      const conversationsTrendJson = await conversationsTrendRes.json();
+      
       // Fetch general analytics
       const analyticsRes = await fetch(`${backendUrl}/api/admin/analytics`);
       const analyticsJson = await analyticsRes.json();
