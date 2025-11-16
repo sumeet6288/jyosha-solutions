@@ -249,7 +249,8 @@ async def process_discord_message(
                     content="I apologize, but I encountered an error processing your message. Please try again.",
                     message_reference={"message_id": message_id}
                 )
-        except:
+        except Exception as e:
+            logger.error(f"Error sending Discord error message: {e}")
             pass
 
 
