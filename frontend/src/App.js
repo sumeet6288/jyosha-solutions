@@ -176,6 +176,7 @@ function AppContent() {
             <Route path="/leads" element={<LeadsManagement />} />
             <Route path="/account-settings" element={<AccountSettings />} />
             <Route path="/notification-preferences" element={<NotificationPreferences />} />
+            <Route path="/notifications" element={<Notifications />} />
             <Route path="/chatbot/:id" element={<ChatbotBuilder />} />
             <Route path="/embed/:id" element={<EmbedChat />} />
             <Route path="/chat/:id" element={<ChatPage />} />
