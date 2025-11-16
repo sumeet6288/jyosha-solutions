@@ -435,7 +435,7 @@ async def get_user_growth(days: int = Query(default=30, ge=1, le=365)):
 @router.get("/analytics/messages/volume")
 async def get_message_volume(days: int = Query(default=30, ge=1, le=365)):
     """
-    Get message volume analytics over specified number of days
+    Get message volume analytics over specified number of days (daily counts)
     """
     try:
         if db_instance is None:
@@ -443,40 +443,51 @@ async def get_message_volume(days: int = Query(default=30, ge=1, le=365)):
             
         messages_collection = db_instance['messages']
         
-        # Calculate start date
-        start_date = datetime.now() - timedelta(days=days)
+        # Calculate date range
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days)
+        start_date_str = start_date.strftime('%Y-%m-%d')
         
-        # Aggregate messages by day
+        # Get messages by day
         pipeline = [
             {
                 "$match": {
-                    "timestamp": {"$gte": start_date.isoformat()}
-                }
-            },
-            {
-                "$group": {
-                    "_id": {
-                        "$dateToString": {
-                            "format": "%Y-%m-%d",
-                            "date": {"$toDate": "$timestamp"}
-                        }
-                    },
-                    "messages": {"$sum": 1}
+                    "timestamp": {"$exists": True}
                 }
             },
             {
                 "$project": {
-                    "_id": 0,
-                    "date": "$_id",
-                    "messages": 1
+                    "date": {"$substr": ["$timestamp", 0, 10]}
                 }
             },
-            {"$sort": {"date": 1}}
+            {
+                "$group": {
+                    "_id": "$date",
+                    "count": {"$sum": 1}
+                }
+            },
+            {"$sort": {"_id": 1}}
         ]
         
-        volume_data = []
+        # Get message counts by day
+        messages_by_day = {}
         async for doc in messages_collection.aggregate(pipeline):
-            volume_data.append(doc)
+            if doc['_id'] >= start_date_str:
+                messages_by_day[doc['_id']] = doc['count']
+        
+        # Generate data for all days in range
+        volume_data = []
+        current_date = start_date
+        
+        while current_date <= end_date:
+            date_str = current_date.strftime('%Y-%m-%d')
+            daily_count = messages_by_day.get(date_str, 0)
+            
+            volume_data.append({
+                "date": date_str,
+                "count": daily_count  # Frontend expects 'count' field
+            })
+            current_date += timedelta(days=1)
         
         return {
             "volume": volume_data,
