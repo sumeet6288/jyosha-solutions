@@ -142,14 +142,14 @@ const EmbedChat = () => {
       {/* Messages */}
       {!isMinimized && (
         <>
-          <div className="flex-1 overflow-y-auto px-3 py-4 space-y-4">
+          <div className="flex-1 overflow-y-auto py-3 space-y-3">
             {messages.map((message, index) => (
               <div
                 key={index}
-                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                className={`flex px-2 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[85%] rounded-2xl px-4 py-3 ${
+                  className={`max-w-[95%] rounded-2xl px-4 py-3 ${
                     message.role === 'user'
                       ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white'
                       : message.error
@@ -170,7 +170,7 @@ const EmbedChat = () => {
               </div>
             ))}
             {sending && (
-              <div className="flex justify-start">
+              <div className="flex justify-start px-2">
                 <div className="bg-white rounded-2xl px-4 py-3 shadow-sm border border-gray-100">
                   <div className="flex items-center gap-2">
                     <Loader2 className="w-4 h-4 animate-spin text-indigo-600" />
