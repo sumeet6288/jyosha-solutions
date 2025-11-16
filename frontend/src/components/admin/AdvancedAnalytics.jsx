@@ -50,6 +50,7 @@ const AdvancedAnalytics = ({ backendUrl }) => {
   // Calculate totals
   const totalUsers = userGrowth.reduce((sum, item) => sum + (item.count || 0), 0);
   const totalMessages = messageVolume.reduce((sum, item) => sum + (item.count || 0), 0);
+  const totalProviders = providerDist.reduce((sum, p) => sum + (p.count || 0), 0);
 
   return (
     <div className="space-y-6">
