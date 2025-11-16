@@ -127,6 +127,7 @@ const AdminDashboard = () => {
       setUserGrowthData([{ date: 'No data', count: 0 }]);
       setMessageVolumeData([{ date: 'No data', count: 0 }]);
       setProviderDistribution([{ name: 'No data', value: 1 }]);
+      setConversationsTrendData([{ date: 'No data', count: 0 }]);
     }
   };
 
