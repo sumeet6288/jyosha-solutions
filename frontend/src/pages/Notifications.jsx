@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import ResponsiveNav from '../components/ResponsiveNav';
+import UserProfileDropdown from '../components/UserProfileDropdown';
 import api from '../utils/api';
 import { toast } from 'react-hot-toast';
+import { useAuth } from '../contexts/AuthContext';
 import { 
   Bell, 
   Check, 
