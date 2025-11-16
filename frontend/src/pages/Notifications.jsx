@@ -25,6 +25,7 @@ import { useNotifications } from '../context/NotificationContext';
 
 const Notifications = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const { fetchUnreadCount } = useNotifications();
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
