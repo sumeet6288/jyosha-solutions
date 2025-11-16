@@ -117,7 +117,7 @@ const EmbedChat = () => {
   return (
     <div className="h-screen flex flex-col bg-gradient-to-br from-blue-50 to-indigo-50">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-3 py-3 flex items-center justify-between shadow-sm">
+      <div className="bg-white border-b border-gray-200 px-2 py-3 flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
             {chatbot.name.charAt(0).toUpperCase()}
