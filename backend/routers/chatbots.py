@@ -56,7 +56,7 @@ async def create_chatbot(
             welcome_message=chatbot_data.welcome_message
         )
         
-        result = await db_instance.chatbots.insert_one(chatbot.model_dump())
+        await db_instance.chatbots.insert_one(chatbot.model_dump())
         
         # Increment usage count
         await plan_service.increment_usage(current_user.id, "chatbots")
