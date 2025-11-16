@@ -1715,38 +1715,59 @@ async def activate_user(user_id: str):
 # ==================== ADVANCED ANALYTICS ====================
 @router.get("/analytics/users/growth")
 async def get_user_growth(days: int = 30):
-    """Get user growth analytics"""
+    """Get user growth analytics - cumulative user count by day"""
     try:
         if db_instance is None:
             raise HTTPException(status_code=500, detail="Database not initialized")
         
-        chatbots_collection = db_instance['chatbots']
+        users_collection = db_instance['users']
         
-        # Get unique users by day
+        # Calculate date range
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days)
+        
+        # Get all users with their creation dates
         pipeline = [
             {
-                "$group": {
-                    "_id": {
-                        "date": {"$substr": ["$created_at", 0, 10]},
-                        "user_id": "$user_id"
-                    }
+                "$match": {
+                    "created_at": {"$exists": True}
+                }
+            },
+            {
+                "$project": {
+                    "date": {"$substr": ["$created_at", 0, 10]},
+                    "created_at": 1
                 }
             },
             {
                 "$group": {
-                    "_id": "$_id.date",
+                    "_id": "$date",
                     "count": {"$sum": 1}
                 }
             },
             {"$sort": {"_id": 1}}
         ]
         
+        # Get user counts by day
+        users_by_day = {}
+        async for doc in users_collection.aggregate(pipeline):
+            users_by_day[doc['_id']] = doc['count']
+        
+        # Generate data for all days in range
         growth_data = []
-        async for doc in chatbots_collection.aggregate(pipeline):
+        cumulative = 0
+        current_date = start_date
+        
+        while current_date <= end_date:
+            date_str = current_date.strftime('%Y-%m-%d')
+            daily_count = users_by_day.get(date_str, 0)
+            cumulative += daily_count
+            
             growth_data.append({
-                "date": doc['_id'],
-                "users": doc['count']
+                "date": date_str,
+                "count": cumulative  # Frontend expects 'count' field
             })
+            current_date += timedelta(days=1)
         
         return {
             "growth": growth_data,
