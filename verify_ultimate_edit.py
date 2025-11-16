@@ -5,7 +5,7 @@ import requests
 import json
 
 # Configuration
-BACKEND_URL = "https://mern-installer-7.preview.emergentagent.com/api"
+BACKEND_URL = "https://devops-mongo-app.preview.emergentagent.com/api"
 ADMIN_EMAIL = "admin@botsmith.com"
 ADMIN_PASSWORD = "admin123"
 
