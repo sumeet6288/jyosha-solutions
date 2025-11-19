@@ -278,6 +278,10 @@ class NotificationService:
         result = await self.push_subscriptions.insert_one(subscription)
         subscription["id"] = str(result.inserted_id)
         
+        # Remove _id if it exists (shouldn't be there but just in case)
+        if "_id" in subscription:
+            del subscription["_id"]
+        
         logger.info(f"Saved push subscription for user {user_id}")
         return subscription
     
