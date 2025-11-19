@@ -261,6 +261,10 @@ class NotificationService:
         })
         
         if existing:
+            # Convert _id to id for JSON serialization
+            if "_id" in existing:
+                existing["id"] = str(existing["_id"])
+                del existing["_id"]
             return existing
         
         subscription = {
