@@ -184,15 +184,25 @@ except Exception as e:
     log_test("Get notification preferences", False, f"Exception: {str(e)}")
 
 # ============================================================================
-# TEST 3: Verify user appears in enhanced users list
+# TEST 3: Save Push Subscription API
 # ============================================================================
-print("\n[TEST 3] Verify user appears in enhanced users list...")
+print("\n[TEST 3] Save Push Subscription API...")
+push_subscription_data = {
+    "endpoint": "https://test-endpoint.example.com",
+    "keys": {
+        "p256dh": "test_key_1",
+        "auth": "test_key_2"
+    },
+    "browser": "Chrome"
+}
+
 try:
     headers = {"Authorization": f"Bearer {admin_token}"}
     
-    response = requests.get(
-        f"{BACKEND_URL}/admin/users/enhanced",
+    response = requests.post(
+        f"{BACKEND_URL}/notifications/push-subscription",
         headers=headers,
+        json=push_subscription_data,
         timeout=10
     )
     
@@ -200,33 +210,27 @@ try:
         result = response.json()
         
         checks = []
-        checks.append(("Success flag", result.get("success") == True))
-        checks.append(("Has users array", "users" in result))
-        checks.append(("Has total count", "total" in result))
+        checks.append(("Has message", "message" in result))
+        checks.append(("Has subscription", "subscription" in result))
+        checks.append(("Message indicates success", "saved" in result.get("message", "").lower()))
         
-        # Look for our test user
-        user_found = False
-        if result.get("users") and test_user_id:
-            for user in result["users"]:
-                if user.get("user_id") == test_user_id:
-                    user_found = True
-                    checks.append(("Test user found", True))
-                    checks.append(("Correct email", user.get("email") == test_user_data["email"]))
-                    checks.append(("Correct name", user.get("name") == test_user_data["name"]))
-                    break
-        
-        if not user_found:
-            checks.append(("Test user found", False))
+        if result.get("subscription"):
+            subscription = result["subscription"]
+            checks.append(("Subscription has endpoint", subscription.get("endpoint") == push_subscription_data["endpoint"]))
+            checks.append(("Subscription has keys", "keys" in subscription))
+            checks.append(("Subscription has browser", subscription.get("browser") == push_subscription_data["browser"]))
+            checks.append(("Subscription has user_id", "user_id" in subscription))
+            checks.append(("Subscription has id", "id" in subscription))
         
         all_passed = all(check[1] for check in checks)
-        details = f"Total users: {result.get('total')}, Test user found: {user_found}"
-        log_test("User appears in enhanced list", all_passed and user_found, details)
+        details = f"Push subscription saved successfully"
+        log_test("Save push subscription", all_passed, details)
         
     else:
-        log_test("User appears in enhanced list", False, f"Status: {response.status_code}, Response: {response.text}")
+        log_test("Save push subscription", False, f"Status: {response.status_code}, Response: {response.text}")
 
 except Exception as e:
-    log_test("User appears in enhanced list", False, f"Exception: {str(e)}")
+    log_test("Save push subscription", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 4: Delete the test user
