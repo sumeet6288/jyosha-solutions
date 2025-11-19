@@ -366,19 +366,42 @@ except Exception as e:
     log_test("Push subscription validation error", False, f"Exception: {str(e)}")
 
 # ============================================================================
-# TEST 7: Verify database consistency - check MongoDB directly
+# TEST 7: Test Unauthenticated Access to Notification Endpoints
 # ============================================================================
-print("\n[TEST 7] Verify database consistency - check MongoDB directly...")
-if not test_user_id:
-    log_test("Verify database consistency", False, "No test user ID available - skipping database check")
-else:
-    try:
-        # We can't directly access MongoDB from this test, but we can verify through API
-        # The enhanced users list already confirmed the user is gone, which means it's deleted from DB
-        log_test("Verify database consistency", True, "User deletion confirmed through API - database consistency verified")
-        
-    except Exception as e:
-        log_test("Verify database consistency", False, f"Exception: {str(e)}")
+print("\n[TEST 7] Test Unauthenticated Access to Notification Endpoints...")
+try:
+    # Test without authentication headers
+    endpoints_to_test = [
+        ("GET /notifications/preferences", "get", f"{BACKEND_URL}/notifications/preferences"),
+        ("POST /notifications/push-subscription", "post", f"{BACKEND_URL}/notifications/push-subscription"),
+        ("PUT /notifications/preferences", "put", f"{BACKEND_URL}/notifications/preferences")
+    ]
+    
+    all_tests_passed = True
+    for endpoint_name, method, url in endpoints_to_test:
+        try:
+            if method == "get":
+                response = requests.get(url, timeout=10)
+            elif method == "post":
+                response = requests.post(url, json={}, timeout=10)
+            elif method == "put":
+                response = requests.put(url, json={}, timeout=10)
+            
+            # Should return 401 (Unauthorized) or 403 (Forbidden)
+            if response.status_code in [401, 403]:
+                print(f"   ✅ {endpoint_name}: Correctly returned {response.status_code}")
+            else:
+                print(f"   ❌ {endpoint_name}: Expected 401/403, got {response.status_code}")
+                all_tests_passed = False
+                
+        except Exception as e:
+            print(f"   ❌ {endpoint_name}: Exception - {str(e)}")
+            all_tests_passed = False
+    
+    log_test("Unauthenticated access properly rejected", all_tests_passed, "All notification endpoints require authentication")
+
+except Exception as e:
+    log_test("Unauthenticated access properly rejected", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 8: Test unauthenticated deletion request (should fail with 401 or 404)
