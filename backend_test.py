@@ -140,54 +140,48 @@ except Exception as e:
     exit(1)
 
 # ============================================================================
-# TEST 2: Create a test user for deletion
+# TEST 2: Get Notification Preferences API
 # ============================================================================
-print("\n[TEST 2] Create a test user for deletion...")
-test_user_data = {
-    "name": "Test User for Deletion",
-    "email": "testdelete@test.com",
-    "password": "test123",
-    "role": "user"
-}
-test_user_id = None
-
+print("\n[TEST 2] Get Notification Preferences API...")
 try:
     headers = {"Authorization": f"Bearer {admin_token}"}
     
-    response = requests.post(
-        f"{BACKEND_URL}/admin/users/create",
+    response = requests.get(
+        f"{BACKEND_URL}/notifications/preferences",
         headers=headers,
-        json=test_user_data,
         timeout=10
     )
     
     if response.status_code == 200:
         result = response.json()
         
-        checks = []
-        checks.append(("Success flag", result.get("success") == True))
-        checks.append(("Has user_id", result.get("user_id") is not None))
-        checks.append(("Has message", result.get("message") is not None))
-        checks.append(("User data present", result.get("user") is not None))
+        # Check if all required fields are present
+        required_fields = [
+            "email_enabled", "push_enabled", "email_new_conversation",
+            "email_high_priority", "email_performance_alert", "email_usage_warning",
+            "email_digest", "email_digest_time", "push_new_conversation",
+            "push_high_priority", "push_performance_alert", "push_usage_warning",
+            "inapp_enabled", "inapp_sound", "admin_new_user_signup", "admin_webhook_events"
+        ]
         
-        if result.get("user"):
-            user_data = result["user"]
-            checks.append(("Correct email", user_data.get("email") == test_user_data["email"]))
-            checks.append(("Correct name", user_data.get("name") == test_user_data["name"]))
-            checks.append(("Correct role", user_data.get("role") == test_user_data["role"]))
+        checks = []
+        for field in required_fields:
+            checks.append((f"Has {field}", field in result))
+        
+        # Check specific field values
+        checks.append(("email_enabled is boolean", isinstance(result.get("email_enabled"), bool)))
+        checks.append(("push_enabled is boolean", isinstance(result.get("push_enabled"), bool)))
+        checks.append(("email_digest is valid", result.get("email_digest") in ["none", "daily", "weekly"]))
         
         all_passed = all(check[1] for check in checks)
-        details = f"User created with ID: {result.get('user_id')}"
-        log_test("Create test user", all_passed, details)
-        
-        # Store user ID for deletion test
-        test_user_id = result.get("user_id")
+        details = f"Found {len([f for f in required_fields if f in result])}/{len(required_fields)} required fields"
+        log_test("Get notification preferences", all_passed, details)
         
     else:
-        log_test("Create test user", False, f"Status: {response.status_code}, Response: {response.text}")
+        log_test("Get notification preferences", False, f"Status: {response.status_code}, Response: {response.text}")
 
 except Exception as e:
-    log_test("Create test user", False, f"Exception: {str(e)}")
+    log_test("Get notification preferences", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 3: Verify user appears in enhanced users list
