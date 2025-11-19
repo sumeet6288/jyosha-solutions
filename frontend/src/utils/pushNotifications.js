@@ -87,10 +87,11 @@ export async function requestNotificationPermission() {
 
 /**
  * Subscribe to push notifications
+ * Returns: { success: boolean, subscription: object|null, mode: 'full'|'basic', error: string|null }
  */
 export async function subscribeToPushNotifications() {
   if (!isPushSupported()) {
-    throw new Error('Push notifications not supported');
+    throw new Error('Push notifications not supported in this browser. Please use Chrome, Firefox, or Edge.');
   }
 
   // Check permission
@@ -102,9 +103,21 @@ export async function subscribeToPushNotifications() {
   }
 
   // Register service worker
-  const registration = await registerServiceWorker();
-  if (!registration) {
-    throw new Error('Service Worker registration failed');
+  let registration;
+  try {
+    registration = await registerServiceWorker();
+    if (!registration) {
+      throw new Error('Service Worker registration failed');
+    }
+  } catch (swError) {
+    console.error('❌ Service Worker registration failed:', swError);
+    // Even if SW fails, basic notifications can work
+    return {
+      success: true,
+      subscription: null,
+      mode: 'basic',
+      error: 'Service Worker failed, using basic notifications only'
+    };
   }
 
   // Check for existing subscription
@@ -118,18 +131,33 @@ export async function subscribeToPushNotifications() {
         applicationServerKey: urlBase64ToUint8Array(PUBLIC_VAPID_KEY)
       });
       console.log('✅ New push subscription created with VAPID');
+      return {
+        success: true,
+        subscription: subscription,
+        mode: 'full',
+        error: null
+      };
     } catch (vapidError) {
-      console.warn('⚠️ VAPID subscription failed, this is normal if VAPID keys are not configured:', vapidError.message);
+      console.warn('⚠️ VAPID subscription failed:', vapidError.message);
       // VAPID keys not configured - this is OK for basic notifications
       // We can still use regular browser notifications without push subscription
-      console.log('✅ Push notifications will work without server push (browser notifications only)');
-      return null; // Return null to indicate no push subscription but notifications still work
+      console.log('✅ Using basic browser notifications (without server push)');
+      return {
+        success: true,
+        subscription: null,
+        mode: 'basic',
+        error: null
+      };
     }
   } else {
     console.log('✅ Existing push subscription found');
+    return {
+      success: true,
+      subscription: subscription,
+      mode: 'full',
+      error: null
+    };
   }
-
-  return subscription;
 }
 
 /**
