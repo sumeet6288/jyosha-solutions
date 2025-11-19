@@ -404,25 +404,53 @@ except Exception as e:
     log_test("Unauthenticated access properly rejected", False, f"Exception: {str(e)}")
 
 # ============================================================================
-# TEST 8: Test unauthenticated deletion request (should fail with 401 or 404)
+# TEST 8: Test Additional Notification Endpoints
 # ============================================================================
-print("\n[TEST 8] Test unauthenticated deletion request...")
+print("\n[TEST 8] Test Additional Notification Endpoints...")
 try:
-    # Try to delete without authentication
-    response = requests.delete(
-        f"{BACKEND_URL}/admin/users/some-user-id",
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    
+    # Test getting notifications list
+    response = requests.get(
+        f"{BACKEND_URL}/notifications/",
+        headers=headers,
         timeout=10
     )
     
-    # Accept both 401 (Unauthorized) and 404 (Not Found) as valid responses
-    # 404 might be returned if the route doesn't exist without auth
-    if response.status_code in [401, 404]:
-        log_test("Unauthenticated deletion fails", True, f"Correctly returned {response.status_code} (authentication required)")
+    notifications_test_passed = False
+    if response.status_code == 200:
+        result = response.json()
+        if isinstance(result, list):
+            notifications_test_passed = True
+            print(f"   ✅ GET /notifications/: Returned list with {len(result)} notifications")
+        else:
+            print(f"   ❌ GET /notifications/: Expected list, got {type(result)}")
     else:
-        log_test("Unauthenticated deletion fails", False, f"Expected 401 or 404, got {response.status_code}")
+        print(f"   ❌ GET /notifications/: Status {response.status_code}")
+    
+    # Test getting unread count
+    response = requests.get(
+        f"{BACKEND_URL}/notifications/unread-count",
+        headers=headers,
+        timeout=10
+    )
+    
+    unread_count_test_passed = False
+    if response.status_code == 200:
+        result = response.json()
+        if "count" in result and isinstance(result["count"], int):
+            unread_count_test_passed = True
+            print(f"   ✅ GET /notifications/unread-count: Returned count {result['count']}")
+        else:
+            print(f"   ❌ GET /notifications/unread-count: Invalid response format")
+    else:
+        print(f"   ❌ GET /notifications/unread-count: Status {response.status_code}")
+    
+    all_passed = notifications_test_passed and unread_count_test_passed
+    log_test("Additional notification endpoints", all_passed, "Tested notifications list and unread count")
 
 except Exception as e:
-    log_test("Unauthenticated deletion fails", False, f"Exception: {str(e)}")
+    log_test("Additional notification endpoints", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST COMPLETE - SUMMARY
