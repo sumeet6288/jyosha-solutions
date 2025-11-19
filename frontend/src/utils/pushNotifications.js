@@ -278,24 +278,36 @@ function getBrowserInfo() {
  */
 export async function testPushNotification() {
   if (!('Notification' in window)) {
-    throw new Error('Notifications not supported');
+    const error = 'Notifications API not supported in this browser';
+    console.error('❌', error);
+    throw new Error(error);
   }
 
   if (Notification.permission !== 'granted') {
-    throw new Error('Notification permission not granted');
+    const error = 'Notification permission not granted. Current permission: ' + Notification.permission;
+    console.error('❌', error);
+    throw new Error(error);
   }
 
-  const notification = new Notification('BotSmith Test', {
-    body: 'Push notifications are working! 🎉',
-    icon: '/logo192.png',
-    badge: '/logo192.png',
-    vibrate: [200, 100, 200]
-  });
+  try {
+    const notification = new Notification('🎉 BotSmith Notifications Active!', {
+      body: 'You\'ll now receive notifications from BotSmith. Click to visit the app.',
+      icon: '/logo192.png',
+      badge: '/logo192.png',
+      vibrate: [200, 100, 200],
+      requireInteraction: false,
+      tag: 'botsmith-test'
+    });
 
-  notification.onclick = () => {
-    window.focus();
-    notification.close();
-  };
+    notification.onclick = () => {
+      window.focus();
+      notification.close();
+    };
 
-  return notification;
+    console.log('✅ Test notification displayed successfully');
+    return notification;
+  } catch (error) {
+    console.error('❌ Failed to show test notification:', error);
+    throw error;
+  }
 }
