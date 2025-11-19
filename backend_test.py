@@ -291,47 +291,49 @@ except Exception as e:
     log_test("Update notification preferences", False, f"Exception: {str(e)}")
 
 # ============================================================================
-# TEST 5: Verify user is removed from enhanced users list
+# TEST 5: Verify Updated Preferences Persist
 # ============================================================================
-print("\n[TEST 5] Verify user is removed from enhanced users list...")
-if not test_user_id:
-    log_test("Verify user removal from list", False, "No test user ID available - skipping verification")
-else:
-    try:
-        headers = {"Authorization": f"Bearer {admin_token}"}
+print("\n[TEST 5] Verify Updated Preferences Persist...")
+try:
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    
+    # Get preferences again to verify persistence
+    response = requests.get(
+        f"{BACKEND_URL}/notifications/preferences",
+        headers=headers,
+        timeout=10
+    )
+    
+    if response.status_code == 200:
+        result = response.json()
         
-        response = requests.get(
-            f"{BACKEND_URL}/admin/users/enhanced",
-            headers=headers,
-            timeout=10
-        )
+        # Check if the updated values from TEST 4 are still there
+        expected_values = {
+            "email_enabled": False,
+            "push_enabled": True,
+            "email_digest": "weekly",
+            "inapp_sound": False
+        }
         
-        if response.status_code == 200:
-            result = response.json()
-            
-            checks = []
-            checks.append(("Success flag", result.get("success") == True))
-            checks.append(("Has users array", "users" in result))
-            
-            # Look for our test user - it should NOT be found
-            user_found = False
-            if result.get("users"):
-                for user in result["users"]:
-                    if user.get("user_id") == test_user_id:
-                        user_found = True
-                        break
-            
-            checks.append(("Test user NOT found (deleted)", not user_found))
-            
-            all_passed = all(check[1] for check in checks)
-            details = f"Total users: {result.get('total')}, Test user found: {user_found} (should be False)"
-            log_test("Verify user removal from list", all_passed and not user_found, details)
-            
-        else:
-            log_test("Verify user removal from list", False, f"Status: {response.status_code}, Response: {response.text}")
+        checks = []
+        for field, expected_value in expected_values.items():
+            actual_value = result.get(field)
+            checks.append((f"{field} persisted", actual_value == expected_value))
+        
+        # Check that we still have all required fields
+        required_fields = ["email_enabled", "push_enabled", "inapp_enabled"]
+        for field in required_fields:
+            checks.append((f"Has {field}", field in result))
+        
+        all_passed = all(check[1] for check in checks)
+        details = f"All updated preferences persisted correctly"
+        log_test("Verify preferences persistence", all_passed, details)
+        
+    else:
+        log_test("Verify preferences persistence", False, f"Status: {response.status_code}, Response: {response.text}")
 
-    except Exception as e:
-        log_test("Verify user removal from list", False, f"Exception: {str(e)}")
+except Exception as e:
+    log_test("Verify preferences persistence", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 6: Test error handling - delete non-existent user
