@@ -1,38 +1,37 @@
 """
-COMPREHENSIVE USER DELETION FUNCTIONALITY TESTING
+PUSH NOTIFICATION BACKEND SETUP TESTING
 
-Test the user deletion functionality in the admin panel.
+Test the push notification backend setup as requested:
 
 ENDPOINTS TO TEST:
-1. POST /api/admin/users/create - Create a test user for deletion
-2. GET /api/admin/users/enhanced - Verify user exists in the list
-3. DELETE /api/admin/users/{user_id} - Delete the user
-4. GET /api/admin/users/enhanced - Verify user is removed from list
-5. DELETE /api/admin/users/non-existent-id - Test error handling for non-existent user
+1. POST /api/auth/login - Login with admin@botsmith.com / admin123 to get auth token
+2. GET /api/notifications/preferences - Get user's notification preferences
+3. POST /api/notifications/push-subscription - Save push subscription
+4. PUT /api/notifications/preferences - Update notification preferences
 
 TEST REQUIREMENTS:
 1. Authentication: Must include valid JWT token (use admin@botsmith.com / admin123 to login first)
-2. Create a new test user with:
-   - name: "Test User for Deletion"
-   - email: "testdelete@test.com"
-   - password: "test123"
-   - role: "user"
-3. Verify the user was created by checking GET /api/admin/users/enhanced
-4. Delete the user via DELETE /api/admin/users/{user_id}
-5. Verify deletion was successful:
-   - Response should have success: true
-   - GET /api/admin/users/enhanced should NOT include the deleted user
-   - Database should NOT have the user (check MongoDB)
-6. Test error handling by trying to delete a non-existent user:
-   - DELETE /api/admin/users/non-existent-id
-   - Should return 404 error
+2. Test notification preferences endpoint:
+   - Should return user's notification preferences
+   - Check if all fields are present (email_enabled, push_enabled, etc.)
+3. Test push subscription endpoint:
+   - Body: {
+     "endpoint": "https://test-endpoint.example.com",
+     "keys": {
+       "p256dh": "test_key_1",
+       "auth": "test_key_2"
+     },
+     "browser": "Chrome"
+   }
+   - Should save successfully with auth token
+4. Test update notification preferences:
+   - Update some preferences and verify they're saved
 
 EXPECTED RESULTS:
-- User creation should succeed
-- User should appear in enhanced users list
-- Deletion should succeed with success: true
-- User should be removed from database and users list
-- Deleting non-existent user should return 404 error
+- Login should succeed and return access token
+- Get preferences should return all notification preference fields
+- Push subscription should save successfully
+- Update preferences should save and persist changes
 """
 import requests
 import json
