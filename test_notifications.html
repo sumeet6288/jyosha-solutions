@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BotSmith Notification Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .info { background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; }
+        .warning { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        button:hover { transform: translateY(-2px); }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .log-success { color: #28a745; }
+        .log-error { color: #dc3545; }
+        .log-info { color: #17a2b8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔔 BotSmith Notification Test</h1>
+        <p>Test the push notification system step by step</p>
+
+        <div id="status"></div>
+
+        <div style="margin: 20px 0;">
+            <button onclick="checkSupport()">1. Check Browser Support</button>
+            <button onclick="requestPermission()">2. Request Permission</button>
+            <button onclick="registerSW()">3. Register Service Worker</button>
+            <button onclick="testNotification()">4. Test Notification</button>
+            <button onclick="runFullTest()">▶️ Run Full Test</button>
+        </div>
+
+        <div class="log" id="log"></div>
+    </div>
+
+    <script>
+        const logContainer = document.getElementById('log');
+        const statusContainer = document.getElementById('status');
+
+        function addLog(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.insertBefore(entry, logContainer.firstChild);
+        }
+
+        function showStatus(message, type = 'info') {
+            statusContainer.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function checkSupport() {
+            addLog('Checking browser support...', 'info');
+            
+            const checks = {
+                'Notification API': 'Notification' in window,
+                'Service Worker': 'serviceWorker' in navigator,
+                'Push Manager': 'PushManager' in window,
+                'HTTPS': window.location.protocol === 'https:' || window.location.hostname === 'localhost'
+            };
+
+            let allSupported = true;
+            let details = '<strong>Browser Support Check:</strong><br>';
+            
+            for (const [feature, supported] of Object.entries(checks)) {
+                details += `${supported ? '✅' : '❌'} ${feature}<br>`;
+                addLog(`${feature}: ${supported ? 'Supported' : 'Not Supported'}`, supported ? 'success' : 'error');
+                if (!supported) allSupported = false;
+            }
+
+            if (Notification.permission) {
+                details += `<br>Current Permission: <strong>${Notification.permission}</strong>`;
+                addLog(`Current permission: ${Notification.permission}`, 'info');
+            }
+
+            showStatus(details, allSupported ? 'success' : 'error');
+            return allSupported;
+        }
+
+        async function requestPermission() {
+            addLog('Requesting notification permission...', 'info');
+            
+            if (!('Notification' in window)) {
+                showStatus('❌ Notifications not supported in this browser', 'error');
+                addLog('Notifications not supported', 'error');
+                return false;
+            }
+
+            try {
+                const permission = await Notification.requestPermission();
+                addLog(`Permission result: ${permission}`, permission === 'granted' ? 'success' : 'error');
+                
+                if (permission === 'granted') {
+                    showStatus('✅ Notification permission granted!', 'success');
+                    return true;
+                } else {
+                    showStatus('❌ Notification permission denied. Please allow notifications and try again.', 'error');
+                    return false;
+                }
+            } catch (error) {
+                addLog(`Error requesting permission: ${error.message}`, 'error');
+                showStatus(`❌ Error: ${error.message}`, 'error');
+                return false;
+            }
+        }
+
+        async function registerSW() {
+            addLog('Attempting to register service worker...', 'info');
+            
+            if (!('serviceWorker' in navigator)) {
+                showStatus('❌ Service Worker not supported', 'error');
+                addLog('Service Worker not supported', 'error');
+                return null;
+            }
+
+            try {
+                // Check for existing registration
+                let registration = await navigator.serviceWorker.getRegistration('/');
+                
+                if (registration) {
+                    addLog('Service Worker already registered', 'success');
+                } else {
+                    // Register new service worker
+                    registration = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+                    addLog('New Service Worker registered', 'success');
+                }
+                
+                // Wait for it to be ready
+                await navigator.serviceWorker.ready;
+                addLog('Service Worker is ready', 'success');
+                
+                showStatus('✅ Service Worker registered and ready!', 'success');
+                return registration;
+            } catch (error) {
+                addLog(`Service Worker registration failed: ${error.message}`, 'error');
+                showStatus(`❌ Service Worker Error: ${error.message}`, 'error');
+                return null;
+            }
+        }
+
+        async function testNotification() {
+            addLog('Testing notification...', 'info');
+            
+            if (!('Notification' in window)) {
+                showStatus('❌ Notifications not supported', 'error');
+                return;
+            }
+
+            if (Notification.permission !== 'granted') {
+                showStatus('❌ Permission not granted. Click "2. Request Permission" first.', 'warning');
+                addLog('Permission not granted', 'error');
+                return;
+            }
+
+            try {
+                const notification = new Notification('🎉 Test Successful!', {
+                    body: 'BotSmith notifications are working correctly!',
+                    icon: '/logo192.png',
+                    badge: '/logo192.png',
+                    vibrate: [200, 100, 200],
+                    tag: 'botsmith-test'
+                });
+
+                notification.onclick = () => {
+                    addLog('Notification clicked', 'info');
+                    window.focus();
+                    notification.close();
+                };
+
+                addLog('Test notification sent', 'success');
+                showStatus('✅ Test notification sent! Check your screen.', 'success');
+            } catch (error) {
+                addLog(`Failed to send notification: ${error.message}`, 'error');
+                showStatus(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function runFullTest() {
+            addLog('=== Starting Full Test ===', 'info');
+            
+            // Step 1: Check support
+            showStatus('Step 1/4: Checking browser support...', 'info');
+            const supported = checkSupport();
+            if (!supported) {
+                showStatus('❌ Browser not fully supported. Some features may not work.', 'warning');
+            }
+            await sleep(1000);
+
+            // Step 2: Request permission
+            showStatus('Step 2/4: Requesting permission...', 'info');
+            const permitted = await requestPermission();
+            if (!permitted) {
+                showStatus('❌ Test stopped: Permission denied', 'error');
+                return;
+            }
+            await sleep(1000);
+
+            // Step 3: Register service worker
+            showStatus('Step 3/4: Registering service worker...', 'info');
+            const registration = await registerSW();
+            await sleep(1000);
+
+            // Step 4: Test notification
+            showStatus('Step 4/4: Sending test notification...', 'info');
+            await testNotification();
+            await sleep(1000);
+
+            addLog('=== Full Test Complete ===', 'success');
+            showStatus('✅ All tests complete! Notifications are working.', 'success');
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Run initial check on page load
+        window.addEventListener('load', () => {
+            addLog('Page loaded', 'info');
+            checkSupport();
+        });
+    </script>
+</body>
+</html>
