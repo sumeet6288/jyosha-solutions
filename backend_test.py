@@ -336,29 +336,34 @@ except Exception as e:
     log_test("Verify preferences persistence", False, f"Exception: {str(e)}")
 
 # ============================================================================
-# TEST 6: Test error handling - delete non-existent user
+# TEST 6: Test Push Subscription with Invalid Data
 # ============================================================================
-print("\n[TEST 6] Test error handling - delete non-existent user...")
+print("\n[TEST 6] Test Push Subscription with Invalid Data...")
 try:
     headers = {"Authorization": f"Bearer {admin_token}"}
     
-    # Try to delete a non-existent user
-    non_existent_id = "non-existent-user-id-12345"
+    # Test with missing required fields
+    invalid_data = {
+        "endpoint": "https://test-endpoint.example.com",
+        # Missing keys field
+        "browser": "Chrome"
+    }
     
-    response = requests.delete(
-        f"{BACKEND_URL}/admin/users/{non_existent_id}",
+    response = requests.post(
+        f"{BACKEND_URL}/notifications/push-subscription",
         headers=headers,
+        json=invalid_data,
         timeout=10
     )
     
-    if response.status_code == 404:
-        log_test("Delete non-existent user returns 404", True, "Correctly returned 404 Not Found")
+    # Should return 422 (validation error) or 400 (bad request)
+    if response.status_code in [400, 422]:
+        log_test("Push subscription validation error", True, f"Correctly returned {response.status_code} for invalid data")
     else:
-        result = response.json() if response.headers.get('content-type', '').startswith('application/json') else response.text
-        log_test("Delete non-existent user returns 404", False, f"Expected 404, got {response.status_code}, Response: {result}")
+        log_test("Push subscription validation error", False, f"Expected 400/422, got {response.status_code}, Response: {response.text}")
 
 except Exception as e:
-    log_test("Delete non-existent user returns 404", False, f"Exception: {str(e)}")
+    log_test("Push subscription validation error", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 7: Verify database consistency - check MongoDB directly
