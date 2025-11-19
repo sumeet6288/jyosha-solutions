@@ -73,34 +73,49 @@ const NotificationPreferences = () => {
 
   const requestPushPermission = async () => {
     if (!pushSupported) {
-      toast.error('Push notifications are not supported in your browser');
+      toast.error('Push notifications are not supported in your browser. Please use Chrome, Firefox, or Edge.');
       return;
     }
 
     try {
       toast.loading('Requesting notification permission...');
       
-      // First, just request basic notification permission
+      // First, request basic notification permission
       if (Notification.permission === 'default') {
         const permission = await Notification.requestPermission();
         
         if (permission !== 'granted') {
           toast.dismiss();
-          toast.error('❌ Notification permission denied. Please click "Allow" when your browser asks for permission.');
+          toast.error('❌ Permission denied. Please click "Allow" when your browser asks.', {
+            duration: 6000
+          });
           return;
         }
       }
       
+      // Check if permission was already denied
+      if (Notification.permission === 'denied') {
+        toast.dismiss();
+        toast.error('❌ Notifications are blocked. Click the 🔒 icon in your address bar → Site Settings → Notifications → Allow', {
+          duration: 10000
+        });
+        return;
+      }
+      
       toast.dismiss();
-      toast.loading('Setting up notifications...');
+      toast.loading('Setting up notifications...', { id: 'setup' });
       
       // Now try to subscribe to push notifications
-      const subscription = await subscribeToPushNotifications();
+      const result = await subscribeToPushNotifications();
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to setup notifications');
+      }
       
       // If we got a subscription, send it to backend
-      if (subscription) {
+      if (result.subscription) {
         try {
-          await sendSubscriptionToBackend(subscription, api);
+          await sendSubscriptionToBackend(result.subscription, api);
           console.log('✅ Subscription saved to backend');
         } catch (backendError) {
           console.warn('⚠️ Could not save subscription to backend, but notifications will still work:', backendError);
@@ -108,8 +123,18 @@ const NotificationPreferences = () => {
       }
       
       setPushEnabled(true);
-      toast.dismiss();
-      toast.success('✅ Browser notifications enabled successfully!');
+      toast.dismiss('setup');
+      
+      // Show appropriate success message based on mode
+      if (result.mode === 'full') {
+        toast.success('✅ Push notifications enabled! You\'ll receive notifications even when this tab is closed.', {
+          duration: 5000
+        });
+      } else {
+        toast.success('✅ Browser notifications enabled! You\'ll see notifications while this tab is open.', {
+          duration: 5000
+        });
+      }
       
       // Test notification immediately
       setTimeout(() => {
@@ -120,20 +145,24 @@ const NotificationPreferences = () => {
           .catch((err) => {
             console.error('❌ Test notification failed:', err);
           });
-      }, 500);
+      }, 1000);
       
     } catch (error) {
       toast.dismiss();
       console.error('Error enabling push notifications:', error);
       
       if (error.message.includes('Permission denied') || error.message.includes('permission denied')) {
-        toast.error('❌ Permission denied. To fix: Click the 🔒 icon in your browser address bar → Site Settings → Notifications → Allow', {
-          duration: 8000
+        toast.error('❌ Permission denied. To fix:\n1. Click the 🔒 icon in your address bar\n2. Go to Site Settings\n3. Set Notifications to "Allow"', {
+          duration: 10000
         });
       } else if (error.message.includes('not supported')) {
-        toast.error('Push notifications are not supported in your browser. Try Chrome, Firefox, or Edge.');
+        toast.error('Push notifications are not supported in your browser. Try Chrome, Firefox, or Edge.', {
+          duration: 6000
+        });
       } else {
-        toast.error('Failed to enable notifications: ' + error.message);
+        toast.error('Failed to enable notifications: ' + error.message, {
+          duration: 6000
+        });
       }
     }
   };
