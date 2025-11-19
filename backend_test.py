@@ -233,38 +233,62 @@ except Exception as e:
     log_test("Save push subscription", False, f"Exception: {str(e)}")
 
 # ============================================================================
-# TEST 4: Delete the test user
+# TEST 4: Update Notification Preferences API
 # ============================================================================
-print("\n[TEST 4] Delete the test user...")
-if not test_user_id:
-    log_test("Delete test user", False, "No test user ID available - skipping deletion test")
-else:
-    try:
-        headers = {"Authorization": f"Bearer {admin_token}"}
+print("\n[TEST 4] Update Notification Preferences API...")
+# First, get current preferences to compare later
+current_preferences = None
+try:
+    headers = {"Authorization": f"Bearer {admin_token}"}
+    
+    # Get current preferences
+    response = requests.get(
+        f"{BACKEND_URL}/notifications/preferences",
+        headers=headers,
+        timeout=10
+    )
+    
+    if response.status_code == 200:
+        current_preferences = response.json()
+    
+    # Update some preferences
+    update_data = {
+        "email_enabled": False,
+        "push_enabled": True,
+        "email_digest": "weekly",
+        "inapp_sound": False
+    }
+    
+    response = requests.put(
+        f"{BACKEND_URL}/notifications/preferences",
+        headers=headers,
+        json=update_data,
+        timeout=10
+    )
+    
+    if response.status_code == 200:
+        result = response.json()
         
-        response = requests.delete(
-            f"{BACKEND_URL}/admin/users/{test_user_id}",
-            headers=headers,
-            timeout=10
-        )
+        checks = []
+        # Check if updated values are reflected
+        checks.append(("email_enabled updated", result.get("email_enabled") == update_data["email_enabled"]))
+        checks.append(("push_enabled updated", result.get("push_enabled") == update_data["push_enabled"]))
+        checks.append(("email_digest updated", result.get("email_digest") == update_data["email_digest"]))
+        checks.append(("inapp_sound updated", result.get("inapp_sound") == update_data["inapp_sound"]))
         
-        if response.status_code == 200:
-            result = response.json()
-            
-            checks = []
-            checks.append(("Success flag", result.get("success") == True))
-            checks.append(("Has message", result.get("message") is not None))
-            checks.append(("Message mentions deletion", "deleted" in result.get("message", "").lower()))
-            
-            all_passed = all(check[1] for check in checks)
-            details = f"Success: {result.get('success')}, Message: {result.get('message')}"
-            log_test("Delete test user", all_passed, details)
-            
-        else:
-            log_test("Delete test user", False, f"Status: {response.status_code}, Response: {response.text}")
+        # Check that other fields remain unchanged
+        if current_preferences:
+            checks.append(("Other fields preserved", result.get("email_new_conversation") == current_preferences.get("email_new_conversation")))
+        
+        all_passed = all(check[1] for check in checks)
+        details = f"Updated {len(update_data)} preferences successfully"
+        log_test("Update notification preferences", all_passed, details)
+        
+    else:
+        log_test("Update notification preferences", False, f"Status: {response.status_code}, Response: {response.text}")
 
-    except Exception as e:
-        log_test("Delete test user", False, f"Exception: {str(e)}")
+except Exception as e:
+    log_test("Update notification preferences", False, f"Exception: {str(e)}")
 
 # ============================================================================
 # TEST 5: Verify user is removed from enhanced users list
