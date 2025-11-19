@@ -148,7 +148,32 @@ async def update_notification_preferences(
         preferences=prefs_dict
     )
     
-    return updated_prefs
+    # Default preferences
+    defaults = {
+        "user_id": current_user.id,
+        "email_enabled": True,
+        "email_new_conversation": True,
+        "email_high_priority": True,
+        "email_performance_alert": True,
+        "email_usage_warning": True,
+        "email_digest": "daily",
+        "email_digest_time": "09:00",
+        "push_enabled": True,
+        "push_new_conversation": True,
+        "push_high_priority": True,
+        "push_performance_alert": True,
+        "push_usage_warning": True,
+        "inapp_enabled": True,
+        "inapp_sound": True,
+        "admin_new_user_signup": True,
+        "admin_webhook_events": True
+    }
+    
+    # Merge stored preferences with defaults
+    if updated_prefs:
+        defaults.update(updated_prefs)
+    
+    return defaults
 
 
 @router.post("/push-subscription")
