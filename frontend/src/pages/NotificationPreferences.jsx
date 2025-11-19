@@ -58,8 +58,14 @@ const NotificationPreferences = () => {
   const checkPushSupportStatus = () => {
     const supported = checkPushSupport();
     setPushSupported(supported);
-    if (supported) {
-      setPushEnabled(Notification.permission === 'granted');
+    if (supported && 'Notification' in window) {
+      const permission = Notification.permission;
+      setPushEnabled(permission === 'granted');
+      console.log('Push support check:', {
+        supported,
+        permission,
+        enabled: permission === 'granted'
+      });
     }
   };
 
