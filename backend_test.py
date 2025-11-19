@@ -76,7 +76,7 @@ def log_test(test_name, passed, details=""):
 def print_summary():
     """Print test summary"""
     print("\n" + "="*80)
-    print("USER DELETION FUNCTIONALITY TEST SUMMARY")
+    print("PUSH NOTIFICATION BACKEND SETUP TEST SUMMARY")
     print("="*80)
     print(f"Total Tests: {test_results['total']}")
     print(f"Passed: {test_results['passed']} ✅")
