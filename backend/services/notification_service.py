@@ -216,6 +216,9 @@ class NotificationService:
     async def get_user_preferences(self, user_id: str) -> Optional[Dict]:
         """Get notification preferences for a user"""
         prefs = await self.preferences.find_one({"user_id": user_id})
+        if prefs and "_id" in prefs:
+            prefs["id"] = str(prefs["_id"])
+            del prefs["_id"]
         return prefs
     
     async def update_user_preferences(
