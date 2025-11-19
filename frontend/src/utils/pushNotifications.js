@@ -30,12 +30,22 @@ function urlBase64ToUint8Array(base64String) {
  */
 export async function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) {
-    console.log('Service Worker not supported');
-    return null;
+    console.log('❌ Service Worker not supported in this browser');
+    throw new Error('Service Worker not supported in this browser');
   }
 
   try {
-    const registration = await navigator.serviceWorker.register('/sw.js', {
+    // Check if there's already a registration
+    let registration = await navigator.serviceWorker.getRegistration('/');
+    
+    if (registration) {
+      console.log('✅ Service Worker already registered');
+      await navigator.serviceWorker.ready;
+      return registration;
+    }
+    
+    // Register new service worker
+    registration = await navigator.serviceWorker.register('/sw.js', {
       scope: '/'
     });
     console.log('✅ Service Worker registered successfully');
@@ -47,7 +57,7 @@ export async function registerServiceWorker() {
     return registration;
   } catch (error) {
     console.error('❌ Service Worker registration failed:', error);
-    throw error;
+    throw new Error('Service Worker registration failed: ' + error.message);
   }
 }
 
