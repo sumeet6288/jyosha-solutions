@@ -170,12 +170,6 @@ const Footer = ({ variant = 'landing' }) => {
                   Roadmap
                 </Link>
               </li>
-              <li>
-                <Link to="/resources" className="text-gray-300 hover:text-white transition-colors flex items-center group">
-                  <ChevronRight className="w-4 h-4 mr-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                  Changelog
-                </Link>
-              </li>
             </ul>
           </div>
 
