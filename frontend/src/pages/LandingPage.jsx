@@ -14,14 +14,12 @@ const LandingPage = () => {
   const featuresRef = React.useRef(null);
   const howItWorksRef = React.useRef(null);
   const useCasesRef = React.useRef(null);
-  const differentiatorsRef = React.useRef(null);
   const testimonialsRef = React.useRef(null);
   
   // Set all to visible for instant load
   const featuresVisible = true;
   const howItWorksVisible = true;
   const useCasesVisible = true;
-  const differentiatorsVisible = true;
   const testimonialsVisible = true;
 
   // Scroll to top on mount to fix reload issue
