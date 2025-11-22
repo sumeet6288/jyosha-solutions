@@ -6,7 +6,6 @@ import { Button } from './ui/button';
 const UpgradeModal = ({ isOpen, onClose, limitType, currentUsage, maxUsage }) => {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [upgrading, setUpgrading] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
