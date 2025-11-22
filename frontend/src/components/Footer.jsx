@@ -264,38 +264,6 @@ const Footer = ({ variant = 'landing' }) => {
             &copy; {currentYear} BotSmith. All rights reserved. Made with ❤️ for better conversations.
           </div>
 
-          {/* Social Links */}
-          <div className="flex items-center space-x-6">
-            <a 
-              href="#" 
-              className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all transform hover:scale-110 hover:-translate-y-1 group"
-              aria-label="Twitter"
-            >
-              <Twitter className="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" />
-            </a>
-            <a 
-              href="#" 
-              className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all transform hover:scale-110 hover:-translate-y-1 group"
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
-            </a>
-            <a 
-              href="#" 
-              className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all transform hover:scale-110 hover:-translate-y-1 group"
-              aria-label="GitHub"
-            >
-              <Github className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
-            </a>
-            <a 
-              href="#" 
-              className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all transform hover:scale-110 hover:-translate-y-1 group"
-              aria-label="Email"
-            >
-              <Mail className="w-5 h-5 text-gray-400 group-hover:text-purple-400 transition-colors" />
-            </a>
-          </div>
-
           {/* Legal Links */}
           <div className="flex items-center space-x-6 text-sm">
             <Link to="/privacy-policy" className="text-gray-400 hover:text-white transition-colors">
