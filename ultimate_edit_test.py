@@ -22,7 +22,7 @@ import uuid
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://fullstack-setup-14.preview.emergentagent.com/api"
+BACKEND_URL = "https://app-dependency-flow.preview.emergentagent.com/api"
 ADMIN_EMAIL = "admin@botsmith.com"
 ADMIN_PASSWORD = "admin123"
 
