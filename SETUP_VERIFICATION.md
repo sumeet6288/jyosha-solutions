@@ -59,7 +59,7 @@ EMERGENT_LLM_KEY=sk-emergent-919922434748629944
 
 **Frontend (.env):**
 ```
-REACT_APP_BACKEND_URL=https://mern-installer-10.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://appenv-setup.preview.emergentagent.com
 WDS_SOCKET_PORT=443
 REACT_APP_ENABLE_VISUAL_EDITS=false
 ENABLE_HEALTH_CHECK=false
@@ -88,7 +88,7 @@ ENABLE_HEALTH_CHECK=false
 
 ## ✅ Application Access
 
-**Public URL:** https://mern-installer-10.preview.emergentagent.com
+**Public URL:** https://appenv-setup.preview.emergentagent.com
 
 **Admin Credentials:**
 - Email: admin@botsmith.com
