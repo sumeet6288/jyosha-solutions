@@ -117,7 +117,7 @@ const UpgradeModal = ({ isOpen, onClose, limitType, currentUsage, maxUsage }) =>
                       <Icon className="w-10 h-10 mb-3" />
                       <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
                       <div className="text-3xl font-bold mb-1">
-                        {plan.price === -1 ? 'Custom' : `₹${(plan.price / 100).toLocaleString('en-IN')}`}
+                        {plan.price === -1 ? 'Custom' : `₹${plan.price.toLocaleString('en-IN')}`}
                       </div>
                       {plan.price > 0 && plan.price !== -1 && (
                         <div className="text-sm text-white/80">/month</div>
