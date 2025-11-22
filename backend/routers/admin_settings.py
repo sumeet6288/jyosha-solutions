@@ -113,7 +113,6 @@ class SystemSettings(BaseModel):
         "whatsapp": IntegrationConfig(enabled=True, max_per_chatbot=3),
         "messenger": IntegrationConfig(enabled=False, max_per_chatbot=3),
         "instagram": IntegrationConfig(enabled=False, max_per_chatbot=3),
-        "twilio": IntegrationConfig(enabled=True, max_per_chatbot=5),
         "teams": IntegrationConfig(enabled=False, max_per_chatbot=3),
         "webchat": IntegrationConfig(enabled=True, max_per_chatbot=10),
         "api": IntegrationConfig(enabled=True, max_per_chatbot=10)
