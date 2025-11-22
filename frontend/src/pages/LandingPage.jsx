@@ -128,33 +128,6 @@ const LandingPage = () => {
     }
   ];
 
-  const differentiators = [
-    {
-      icon: <Users className="w-8 h-8" />,
-      title: 'Multi-AI Provider',
-      description: 'Choose from GPT-4o, Claude 3.5 Sonnet, or Gemini 2.0 Flash for your chatbot',
-      gradient: 'from-purple-600 to-pink-600'
-    },
-    {
-      icon: <Brain className="w-8 h-8" />,
-      title: 'Knowledge Base RAG',
-      description: 'AI answers from YOUR data, not generic training. Accurate and contextual responses',
-      gradient: 'from-blue-600 to-cyan-600'
-    },
-    {
-      icon: <Sparkles className="w-8 h-8" />,
-      title: 'No-Code Builder',
-      description: 'Beautiful drag-and-drop interface. Zero coding required, maximum customization',
-      gradient: 'from-orange-600 to-rose-600'
-    },
-    {
-      icon: <TrendingUp className="w-8 h-8" />,
-      title: 'Real-Time Analytics',
-      description: 'Track conversations, satisfaction scores, peak hours, and response times instantly',
-      gradient: 'from-green-600 to-emerald-600'
-    }
-  ];
-
   const testimonials = [
     {
       name: 'Sarah Chen',
