@@ -342,7 +342,6 @@ async def get_integrations_settings():
                 "whatsapp": {"enabled": True, "max_per_chatbot": 3},
                 "messenger": {"enabled": False, "max_per_chatbot": 3},
                 "instagram": {"enabled": False, "max_per_chatbot": 3},
-                "twilio": {"enabled": True, "max_per_chatbot": 5},
                 "teams": {"enabled": False, "max_per_chatbot": 3},
                 "webchat": {"enabled": True, "max_per_chatbot": 10},
                 "api": {"enabled": True, "max_per_chatbot": 10}
