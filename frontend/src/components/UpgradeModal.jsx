@@ -27,17 +27,8 @@ const UpgradeModal = ({ isOpen, onClose, limitType, currentUsage, maxUsage }) =>
   };
 
   const handleUpgrade = async (planId) => {
-    setUpgrading(true);
-    try {
-      await plansAPI.upgradePlan(planId);
-      alert('Plan upgraded successfully!');
-      window.location.reload(); // Refresh to update limits
-    } catch (error) {
-      console.error('Error upgrading:', error);
-      alert('Failed to upgrade plan. Please try again.');
-    } finally {
-      setUpgrading(false);
-    }
+    // Redirect to subscription page for payment
+    window.location.href = '/subscription';
   };
 
   const getPlanIcon = (planId) => {
