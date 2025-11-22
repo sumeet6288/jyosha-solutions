@@ -41,7 +41,7 @@ import os
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://deploy-ready-app-3.preview.emergentagent.com/api"
+BACKEND_URL = "https://fullstack-setup-13.preview.emergentagent.com/api"
 ADMIN_EMAIL = "admin@botsmith.com"
 ADMIN_PASSWORD = "admin123"
 ADMIN_USER_ID = "admin-001"
