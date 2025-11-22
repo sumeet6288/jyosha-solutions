@@ -9,7 +9,7 @@ const CookiePolicy = () => {
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
-        <div className="max-w-5xl mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <button
             onClick={() => navigate(-1)}
             className="flex items-center gap-2 text-gray-600 hover:text-orange-600 transition-colors"
@@ -21,34 +21,34 @@ const CookiePolicy = () => {
       </div>
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-orange-600 to-rose-600 text-white py-16">
-        <div className="max-w-5xl mx-auto px-6">
+      <div className="bg-gradient-to-r from-orange-600 to-rose-600 text-white py-12 lg:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl">
               <Cookie className="w-8 h-8" />
             </div>
-            <h1 className="text-4xl font-bold">Cookie Policy</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold">Cookie Policy</h1>
           </div>
           <p className="text-orange-100 text-lg">
             Last updated: December 29, 2024
           </p>
-          <p className="text-white/90 mt-4 max-w-3xl">
+          <p className="text-white/90 mt-4 max-w-4xl">
             This Cookie Policy explains how BotSmith uses cookies and similar tracking technologies on our website and services.
           </p>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-5xl mx-auto px-6 py-12">
-        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 lg:p-12">
           
           {/* Section 1 */}
           <section className="mb-12">
             <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 bg-amber-100 rounded-lg">
+              <div className="p-2 bg-amber-100 rounded-lg flex-shrink-0">
                 <Info className="w-5 h-5 text-amber-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">1. What Are Cookies?</h2>
                 <p className="text-gray-600 leading-relaxed mb-4">
                   Cookies are small text files that are stored on your device when you visit a website. They help websites remember your preferences and improve your user experience.
@@ -56,7 +56,7 @@ const CookiePolicy = () => {
               </div>
             </div>
             
-            <div className="ml-12 bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg p-6 border border-amber-200">
+            <div className="pl-0 lg:pl-12 bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg p-6 border border-amber-200">
               <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                 <Cookie className="w-5 h-5 text-orange-600" />
                 Types of Data Stored
@@ -85,10 +85,10 @@ const CookiePolicy = () => {
           {/* Section 2 */}
           <section className="mb-12">
             <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 bg-purple-100 rounded-lg">
+              <div className="p-2 bg-purple-100 rounded-lg flex-shrink-0">
                 <Settings className="w-5 h-5 text-purple-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">2. Types of Cookies We Use</h2>
                 <p className="text-gray-600 leading-relaxed mb-4">
                   We use different types of cookies to provide and improve BotSmith:
@@ -96,15 +96,15 @@ const CookiePolicy = () => {
               </div>
             </div>
             
-            <div className="ml-12 space-y-4">
+            <div className="pl-0 lg:pl-12 space-y-4">
               {/* Essential Cookies */}
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-5 border border-green-200">
                 <div className="flex items-start gap-3 mb-3">
-                  <div className="p-2 bg-green-100 rounded-lg">
+                  <div className="p-2 bg-green-100 rounded-lg flex-shrink-0">
                     <Shield className="w-5 h-5 text-green-600" />
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
                       <h3 className="font-bold text-gray-900">Essential Cookies</h3>
                       <span className="px-3 py-1 bg-green-600 text-white text-xs font-semibold rounded-full">
                         Required
@@ -134,11 +134,11 @@ const CookiePolicy = () => {
               {/* Functional Cookies */}
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-5 border border-blue-200">
                 <div className="flex items-start gap-3 mb-3">
-                  <div className="p-2 bg-blue-100 rounded-lg">
+                  <div className="p-2 bg-blue-100 rounded-lg flex-shrink-0">
                     <Settings className="w-5 h-5 text-blue-600" />
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
                       <h3 className="font-bold text-gray-900">Functional Cookies</h3>
                       <span className="px-3 py-1 bg-blue-600 text-white text-xs font-semibold rounded-full">
                         Optional
@@ -168,11 +168,11 @@ const CookiePolicy = () => {
               {/* Analytics Cookies */}
               <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg p-5 border border-purple-200">
                 <div className="flex items-start gap-3 mb-3">
-                  <div className="p-2 bg-purple-100 rounded-lg">
+                  <div className="p-2 bg-purple-100 rounded-lg flex-shrink-0">
                     <BarChart3 className="w-5 h-5 text-purple-600" />
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
                       <h3 className="font-bold text-gray-900">Analytics Cookies</h3>
                       <span className="px-3 py-1 bg-purple-600 text-white text-xs font-semibold rounded-full">
                         Optional
@@ -202,11 +202,11 @@ const CookiePolicy = () => {
               {/* Marketing Cookies */}
               <div className="bg-gradient-to-br from-rose-50 to-orange-50 rounded-lg p-5 border border-rose-200">
                 <div className="flex items-start gap-3 mb-3">
-                  <div className="p-2 bg-rose-100 rounded-lg">
+                  <div className="p-2 bg-rose-100 rounded-lg flex-shrink-0">
                     <BarChart3 className="w-5 h-5 text-rose-600" />
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
                       <h3 className="font-bold text-gray-900">Marketing Cookies</h3>
                       <span className="px-3 py-1 bg-rose-600 text-white text-xs font-semibold rounded-full">
                         Optional
@@ -234,10 +234,10 @@ const CookiePolicy = () => {
           {/* Section 3 */}
           <section className="mb-12">
             <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 bg-emerald-100 rounded-lg">
+              <div className="p-2 bg-emerald-100 rounded-lg flex-shrink-0">
                 <Settings className="w-5 h-5 text-emerald-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">3. Managing Your Cookie Preferences</h2>
                 <p className="text-gray-600 leading-relaxed mb-4">
                   You have control over which cookies you accept. Here's how you can manage your preferences:
@@ -245,7 +245,7 @@ const CookiePolicy = () => {
               </div>
             </div>
             
-            <div className="ml-12 space-y-4">
+            <div className="pl-0 lg:pl-12 space-y-4">
               <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-5 border border-purple-200">
                 <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                   <Settings className="w-5 h-5 text-purple-600" />
@@ -304,10 +304,10 @@ const CookiePolicy = () => {
           {/* Section 4 */}
           <section className="mb-12">
             <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 bg-indigo-100 rounded-lg">
+              <div className="p-2 bg-indigo-100 rounded-lg flex-shrink-0">
                 <Shield className="w-5 h-5 text-indigo-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">4. Third-Party Cookies</h2>
                 <p className="text-gray-600 leading-relaxed mb-4">
                   Some cookies on our site are set by third-party services we use:
@@ -315,7 +315,7 @@ const CookiePolicy = () => {
               </div>
             </div>
             
-            <div className="ml-12 grid md:grid-cols-2 gap-4">
+            <div className="pl-0 lg:pl-12 grid md:grid-cols-2 gap-4">
               <div className="bg-white rounded-lg p-4 border-2 border-gray-200 hover:border-purple-300 transition-colors">
                 <h4 className="font-semibold text-gray-900 mb-2">Google Analytics</h4>
                 <p className="text-gray-600 text-sm mb-2">Used for website analytics and performance tracking.</p>
@@ -351,10 +351,10 @@ const CookiePolicy = () => {
           {/* Section 5 */}
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">5. Cookie Duration</h2>
-            <div className="ml-0">
+            <div className="pl-0 lg:pl-0">
               <div className="space-y-3">
                 <div className="flex items-start gap-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <div className="p-2 bg-blue-100 rounded-lg">
+                  <div className="p-2 bg-blue-100 rounded-lg flex-shrink-0">
                     <Clock className="w-4 h-4 text-blue-600" />
                   </div>
                   <div>
@@ -364,7 +364,7 @@ const CookiePolicy = () => {
                 </div>
 
                 <div className="flex items-start gap-3 p-4 bg-purple-50 rounded-lg border border-purple-200">
-                  <div className="p-2 bg-purple-100 rounded-lg">
+                  <div className="p-2 bg-purple-100 rounded-lg flex-shrink-0">
                     <Clock className="w-4 h-4 text-purple-600" />
                   </div>
                   <div>

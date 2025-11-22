@@ -9,7 +9,7 @@ const TermsOfService = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
-        <div className="max-w-5xl mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <button
             onClick={() => navigate(-1)}
             className="flex items-center gap-2 text-gray-600 hover:text-purple-600 transition-colors"
@@ -21,34 +21,34 @@ const TermsOfService = () => {
       </div>
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
-        <div className="max-w-5xl mx-auto px-6">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12 lg:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl">
               <FileText className="w-8 h-8" />
             </div>
-            <h1 className="text-4xl font-bold">Terms of Service</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold">Terms of Service</h1>
           </div>
           <p className="text-blue-100 text-lg">
             Last updated: December 29, 2024
           </p>
-          <p className="text-white/90 mt-4 max-w-3xl">
+          <p className="text-white/90 mt-4 max-w-4xl">
             Please read these terms carefully before using BotSmith. By accessing or using our service, you agree to be bound by these terms.
           </p>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-5xl mx-auto px-6 py-12">
-        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 lg:p-12">
           
           {/* Section 1 */}
           <section className="mb-12">
             <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 bg-blue-100 rounded-lg">
+              <div className="p-2 bg-blue-100 rounded-lg flex-shrink-0">
                 <CheckCircle className="w-5 h-5 text-blue-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">1. Acceptance of Terms</h2>
                 <p className="text-gray-600 leading-relaxed">
                   By accessing and using BotSmith ("Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to these terms, please do not use our Service.
@@ -60,15 +60,15 @@ const TermsOfService = () => {
           {/* Section 2 */}
           <section className="mb-12">
             <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 bg-purple-100 rounded-lg">
+              <div className="p-2 bg-purple-100 rounded-lg flex-shrink-0">
                 <Users className="w-5 h-5 text-purple-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">2. User Accounts</h2>
               </div>
             </div>
             
-            <div className="ml-12 space-y-4">
+            <div className="pl-0 lg:pl-12 space-y-4">
               <div className="bg-purple-50 rounded-lg p-4 border border-purple-100">
                 <h3 className="font-semibold text-gray-900 mb-2">Account Creation</h3>
                 <p className="text-gray-600 text-sm mb-2">
@@ -102,10 +102,10 @@ const TermsOfService = () => {
           {/* Section 3 */}
           <section className="mb-12">
             <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 bg-emerald-100 rounded-lg">
+              <div className="p-2 bg-emerald-100 rounded-lg flex-shrink-0">
                 <CheckCircle className="w-5 h-5 text-emerald-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">3. Acceptable Use</h2>
                 <p className="text-gray-600 leading-relaxed mb-4">
                   You agree to use BotSmith only for lawful purposes and in accordance with these Terms. You agree NOT to:
@@ -113,7 +113,7 @@ const TermsOfService = () => {
               </div>
             </div>
             
-            <div className="ml-12 space-y-3">
+            <div className="pl-0 lg:pl-12 space-y-3">
               <div className="flex items-start gap-3 p-3 bg-red-50 rounded-lg border border-red-200">
                 <XCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                 <div>
@@ -169,10 +169,10 @@ const TermsOfService = () => {
           {/* Section 4 */}
           <section className="mb-12">
             <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 bg-indigo-100 rounded-lg">
+              <div className="p-2 bg-indigo-100 rounded-lg flex-shrink-0">
                 <Scale className="w-5 h-5 text-indigo-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">4. Intellectual Property</h2>
                 <p className="text-gray-600 leading-relaxed mb-4">
                   The Service and its original content, features, and functionality are owned by BotSmith and are protected by international copyright, trademark, and other intellectual property laws.
@@ -180,7 +180,7 @@ const TermsOfService = () => {
               </div>
             </div>
             
-            <div className="ml-12 space-y-4">
+            <div className="pl-0 lg:pl-12 space-y-4">
               <div className="border-l-4 border-purple-600 pl-4 py-2">
                 <h3 className="font-semibold text-gray-900 mb-1">Your Content</h3>
                 <p className="text-gray-600 text-sm">
@@ -200,15 +200,15 @@ const TermsOfService = () => {
           {/* Section 5 */}
           <section className="mb-12">
             <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 bg-rose-100 rounded-lg">
+              <div className="p-2 bg-rose-100 rounded-lg flex-shrink-0">
                 <CreditCard className="w-5 h-5 text-rose-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">5. Subscription and Payments</h2>
               </div>
             </div>
             
-            <div className="ml-12 space-y-4">
+            <div className="pl-0 lg:pl-12 space-y-4">
               <div className="bg-gradient-to-br from-rose-50 to-pink-50 rounded-lg p-4 border border-rose-200">
                 <h3 className="font-semibold text-gray-900 mb-2">Billing</h3>
                 <p className="text-gray-600 text-sm mb-2">
@@ -242,10 +242,10 @@ const TermsOfService = () => {
           {/* Section 6 */}
           <section className="mb-12">
             <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 bg-amber-100 rounded-lg">
+              <div className="p-2 bg-amber-100 rounded-lg flex-shrink-0">
                 <AlertCircle className="w-5 h-5 text-amber-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">6. Termination</h2>
                 <p className="text-gray-600 leading-relaxed mb-4">
                   We may terminate or suspend your account and access to the Service immediately, without prior notice or liability, for any reason, including:
@@ -253,7 +253,7 @@ const TermsOfService = () => {
               </div>
             </div>
             
-            <div className="ml-12 space-y-2">
+            <div className="pl-0 lg:pl-12 space-y-2">
               <div className="flex items-start gap-2">
                 <span className="text-purple-600 mt-1">•</span>
                 <p className="text-gray-700">Breach of these Terms of Service</p>

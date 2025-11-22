@@ -9,7 +9,7 @@ const PrivacyPolicy = () => {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
-        <div className="max-w-5xl mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <button
             onClick={() => navigate(-1)}
             className="flex items-center gap-2 text-gray-600 hover:text-purple-600 transition-colors"
@@ -21,33 +21,33 @@ const PrivacyPolicy = () => {
       </div>
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-16">
-        <div className="max-w-5xl mx-auto px-6">
+      <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-12 lg:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl">
               <Shield className="w-8 h-8" />
             </div>
-            <h1 className="text-4xl font-bold">Privacy Policy</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold">Privacy Policy</h1>
           </div>
           <p className="text-purple-100 text-lg">
             Last updated: December 29, 2024
           </p>
-          <p className="text-white/90 mt-4 max-w-3xl">
+          <p className="text-white/90 mt-4 max-w-4xl">
             At BotSmith, we take your privacy seriously. This policy describes how we collect, use, and protect your personal information.
           </p>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-5xl mx-auto px-6 py-12">
-        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+        <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 lg:p-12">
           {/* Section 1 */}
           <section className="mb-12">
             <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 bg-purple-100 rounded-lg">
+              <div className="p-2 bg-purple-100 rounded-lg flex-shrink-0">
                 <FileText className="w-5 h-5 text-purple-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">1. Information We Collect</h2>
                 <p className="text-gray-600 leading-relaxed mb-4">
                   We collect information that you provide directly to us when you use BotSmith:
@@ -55,7 +55,7 @@ const PrivacyPolicy = () => {
               </div>
             </div>
             
-            <div className="ml-12 space-y-4">
+            <div className="pl-0 lg:pl-12 space-y-4">
               <div className="bg-purple-50 rounded-lg p-4 border border-purple-100">
                 <h3 className="font-semibold text-gray-900 mb-2">Account Information</h3>
                 <p className="text-gray-600 text-sm">
@@ -89,10 +89,10 @@ const PrivacyPolicy = () => {
           {/* Section 2 */}
           <section className="mb-12">
             <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 bg-blue-100 rounded-lg">
+              <div className="p-2 bg-blue-100 rounded-lg flex-shrink-0">
                 <Eye className="w-5 h-5 text-blue-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">2. How We Use Your Information</h2>
                 <p className="text-gray-600 leading-relaxed mb-4">
                   We use the information we collect for the following purposes:
@@ -100,30 +100,30 @@ const PrivacyPolicy = () => {
               </div>
             </div>
             
-            <div className="ml-12">
+            <div className="pl-0 lg:pl-12">
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-purple-600 rounded-full mt-2"></div>
+                  <div className="w-2 h-2 bg-purple-600 rounded-full mt-2 flex-shrink-0"></div>
                   <p className="text-gray-700">To provide, maintain, and improve BotSmith services</p>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-purple-600 rounded-full mt-2"></div>
+                  <div className="w-2 h-2 bg-purple-600 rounded-full mt-2 flex-shrink-0"></div>
                   <p className="text-gray-700">To process your transactions and send transaction notifications</p>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-purple-600 rounded-full mt-2"></div>
+                  <div className="w-2 h-2 bg-purple-600 rounded-full mt-2 flex-shrink-0"></div>
                   <p className="text-gray-700">To send technical notices, updates, security alerts, and support messages</p>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-purple-600 rounded-full mt-2"></div>
+                  <div className="w-2 h-2 bg-purple-600 rounded-full mt-2 flex-shrink-0"></div>
                   <p className="text-gray-700">To respond to your comments, questions, and provide customer service</p>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-purple-600 rounded-full mt-2"></div>
+                  <div className="w-2 h-2 bg-purple-600 rounded-full mt-2 flex-shrink-0"></div>
                   <p className="text-gray-700">To monitor and analyze trends, usage, and activities in connection with our services</p>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-purple-600 rounded-full mt-2"></div>
+                  <div className="w-2 h-2 bg-purple-600 rounded-full mt-2 flex-shrink-0"></div>
                   <p className="text-gray-700">To detect, prevent, and address technical issues and security threats</p>
                 </li>
               </ul>
@@ -133,10 +133,10 @@ const PrivacyPolicy = () => {
           {/* Section 3 */}
           <section className="mb-12">
             <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 bg-emerald-100 rounded-lg">
+              <div className="p-2 bg-emerald-100 rounded-lg flex-shrink-0">
                 <Database className="w-5 h-5 text-emerald-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">3. Information Sharing and Disclosure</h2>
                 <p className="text-gray-600 leading-relaxed mb-4">
                   We do not sell your personal information. We may share your information only in the following circumstances:
@@ -144,7 +144,7 @@ const PrivacyPolicy = () => {
               </div>
             </div>
             
-            <div className="ml-12 space-y-4">
+            <div className="pl-0 lg:pl-12 space-y-4">
               <div className="border-l-4 border-purple-600 pl-4">
                 <h3 className="font-semibold text-gray-900 mb-1">With Your Consent</h3>
                 <p className="text-gray-600 text-sm">
@@ -178,10 +178,10 @@ const PrivacyPolicy = () => {
           {/* Section 4 */}
           <section className="mb-12">
             <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 bg-rose-100 rounded-lg">
+              <div className="p-2 bg-rose-100 rounded-lg flex-shrink-0">
                 <Lock className="w-5 h-5 text-rose-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">4. Data Security</h2>
                 <p className="text-gray-600 leading-relaxed">
                   We implement industry-standard security measures to protect your information:
@@ -189,7 +189,7 @@ const PrivacyPolicy = () => {
               </div>
             </div>
             
-            <div className="ml-12 grid md:grid-cols-2 gap-4 mt-4">
+            <div className="pl-0 lg:pl-12 grid md:grid-cols-2 gap-4 mt-4">
               <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
                 <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
                   <Lock className="w-4 h-4 text-purple-600" />
@@ -235,10 +235,10 @@ const PrivacyPolicy = () => {
           {/* Section 5 */}
           <section className="mb-12">
             <div className="flex items-start gap-3 mb-4">
-              <div className="p-2 bg-amber-100 rounded-lg">
+              <div className="p-2 bg-amber-100 rounded-lg flex-shrink-0">
                 <UserCheck className="w-5 h-5 text-amber-600" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">5. Your Rights and Choices</h2>
                 <p className="text-gray-600 leading-relaxed mb-4">
                   You have the following rights regarding your personal information:
@@ -246,25 +246,25 @@ const PrivacyPolicy = () => {
               </div>
             </div>
             
-            <div className="ml-12 space-y-3">
+            <div className="pl-0 lg:pl-12 space-y-3">
               <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                <span className="font-semibold text-purple-600 min-w-[80px]">Access</span>
+                <span className="font-semibold text-purple-600 min-w-[80px] flex-shrink-0">Access</span>
                 <p className="text-gray-700 text-sm">Request access to your personal information we hold</p>
               </div>
               <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                <span className="font-semibold text-purple-600 min-w-[80px]">Correction</span>
+                <span className="font-semibold text-purple-600 min-w-[80px] flex-shrink-0">Correction</span>
                 <p className="text-gray-700 text-sm">Request correction of inaccurate information</p>
               </div>
               <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                <span className="font-semibold text-purple-600 min-w-[80px]">Deletion</span>
+                <span className="font-semibold text-purple-600 min-w-[80px] flex-shrink-0">Deletion</span>
                 <p className="text-gray-700 text-sm">Request deletion of your personal information</p>
               </div>
               <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                <span className="font-semibold text-purple-600 min-w-[80px]">Export</span>
+                <span className="font-semibold text-purple-600 min-w-[80px] flex-shrink-0">Export</span>
                 <p className="text-gray-700 text-sm">Request a copy of your data in a portable format</p>
               </div>
               <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                <span className="font-semibold text-purple-600 min-w-[80px]">Opt-out</span>
+                <span className="font-semibold text-purple-600 min-w-[80px] flex-shrink-0">Opt-out</span>
                 <p className="text-gray-700 text-sm">Opt-out of marketing communications</p>
               </div>
             </div>
