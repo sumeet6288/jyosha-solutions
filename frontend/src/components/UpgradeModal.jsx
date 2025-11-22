@@ -138,20 +138,12 @@ const UpgradeModal = ({ isOpen, onClose, limitType, currentUsage, maxUsage }) =>
 
                       <Button
                         onClick={() => handleUpgrade(plan.id)}
-                        disabled={upgrading}
                         className={`w-full py-3 rounded-xl font-semibold bg-gradient-to-r ${gradient} hover:shadow-lg text-white border-0`}
                       >
-                        {upgrading ? (
-                          <div className="flex items-center justify-center gap-2">
-                            <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></div>
-                            Upgrading...
-                          </div>
-                        ) : (
-                          <div className="flex items-center justify-center gap-2">
-                            Upgrade to {plan.name}
-                            <ArrowRight className="w-4 h-4" />
-                          </div>
-                        )}
+                        <div className="flex items-center justify-center gap-2">
+                          View {plan.name} Plan
+                          <ArrowRight className="w-4 h-4" />
+                        </div>
                       </Button>
                     </div>
                   </div>
