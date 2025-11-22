@@ -81,9 +81,9 @@ app = FastAPI(
     title="BotSmith API",
     description="AI-powered chatbot builder with multi-provider support",
     version="1.0.0",
-    docs_url="/docs" if enable_docs else None,
-    redoc_url="/redoc" if enable_docs else None,
-    openapi_url="/openapi.json" if enable_docs else None
+    docs_url="/api/docs" if enable_docs else None,
+    redoc_url="/api/redoc" if enable_docs else None,
+    openapi_url="/api/openapi.json" if enable_docs else None
 )
 
 # Create a router with the /api prefix
