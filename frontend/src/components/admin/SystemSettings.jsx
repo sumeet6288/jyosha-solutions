@@ -67,7 +67,6 @@ const SystemSettings = ({ backendUrl }) => {
       whatsapp: { enabled: true, max_per_chatbot: 3 },
       messenger: { enabled: false, max_per_chatbot: 3 },
       instagram: { enabled: false, max_per_chatbot: 3 },
-      twilio: { enabled: true, max_per_chatbot: 5 },
       teams: { enabled: false, max_per_chatbot: 3 },
       webchat: { enabled: true, max_per_chatbot: 10 },
       api: { enabled: true, max_per_chatbot: 10 }
